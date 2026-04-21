@@ -149,7 +149,7 @@ function OnEvent(int Event_ID, string param)
 function holdTargetFunc()
 {
     // End:0x3E
-    if(UnknownFunction242(GetOptionBool("Custom", "HoldTarget"), true))
+    if((GetOptionBool("Custom", "HoldTarget") == true))
     {
         // End:0x3E
         if(idx_HoldTarget_1 != idx_HoldTarget_2)
@@ -170,7 +170,7 @@ function IgnoreAggrFunc(string param)
     {
         ParseInt(param, "AttackerID", AttackerID);
         // End:0x62
-        if(UnknownFunction129(isPartyMember(AttackerID)))
+        if((!isPartyMember(AttackerID)))
         {
             idx_HoldTarget_2 = AttackerID;
         }
@@ -325,10 +325,10 @@ function HandleTargetUpdate()
     WhiteColor.B = 0;
     targetID = Class'NWindow.UIDATA_TARGET'.static.GetTargetID();
     // End:0x94
-    if(UnknownFunction242(GetOptionBool("Custom", "IgnoreAggr"), true))
+    if((GetOptionBool("Custom", "IgnoreAggr") == true))
     {
         // End:0x94
-        if(UnknownFunction154(targetID, idx_HoldTarget_2))
+        if((targetID == idx_HoldTarget_2))
         {
             RequestTargetUser(idx_HoldTarget_1);
             idx_HoldTarget_2 = -1;

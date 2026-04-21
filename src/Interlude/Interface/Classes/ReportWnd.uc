@@ -36,7 +36,7 @@ function function1()
 function OnLoad()
 {
     // End:0x3F
-    if(UnknownFunction242(GetOptionBool("Unload", "ReportWnd"), true))
+    if((GetOptionBool("Unload", "ReportWnd") == true))
     {
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ReportWnd");
         return;
@@ -104,20 +104,20 @@ function Reset()
 {
     int_2 = 0;
     int_3 = 0;
-    text_1.SetText(UnknownFunction112(MakeCostString(string(int_2)), " Exp"));
-    text_2.SetText(UnknownFunction112(UnknownFunction112(MakeCostString(string(int_3)), " "), uAdena));
+    text_1.SetText((MakeCostString(string(int_2)) $ " Exp"));
+    text_2.SetText(((MakeCostString(string(int_3)) $ " ") $ uAdena));
     Sec = 0;
     int_4 = 0;
     Hrs = 0;
     Day = 0;
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeValue", UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string(Day)), " "), uDay), " "), string(Hrs)), " "), uHrs), " "), string(int_4)), " "), uMin));
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeValue", ((((((((((("" $ string(Day)) $ " ") $ uDay) $ " ") $ string(Hrs)) $ " ") $ uHrs) $ " ") $ string(int_4)) $ " ") $ uMin));
     return;
 }
 
 function function4(int int_5)
 {
     // End:0x69
-    if(UnknownFunction154(int_5, 2930))
+    if((int_5 == 2930))
     {
         text_3.SetText("Restart");
         text_4.SetText("Restart");
@@ -126,7 +126,7 @@ function function4(int int_5)
     else
     {
         // End:0xD0
-        if(UnknownFunction154(int_5, 2940))
+        if((int_5 == 2940))
         {
             text_3.SetText("Exit Game");
             text_4.SetText("Exit Game");
@@ -139,14 +139,14 @@ function function4(int int_5)
 function function6()
 {
     // End:0x1C
-    if(UnknownFunction154(int_1, 2930))
+    if((int_1 == 2930))
     {
         ExecRestart();        
     }
     else
     {
         // End:0x35
-        if(UnknownFunction154(int_1, 2940))
+        if((int_1 == 2940))
         {
             ExecQuit();
         }
@@ -195,7 +195,7 @@ function function3(string string_1)
         case 95:
             ParseInt(string_1, "Param1", int_7);
             int_2 = int_2 + int_7;
-            text_1.SetText(UnknownFunction112(MakeCostString(string(int_2)), " Exp"));
+            text_1.SetText((MakeCostString(string(int_2)) $ " Exp"));
             // End:0x14E
             break;
         // End:0x82
@@ -204,7 +204,7 @@ function function3(string string_1)
         case 52:
             ParseInt(string_1, "Param1", int_7);
             int_3 = int_3 + int_7;
-            text_2.SetText(UnknownFunction112(UnknownFunction112(MakeCostString(string(int_3)), " "), uAdena));
+            text_2.SetText(((MakeCostString(string(int_3)) $ " ") $ uAdena));
             // End:0x14E
             break;
         // End:0xE9
@@ -272,33 +272,33 @@ function function2()
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.AdenaHead", "Adena Acquired");
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TitleInit", "Reset");
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeHead", "Online Time");
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeValue", UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string(Day)), " "), uDay), " "), string(Hrs)), " "), uHrs), " "), string(int_4)), " "), uMin));
-    text_2.SetText(UnknownFunction112(UnknownFunction112(MakeCostString(string(int_3)), " "), uAdena));
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeValue", ((((((((((("" $ string(Day)) $ " ") $ uDay) $ " ") $ string(Hrs)) $ " ") $ uHrs) $ " ") $ string(int_4)) $ " ") $ uMin));
+    text_2.SetText(((MakeCostString(string(int_3)) $ " ") $ uAdena));
     return;
 }
 
 function HandleOnlineTime()
 {
-    UnknownFunction165(Sec);
+    Sec++;
     // End:0x2D
-    if(UnknownFunction154(Sec, 60))
+    if((Sec == 60))
     {
         Sec = 0;
-        UnknownFunction165(int_4);
+        int_4++;
     }
     // End:0x4F
-    if(UnknownFunction154(int_4, 60))
+    if((int_4 == 60))
     {
         int_4 = 0;
-        UnknownFunction165(Hrs);
+        Hrs++;
     }
     // End:0x71
-    if(UnknownFunction154(Hrs, 24))
+    if((Hrs == 24))
     {
         Hrs = 0;
-        UnknownFunction165(Day);
+        Day++;
     }
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeValue", UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string(Day)), " "), uDay), " "), string(Hrs)), " "), uHrs), " "), string(int_4)), " "), uMin));
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ReportWnd.TimeValue", ((((((((((("" $ string(Day)) $ " ") $ uDay) $ " ") $ string(Hrs)) $ " ") $ uHrs) $ " ") $ string(int_4)) $ " ") $ uMin));
     Me.SetTimer(0, 1000);
     return;
 }

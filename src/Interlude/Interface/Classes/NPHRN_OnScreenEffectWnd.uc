@@ -34,10 +34,10 @@ function ShowRedOverlay()
 
     GetPlayerInfo(Player);
     Tex = TextureHandle(GetHandle("NPHRN_OnScreenEffectWnd.Tex"));
-    fPercent = UnknownFunction171(UnknownFunction172(float(Player.nCurHP), float(Player.nMaxHP)), 100.0000000);
+    fPercent = ((float(Player.nCurHP) / float(Player.nMaxHP)) * 100.0000000);
     hpPercent = int(fPercent);
     // End:0x13D
-    if(UnknownFunction130(UnknownFunction152(hpPercent, 20), UnknownFunction129(onceAppeared)))
+    if(((hpPercent <= 20) && (!onceAppeared)))
     {
         GetCurrentResolution(Width, Height);
         Me.SetWindowSize(Width, Height);
@@ -49,7 +49,7 @@ function ShowRedOverlay()
         onceAppeared = true;
     }
     // End:0x155
-    if(UnknownFunction151(hpPercent, 20))
+    if((hpPercent > 20))
     {
         onceAppeared = false;
     }

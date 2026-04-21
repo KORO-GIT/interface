@@ -7,27 +7,26 @@ var bool m_bShow;
 var int m_DeleteID;
 var int m_Max;
 var ItemWindowHandle ItemWindowHandle;
-var array<int> arrInt1;
-var array<int> arrInt2;
-var array<string> arrStr;
-var int unkInt1;
-var int unkInt2;
-var int unkInt3;
-var int unkInt4;
-var int unkInt5;
-var int unkInt6;
-var string unkStr1;
-var string unkStr2;
-var string unkStr3;
-var string unkStr4;
-var string unkStr5;
+var array<int> MacroDelayFlags;
+var array<int> MacroDelaySeconds;
+var array<string> MacroCommands;
+var int SelectedMacroID;
+var int MacroCommandCount;
+var int DelayCommandValueOffset;
+var int MacroTimerBaseID;
+var int NextCommandOffset;
+var int MacroTimerDelayMs;
+var string DelayCommand;
+var string WindowName;
+var string SelectedMacroTexture;
+var string EmptyString;
 var MacroEditWnd MacroEditWnd;
 
 function OnLoad()
 {
-    unkStr2 = "MacroListWnd";
-    WndHandle = GetHandle(unkStr2);
-    ItemWindowHandle = ItemWindowHandle(GetHandle(UnknownFunction112(unkStr2, ".MacroItem")));
+    WindowName = "MacroListWnd";
+    WndHandle = GetHandle(WindowName);
+    ItemWindowHandle = ItemWindowHandle(GetHandle((WindowName $ ".MacroItem")));
     MacroEditWnd = MacroEditWnd(GetScript("MacroEditWnd"));
     RegisterEvent(1710);
     RegisterEvent(1230);
@@ -41,15 +40,14 @@ function OnLoad()
 
 function Init()
 {
-    unkStr3 = "L2ui.Macro_Icon";
-    unkStr4 = "l2_skilltime.ToggleEffect001";
-    unkStr5 = "";
-    unkStr1 = UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("/", lowerDigitNumber(13)), ""), lowerDigitNumber(3)), ""), lowerDigitNumber(19)), ""), lowerDigitNumber(11)), ""), lowerDigitNumber(6)), "");
-    unkInt2 = int(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", lowerDigitNumber(27)), ""), lowerDigitNumber(28)), ""));
-    unkInt3 = int(lowerDigitNumber(33));
-    unkInt5 = int(lowerDigitNumber(27));
-    unkInt4 = int(lowerDigitNumber(36));
-    unkInt6 = int(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", lowerDigitNumber(27)), ""), lowerDigitNumber(36)), ""), lowerDigitNumber(36)), ""), lowerDigitNumber(36)), ""));
+    SelectedMacroTexture = "l2_skilltime.ToggleEffect001";
+    EmptyString = "";
+    DelayCommand = "/delay";
+    MacroCommandCount = 12;
+    DelayCommandValueOffset = 7;
+    NextCommandOffset = 1;
+    MacroTimerBaseID = 0;
+    MacroTimerDelayMs = 1000;
     return;
 }
 
@@ -101,41 +99,41 @@ function OnClickButton(string strID)
 function OnEvent(int Event_ID, string param)
 {
     // End:0x1C
-    if(UnknownFunction154(Event_ID, 1230))
+    if((Event_ID == 1230))
     {
-        HandleMacroShowListWnd();        
+        HandleMacroShowListWnd();
     }
     else
     {
         // End:0x38
-        if(UnknownFunction154(Event_ID, 1240))
+        if((Event_ID == 1240))
         {
-            reqMacroList();            
+            RefreshMacroList();
         }
         else
         {
             // End:0x59
-            if(UnknownFunction154(Event_ID, 1250))
+            if((Event_ID == 1250))
             {
-                HandleMacroList(param);                
+                HandleMacroList(param);
             }
             else
             {
                 // End:0xC5
-                if(UnknownFunction154(Event_ID, 1710))
+                if((Event_ID == 1710))
                 {
                     // End:0xC5
                     if(DialogIsMine())
                     {
                         // End:0xC5
-                        if(UnknownFunction151(m_DeleteID, unkInt4))
+                        if((m_DeleteID > MacroTimerBaseID))
                         {
                             Class'NWindow.MacroAPI'.static.RequestDeleteMacro(m_DeleteID);
-                            m_DeleteID = unkInt4;
+                            m_DeleteID = MacroTimerBaseID;
                             // End:0xC5
-                            if(UnknownFunction154(m_Max, unkInt5))
+                            if((m_Max == NextCommandOffset))
                             {
-                                HandleMacroList(unkStr5);
+                                HandleMacroList(EmptyString);
                             }
                         }
                     }
@@ -151,7 +149,7 @@ function OnClickItem(string strID, int Index)
     local ItemInfo ItemInfo;
 
     // End:0x64
-    if(UnknownFunction130(UnknownFunction122(strID, "MacroItem"), UnknownFunction151(Index, -1)))
+    if(((strID == "MacroItem") && (Index > -1)))
     {
         // End:0x64
         if(ItemWindowHandle.GetItem(Index, ItemInfo))
@@ -162,55 +160,55 @@ function OnClickItem(string strID, int Index)
     return;
 }
 
-function OnRClickItem(string strID, int unkLocInt2)
+function OnRClickItem(string strID, int Index)
 {
     local ItemInfo ItemInfo;
     local MacroInfo MacroInfo;
     local int idx;
 
     // End:0x182
-    if(UnknownFunction130(UnknownFunction122(strID, "MacroItem"), UnknownFunction151(unkLocInt2, -1)))
+    if(((strID == "MacroItem") && (Index > -1)))
     {
-        unkFunc();
+        ResetMacroPlayback();
         // End:0x182
-        if(ItemWindowHandle.GetItem(unkLocInt2, ItemInfo))
+        if(ItemWindowHandle.GetItem(Index, ItemInfo))
         {
             // End:0x7C
-            if(UnknownFunction154(ItemInfo.ClassID, unkInt1))
+            if((ItemInfo.ClassID == SelectedMacroID))
             {
-                unkInt1 = unkInt4;
-                reqMacroList();
+                SelectedMacroID = MacroTimerBaseID;
+                RefreshMacroList();
                 return;
             }
-            unkInt1 = ItemInfo.ClassID;
+            SelectedMacroID = ItemInfo.ClassID;
             // End:0x182
             if(Class'NWindow.UIDATA_MACRO'.static.GetMacroInfo(ItemInfo.ClassID, MacroInfo))
             {
-                idx = unkInt4;
+                idx = MacroTimerBaseID;
                 J0xB8:
 
                 // End:0x182 [Loop If]
-                if(UnknownFunction150(idx, unkInt2))
+                if((idx < MacroCommandCount))
                 {
                     // End:0x158
-                    if(UnknownFunction124(UnknownFunction128(MacroInfo.CommandList[idx], UnknownFunction147(unkInt3, unkInt5)), unkStr1))
+                    if((Left(MacroInfo.CommandList[idx], (DelayCommandValueOffset - NextCommandOffset)) ~= DelayCommand))
                     {
-                        arrInt1[idx] = idx;
-                        arrInt2[idx] = int(UnknownFunction234(MacroInfo.CommandList[idx], UnknownFunction147(UnknownFunction125(MacroInfo.CommandList[idx]), unkInt3)));                        
+                        MacroDelayFlags[idx] = idx;
+                        MacroDelaySeconds[idx] = int(Right(MacroInfo.CommandList[idx], (Len(MacroInfo.CommandList[idx]) - DelayCommandValueOffset)));
                     }
                     else
                     {
-                        arrStr[idx] = MacroInfo.CommandList[idx];
+                        MacroCommands[idx] = MacroInfo.CommandList[idx];
                     }
-                    UnknownFunction165(idx);
+                    idx++;
                     // [Loop Continue]
                     goto J0xB8;
                 }
             }
         }
     }
-    WndHandle.SetTimer(unkInt4, UnknownFunction145(unkInt6, 4));
-    reqMacroList();
+    WndHandle.SetTimer(MacroTimerBaseID, (MacroTimerDelayMs / 4));
+    RefreshMacroList();
     return;
 }
 
@@ -231,7 +229,7 @@ function OnClickAdd()
     return;
 }
 
-function reqMacroList()
+function RefreshMacroList()
 {
     Class'NWindow.MacroAPI'.static.RequestMacroList();
     return;
@@ -243,7 +241,7 @@ function HandleMacroShowListWnd()
     if(m_bShow)
     {
         PlayConsoleSound(IFST_WINDOW_CLOSE);
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MacroListWnd");        
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MacroListWnd");
     }
     else
     {
@@ -260,92 +258,92 @@ function Clear()
     return;
 }
 
-function unkFunc()
+function ResetMacroPlayback()
 {
     local int idx;
 
-    idx = unkInt4;
+    idx = MacroTimerBaseID;
     J0x0B:
 
     // End:0x40 [Loop If]
-    if(UnknownFunction150(idx, unkInt2))
+    if((idx < MacroCommandCount))
     {
         WndHandle.KillTimer(idx);
-        UnknownFunction165(idx);
+        idx++;
         // [Loop Continue]
         goto J0x0B;
     }
-    arrInt1.Length = unkInt4;
-    arrInt2.Length = unkInt4;
-    arrStr.Length = unkInt4;
-    reqMacroList();
+    MacroDelayFlags.Length = MacroTimerBaseID;
+    MacroDelaySeconds.Length = MacroTimerBaseID;
+    MacroCommands.Length = MacroTimerBaseID;
+    RefreshMacroList();
     return;
 }
 
 function HandleMacroList(string param)
 {
-    local int idx, unkLocInt1, MacroID;
-    local string strIconName, strMacroName, strDescription, unkLocStr1, strTmp;
+    local int idx, MacroCount, MacroID;
+    local string strIconName, strMacroName, strDescription, TextureName, strTmp;
 
     local ItemInfo ItemInfo;
-    local int unkLocInt2;
+    local int Index;
 
     Clear();
-    ParseInt(param, "Max", unkLocInt1);
-    m_Max = unkLocInt1;
-    idx = unkInt4;
+    ParseInt(param, "Max", MacroCount);
+    m_Max = MacroCount;
+    idx = MacroTimerBaseID;
     J0x31:
 
     // End:0x27B [Loop If]
-    if(UnknownFunction150(idx, unkLocInt1))
+    if((idx < MacroCount))
     {
-        MacroID = unkInt4;
-        strIconName = unkStr5;
-        strMacroName = unkStr5;
-        strDescription = unkStr5;
-        unkLocStr1 = unkStr5;
-        ParseInt(param, UnknownFunction112("ID_", string(idx)), MacroID);
-        ParseString(param, UnknownFunction112("IconName_", string(idx)), strIconName);
-        ParseString(param, UnknownFunction112("MacroName_", string(idx)), strMacroName);
-        ParseString(param, UnknownFunction112("Description_", string(idx)), strDescription);
-        ParseString(param, UnknownFunction112("TextureName_", string(idx)), unkLocStr1);
+        MacroID = MacroTimerBaseID;
+        strIconName = EmptyString;
+        strMacroName = EmptyString;
+        strDescription = EmptyString;
+        TextureName = EmptyString;
+        ParseInt(param, ("ID_" $ string(idx)), MacroID);
+        ParseString(param, ("IconName_" $ string(idx)), strIconName);
+        ParseString(param, ("MacroName_" $ string(idx)), strMacroName);
+        ParseString(param, ("Description_" $ string(idx)), strDescription);
+        ParseString(param, ("TextureName_" $ string(idx)), TextureName);
         ItemInfo.ClassID = MacroID;
         ItemInfo.Name = strMacroName;
         ItemInfo.AdditionalName = strIconName;
-        ItemInfo.IconName = unkLocStr1;
+        ItemInfo.IconName = TextureName;
         ItemInfo.Description = strDescription;
         ItemInfo.ItemSubType = 4;
         // End:0x1CC
-        if(UnknownFunction154(ItemInfo.ClassID, unkInt1))
+        if((ItemInfo.ClassID == SelectedMacroID))
         {
-            ItemInfo.ForeTexture = unkStr4;            
+            ItemInfo.ForeTexture = SelectedMacroTexture;
         }
         else
         {
-            ItemInfo.ForeTexture = unkStr5;
+            ItemInfo.ForeTexture = EmptyString;
         }
         // End:0x241
-        if(UnknownFunction122(unkLocStr1, unkStr5))
+        if((TextureName == EmptyString))
         {
-            unkLocInt2 = GetMacroNum(ItemInfo.Name);
+            Index = GetMacroNum(ItemInfo.Name);
             // End:0x241
-            if(UnknownFunction151(unkLocInt2, unkInt3))
+            if((Index > DelayCommandValueOffset))
             {
-                ItemInfo.IconName = UnknownFunction112("L2UI.Macro_Icon", string(unkLocInt2));
+                ItemInfo.IconName = ("L2UI.Macro_Icon" $ string(Index));
             }
         }
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MacroListWnd.MacroItem", ItemInfo);
-        UnknownFunction165(idx);
+        idx++;
         // [Loop Continue]
         goto J0x31;
     }
     // End:0x29F
-    if(UnknownFunction150(unkLocInt1, 10))
+    if((MacroCount < 10))
     {
-        strTmp = UnknownFunction112(strTmp, "0");
+        strTmp = (strTmp $ "0");
     }
-    strTmp = UnknownFunction112(strTmp, string(unkLocInt1));
-    strTmp = UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("(", strTmp), "/"), string(24)), ")");
+    strTmp = (strTmp $ string(MacroCount));
+    strTmp = (((("(" $ strTmp) $ "/") $ string(24)) $ ")");
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("MacroListWnd.txtCount", strTmp);
     return;
 }
@@ -371,26 +369,26 @@ function OnDropItem(string strID, ItemInfo ItemInfo, int X, int Y)
     return;
 }
 
-function OnTimer(int unkLocInt2)
+function OnTimer(int Index)
 {
-    WndHandle.KillTimer(unkLocInt2);
+    WndHandle.KillTimer(Index);
     // End:0xCC
-    if(UnknownFunction154(arrInt1[unkLocInt2], unkInt4))
+    if((MacroDelayFlags[Index] == MacroTimerBaseID))
     {
-        ExecuteCommand(arrStr[unkLocInt2]);
+        ExecuteCommand(MacroCommands[Index]);
         // End:0xB0
-        if(UnknownFunction132(UnknownFunction123(arrStr[UnknownFunction146(unkLocInt2, unkInt5)], unkStr5), UnknownFunction155(arrInt1[UnknownFunction146(unkLocInt2, unkInt5)], unkInt4)))
+        if(((MacroCommands[(Index + NextCommandOffset)] != EmptyString) || (MacroDelayFlags[(Index + NextCommandOffset)] != MacroTimerBaseID)))
         {
-            WndHandle.SetTimer(UnknownFunction146(unkLocInt2, unkInt5), unkInt6);            
+            WndHandle.SetTimer((Index + NextCommandOffset), MacroTimerDelayMs);
         }
         else
         {
-            WndHandle.SetTimer(unkInt4, unkInt6);
-        }        
+            WndHandle.SetTimer(MacroTimerBaseID, MacroTimerDelayMs);
+        }
     }
     else
     {
-        WndHandle.SetTimer(UnknownFunction146(unkLocInt2, unkInt5), UnknownFunction144(arrInt2[unkLocInt2], unkInt6));
+        WndHandle.SetTimer((Index + NextCommandOffset), (MacroDelaySeconds[Index] * MacroTimerDelayMs));
     }
     return;
 }
@@ -400,17 +398,17 @@ function DeleteMacro(ItemInfo ItemInfo)
     local string strMsg;
 
     // End:0x17
-    if(UnknownFunction155(ItemInfo.ItemSubType, 4))
+    if((ItemInfo.ItemSubType != 4))
     {
         return;
     }
-    strMsg = MakeFullSystemMsg(GetSystemMessage(828), ItemInfo.Name, unkStr5);
+    strMsg = MakeFullSystemMsg(GetSystemMessage(828), ItemInfo.Name, EmptyString);
     m_DeleteID = ItemInfo.ClassID;
     DialogShow(DIALOG_Warning, strMsg);
     // End:0x78
-    if(UnknownFunction154(ItemInfo.ClassID, unkInt1))
+    if((ItemInfo.ClassID == SelectedMacroID))
     {
-        unkFunc();
+        ResetMacroPlayback();
     }
     return;
 }
@@ -421,12 +419,12 @@ function EditMacro(ItemInfo ItemInfo)
     local string param;
 
     // End:0x43
-    if(UnknownFunction129(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("MacroEditWnd")))
+    if((!Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("MacroEditWnd")))
     {
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("MacroEditWnd");
     }
     // End:0x5A
-    if(UnknownFunction155(ItemInfo.ItemSubType, 4))
+    if((ItemInfo.ItemSubType != 4))
     {
         return;
     }

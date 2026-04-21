@@ -492,8 +492,8 @@ function HandlePartyPriorityBuffsWindows()
 
 function AddAbnormalPriorityBuffs(int i_Param)
 {
-    AbnormalPriorityArray.Length = UnknownFunction146(AbnormalPriorityArray.Length, 1);
-    AbnormalPriorityArray[UnknownFunction147(AbnormalPriorityArray.Length, 1)] = i_Param;
+    AbnormalPriorityArray.Length = (AbnormalPriorityArray.Length + 1);
+    AbnormalPriorityArray[(AbnormalPriorityArray.Length - 1)] = i_Param;
     return;
 }
 
@@ -671,8 +671,8 @@ function HandleAbnormalPriorityBuffsList()
 
 function AddPartyPriorityBuffs(int i_Param)
 {
-    PartyPriorityArray.Length = UnknownFunction146(PartyPriorityArray.Length, 1);
-    PartyPriorityArray[UnknownFunction147(PartyPriorityArray.Length, 1)] = i_Param;
+    PartyPriorityArray.Length = (PartyPriorityArray.Length + 1);
+    PartyPriorityArray[(PartyPriorityArray.Length - 1)] = i_Param;
     return;
 }
 

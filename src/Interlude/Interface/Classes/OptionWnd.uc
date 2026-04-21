@@ -1878,7 +1878,7 @@ function HandleHideAutoPotion()
 function HandleHideSkillSpamBox()
 {
     // End:0x14B
-    if(UnknownFunction242(GetOptionBool("Custom", "HideSpamSkillsBox"), true))
+    if((GetOptionBool("Custom", "HideSpamSkillsBox") == true))
     {
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_1", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_2", "Was.Null");
@@ -1900,7 +1900,7 @@ function HandleHideSkillSpamBox()
 function HandleHideDualCount()
 {
     // End:0x65
-    if(UnknownFunction242(GetOptionBool("Custom", "ShowPvP/Pk"), true))
+    if((GetOptionBool("Custom", "ShowPvP/Pk") == true))
     {
         Class'NWindow.UIAPI_TEXTBOX'.static.ShowWindow("MenuWnd.PVP1");
         Class'NWindow.UIAPI_TEXTBOX'.static.ShowWindow("MenuWnd.Username");        
@@ -1916,7 +1916,7 @@ function HandleHideDualCount()
 function HandleHideShowTime()
 {
     // End:0x62
-    if(UnknownFunction242(GetOptionBool("Custom", "ShowTime"), true))
+    if((GetOptionBool("Custom", "ShowTime") == true))
     {
         Class'NWindow.UIAPI_TEXTBOX'.static.ShowWindow("MenuWnd.Time");
         Class'NWindow.UIAPI_TEXTBOX'.static.ShowWindow("MenuWnd.Current");        
@@ -1932,7 +1932,7 @@ function HandleHideShowTime()
 function HandleHideAutoPotionBox()
 {
     // End:0x12A
-    if(UnknownFunction242(GetOptionBool("Custom", "HideAutoPotionBox"), true))
+    if((GetOptionBool("Custom", "HideAutoPotionBox") == true))
     {
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxMP1", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxHP1", "Was.Null");
@@ -1954,7 +1954,7 @@ function HandleHideAutoPotionBox()
 function HandleHideAutoBuffBox()
 {
     // End:0x1B4
-    if(UnknownFunction242(GetOptionBool("Custom", "HideAutoBuffBox"), true))
+    if((GetOptionBool("Custom", "HideAutoBuffBox") == true))
     {
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_1", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_2", "Was.Null");
@@ -2050,7 +2050,7 @@ function HandleChatTransparency()
 function SetShortcutTransparency()
 {
     // End:0x277
-    if(UnknownFunction242(GetOptionBool("Custom", "ShortcutTransparency"), true))
+    if((GetOptionBool("Custom", "ShortcutTransparency") == true))
     {
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal.Tex", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_1.Tex", "Was.Null");
@@ -2080,7 +2080,7 @@ function SetShortcutTransparency()
 function SetShortcutTransparencyBox()
 {
     // End:0x1C71
-    if(UnknownFunction242(GetOptionBool("Custom", "ShortcutTransparencyBox"), true))
+    if((GetOptionBool("Custom", "ShortcutTransparencyBox") == true))
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ShotcutTransparencyBox", true);
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal.BackDropTex_1", "Was.Null");
@@ -2286,7 +2286,7 @@ function SetShortcutTransparencyBox()
 function SetShortcutTransparencyNum()
 {
     // End:0x1971
-    if(UnknownFunction242(GetOptionBool("Custom", "ShortcutTransparencyNum"), true))
+    if((GetOptionBool("Custom", "ShortcutTransparencyNum") == true))
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ShotcutTransparencyNum", true);
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal.F1Tex", "Was.Null");

@@ -62,9 +62,9 @@ function OnClickOk()
 
     tempStr = Class'NWindow.UIAPI_MULTIEDITBOX'.static.GetString("MacroInfoWnd.txtInfo");
     // End:0x93
-    if(UnknownFunction151(UnknownFunction125(tempStr), 32))
+    if((Len(tempStr) > 32))
     {
-        Class'NWindow.UIAPI_MULTIEDITBOX'.static.SetString("MacroInfoWnd.txtInfo", UnknownFunction128(tempStr, 32));
+        Class'NWindow.UIAPI_MULTIEDITBOX'.static.SetString("MacroInfoWnd.txtInfo", Left(tempStr, 32));
         tempStr = GetSystemMessage(837);
         DialogShow(DIALOG_Notice, tempStr);
         return;

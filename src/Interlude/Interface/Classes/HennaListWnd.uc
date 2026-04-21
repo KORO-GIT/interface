@@ -44,7 +44,7 @@ function OnClickButton(string strID)
             break;
     }
     // End:0x82
-    if(UnknownFunction122(strID, "BtnClose"))
+    if((strID == "BtnClose"))
     {
         HideWindow("HennaListWnd");
     }

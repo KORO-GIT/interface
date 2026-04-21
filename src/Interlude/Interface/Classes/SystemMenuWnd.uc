@@ -47,7 +47,7 @@ function OnClickButton(string strID)
         // End:0xCC
         case "BtnRestart":
             // End:0xAC
-            if(UnknownFunction243(GetOptionBool("Unload", "ReportWnd"), true))
+            if((GetOptionBool("Unload", "ReportWnd") != true))
             {
                 ExecuteEvent(2930);                
             }
@@ -62,7 +62,7 @@ function OnClickButton(string strID)
         // End:0x129
         case "BtnQuit":
             // End:0x109
-            if(UnknownFunction243(GetOptionBool("Unload", "ReportWnd"), true))
+            if((GetOptionBool("Unload", "ReportWnd") != true))
             {
                 ExecuteEvent(2940);                
             }
@@ -159,7 +159,7 @@ function OnClickButton(string strID)
             break;
     }
     // End:0x32D
-    if(UnknownFunction130(UnknownFunction130(UnknownFunction123(strID, "BtnPrivateStore"), UnknownFunction123(strID, "BtnAddFunction")), UnknownFunction123(strID, "BtnService")))
+    if((((strID != "BtnPrivateStore") && (strID != "BtnAddFunction")) && (strID != "BtnService")))
     {
         HideWithBranch();
     }
@@ -289,13 +289,13 @@ function HideWithBranch()
 function OnEvent(int Event_ID, string string_1)
 {
     // End:0x59
-    if(UnknownFunction154(Event_ID, 1710))
+    if((Event_ID == 1710))
     {
         // End:0x59
         if(DialogIsMine())
         {
             // End:0x53
-            if(UnknownFunction154(DialogGetID(), 0))
+            if((DialogGetID() == 0))
             {
                 Class'NWindow.UIAPI_WINDOW'.static.HideWindow("SystemMenuWnd");
                 ExecRestart();                
@@ -307,7 +307,7 @@ function OnEvent(int Event_ID, string string_1)
         }
     }
     // End:0x72
-    if(UnknownFunction154(Event_ID, 3030))
+    if((Event_ID == 3030))
     {
         function1();
     }

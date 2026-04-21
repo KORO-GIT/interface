@@ -104,9 +104,9 @@ function function5(string strID, out ItemInfo Info)
         Info.bRecipe = bool(tmpInt);
     }
     // End:0x6FB
-    if(UnknownFunction130(UnknownFunction151(Info.Enchanted, 0), UnknownFunction152(Info.Enchanted, 25)))
+    if(((Info.Enchanted > 0) && (Info.Enchanted <= 25)))
     {
-        Info.ForeTexture = UnknownFunction112("Interface.Inventory_ENCHANTNUMBER_SMALL_", string(Info.Enchanted));
+        Info.ForeTexture = ("Interface.Inventory_ENCHANTNUMBER_SMALL_" $ string(Info.Enchanted));
     }
     return;
 }
@@ -118,7 +118,7 @@ function function11(string string_1, int int_1, int int_2)
     local int int_3;
 
     // End:0x16
-    if(UnknownFunction154(int_2, 0))
+    if((int_2 == 0))
     {
         int_3 = 1;
     }
@@ -446,9 +446,9 @@ function ParamToItemInfo(string param, out ItemInfo Info)
         Info.bRecipe = bool(tmpInt);
     }
     // End:0x6F5
-    if(UnknownFunction130(UnknownFunction151(Info.Enchanted, 0), UnknownFunction152(Info.Enchanted, 25)))
+    if(((Info.Enchanted > 0) && (Info.Enchanted <= 25)))
     {
-        Info.ForeTexture = UnknownFunction112("Was.Inventory_ENCHANTNUMBER_SMALL_", string(Info.Enchanted));
+        Info.ForeTexture = ("Was.Inventory_ENCHANTNUMBER_SMALL_" $ string(Info.Enchanted));
     }
     return;
 }
@@ -13960,7 +13960,7 @@ function bool UnknownID1234(int idx)
         // End:0x1E3D
         case 1323:
             // End:0x1E3A
-            if(UnknownFunction242(GetOptionBool("Custom", "ShowNoble"), true))
+            if((GetOptionBool("Custom", "ShowNoble") == true))
             {
                 resultInt = true;
             }
@@ -14365,231 +14365,6 @@ function int GetMacroNum(string param)
     return idx;
 }
 
-function string UnknownFunction112(string param, string Param2)
-{
-    return param $ Param2;
-}
-
-function bool UnknownFunction115(string param, string Param2)
-{
-    return param < Param2;
-}
-
-function bool UnknownFunction116(string param, string Param2)
-{
-    return param > Param2;
-}
-
-function bool UnknownFunction120(string param, string Param2)
-{
-    return param <= Param2;
-}
-
-function bool UnknownFunction121(string param, string Param2)
-{
-    return param >= Param2;
-}
-
-function bool UnknownFunction122(string param, string Param2)
-{
-    return param == Param2;
-}
-
-function bool UnknownFunction123(string param, string Param2)
-{
-    return param != Param2;
-}
-
-function bool UnknownFunction124(string param, string Param2)
-{
-    return param ~= Param2;
-}
-
-function int UnknownFunction125(string param)
-{
-    return Len(param);
-}
-
-function string UnknownFunction128(string param, int i)
-{
-    return Left(param, i);
-}
-
-function string UnknownFunction234(string param, int i)
-{
-    return Right(param, i);
-}
-
-function bool UnknownFunction130(bool param, bool Param2)
-{
-    return param && Param2;
-}
-
-function bool UnknownFunction132(bool param, bool Param2)
-{
-    return param || Param2;
-}
-
-function bool UnknownFunction150(int param, int Param2)
-{
-    return param < Param2;
-}
-
-function bool UnknownFunction151(int param, int Param2)
-{
-    return param > Param2;
-}
-
-function UnknownFunction165(out int param)
-{
-    param++;
-    return;
-}
-
-function int UnknownFunction146(int param, int Param2)
-{
-    return param + Param2;
-}
-
-function bool UnknownFunction129(bool param)
-{
-    return !param;
-}
-
-function bool UnknownFunction154(int param, int Param2)
-{
-    return param == Param2;
-}
-
-function int UnknownFunction173(int param, int Param2)
-{
-    return int(float(param) % float(Param2));
-}
-
-function bool UnknownFunction180(int param, int Param2)
-{
-    return param == Param2;
-}
-
-function bool UnknownFunction242(bool param, bool Param2)
-{
-    return param == Param2;
-}
-
-function int UnknownFunction166(out int param)
-{
-    return param--;
-}
-
-function UnknownFunction163(out int param)
-{
-    ++param;
-    return;
-}
-
-function UnknownFunction164(out int param)
-{
-    ++param;
-    return;
-}
-
-function bool UnknownFunction155(int param, int Param2)
-{
-    return param != Param2;
-}
-
-function int UnknownFunction147(int param, int Param2)
-{
-    return param - Param2;
-}
-
-function bool UnknownFunction153(int param, int Param2)
-{
-    return param >= Param2;
-}
-
-function int UnknownFunction144(int param, int Param2)
-{
-    return param * Param2;
-}
-
-function int UnknownFunction145(int param, int Param2)
-{
-    return param / Param2;
-}
-
-function bool UnknownFunction152(int param, int Param2)
-{
-    return param <= Param2;
-}
-
-function float UnknownFunction174(float param, float Param2)
-{
-    return param + Param2;
-}
-
-function float UnknownFunction175(float param, float Param2)
-{
-    return param - Param2;
-}
-
-function float UnknownFunction171(float param, float Param2)
-{
-    return param * Param2;
-}
-
-function float UnknownFunction172(float param, float Param2)
-{
-    return param / Param2;
-}
-
-function bool UnknownFunction176(float param, float Param2)
-{
-    return param < Param2;
-}
-
-function bool UnknownFunction177(float param, float Param2)
-{
-    return param > Param2;
-}
-
-function bool UnknownFunction254(name param, name Param2)
-{
-    return param == Param2;
-}
-
-function bool UnknownFunction119(ChatWindowHandle param, ChatWindowHandle Param2)
-{
-    return param != Param2;
-}
-
-function string UnknownFunction168(string param, string Param2)
-{
-    return param @ Param2;
-}
-
-function bool UnknownFunction114(ItemWindowHandle param, ItemWindowHandle Param2)
-{
-    return param == Param2;
-}
-
-function bool UnknownFunction243(bool param, bool Param2)
-{
-    return param != Param2;
-}
-
-function UnknownFunction231(string param)
-{
-    Log(param);
-    return;
-}
-
-function UnknownFunction184(out float Param1, float Param2)
-{
-    Param1 += Param2;
-    return;
-}
-
 function Leave()
 {
     RequestExit();
@@ -14642,25 +14417,25 @@ function SortItem(ItemWindowHandle Handle)
             // End:0x112
             case 4:
                 info_1[int_5] = int_4;
-                int_5 = UnknownFunction146(int_5, 1);
+                int_5 = (int_5 + 1);
                 // End:0x361
                 break;
             // End:0x13D
             case 0:
                 info_2[int_6] = int_4;
-                int_6 = UnknownFunction146(int_6, 1);
+                int_6 = (int_6 + 1);
                 // End:0x361
                 break;
             // End:0x168
             case 1:
                 info_3[int_7] = int_4;
-                int_7 = UnknownFunction146(int_7, 1);
+                int_7 = (int_7 + 1);
                 // End:0x361
                 break;
             // End:0x193
             case 2:
                 info_4[int_8] = int_4;
-                int_8 = UnknownFunction146(int_8, 1);
+                int_8 = (int_8 + 1);
                 // End:0x361
                 break;
             // End:0x338
@@ -14671,55 +14446,55 @@ function SortItem(ItemWindowHandle Handle)
                     // End:0x1DF
                     case 22:
                         info_6[int_10] = int_4;
-                        int_10 = UnknownFunction146(int_10, 1);
+                        int_10 = (int_10 + 1);
                         // End:0x335
                         break;
                     // End:0x20A
                     case 21:
                         info_7[int_11] = int_4;
-                        int_11 = UnknownFunction146(int_11, 1);
+                        int_11 = (int_11 + 1);
                         // End:0x335
                         break;
                     // End:0x235
                     case 20:
                         info_8[int_12] = int_4;
-                        int_12 = UnknownFunction146(int_12, 1);
+                        int_12 = (int_12 + 1);
                         // End:0x335
                         break;
                     // End:0x260
                     case 19:
                         info_9[int_13] = int_4;
-                        int_13 = UnknownFunction146(int_13, 1);
+                        int_13 = (int_13 + 1);
                         // End:0x335
                         break;
                     // End:0x28B
                     case 3:
                         info_10[int_14] = int_4;
-                        int_14 = UnknownFunction146(int_14, 1);
+                        int_14 = (int_14 + 1);
                         // End:0x335
                         break;
                     // End:0x2B6
                     case 24:
                         info_11[int_15] = int_4;
-                        int_15 = UnknownFunction146(int_15, 1);
+                        int_15 = (int_15 + 1);
                         // End:0x335
                         break;
                     // End:0x2E1
                     case 2:
                         info_12[int_16] = int_4;
-                        int_16 = UnknownFunction146(int_16, 1);
+                        int_16 = (int_16 + 1);
                         // End:0x335
                         break;
                     // End:0x30C
                     case 5:
                         info_14[int_18] = int_4;
-                        int_18 = UnknownFunction146(int_18, 1);
+                        int_18 = (int_18 + 1);
                         // End:0x335
                         break;
                     // End:0xFFFF
                     default:
                         info_5[int_9] = int_4;
-                        int_9 = UnknownFunction146(int_9, 1);
+                        int_9 = (int_9 + 1);
                         // End:0x335
                         break;
                         break;
@@ -14729,7 +14504,7 @@ function SortItem(ItemWindowHandle Handle)
             // End:0xFFFF
             default:
                 info_5[int_9] = int_4;
-                int_9 = UnknownFunction146(int_9, 1);
+                int_9 = (int_9 + 1);
                 // End:0x361
                 break;
                 break;
@@ -14751,14 +14526,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_5 - int_1))
         {
             // End:0x42F
-            if(UnknownFunction150(int_2, UnknownFunction147(int_5, 1)))
+            if((int_2 < (int_5 - 1)))
             {
                 // End:0x42F
-                if(UnknownFunction150(info_1[int_2].Weight, info_1[UnknownFunction146(int_2, 1)].Weight))
+                if((info_1[int_2].Weight < info_1[(int_2 + 1)].Weight))
                 {
                     info_15 = info_1[int_2];
-                    info_1[int_2] = info_1[UnknownFunction146(int_2, 1)];
-                    info_1[UnknownFunction146(int_2, 1)] = info_15;
+                    info_1[int_2] = info_1[(int_2 + 1)];
+                    info_1[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14782,14 +14557,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_6 - int_1))
         {
             // End:0x507
-            if(UnknownFunction150(int_2, UnknownFunction147(int_6, 1)))
+            if((int_2 < (int_6 - 1)))
             {
                 // End:0x507
-                if(UnknownFunction150(info_2[int_2].Weight, info_2[UnknownFunction146(int_2, 1)].Weight))
+                if((info_2[int_2].Weight < info_2[(int_2 + 1)].Weight))
                 {
                     info_15 = info_2[int_2];
-                    info_2[int_2] = info_2[UnknownFunction146(int_2, 1)];
-                    info_2[UnknownFunction146(int_2, 1)] = info_15;
+                    info_2[int_2] = info_2[(int_2 + 1)];
+                    info_2[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14813,14 +14588,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_7 - int_1))
         {
             // End:0x5DF
-            if(UnknownFunction150(int_2, UnknownFunction147(int_7, 1)))
+            if((int_2 < (int_7 - 1)))
             {
                 // End:0x5DF
-                if(UnknownFunction150(info_3[int_2].Weight, info_3[UnknownFunction146(int_2, 1)].Weight))
+                if((info_3[int_2].Weight < info_3[(int_2 + 1)].Weight))
                 {
                     info_15 = info_3[int_2];
-                    info_3[int_2] = info_3[UnknownFunction146(int_2, 1)];
-                    info_3[UnknownFunction146(int_2, 1)] = info_15;
+                    info_3[int_2] = info_3[(int_2 + 1)];
+                    info_3[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14844,14 +14619,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_8 - int_1))
         {
             // End:0x6B7
-            if(UnknownFunction150(int_2, UnknownFunction147(int_8, 1)))
+            if((int_2 < (int_8 - 1)))
             {
                 // End:0x6B7
-                if(UnknownFunction150(info_4[int_2].Weight, info_4[UnknownFunction146(int_2, 1)].Weight))
+                if((info_4[int_2].Weight < info_4[(int_2 + 1)].Weight))
                 {
                     info_15 = info_4[int_2];
-                    info_4[int_2] = info_4[UnknownFunction146(int_2, 1)];
-                    info_4[UnknownFunction146(int_2, 1)] = info_15;
+                    info_4[int_2] = info_4[(int_2 + 1)];
+                    info_4[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14875,14 +14650,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_10 - int_1))
         {
             // End:0x78F
-            if(UnknownFunction150(int_2, UnknownFunction147(int_10, 1)))
+            if((int_2 < (int_10 - 1)))
             {
                 // End:0x78F
-                if(UnknownFunction150(info_6[int_2].Weight, info_6[UnknownFunction146(int_2, 1)].Weight))
+                if((info_6[int_2].Weight < info_6[(int_2 + 1)].Weight))
                 {
                     info_15 = info_6[int_2];
-                    info_6[int_2] = info_6[UnknownFunction146(int_2, 1)];
-                    info_6[UnknownFunction146(int_2, 1)] = info_15;
+                    info_6[int_2] = info_6[(int_2 + 1)];
+                    info_6[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14906,14 +14681,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_11 - int_1))
         {
             // End:0x867
-            if(UnknownFunction150(int_2, UnknownFunction147(int_11, 1)))
+            if((int_2 < (int_11 - 1)))
             {
                 // End:0x867
-                if(UnknownFunction150(info_7[int_2].Weight, info_7[UnknownFunction146(int_2, 1)].Weight))
+                if((info_7[int_2].Weight < info_7[(int_2 + 1)].Weight))
                 {
                     info_15 = info_7[int_2];
-                    info_7[int_2] = info_7[UnknownFunction146(int_2, 1)];
-                    info_7[UnknownFunction146(int_2, 1)] = info_15;
+                    info_7[int_2] = info_7[(int_2 + 1)];
+                    info_7[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14937,14 +14712,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_12 - int_1))
         {
             // End:0x93F
-            if(UnknownFunction150(int_2, UnknownFunction147(int_12, 1)))
+            if((int_2 < (int_12 - 1)))
             {
                 // End:0x93F
-                if(UnknownFunction150(info_8[int_2].Weight, info_8[UnknownFunction146(int_2, 1)].Weight))
+                if((info_8[int_2].Weight < info_8[(int_2 + 1)].Weight))
                 {
                     info_15 = info_8[int_2];
-                    info_8[int_2] = info_8[UnknownFunction146(int_2, 1)];
-                    info_8[UnknownFunction146(int_2, 1)] = info_15;
+                    info_8[int_2] = info_8[(int_2 + 1)];
+                    info_8[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14968,14 +14743,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_13 - int_1))
         {
             // End:0xA17
-            if(UnknownFunction150(int_2, UnknownFunction147(int_13, 1)))
+            if((int_2 < (int_13 - 1)))
             {
                 // End:0xA17
-                if(UnknownFunction150(info_9[int_2].Weight, info_9[UnknownFunction146(int_2, 1)].Weight))
+                if((info_9[int_2].Weight < info_9[(int_2 + 1)].Weight))
                 {
                     info_15 = info_9[int_2];
-                    info_9[int_2] = info_9[UnknownFunction146(int_2, 1)];
-                    info_9[UnknownFunction146(int_2, 1)] = info_15;
+                    info_9[int_2] = info_9[(int_2 + 1)];
+                    info_9[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -14999,14 +14774,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_14 - int_1))
         {
             // End:0xAEF
-            if(UnknownFunction150(int_2, UnknownFunction147(int_14, 1)))
+            if((int_2 < (int_14 - 1)))
             {
                 // End:0xAEF
-                if(UnknownFunction150(info_10[int_2].Weight, info_10[UnknownFunction146(int_2, 1)].Weight))
+                if((info_10[int_2].Weight < info_10[(int_2 + 1)].Weight))
                 {
                     info_15 = info_10[int_2];
-                    info_10[int_2] = info_10[UnknownFunction146(int_2, 1)];
-                    info_10[UnknownFunction146(int_2, 1)] = info_15;
+                    info_10[int_2] = info_10[(int_2 + 1)];
+                    info_10[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -15030,14 +14805,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_15 - int_1))
         {
             // End:0xBC7
-            if(UnknownFunction150(int_2, UnknownFunction147(int_15, 1)))
+            if((int_2 < (int_15 - 1)))
             {
                 // End:0xBC7
-                if(UnknownFunction150(info_11[int_2].Weight, info_11[UnknownFunction146(int_2, 1)].Weight))
+                if((info_11[int_2].Weight < info_11[(int_2 + 1)].Weight))
                 {
                     info_15 = info_11[int_2];
-                    info_11[int_2] = info_11[UnknownFunction146(int_2, 1)];
-                    info_11[UnknownFunction146(int_2, 1)] = info_15;
+                    info_11[int_2] = info_11[(int_2 + 1)];
+                    info_11[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -15061,14 +14836,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_16 - int_1))
         {
             // End:0xC9F
-            if(UnknownFunction150(int_2, UnknownFunction147(int_16, 1)))
+            if((int_2 < (int_16 - 1)))
             {
                 // End:0xC9F
-                if(UnknownFunction150(info_12[int_2].Weight, info_12[UnknownFunction146(int_2, 1)].Weight))
+                if((info_12[int_2].Weight < info_12[(int_2 + 1)].Weight))
                 {
                     info_15 = info_12[int_2];
-                    info_12[int_2] = info_12[UnknownFunction146(int_2, 1)];
-                    info_12[UnknownFunction146(int_2, 1)] = info_15;
+                    info_12[int_2] = info_12[(int_2 + 1)];
+                    info_12[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -15092,14 +14867,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_17 - int_1))
         {
             // End:0xD77
-            if(UnknownFunction150(int_2, UnknownFunction147(int_17, 1)))
+            if((int_2 < (int_17 - 1)))
             {
                 // End:0xD77
-                if(UnknownFunction150(info_13[int_2].Weight, info_13[UnknownFunction146(int_2, 1)].Weight))
+                if((info_13[int_2].Weight < info_13[(int_2 + 1)].Weight))
                 {
                     info_15 = info_13[int_2];
-                    info_13[int_2] = info_13[UnknownFunction146(int_2, 1)];
-                    info_13[UnknownFunction146(int_2, 1)] = info_15;
+                    info_13[int_2] = info_13[(int_2 + 1)];
+                    info_13[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -15123,14 +14898,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_18 - int_1))
         {
             // End:0xE4F
-            if(UnknownFunction150(int_2, UnknownFunction147(int_18, 1)))
+            if((int_2 < (int_18 - 1)))
             {
                 // End:0xE4F
-                if(UnknownFunction150(info_14[int_2].Weight, info_14[UnknownFunction146(int_2, 1)].Weight))
+                if((info_14[int_2].Weight < info_14[(int_2 + 1)].Weight))
                 {
                     info_15 = info_13[int_2];
-                    info_14[int_2] = info_14[UnknownFunction146(int_2, 1)];
-                    info_14[UnknownFunction146(int_2, 1)] = info_15;
+                    info_14[int_2] = info_14[(int_2 + 1)];
+                    info_14[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -15154,14 +14929,14 @@ function SortItem(ItemWindowHandle Handle)
         if(int_2 < (int_9 - int_1))
         {
             // End:0xF27
-            if(UnknownFunction150(int_2, UnknownFunction147(int_9, 1)))
+            if((int_2 < (int_9 - 1)))
             {
                 // End:0xF27
-                if(UnknownFunction150(info_5[int_2].Weight, info_5[UnknownFunction146(int_2, 1)].Weight))
+                if((info_5[int_2].Weight < info_5[(int_2 + 1)].Weight))
                 {
                     info_15 = info_5[int_2];
-                    info_5[int_2] = info_5[UnknownFunction146(int_2, 1)];
-                    info_5[UnknownFunction146(int_2, 1)] = info_15;
+                    info_5[int_2] = info_5[(int_2 + 1)];
+                    info_5[(int_2 + 1)] = info_15;
                 }
             }
             int_2++;
@@ -15178,155 +14953,155 @@ function SortItem(ItemWindowHandle Handle)
     // End:0xF85 [Loop If]
     if(int_1 < int_5)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_1[int_1]);
+        Handle.SetItem((int_19 + int_1), info_1[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0xF42;
     }
-    int_19 = UnknownFunction146(int_19, int_5);
+    int_19 = (int_19 + int_5);
     int_1 = 0;
     J0xFA2:
 
     // End:0xFE5 [Loop If]
     if(int_1 < int_6)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_2[int_1]);
+        Handle.SetItem((int_19 + int_1), info_2[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0xFA2;
     }
-    int_19 = UnknownFunction146(int_19, int_6);
+    int_19 = (int_19 + int_6);
     int_1 = 0;
     J0x1002:
 
     // End:0x1045 [Loop If]
     if(int_1 < int_7)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_3[int_1]);
+        Handle.SetItem((int_19 + int_1), info_3[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1002;
     }
-    int_19 = UnknownFunction146(int_19, int_7);
+    int_19 = (int_19 + int_7);
     int_1 = 0;
     J0x1062:
 
     // End:0x10A5 [Loop If]
     if(int_1 < int_8)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_4[int_1]);
+        Handle.SetItem((int_19 + int_1), info_4[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1062;
     }
-    int_19 = UnknownFunction146(int_19, int_8);
+    int_19 = (int_19 + int_8);
     int_1 = 0;
     J0x10C2:
 
     // End:0x1105 [Loop If]
     if(int_1 < int_10)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_6[int_1]);
+        Handle.SetItem((int_19 + int_1), info_6[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x10C2;
     }
-    int_19 = UnknownFunction146(int_19, int_10);
+    int_19 = (int_19 + int_10);
     int_1 = 0;
     J0x1122:
 
     // End:0x1165 [Loop If]
     if(int_1 < int_11)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_7[int_1]);
+        Handle.SetItem((int_19 + int_1), info_7[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1122;
     }
-    int_19 = UnknownFunction146(int_19, int_11);
+    int_19 = (int_19 + int_11);
     int_1 = 0;
     J0x1182:
 
     // End:0x11C5 [Loop If]
     if(int_1 < int_12)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_8[int_1]);
+        Handle.SetItem((int_19 + int_1), info_8[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1182;
     }
-    int_19 = UnknownFunction146(int_19, int_12);
+    int_19 = (int_19 + int_12);
     int_1 = 0;
     J0x11E2:
 
     // End:0x1225 [Loop If]
     if(int_1 < int_13)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_9[int_1]);
+        Handle.SetItem((int_19 + int_1), info_9[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x11E2;
     }
-    int_19 = UnknownFunction146(int_19, int_13);
+    int_19 = (int_19 + int_13);
     int_1 = 0;
     J0x1242:
 
     // End:0x1285 [Loop If]
     if(int_1 < int_14)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_10[int_1]);
+        Handle.SetItem((int_19 + int_1), info_10[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1242;
     }
-    int_19 = UnknownFunction146(int_19, int_14);
+    int_19 = (int_19 + int_14);
     int_1 = 0;
     J0x12A2:
 
     // End:0x12E5 [Loop If]
     if(int_1 < int_15)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_11[int_1]);
+        Handle.SetItem((int_19 + int_1), info_11[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x12A2;
     }
-    int_19 = UnknownFunction146(int_19, int_15);
+    int_19 = (int_19 + int_15);
     int_1 = 0;
     J0x1302:
 
     // End:0x1345 [Loop If]
     if(int_1 < int_16)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_12[int_1]);
+        Handle.SetItem((int_19 + int_1), info_12[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1302;
     }
-    int_19 = UnknownFunction146(int_19, int_16);
+    int_19 = (int_19 + int_16);
     int_1 = 0;
     J0x1362:
 
     // End:0x13A5 [Loop If]
     if(int_1 < int_18)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_14[int_1]);
+        Handle.SetItem((int_19 + int_1), info_14[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x1362;
     }
-    int_19 = UnknownFunction146(int_19, int_18);
+    int_19 = (int_19 + int_18);
     int_1 = 0;
     J0x13C2:
 
     // End:0x1405 [Loop If]
     if(int_1 < int_9)
     {
-        Handle.SetItem(UnknownFunction146(int_19, int_1), info_5[int_1]);
+        Handle.SetItem((int_19 + int_1), info_5[int_1]);
         int_1++;
         // [Loop Continue]
         goto J0x13C2;
     }
-    int_19 = UnknownFunction146(int_19, int_9);
+    int_19 = (int_19 + int_9);
     return;
 }

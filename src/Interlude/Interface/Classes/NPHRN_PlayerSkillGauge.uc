@@ -48,11 +48,11 @@ function OnEvent(int EventID, string idx)
         // End:0x92
         case 290:
             // End:0x8F
-            if(UnknownFunction242(GetOptionBool("Custom", "SkillCastingBox"), true))
+            if((GetOptionBool("Custom", "SkillCastingBox") == true))
             {
                 ParseInt(idx, "AttackerID", Lm_UserID1);
                 // End:0x8F
-                if(UnknownFunction154(Lm_UserID1, m_UserID))
+                if((Lm_UserID1 == m_UserID))
                 {
                     sdfhserheawrhawh(idx);
                 }
@@ -63,7 +63,7 @@ function OnEvent(int EventID, string idx)
         case 580:
             ParseInt(idx, "Index", Lm_UserID2);
             // End:0xC3
-            if(UnknownFunction155(Lm_UserID2, 27))
+            if((Lm_UserID2 != 27))
             {
                 return;
             }
@@ -90,7 +90,7 @@ function sdfhserheawrhawh(string strParam)
 
     ParseInt(strParam, "SkillID", f_IntINC);
     // End:0x4E
-    if(UnknownFunction132(idx, unkIDSFunc(f_IntINC)))
+    if((idx || unkIDSFunc(f_IntINC)))
     {
         // End:0x4C
         if(unkSkillFunc3(f_IntINC))
@@ -109,25 +109,25 @@ function sdfhserheawrhawh(string strParam)
         if(GetPlayerInfo(UserInfo))
         {
             // End:0xE4
-            if(UnknownFunction154(SkillInfo.IsMagic, 1))
+            if((SkillInfo.IsMagic == 1))
             {
-                f2 = UnknownFunction172(float(UserInfo.nMagicCastingSpeed), 1000.0000000);
-                UnknownFunction184(f2, f);                
+                f2 = (float(UserInfo.nMagicCastingSpeed) / 1000.0000000);
+                f2 += f;
             }
             else
             {
-                f2 = UnknownFunction172(float(UserInfo.nPhysicalAttackSpeed), 1000.0000000);
+                f2 = (float(UserInfo.nPhysicalAttackSpeed) / 1000.0000000);
             }
             f = 0.0000000;
         }
-        f1 = UnknownFunction175(SkillInfo.HitTime, UnknownFunction171(f2, UnknownFunction172(SkillInfo.HitTime, 1.5000000)));
+        f1 = (SkillInfo.HitTime - (f2 * (SkillInfo.HitTime / 1.5000000)));
         // End:0x170
-        if(UnknownFunction176(f1, 0.5000000))
+        if((f1 < 0.5000000))
         {
-            f1 = UnknownFunction172(SkillInfo.HitTime, 6.0000000);
+            f1 = (SkillInfo.HitTime / 6.0000000);
         }
         texHandle1.Move(205, 0, f1);
-        Me.SetTimer(2, UnknownFunction146(int(UnknownFunction171(f1, 1000.0000000)), 300));
+        Me.SetTimer(2, (int((f1 * 1000.0000000)) + 300));
     }
     return;
 }
@@ -160,7 +160,7 @@ function asdfhashawsh()
     local Rect Rect;
 
     Rect = Me.GetRect();
-    texHandle1.MoveTo(UnknownFunction147(Rect.nX, 24), Rect.nY);
+    texHandle1.MoveTo((Rect.nX - 24), Rect.nY);
     Me.HideWindow();
     idx = false;
     return;

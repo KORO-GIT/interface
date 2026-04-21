@@ -42,7 +42,7 @@ var ItemInfo EquipItemInfo;
 var ItemInfo WeaponItemInfo;
 var ItemInfo LifeStoneItemInfo;
 var ItemInfo GemStoneItemInfo;
-var ItemInfo SkillInfo;
+var ItemInfo SelectedSkillInfo;
 var int EquipItemServerID;
 var int BlessScrollServerID;
 var int ScrollServerID;
@@ -1334,7 +1334,7 @@ function HandleSystemMessage(string a_Param)
         // End:0x87
         case 63:
             ParseInt(a_Param, "Param1", Id);
-            EnchantItem_CurrentEnchantLevel = UnknownFunction146(Id, 1);
+            EnchantItem_CurrentEnchantLevel = (Id + 1);
             HandleEnchantResult("Result=65535");
             // End:0x154
             break;
@@ -1593,8 +1593,8 @@ function InsertDragSkill(ItemInfo a_ItemInfo)
     // End:0x5A
     if(EnchantString != "")
     {
-        SkillInfo = a_ItemInfo;
-        DragSkill(SkillInfo);
+        SelectedSkillInfo = a_ItemInfo;
+        DragSkill(SelectedSkillInfo);
         m_InstructionText3.SetText(SkillInstruction_CheckOption);        
     }
     else
@@ -1618,7 +1618,7 @@ function UpdateSkill(out ItemInfo Info)
     local ItemInfo Skill;
 
     RequestSkillList();
-    Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithClassID("MagicSkillWnd.ASkill.SkillItem", SkillInfo.ClassID);
+    Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithClassID("MagicSkillWnd.ASkill.SkillItem", SelectedSkillInfo.ClassID);
     // End:0x8C
     if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("MagicSkillWnd.ASkill.SkillItem", Index, Skill))
     {
@@ -1694,40 +1694,40 @@ function int UpdateGiantBookCount()
 function EnchantSkill()
 {
     Class'NWindow.UIAPI_WINDOW'.static.SetUITimer("EnchantAIWnd", 10500, TIMER_ENCHANTSKILL_DELAY);
-    UpdateSkill(SkillInfo);
+    UpdateSkill(SelectedSkillInfo);
     // End:0xF9
-    if((SkillInfo.Level == (EnchantSkillLimit + 100)) || SkillInfo.Level == (EnchantSkillLimit + 140))
+    if((SelectedSkillInfo.Level == (EnchantSkillLimit + 100)) || SelectedSkillInfo.Level == (EnchantSkillLimit + 140))
     {
         StopEnchantSkill();
         AlarmWindow();
-        m_InstructionText3.SetText(((SkillInstruction_Result @ Class'NWindow.UIDATA_SKILL'.static.GetName(SkillInfo.ClassID, SkillInfo.Level)) $ " ") $ Class'NWindow.UIDATA_SKILL'.static.GetEnchantName(SkillInfo.ClassID, SkillInfo.Level));
+        m_InstructionText3.SetText(((SkillInstruction_Result @ Class'NWindow.UIDATA_SKILL'.static.GetName(SelectedSkillInfo.ClassID, SelectedSkillInfo.Level)) $ " ") $ Class'NWindow.UIDATA_SKILL'.static.GetEnchantName(SelectedSkillInfo.ClassID, SelectedSkillInfo.Level));
         PlaySound("Interface.complete_refinery");        
     }
     else
     {
         // End:0x140
-        if((SkillInfo.Level < 100) && ComboEnchantSelect == 0)
+        if((SelectedSkillInfo.Level < 100) && ComboEnchantSelect == 0)
         {
-            RequestExEnchantSkill(SkillInfo.ClassID, 101);
+            RequestExEnchantSkill(SelectedSkillInfo.ClassID, 101);
             m_InstructionText3.SetText(SkillInstruction_Process);            
         }
         else
         {
             // End:0x187
-            if((SkillInfo.Level < 100) && ComboEnchantSelect == 1)
+            if((SelectedSkillInfo.Level < 100) && ComboEnchantSelect == 1)
             {
-                RequestExEnchantSkill(SkillInfo.ClassID, 141);
+                RequestExEnchantSkill(SelectedSkillInfo.ClassID, 141);
                 m_InstructionText3.SetText(SkillInstruction_Process);                
             }
             else
             {
-                RequestExEnchantSkill(SkillInfo.ClassID, SkillInfo.Level + 1);
+                RequestExEnchantSkill(SelectedSkillInfo.ClassID, SelectedSkillInfo.Level + 1);
                 m_InstructionText3.SetText(SkillInstruction_Process);
             }
         }
     }
-    UpdateSkill(SkillInfo);
-    DragSkill(SkillInfo);
+    UpdateSkill(SelectedSkillInfo);
+    DragSkill(SelectedSkillInfo);
     UpdateEnchantSkillParam();
     return;
 }
@@ -1765,13 +1765,13 @@ function UpdateCombobox(ItemInfo Skill)
         Class'NWindow.UIAPI_COMBOBOX'.static.AddString("EnchantAIWnd.comboSkillType", Enchant2Name[1]);
     }
     // End:0x210
-    if((SkillInfo.Level > 100) && SkillInfo.Level < 131)
+    if((SelectedSkillInfo.Level > 100) && SelectedSkillInfo.Level < 131)
     {
         Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("EnchantAIWnd.comboSkillType", ComboEnchantSelect);
         Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("EnchantAIWnd.comboSkillType");
     }
     // End:0x27E
-    if(SkillInfo.Level > 131)
+    if(SelectedSkillInfo.Level > 131)
     {
         Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("EnchantAIWnd.comboSkillType", ComboEnchantSelect);
         Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("EnchantAIWnd.comboSkillType");

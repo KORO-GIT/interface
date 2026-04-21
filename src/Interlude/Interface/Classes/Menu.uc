@@ -123,19 +123,19 @@ function UpdateUserInfo()
     if(GetPlayerInfo(info_2))
     {
         // End:0x131
-        if(UnknownFunction151(info_2.nCriminalRate, 0))
+        if((info_2.nCriminalRate > 0))
         {
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("Menu.ExpBar");
             Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("Menu.KarmaBar");
             // End:0x84
-            if(UnknownFunction151(info_2.nCriminalRate, int_2))
+            if((info_2.nCriminalRate > int_2))
             {
                 int_2 = info_2.nCriminalRate;
             }
             int_1 = info_2.nCriminalRate;
             Class'NWindow.UIAPI_STATUSBARCTRL'.static.SetPointPercent("Menu.KarmaBar", Int2Int64(int_1), Int2Int64(0), Int2Int64(int_2));
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("Menu.XP", "Karma");
-            Class'NWindow.UIAPI_WINDOW'.static.SetTooltipText("Menu.KarmaBar", UnknownFunction112(UnknownFunction112("Karma ", string(info_2.nCriminalRate)), ""));            
+            Class'NWindow.UIAPI_WINDOW'.static.SetTooltipText("Menu.KarmaBar", (("Karma " $ string(info_2.nCriminalRate)) $ ""));
         }
         else
         {
@@ -143,7 +143,7 @@ function UpdateUserInfo()
             Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("Menu.ExpBar");
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("Menu.XP", "XP");
             Class'NWindow.UIAPI_STATUSBARCTRL'.static.SetPointExp("Menu.EXPBar", info_2.nCurExp, info_2.nLevel);
-            Class'NWindow.UIAPI_WINDOW'.static.SetTooltipText("Menu.ExpBar", UnknownFunction112(UnknownFunction112("SP ", string(info_2.nSP)), ""));
+            Class'NWindow.UIAPI_WINDOW'.static.SetTooltipText("Menu.ExpBar", (("SP " $ string(info_2.nSP)) $ ""));
         }
     }
     return;
@@ -168,7 +168,7 @@ function OnClickButton(string strID)
             // End:0x90
             if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("PartyMatchWnd") == true)
             {
-                Class'NWindow.UIAPI_WINDOW'.static.HideWindow("PartyMatchWnd");                
+                Class'NWindow.UIAPI_WINDOW'.static.HideWindow("PartyMatchWnd");
             }
             else
             {
@@ -221,7 +221,7 @@ function OnEvent(int a_EventID, string a_Param)
             // End:0x2D
             if((DialogGetID()) == 0)
             {
-                ExecRestart();                
+                ExecRestart();
             }
             else
             {
@@ -306,7 +306,7 @@ function ToggleOpenClanWnd()
     // End:0x36
     if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("MainWnd"))
     {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MainWnd");        
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MainWnd");
     }
     else
     {
@@ -334,7 +334,7 @@ function ToggleOpenPostBoxWnd()
     // End:0x38
     if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("BoardWnd"))
     {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BoardWnd");        
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BoardWnd");
     }
     else
     {

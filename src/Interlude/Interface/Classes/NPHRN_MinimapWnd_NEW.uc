@@ -230,7 +230,7 @@ function HandleZoneShow(int idx)
     {
         // End:0x19C
         case 15:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Gray"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Gray"));
             Str = "Ordinary Field";
             ZoneState.t_color.R = byte(255);
             ZoneState.t_color.G = byte(255);
@@ -240,7 +240,7 @@ function HandleZoneShow(int idx)
             break;
         // End:0x22A
         case 12:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Blue"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Blue"));
             Str = "Peace Zone";
             ZoneState.t_color.R = 64;
             ZoneState.t_color.G = 140;
@@ -250,7 +250,7 @@ function HandleZoneShow(int idx)
             break;
         // End:0x2C2
         case 11:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Orange"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Orange"));
             Str = "Siege Warfare Zone";
             ZoneState.t_color.R = byte(255);
             ZoneState.t_color.G = 114;
@@ -260,7 +260,7 @@ function HandleZoneShow(int idx)
             break;
         // End:0x350
         case 9:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Green"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Green"));
             Str = "Buff Zone";
             ZoneState.t_color.R = 119;
             ZoneState.t_color.G = byte(255);
@@ -270,7 +270,7 @@ function HandleZoneShow(int idx)
             break;
         // End:0x3DC
         case 8:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Red"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Red"));
             Str = "Danger Area";
             ZoneState.t_color.R = 178;
             ZoneState.t_color.G = 34;
@@ -280,7 +280,7 @@ function HandleZoneShow(int idx)
             break;
         // End:0x46C
         case 13:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Gray"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Gray"));
             Str = "SSQ Zone";
             ZoneState.t_color.R = byte(255);
             ZoneState.t_color.G = byte(255);
@@ -290,7 +290,7 @@ function HandleZoneShow(int idx)
             break;
         // End:0x4FC
         case 14:
-            TexZone.SetTexture(UnknownFunction112(UnknownFunction112("", Radar_Btn_), "Green"));
+            TexZone.SetTexture((("" $ Radar_Btn_) $ "Green"));
             Str = "Combat Zone";
             ZoneState.t_color.R = 119;
             ZoneState.t_color.G = byte(255);
@@ -306,7 +306,7 @@ function HandleZoneShow(int idx)
     param.DrawList[2] = ZoneState;
     TexZone.SetTooltipCustomType(param);
     // End:0x583
-    if(UnknownFunction155(idx, 12))
+    if((idx != 12))
     {
         Circle.SetWindowSize(32, 32);
         Circle.SetTexture("Was.Radar_Circle_Small");        
@@ -339,7 +339,7 @@ function HandleMinimapAddTarget(string param)
     local Vector paramV;
 
     // End:0xBD
-    if(UnknownFunction130(UnknownFunction130(ParseFloat(param, "X", paramV.X), ParseFloat(param, "Y", paramV.Y)), ParseFloat(param, "Z", paramV.Z)))
+    if(((ParseFloat(param, "X", paramV.X) && ParseFloat(param, "Y", paramV.Y)) && ParseFloat(param, "Z", paramV.Z)))
     {
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AddTarget("NPHRN_MinimapWnd_NEW.Minimap", paramV);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MinimapWnd_NEW.Minimap", paramV, false, false);
@@ -353,7 +353,7 @@ function HandleMinimapDeleteTarget(string param)
     local int LocX, LocY, LocZ;
 
     // End:0xB0
-    if(UnknownFunction130(UnknownFunction130(ParseInt(param, "X", LocX), ParseInt(param, "Y", LocY)), ParseInt(param, "Z", LocZ)))
+    if(((ParseInt(param, "X", LocX) && ParseInt(param, "Y", LocY)) && ParseInt(param, "Z", LocZ)))
     {
         paramV.X = float(LocX);
         paramV.Y = float(LocY);
@@ -382,12 +382,12 @@ function ShowPartyMemberLocation()
 
     PartyMemberCount = GetPartyMemberCount();
     // End:0x1D
-    if(UnknownFunction154(0, PartyMemberCount))
+    if((0 == PartyMemberCount))
     {
         return;
     }
     FixLocDisable();
-    i_UnkInt_1 = UnknownFunction173(UnknownFunction146(i_UnkInt_1, 1), PartyMemberCount);
+    i_UnkInt_1 = int(float((i_UnkInt_1 + 1)) % float(PartyMemberCount));
     // End:0x86
     if(GetPartyMemberLocation(i_UnkInt_1, PartyMemberLocation))
     {
@@ -462,7 +462,7 @@ function ResizeWnd()
     Tex = TextureHandle(GetHandle("NPHRN_MinimapWnd_NEW.Tex"));
     Minimap = GetHandle("NPHRN_MinimapWnd_NEW.Minimap");
     // End:0xFA
-    if(UnknownFunction129(Large))
+    if((!Large))
     {
         Me.SetWindowSize(256, 256);
         Tex.SetWindowSize(256, 256);
@@ -490,7 +490,7 @@ function OnLButtonDown(WindowHandle Handle, int X, int Y)
         // End:0xA6
         case TexZone:
             // End:0x7A
-            if(UnknownFunction242(UnknownFunction129(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("NPHRN_MinimapWnd_NEW.Option")), true))
+            if(((!Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("NPHRN_MinimapWnd_NEW.Option")) == true))
             {
                 Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("NPHRN_MinimapWnd_NEW.Option");                
             }

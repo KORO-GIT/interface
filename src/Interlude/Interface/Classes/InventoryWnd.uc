@@ -70,12 +70,12 @@ function OnLoad()
 
 function function1()
 {
-    item_1 = ItemWindowHandle(GetHandle(UnknownFunction112(string_1, ".InventoryItem")));
-    item_2 = ItemWindowHandle(GetHandle(UnknownFunction112(string_1, ".QuestItem")));
-    item_5 = ItemWindowHandle(GetHandle(UnknownFunction112(string_1, ".EquipmentItem")));
-    item_6 = ItemWindowHandle(GetHandle(UnknownFunction112(string_1, ".CraftingItem")));
-    item_7 = ItemWindowHandle(GetHandle(UnknownFunction112(string_1, ".SuppliesItem")));
-    text_1 = TextBoxHandle(GetHandle(UnknownFunction112(string_1, ".AdenaText")));
+    item_1 = ItemWindowHandle(GetHandle((string_1 $ ".InventoryItem")));
+    item_2 = ItemWindowHandle(GetHandle((string_1 $ ".QuestItem")));
+    item_5 = ItemWindowHandle(GetHandle((string_1 $ ".EquipmentItem")));
+    item_6 = ItemWindowHandle(GetHandle((string_1 $ ".CraftingItem")));
+    item_7 = ItemWindowHandle(GetHandle((string_1 $ ".SuppliesItem")));
+    text_1 = TextBoxHandle(GetHandle((string_1 $ ".AdenaText")));
     item_3[0] = ItemWindowHandle(GetHandle("EquipItem_Underwear"));
     item_3[1] = ItemWindowHandle(GetHandle("EquipItem_Head"));
     item_3[2] = ItemWindowHandle(GetHandle("EquipItem_Hair"));
@@ -188,11 +188,11 @@ function OnShow()
     // End:0x3A
     if(Class'NWindow.UIDATA_PLAYER'.static.HasCrystallizeAbility())
     {
-        ShowWindow(UnknownFunction112(string_1, ".CrystallizeButton"));        
+        ShowWindow((string_1 $ ".CrystallizeButton"));
     }
     else
     {
-        HideWindow(UnknownFunction112(string_1, ".CrystallizeButton"));
+        HideWindow((string_1 $ ".CrystallizeButton"));
     }
     function6();
     function7();
@@ -211,7 +211,7 @@ function OnHide()
 function OnDBClickItemWithHandle(ItemWindowHandle handle_1, int int_4)
 {
     // End:0x19
-    if(UnknownFunction130(IsKeyDown(IK_Alt), IsKeyDown(IK_Ctrl)))
+    if((IsKeyDown(IK_Alt) && IsKeyDown(IK_Ctrl)))
     {
     }
     function10(handle_1, int_4);
@@ -246,10 +246,10 @@ function OnClickButton(string string_3)
         // End:0x135
         case "RefineButton":
             // End:0x112
-            if(UnknownFunction129(IsShowWindow("AugmentationWnd")))
+            if((!IsShowWindow("AugmentationWnd")))
             {
                 Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AugmentationWnd");
-                Class'NWindow.UIAPI_WINDOW'.static.SetFocus("AugmentationWnd");                
+                Class'NWindow.UIAPI_WINDOW'.static.SetFocus("AugmentationWnd");
             }
             else
             {
@@ -265,9 +265,9 @@ function OnClickButton(string string_3)
         // End:0x1DA
         case "BtnExpand":
             // End:0x1AE
-            if(UnknownFunction242(GetOptionBool("Options", "ExpandedInventory"), true))
+            if((GetOptionBool("Options", "ExpandedInventory") == true))
             {
-                SetOptionBool("Options", "ExpandedInventory", false);                
+                SetOptionBool("Options", "ExpandedInventory", false);
             }
             else
             {
@@ -291,13 +291,13 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
 
     string_4 = Class'NWindow.UIAPI_EDITBOX'.static.GetString("ChatWnd.ChatEditBox");
     // End:0x71
-    if(UnknownFunction130(IsKeyDown(IK_Alt), IsKeyDown(IK_Ctrl)))
+    if((IsKeyDown(IK_Alt) && IsKeyDown(IK_Ctrl)))
     {
         item_10.GetSelectedItem(info_3);
         RequestDestroyItem(info_3.ServerID, info_3.ItemNum);
     }
     // End:0xAF
-    if(UnknownFunction130(IsKeyDown(IK_LControl), UnknownFunction129(IsKeyDown(IK_Alt))))
+    if((IsKeyDown(IK_LControl) && (!IsKeyDown(IK_Alt))))
     {
         item_10.GetSelectedItem(info_3);
         function14(info_3);
@@ -307,79 +307,79 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
     {
         item_10.GetSelectedItem(info_3);
         // End:0x13E
-        if(UnknownFunction151(info_3.ItemNum, 1))
+        if((info_3.ItemNum > 1))
         {
-            SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "), "("), string(info_3.ItemNum)), ") "));            
+            SetChatMessage(((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "(") $ string(info_3.ItemNum)) $ ") "));
         }
         else
         {
             // End:0x311
-            if(UnknownFunction154(info_3.ItemType, 0))
+            if((info_3.ItemType == 0))
             {
                 // End:0x1FC
-                if(UnknownFunction130(UnknownFunction123(info_3.AdditionalName, ""), UnknownFunction151(info_3.Enchanted, 0)))
+                if(((info_3.AdditionalName != "") && (info_3.Enchanted > 0)))
                 {
-                    SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "), "+"), string(info_3.Enchanted)), ""), " ("), info_3.AdditionalName), ") "));                    
+                    SetChatMessage((((((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "+") $ string(info_3.Enchanted)) $ "") $ " (") $ info_3.AdditionalName) $ ") "));
                 }
                 else
                 {
                     // End:0x26B
-                    if(UnknownFunction151(info_3.Enchanted, 0))
+                    if((info_3.Enchanted > 0))
                     {
-                        SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "), "+"), string(info_3.Enchanted)), " "));                        
+                        SetChatMessage(((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "+") $ string(info_3.Enchanted)) $ " "));
                     }
                     else
                     {
                         // End:0x2DA
-                        if(UnknownFunction123(info_3.AdditionalName, ""))
+                        if((info_3.AdditionalName != ""))
                         {
-                            SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "), "("), info_3.AdditionalName), ") "));                            
+                            SetChatMessage(((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "(") $ info_3.AdditionalName) $ ") "));
                         }
                         else
                         {
-                            SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "));
+                            SetChatMessage((((("" $ string_4) $ "") $ info_3.Name) $ " "));
                         }
                     }
-                }                
+                }
             }
             else
             {
                 // End:0x48D
-                if(UnknownFunction132(UnknownFunction154(info_3.ItemType, 1), UnknownFunction154(info_3.ItemType, 2)))
+                if(((info_3.ItemType == 1) || (info_3.ItemType == 2)))
                 {
                     // End:0x3E7
-                    if(UnknownFunction130(UnknownFunction123(info_3.AdditionalName, ""), UnknownFunction151(info_3.Enchanted, 0)))
+                    if(((info_3.AdditionalName != "") && (info_3.Enchanted > 0)))
                     {
-                        SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "), "+"), string(info_3.Enchanted)), ""), " ("), info_3.AdditionalName), ") "));                        
+                        SetChatMessage((((((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "+") $ string(info_3.Enchanted)) $ "") $ " (") $ info_3.AdditionalName) $ ") "));
                     }
                     else
                     {
                         // End:0x456
-                        if(UnknownFunction151(info_3.Enchanted, 0))
+                        if((info_3.Enchanted > 0))
                         {
-                            SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "), "+"), string(info_3.Enchanted)), " "));                            
+                            SetChatMessage(((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "+") $ string(info_3.Enchanted)) $ " "));
                         }
                         else
                         {
-                            SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "));
+                            SetChatMessage((((("" $ string_4) $ "") $ info_3.Name) $ " "));
                         }
-                    }                    
+                    }
                 }
                 else
                 {
-                    SetChatMessage(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("", string_4), ""), info_3.Name), " "));
+                    SetChatMessage((((("" $ string_4) $ "") $ info_3.Name) $ " "));
                 }
             }
         }
         Class'NWindow.UIAPI_WINDOW'.static.SetFocus("ChatWnd.ChatEditBox");
     }
     // End:0x53C
-    if(UnknownFunction132(UnknownFunction132(UnknownFunction132(UnknownFunction114(item_10, item_1), UnknownFunction114(item_10, item_5)), UnknownFunction114(item_10, item_6)), UnknownFunction114(item_10, item_7)))
+    if(((((item_10 == item_1) || (item_10 == item_5)) || (item_10 == item_6)) || (item_10 == item_7)))
     {
         return;
     }
     // End:0x551
-    if(UnknownFunction114(item_10, item_2))
+    if((item_10 == item_2))
     {
         return;
     }
@@ -444,7 +444,7 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                         // [Loop Continue]
                         goto J0x253;
                     }
-                }                
+                }
             }
             else
             {
@@ -459,31 +459,31 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                     // [Loop Continue]
                     goto J0x2A2;
                 }
-            }            
+            }
         }
         else
         {
             // End:0x31C
             if(-1 != InStr(info_3.DragSrcName, "EquipItem"))
             {
-                RequestUnequipItem(info_3.ServerID, info_3.SlotBitType);                
+                RequestUnequipItem(info_3.ServerID, info_3.SlotBitType);
             }
             else
             {
                 // End:0x427
-                if(UnknownFunction122(info_3.DragSrcName, "PetInvenWnd"))
+                if((info_3.DragSrcName == "PetInvenWnd"))
                 {
                     // End:0x40C
-                    if(UnknownFunction130(IsStackableItem(info_3.ConsumeType), UnknownFunction151(info_3.ItemNum, 1)))
+                    if((IsStackableItem(info_3.ConsumeType) && (info_3.ItemNum > 1)))
                     {
                         // End:0x3BE
-                        if(UnknownFunction151(info_3.AllItemCount, 0))
+                        if((info_3.AllItemCount > 0))
                         {
                             // End:0x3BB
                             if(CheckItemLimit(info_3.ClassID, info_3.AllItemCount))
                             {
                                 Class'NWindow.PetAPI'.static.RequestGetItemFromPet(info_3.ServerID, info_3.AllItemCount, false);
-                            }                            
+                            }
                         }
                         else
                         {
@@ -491,7 +491,7 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                             DialogSetReservedInt(info_3.ServerID);
                             DialogSetParamInt(info_3.ItemNum);
                             DialogShow(DIALOG_NumberPad, MakeFullSystemMsg(GetSystemMessage(72), info_3.Name));
-                        }                        
+                        }
                     }
                     else
                     {
@@ -499,15 +499,15 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                     }
                 }
             }
-        }        
+        }
     }
     else
     {
         // End:0x578
-        if(UnknownFunction122(string_5, "QuestItem"))
+        if((string_5 == "QuestItem"))
         {
             // End:0x575
-            if(UnknownFunction122(info_3.DragSrcName, "QuestItem"))
+            if((info_3.DragSrcName == "QuestItem"))
             {
                 int_7 = item_2.GetIndexAt(X, Y, 1, 1);
                 // End:0x528
@@ -537,7 +537,7 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                             // [Loop Continue]
                             goto J0x4F0;
                         }
-                    }                    
+                    }
                 }
                 else
                 {
@@ -553,7 +553,7 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                         goto J0x53D;
                     }
                 }
-            }            
+            }
         }
         else
         {
@@ -561,25 +561,25 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
             if(-1 != InStr(string_5, "EquipItem"))
             {
                 // End:0x5D2
-                if(UnknownFunction122(info_3.DragSrcName, "PetInvenWnd"))
+                if((info_3.DragSrcName == "PetInvenWnd"))
                 {
-                    Class'NWindow.PetAPI'.static.RequestGetItemFromPet(info_3.ServerID, 1, true);                    
+                    Class'NWindow.PetAPI'.static.RequestGetItemFromPet(info_3.ServerID, 1, true);
                 }
                 else
                 {
                     // End:0x5F6
                     if(-1 != InStr(info_3.DragSrcName, "EquipItem"))
-                    {                        
+                    {
                     }
                     else
                     {
                         // End:0x61B
-                        if(UnknownFunction155(info_3.ItemType, 5))
+                        if((info_3.ItemType != 5))
                         {
                             RequestUseItem(info_3.ServerID);
                         }
                     }
-                }                
+                }
             }
             else
             {
@@ -595,9 +595,9 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                         // End:0x6A4 [Loop If]
                         if(int_6 < 100)
                         {
-                            GetINIInt("TrashList", UnknownFunction112("", string(int_6)), string_4, "TrashGrp");
+                            GetINIInt("TrashList", ("" $ string(int_6)), string_4, "TrashGrp");
                             // End:0x69A
-                            if(UnknownFunction154(string_4, info_3.ClassID))
+                            if((string_4 == info_3.ClassID))
                             {
                                 return;
                             }
@@ -605,20 +605,20 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                             // [Loop Continue]
                             goto J0x645;
                         }
-                        SetINIInt("TrashList", string(UnknownFunction146(int_2, 1)), info_3.ClassID, "TrashGrp");
-                        SetINIInt("TrashList", string(UnknownFunction146(int_2, 2)), 0, "TrashGrp");
-                        UnknownFunction165(int_2);
+                        SetINIInt("TrashList", string((int_2 + 1)), info_3.ClassID, "TrashGrp");
+                        SetINIInt("TrashList", string((int_2 + 2)), 0, "TrashGrp");
+                        int_2++;
                     }
                     // End:0x7E4
                     if(IsStackableItem(info_3.ConsumeType) && info_3.ItemNum > 1)
                     {
                         // End:0x796
-                        if(UnknownFunction151(info_3.AllItemCount, 0))
+                        if((info_3.AllItemCount > 0))
                         {
                             DialogSetID(7777);
                             DialogSetReservedInt(info_3.ServerID);
                             DialogSetReservedInt2(info_3.AllItemCount);
-                            DialogShow(DIALOG_Warning, MakeFullSystemMsg(GetSystemMessage(74), info_3.Name, ""));                            
+                            DialogShow(DIALOG_Warning, MakeFullSystemMsg(GetSystemMessage(74), info_3.Name, ""));
                         }
                         else
                         {
@@ -626,25 +626,25 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                             DialogSetReservedInt(info_3.ServerID);
                             DialogSetParamInt(info_3.ItemNum);
                             DialogShow(DIALOG_NumberPad, MakeFullSystemMsg(GetSystemMessage(73), info_3.Name));
-                        }                        
+                        }
                     }
                     else
                     {
                         DialogSetID(6666);
                         DialogSetReservedInt(info_3.ServerID);
                         DialogShow(DIALOG_Warning, MakeFullSystemMsg(GetSystemMessage(74), info_3.Name));
-                    }                    
+                    }
                 }
                 else
                 {
                     // End:0x8F8
-                    if(UnknownFunction122(string_5, "CrystallizeButton"))
+                    if((string_5 == "CrystallizeButton"))
                     {
                         // End:0x8F8
-                        if(UnknownFunction132(UnknownFunction122(info_3.DragSrcName, "InventoryItem"), -1 != InStr(info_3.DragSrcName, "EquipItem")))
+                        if(((info_3.DragSrcName == "InventoryItem") || -1 != InStr(info_3.DragSrcName, "EquipItem")))
                         {
                             // End:0x8F8
-                            if(UnknownFunction130(Class'NWindow.UIDATA_PLAYER'.static.HasCrystallizeAbility(), Class'NWindow.UIDATA_ITEM'.static.IsCrystallizable(info_3.ClassID)))
+                            if((Class'NWindow.UIDATA_PLAYER'.static.HasCrystallizeAbility() && Class'NWindow.UIDATA_ITEM'.static.IsCrystallizable(info_3.ClassID)))
                             {
                                 DialogSetID(9999);
                                 DialogSetReservedInt(info_3.ServerID);
@@ -662,23 +662,23 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
 function OnDropItemSource(string string_5, ItemInfo info_3)
 {
     // End:0x214
-    if(UnknownFunction122(string_5, "Console"))
+    if((string_5 == "Console"))
     {
         // End:0x211
         if((((((info_3.DragSrcName == "InventoryItem") || info_3.DragSrcName == "QuestItem") || info_3.DragSrcName == "EquipmentItem") || info_3.DragSrcName == "SuppliesItem") || info_3.DragSrcName == "CraftingItem") || -1 != InStr(info_3.DragSrcName, "EquipItem"))
         {
             vector_1 = GetClickLocation();
             // End:0x1CB
-            if(UnknownFunction130(IsStackableItem(info_3.ConsumeType), UnknownFunction151(info_3.ItemNum, 1)))
+            if((IsStackableItem(info_3.ConsumeType) && (info_3.ItemNum > 1)))
             {
                 // End:0x175
-                if(UnknownFunction151(info_3.AllItemCount, 0))
+                if((info_3.AllItemCount > 0))
                 {
                     DialogHide();
                     DialogSetID(5555);
                     DialogSetReservedInt(info_3.ServerID);
                     DialogSetReservedInt2(info_3.AllItemCount);
-                    DialogShow(DIALOG_Warning, MakeFullSystemMsg(GetSystemMessage(1833), info_3.Name, ""));                    
+                    DialogShow(DIALOG_Warning, MakeFullSystemMsg(GetSystemMessage(1833), info_3.Name, ""));
                 }
                 else
                 {
@@ -687,7 +687,7 @@ function OnDropItemSource(string string_5, ItemInfo info_3)
                     DialogSetReservedInt(info_3.ServerID);
                     DialogSetParamInt(info_3.ItemNum);
                     DialogShow(DIALOG_NumberPad, MakeFullSystemMsg(GetSystemMessage(71), info_3.Name, ""));
-                }                
+                }
             }
             else
             {
@@ -696,12 +696,12 @@ function OnDropItemSource(string string_5, ItemInfo info_3)
                 DialogSetReservedInt(info_3.ServerID);
                 DialogShow(DIALOG_Warning, MakeFullSystemMsg(GetSystemMessage(400), info_3.Name, ""));
             }
-        }        
+        }
     }
     else
     {
         // End:0x313
-        if(UnknownFunction132(UnknownFunction122(string_5, "AdenaText"), UnknownFunction122(string_5, "NPHRN_BeltWnd")))
+        if(((string_5 == "AdenaText") || (string_5 == "NPHRN_BeltWnd")))
         {
             // End:0x313
             if((((((info_3.DragSrcName == "InventoryItem") || info_3.DragSrcName == "QuestItem") || info_3.DragSrcName == "EquipmentItem") || info_3.DragSrcName == "SuppliesItem") || info_3.DragSrcName == "CraftingItem") || -1 != InStr(info_3.DragSrcName, "EquipItem"))
@@ -725,7 +725,7 @@ function bool function15(out ItemInfo info_3)
 
 function bool function16(out ItemInfo info_3)
 {
-    return UnknownFunction154(info_3.ItemType, 3);
+    return (info_3.ItemType == 3);
 }
 
 function function17()
@@ -754,7 +754,7 @@ function int function19()
         // End:0x51
         if(item_3[int_6].IsEnableWindow())
         {
-            ItemNum = UnknownFunction146(ItemNum, item_3[int_6].GetItemNum());
+            ItemNum = (ItemNum + item_3[int_6].GetItemNum());
         }
         int_6++;
         // [Loop Continue]
@@ -793,7 +793,7 @@ function bool function20(int int_9)
     {
         int_4 = item_3[int_6].FindItemWithServerID(int_9);
         // End:0x48
-        if(UnknownFunction155(-1, int_4))
+        if((-1 != int_4))
         {
             return true;
         }
@@ -817,17 +817,17 @@ function function21(int int_9)
     {
         int_4 = item_3[int_6].FindItemWithServerID(int_9);
         // End:0xD9
-        if(UnknownFunction155(-1, int_4))
+        if((-1 != int_4))
         {
             item_3[int_6].Clear();
             // End:0xD9
-            if(UnknownFunction154(int_6, 7))
+            if((int_6 == 7))
             {
                 // End:0xD9
                 if(item_3[5].GetItem(0, info_5))
                 {
                     // End:0xD9
-                    if(UnknownFunction154(info_5.SlotBitType, 16384))
+                    if((info_5.SlotBitType == 16384))
                     {
                         item_3[7].Clear();
                         item_3[7].AddItem(info_5);
@@ -881,13 +881,13 @@ function function22()
         goto J0x1D;
     }
     // End:0xCF
-    if(UnknownFunction155(-1, int_10))
+    if((-1 != int_10))
     {
         item_3[9].Clear();
         item_3[9].AddItem(info_1[int_10]);
     }
     // End:0x111
-    if(UnknownFunction155(-1, int_11))
+    if((-1 != int_11))
     {
         item_3[8].Clear();
         item_3[8].AddItem(info_1[int_11]);
@@ -933,13 +933,13 @@ function function23()
         goto J0x1D;
     }
     // End:0xCF
-    if(UnknownFunction155(-1, int_12))
+    if((-1 != int_12))
     {
         item_3[14].Clear();
         item_3[14].AddItem(info_2[int_12]);
     }
     // End:0x111
-    if(UnknownFunction155(-1, int_13))
+    if((-1 != int_13))
     {
         item_3[13].Clear();
         item_3[13].AddItem(info_2[int_13]);
@@ -977,7 +977,7 @@ function function24(ItemInfo info_6)
             if(int_6 < info_1.Length)
             {
                 // End:0x69
-                if(UnknownFunction154(info_1[int_6].ServerID, info_6.ServerID))
+                if((info_1[int_6].ServerID == info_6.ServerID))
                 {
                 }
                 int_6++;
@@ -985,10 +985,10 @@ function function24(ItemInfo info_6)
                 goto J0x36;
             }
             // End:0xB4
-            if(UnknownFunction154(int_6, info_1.Length))
+            if((int_6 == info_1.Length))
             {
-                info_1.Length = UnknownFunction146(info_1.Length, 1);
-                info_1[UnknownFunction147(info_1.Length, 1)] = info_6;
+                info_1.Length = (info_1.Length + 1);
+                info_1[(info_1.Length - 1)] = info_6;
             }
             item = none;
             function22();
@@ -1012,7 +1012,7 @@ function function24(ItemInfo info_6)
             if(int_6 < info_2.Length)
             {
                 // End:0x123
-                if(UnknownFunction154(info_2[int_6].ServerID, info_6.ServerID))
+                if((info_2[int_6].ServerID == info_6.ServerID))
                 {
                 }
                 int_6++;
@@ -1020,10 +1020,10 @@ function function24(ItemInfo info_6)
                 goto J0xF0;
             }
             // End:0x16E
-            if(UnknownFunction154(int_6, info_2.Length))
+            if((int_6 == info_2.Length))
             {
-                info_2.Length = UnknownFunction146(info_2.Length, 1);
-                info_2[UnknownFunction147(info_2.Length, 1)] = info_6;
+                info_2.Length = (info_2.Length + 1);
+                info_2[(info_2.Length - 1)] = info_6;
             }
             item = none;
             function23();
@@ -1095,7 +1095,7 @@ function function24(ItemInfo info_6)
             if(bool_1)
             {
                 // End:0x3A6
-                if(UnknownFunction155(UnknownFunction125(info_6.IconNameEx1), 0))
+                if((Len(info_6.IconNameEx1) != 0))
                 {
                     info_9 = info_6;
                     info_10 = info_6;
@@ -1106,7 +1106,7 @@ function function24(ItemInfo info_6)
                     item_3[7].Clear();
                     item_3[7].AddItem(info_10);
                     item_3[7].DisableWindow();
-                    item = none;                    
+                    item = none;
                 }
                 else
                 {
@@ -1185,7 +1185,7 @@ function function24(ItemInfo info_6)
     if(item_3[5].GetItem(0, info_5))
     {
         AutoShotItemWnd = AutoShotItemWnd(GetScript("AutoShotItemWnd"));
-        AutoShotItemWnd.GetShotItemInfo(UnknownFunction165(info_5.CrystalType));
+        AutoShotItemWnd.GetShotItemInfo(info_5.CrystalType);
     }
     return;
 }
@@ -1212,14 +1212,14 @@ function function30(string string_2)
     // End:0x2C
     if(function15(info_4))
     {
-        function24(info_4);        
+        function24(info_4);
     }
     else
     {
         // End:0x51
         if(function16(info_4))
         {
-            item_2.AddItem(info_4);            
+            item_2.AddItem(info_4);
         }
         else
         {
@@ -1227,14 +1227,14 @@ function function30(string string_2)
             // End:0x8A
             if(function31(info_4))
             {
-                item_5.AddItem(info_4);                
+                item_5.AddItem(info_4);
             }
             else
             {
                 // End:0xAF
                 if(function32(info_4))
                 {
-                    item_6.AddItem(info_4);                    
+                    item_6.AddItem(info_4);
                 }
                 else
                 {
@@ -1253,7 +1253,7 @@ function function30(string string_2)
 function bool function31(ItemInfo info_4)
 {
     // End:0x45
-    if(UnknownFunction132(UnknownFunction132(UnknownFunction154(info_4.ItemType, 0), UnknownFunction154(info_4.ItemType, 1)), UnknownFunction154(info_4.ItemType, 2)))
+    if((((info_4.ItemType == 0) || (info_4.ItemType == 1)) || (info_4.ItemType == 2)))
     {
         return true;
     }
@@ -1263,7 +1263,7 @@ function bool function31(ItemInfo info_4)
 function bool function32(ItemInfo info_4)
 {
     // End:0x2F
-    if(UnknownFunction132(UnknownFunction154(info_4.ItemSubType, 5), UnknownFunction154(info_4.ItemSubType, 6)))
+    if(((info_4.ItemSubType == 5) || (info_4.ItemSubType == 6)))
     {
         return true;
     }
@@ -1273,7 +1273,7 @@ function bool function32(ItemInfo info_4)
 function bool function33(ItemInfo info_4)
 {
     // End:0xAC
-    if(UnknownFunction132(UnknownFunction132(UnknownFunction132(UnknownFunction132(UnknownFunction132(UnknownFunction154(info_4.ItemSubType, 1), UnknownFunction154(info_4.ItemSubType, 2)), UnknownFunction154(info_4.ItemSubType, 24)), UnknownFunction154(info_4.ItemSubType, 3)), UnknownFunction122(UnknownFunction128(info_4.Name, 6), "Elixir")), UnknownFunction122(UnknownFunction128(info_4.Name, 8), "Soulshot")))
+    if(((((((info_4.ItemSubType == 1) || (info_4.ItemSubType == 2)) || (info_4.ItemSubType == 24)) || (info_4.ItemSubType == 3)) || (Left(info_4.Name, 6) == "Elixir")) || (Left(info_4.Name, 8) == "Soulshot")))
     {
         return true;
     }
@@ -1289,12 +1289,12 @@ function function34(string string_2)
     ParseString(string_2, "type", string_1);
     ParamToItemInfo(string_2, info_3);
     // End:0x26A
-    if(UnknownFunction122(string_1, "add"))
+    if((string_1 == "add"))
     {
         // End:0x55
         if(function15(info_3))
         {
-            function24(info_3);            
+            function24(info_3);
         }
         else
         {
@@ -1312,7 +1312,7 @@ function function34(string string_2)
                     --int_4;
                     // [Loop Continue]
                     goto J0x8F;
-                }                
+                }
             }
             else
             {
@@ -1342,7 +1342,7 @@ function function34(string string_2)
                         --int_4;
                         // [Loop Continue]
                         goto J0x15A;
-                    }                    
+                    }
                 }
                 else
                 {
@@ -1360,7 +1360,7 @@ function function34(string string_2)
                             --int_4;
                             // [Loop Continue]
                             goto J0x1C8;
-                        }                        
+                        }
                     }
                     else
                     {
@@ -1383,12 +1383,12 @@ function function34(string string_2)
                     }
                 }
             }
-        }        
+        }
     }
     else
     {
         // End:0x6C2
-        if(UnknownFunction122(string_1, "update"))
+        if((string_1 == "update"))
         {
             // End:0x405
             if(function15(info_3))
@@ -1396,13 +1396,13 @@ function function34(string string_2)
                 // End:0x2AF
                 if(function20(info_3.ServerID))
                 {
-                    function24(info_3);                    
+                    function24(info_3);
                 }
                 else
                 {
                     int_4 = item_1.FindItemWithServerID(info_3.ServerID);
                     // End:0x2F5
-                    if(UnknownFunction155(int_4, -1))
+                    if((int_4 != -1))
                     {
                         item_1.DeleteItem(int_4);
                     }
@@ -1411,10 +1411,10 @@ function function34(string string_2)
                     {
                         int_4 = item_5.FindItemWithServerID(info_3.ServerID);
                         // End:0x349
-                        if(UnknownFunction155(int_4, -1))
+                        if((int_4 != -1))
                         {
                             item_5.DeleteItem(int_4);
-                        }                        
+                        }
                     }
                     else
                     {
@@ -1423,10 +1423,10 @@ function function34(string string_2)
                         {
                             int_4 = item_6.FindItemWithServerID(info_3.ServerID);
                             // End:0x3A0
-                            if(UnknownFunction155(int_4, -1))
+                            if((int_4 != -1))
                             {
                                 item_6.DeleteItem(int_4);
-                            }                            
+                            }
                         }
                         else
                         {
@@ -1435,7 +1435,7 @@ function function34(string string_2)
                             {
                                 int_4 = item_7.FindItemWithServerID(info_3.ServerID);
                                 // End:0x3F7
-                                if(UnknownFunction155(int_4, -1))
+                                if((int_4 != -1))
                                 {
                                     item_7.DeleteItem(int_4);
                                 }
@@ -1443,7 +1443,7 @@ function function34(string string_2)
                         }
                     }
                     function24(info_3);
-                }                
+                }
             }
             else
             {
@@ -1452,15 +1452,15 @@ function function34(string string_2)
                 {
                     int_4 = item_2.FindItemWithServerID(info_3.ServerID);
                     // End:0x461
-                    if(UnknownFunction155(int_4, -1))
+                    if((int_4 != -1))
                     {
-                        item_2.SetItem(int_4, info_3);                        
+                        item_2.SetItem(int_4, info_3);
                     }
                     else
                     {
                         function21(info_3.ServerID);
                         item_2.AddItem(info_3);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -1469,10 +1469,10 @@ function function34(string string_2)
                     {
                         int_4 = item_5.FindItemWithServerID(info_3.ServerID);
                         // End:0x4E1
-                        if(UnknownFunction155(int_4, -1))
+                        if((int_4 != -1))
                         {
                             item_5.SetItem(int_4, info_3);
-                        }                        
+                        }
                     }
                     else
                     {
@@ -1481,10 +1481,10 @@ function function34(string string_2)
                         {
                             int_4 = item_6.FindItemWithServerID(info_3.ServerID);
                             // End:0x53D
-                            if(UnknownFunction155(int_4, -1))
+                            if((int_4 != -1))
                             {
                                 item_6.SetItem(int_4, info_3);
-                            }                            
+                            }
                         }
                         else
                         {
@@ -1493,7 +1493,7 @@ function function34(string string_2)
                             {
                                 int_4 = item_7.FindItemWithServerID(info_3.ServerID);
                                 // End:0x599
-                                if(UnknownFunction155(int_4, -1))
+                                if((int_4 != -1))
                                 {
                                     item_7.SetItem(int_4, info_3);
                                 }
@@ -1502,9 +1502,9 @@ function function34(string string_2)
                     }
                     int_4 = item_1.FindItemWithServerID(info_3.ServerID);
                     // End:0x5E7
-                    if(UnknownFunction155(int_4, -1))
+                    if((int_4 != -1))
                     {
-                        item_1.SetItem(int_4, info_3);                        
+                        item_1.SetItem(int_4, info_3);
                     }
                     else
                     {
@@ -1539,17 +1539,17 @@ function function34(string string_2)
                         }
                     }
                 }
-            }            
+            }
         }
         else
         {
             // End:0x833
-            if(UnknownFunction122(string_1, "delete"))
+            if((string_1 == "delete"))
             {
                 // End:0x6F9
                 if(function15(info_3))
                 {
-                    function21(info_3.ServerID);                    
+                    function21(info_3.ServerID);
                 }
                 else
                 {
@@ -1557,7 +1557,7 @@ function function34(string string_2)
                     if(function16(info_3))
                     {
                         int_4 = item_2.FindItemWithServerID(info_3.ServerID);
-                        item_2.DeleteItem(int_4);                        
+                        item_2.DeleteItem(int_4);
                     }
                     else
                     {
@@ -1644,7 +1644,7 @@ function function8()
     item_4.Clear();
     int_1 = Class'NWindow.HennaAPI'.static.GetHennaInfoCount();
     // End:0xA8
-    if(UnknownFunction151(int_1, int_3))
+    if((int_1 > int_3))
     {
         int_1 = int_3;
     }
@@ -1658,27 +1658,27 @@ function function8()
         if(Class'NWindow.HennaAPI'.static.GetHennaInfo(int_6, HennaID, int_2))
         {
             // End:0x109
-            if(UnknownFunction129(Class'NWindow.UIDATA_HENNA'.static.GetItemName(HennaID, Info.Name)))
+            if((!Class'NWindow.UIDATA_HENNA'.static.GetItemName(HennaID, Info.Name)))
             {
                 // [Explicit Break]
                 goto J0x1A7;
             }
             // End:0x133
-            if(UnknownFunction129(Class'NWindow.UIDATA_HENNA'.static.GetDescription(HennaID, Info.Description)))
+            if((!Class'NWindow.UIDATA_HENNA'.static.GetDescription(HennaID, Info.Description)))
             {
                 // [Explicit Break]
                 goto J0x1A7;
             }
             // End:0x15D
-            if(UnknownFunction129(Class'NWindow.UIDATA_HENNA'.static.GetIconTex(HennaID, Info.IconName)))
+            if((!Class'NWindow.UIDATA_HENNA'.static.GetIconTex(HennaID, Info.IconName)))
             {
                 // [Explicit Break]
                 goto J0x1A7;
             }
             // End:0x17C
-            if(UnknownFunction154(0, int_2))
+            if((0 == int_2))
             {
-                Info.bDisabled = true;                
+                Info.bDisabled = true;
             }
             else
             {
@@ -1717,16 +1717,16 @@ function function10(ItemWindowHandle Handle, int int_4)
         {
             DialogSetReservedInt(info_3.ServerID);
             DialogSetID(1111);
-            DialogShow(DIALOG_Warning, GetSystemMessage(798));            
+            DialogShow(DIALOG_Warning, GetSystemMessage(798));
         }
         else
         {
             // End:0xA5
-            if(UnknownFunction151(info_3.PopMsgNum, 0))
+            if((info_3.PopMsgNum > 0))
             {
                 DialogSetID(2222);
                 DialogSetReservedInt(info_3.ServerID);
-                DialogShow(DIALOG_Warning, GetSystemMessage(info_3.PopMsgNum));                
+                DialogShow(DIALOG_Warning, GetSystemMessage(info_3.PopMsgNum));
             }
             else
             {
@@ -1788,7 +1788,7 @@ function function36()
         if(int_3 < int_1.Length)
         {
             // End:0x93
-            if(UnknownFunction154(info_3.ClassID, int_1[int_3]))
+            if((info_3.ClassID == int_1[int_3]))
             {
                 bool_1 = true;
                 // [Explicit Continue]
@@ -1798,10 +1798,10 @@ function function36()
             goto J0x5A;
         }
         // End:0xD0
-        if(UnknownFunction129(bool_1))
+        if((!bool_1))
         {
             item_1.SwapItems(int_2, int_4);
-            UnknownFunction163(int_4);
+            ++int_4;
         }
         int_2++;
         // [Loop Continue]
@@ -1821,10 +1821,10 @@ function function36()
         {
             item_1.GetItem(int_2, info_3);
             // End:0x165
-            if(UnknownFunction154(info_3.ClassID, int_1[int_3]))
+            if((info_3.ClassID == int_1[int_3]))
             {
                 item_1.SwapItems(int_2, int_4);
-                UnknownFunction163(int_4);
+                ++int_4;
                 // [Explicit Continue]
             }
             int_2++;
@@ -1848,10 +1848,10 @@ function function7()
     local int int_1, int_2;
     local TextBoxHandle text_1;
 
-    int_2 = UnknownFunction146(UnknownFunction146(item_1.GetItemNum(), item_2.GetItemNum()), function19());
+    int_2 = ((item_1.GetItemNum() + item_2.GetItemNum()) + function19());
     int_1 = function39();
-    text_1 = TextBoxHandle(GetHandle(UnknownFunction112(string_1, ".ItemCount")));
-    text_1.SetText(UnknownFunction112(UnknownFunction112(UnknownFunction112(UnknownFunction112("(", string(int_2)), "/"), string(int_1)), ")"));
+    text_1 = TextBoxHandle(GetHandle((string_1 $ ".ItemCount")));
+    text_1.SetText((((("(" $ string(int_2)) $ "/") $ string(int_1)) $ ")"));
     return;
 }
 
@@ -1869,14 +1869,14 @@ function function40()
         // End:0x69
         if((Id == 1111) || Id == 2222)
         {
-            RequestUseItem(Reserved);            
+            RequestUseItem(Reserved);
         }
         else
         {
             // End:0x8C
             if(Id == 3333)
             {
-                RequestDropItem(Reserved, 1, vector_1);                
+                RequestDropItem(Reserved, 1, vector_1);
             }
             else
             {
@@ -1888,42 +1888,42 @@ function function40()
                     {
                         int_2 = 1;
                     }
-                    RequestDropItem(Reserved, int_2, vector_1);                    
+                    RequestDropItem(Reserved, int_2, vector_1);
                 }
                 else
                 {
                     // End:0xEC
                     if(Id == 5555)
                     {
-                        RequestDropItem(Reserved, int_1, vector_1);                        
+                        RequestDropItem(Reserved, int_1, vector_1);
                     }
                     else
                     {
                         // End:0x10A
                         if(Id == 6666)
                         {
-                            RequestDestroyItem(Reserved, 1);                            
+                            RequestDestroyItem(Reserved, 1);
                         }
                         else
                         {
                             // End:0x12C
                             if(Id == 8888)
                             {
-                                RequestDestroyItem(Reserved, int_2);                                
+                                RequestDestroyItem(Reserved, int_2);
                             }
                             else
                             {
                                 // End:0x14E
                                 if(Id == 7777)
                                 {
-                                    RequestDestroyItem(Reserved, int_1);                                    
+                                    RequestDestroyItem(Reserved, int_1);
                                 }
                                 else
                                 {
                                     // End:0x16C
                                     if(Id == 9999)
                                     {
-                                        RequestCrystallizeItem(Reserved, 1);                                        
+                                        RequestCrystallizeItem(Reserved, 1);
                                     }
                                     else
                                     {
@@ -1960,7 +1960,7 @@ function function42()
     // End:0x24
     if(m_hOwnerWnd.IsShowWindow())
     {
-        m_hOwnerWnd.HideWindow();        
+        m_hOwnerWnd.HideWindow();
     }
     else
     {
@@ -2018,7 +2018,7 @@ function bool function43()
         return false;
     }
     // End:0x15E
-    if(UnknownFunction130(window_2.IsShowWindow(), UnknownFunction154(int(PrivateShopWnd.m_Type), 2)))
+    if((window_2.IsShowWindow() && (int(PrivateShopWnd.m_Type) == 2)))
     {
         return false;
     }
@@ -2031,16 +2031,16 @@ function int function44(int int_9)
 
     GetAccessoryServerID(int_1, int_2, int_3, int_4);
     // End:0x36
-    if(UnknownFunction154(int_9, int_1))
+    if((int_9 == int_1))
     {
-        return -1;        
+        return -1;
     }
     else
     {
         // End:0x4E
-        if(UnknownFunction154(int_9, int_2))
+        if((int_9 == int_2))
         {
-            return 1;            
+            return 1;
         }
         else
         {
@@ -2056,16 +2056,16 @@ function int function45(int int_9)
 
     GetAccessoryServerID(int_1, int_2, int_3, int_4);
     // End:0x36
-    if(UnknownFunction154(int_9, int_3))
+    if((int_9 == int_3))
     {
-        return -1;        
+        return -1;
     }
     else
     {
         // End:0x4E
-        if(UnknownFunction154(int_9, int_4))
+        if((int_9 == int_4))
         {
-            return 1;            
+            return 1;
         }
         else
         {
@@ -2078,7 +2078,7 @@ function int function45(int int_9)
 function bool function25(ItemInfo info_6)
 {
     // End:0x2F
-    if(UnknownFunction132(UnknownFunction154(6, info_6.WeaponType), UnknownFunction154(10, info_6.WeaponType)))
+    if(((6 == info_6.WeaponType) || (10 == info_6.WeaponType)))
     {
         return true;
     }
@@ -2112,11 +2112,11 @@ function function2()
     // End:0x70 [Loop If]
     if(int_6 < 100)
     {
-        GetINIInt("TrashList", UnknownFunction112("", string(int_6)), string_4, "TrashGrp");
+        GetINIInt("TrashList", ("" $ string(int_6)), string_4, "TrashGrp");
         // End:0x66
-        if(UnknownFunction154(string_4, 0))
+        if((string_4 == 0))
         {
-            int_2 = UnknownFunction147(int_6, 1);
+            int_2 = (int_6 - 1);
             // [Explicit Continue]
         }
         int_6++;
@@ -2129,11 +2129,11 @@ function function2()
 function function13()
 {
     // End:0x93
-    if(UnknownFunction129(bool_1))
+    if((!bool_1))
     {
         bool_1 = true;
         button_5.SetTexture("Was.Inventory_Btn_Trash_Auto", "Was.Inventory_Btn_Trash_Auto_Down", "Was.Inventory_Btn_Trash_Auto_Over");
-        function46();        
+        function46();
     }
     else
     {
@@ -2145,7 +2145,7 @@ function function13()
 
 function function47()
 {
-    SetINIInt("TrashList", UnknownFunction112("", string(int_2)), -1, "TrashGrp");
+    SetINIInt("TrashList", ("" $ string(int_2)), -1, "TrashGrp");
     return;
 }
 
@@ -2160,9 +2160,9 @@ function function46()
     // End:0xB3 [Loop If]
     if(int_6 <= int_2)
     {
-        GetINIInt("TrashList", UnknownFunction112("", string(int_6)), string_4, "TrashGrp");
+        GetINIInt("TrashList", ("" $ string(int_6)), string_4, "TrashGrp");
         // End:0xA7
-        if(UnknownFunction155(string_4, 0))
+        if((string_4 != 0))
         {
             int_4 = item_1.FindItemWithClassID(string_4);
             // End:0xA4
@@ -2188,28 +2188,28 @@ function ItemWindowHandle function12()
     // End:0x1B
     if(item_1.IsShowWindow())
     {
-        return item_1;        
+        return item_1;
     }
     else
     {
         // End:0x36
         if(item_5.IsShowWindow())
         {
-            return item_5;            
+            return item_5;
         }
         else
         {
             // End:0x51
             if(item_7.IsShowWindow())
             {
-                return item_7;                
+                return item_7;
             }
             else
             {
                 // End:0x6C
                 if(item_6.IsShowWindow())
                 {
-                    return item_6;                    
+                    return item_6;
                 }
                 else
                 {
@@ -2236,7 +2236,7 @@ function function3()
     texture_2 = TextureHandle(GetHandle("InventoryWnd.Slots2"));
     text_1 = ButtonHandle(GetHandle("InventoryWnd.BtnExpand"));
     // End:0x267
-    if(UnknownFunction242(GetOptionBool("Options", "ExpandedInventory"), true))
+    if((GetOptionBool("Options", "ExpandedInventory") == true))
     {
         window_1.SetWindowSize(673, 400);
         texture_1.SetWindowSize(680, 412);
@@ -2252,7 +2252,7 @@ function function3()
         item_5.SetCol(12);
         item_6.SetCol(12);
         item_7.SetCol(12);
-        text_1.SetTexture("Was.Frames_df_Btn_Minimize", "Was.Frames_df_Btn_Minimize_Down", "Was.Frames_df_Btn_Minimize_Over");        
+        text_1.SetTexture("Was.Frames_df_Btn_Minimize", "Was.Frames_df_Btn_Minimize_Down", "Was.Frames_df_Btn_Minimize_Over");
     }
     else
     {

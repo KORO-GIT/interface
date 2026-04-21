@@ -8,16 +8,16 @@ const SKILL_TIMER = 4448;
 var string m_WindowName;
 var WindowHandle Me;
 var string BuffParam;
-var array<BuffInfo> buffInfoArr_1;
-var array<BuffInfo> buffInfoArr_2;
-var bool b_UnkBool1;
-var bool b_UnkBool2;
-var bool b_UnkBool3;
+var array<BuffInfo> TopBuffSkills;
+var array<BuffInfo> BottomBuffSkills;
+var bool bHasNoblesseOrCelestialStatus;
+var bool bAutoNoblesseEnabled;
+var bool bInvincibleStatusActive;
 var ItemWindowHandle BItemWnd;
 var ItemWindowHandle TItemWnd;
 var int targetID;
 var int PlayerID;
-var bool b_UnkBool4;
+var bool bWaitForSelfTargetRestore;
 
 function OnLoad()
 {
@@ -29,8 +29,8 @@ function OnLoad()
     RegisterEvent(190);
     RegisterEvent(40);
     Me = GetHandle("AutoBuffWnd");
-    BItemWnd = ItemWindowHandle(GetHandle(UnknownFunction112(m_WindowName, ".BItemWnd")));
-    TItemWnd = ItemWindowHandle(GetHandle(UnknownFunction112(m_WindowName, ".TItemWnd")));
+    BItemWnd = ItemWindowHandle(GetHandle((m_WindowName $ ".BItemWnd")));
+    TItemWnd = ItemWindowHandle(GetHandle((m_WindowName $ ".TItemWnd")));
     PlayerID = Class'NWindow.UIDATA_PLAYER'.static.GetPlayerID();
     Me.SetWindowTitle("Auto Buff");
     return;
@@ -121,7 +121,7 @@ function ToggleOpenAutoBuffWnd()
     if(IsShowWindow("AutoBuffWnd"))
     {
         HideWindow("AutoBuffWnd");
-        PlaySound("InterfaceSound.charstat_close_01");        
+        PlaySound("InterfaceSound.charstat_close_01");
     }
     else
     {
@@ -134,7 +134,7 @@ function ToggleOpenAutoBuffWnd()
 function OnClickButton(string strID)
 {
     // End:0x2B
-    if(UnknownFunction122(strID, "BtnClose"))
+    if((strID == "BtnClose"))
     {
         HideWindow("AutoBuffWnd");
     }
@@ -143,86 +143,86 @@ function OnClickButton(string strID)
 
 function OnClickItem(string param, int Index)
 {
-    LooksLikeEnableDisableAutoBuff(param, Index);
+    ToggleAutoBuffSkill(param, Index);
     return;
 }
 
 function OnRClickItem(string param, int Index)
 {
-    LooksLikeEnableDisableAutoBuff(param, Index);
+    ToggleAutoBuffSkill(param, Index);
     return;
 }
 
-function LooksLikeEnableDisableAutoBuff(string param, int Index)
+function ToggleAutoBuffSkill(string param, int Index)
 {
     local ItemInfo Info;
 
     // End:0x265
-    if(UnknownFunction151(Index, -1))
+    if((Index > -1))
     {
         // End:0xE4
-        if(UnknownFunction122(param, "TItemWnd"))
+        if((param == "TItemWnd"))
         {
             // End:0xE1
             if(TItemWnd.GetItem(Index, Info))
             {
                 // End:0xAB
-                if(UnknownFunction122(Info.ForeTexture, ""))
+                if((Info.ForeTexture == ""))
                 {
                     // End:0xA8
-                    if(MaybeSkillValid(Info.ClassID))
+                    if(IsKnownSkill(Info.ClassID))
                     {
-                        UnknownFunction_4(Info);
+                        AddTopBuffSkill(Info);
                         Info.ForeTexture = "Was.Auto";
                         TItemWnd.SetItem(Index, Info);
-                    }                    
+                    }
                 }
                 else
                 {
-                    UnknownFunction_5(Info.ClassID);
+                    RemoveTopBuffSkill(Info.ClassID);
                     Info.ForeTexture = "";
                     TItemWnd.SetItem(Index, Info);
                 }
-            }            
+            }
         }
         else
         {
             // End:0x1FE
-            if(UnknownFunction122(param, "BItemWnd"))
+            if((param == "BItemWnd"))
             {
                 // End:0x1FE
                 if(BItemWnd.GetItem(Index, Info))
                 {
                     // End:0x1A5
-                    if(UnknownFunction122(Info.ForeTexture, ""))
+                    if((Info.ForeTexture == ""))
                     {
                         // End:0x1A2
-                        if(MaybeSkillValid(Info.ClassID))
+                        if(IsKnownSkill(Info.ClassID))
                         {
                             // End:0x169
-                            if(UnknownFunction154(Info.ClassID, 1323))
+                            if((Info.ClassID == 1323))
                             {
-                                b_UnkBool2 = true;
-                                TargetUpdate();                                
+                                bAutoNoblesseEnabled = true;
+                                TargetUpdate();
                             }
                             else
                             {
-                                UnknownFunction_1(Info);
+                                AddBottomBuffSkill(Info);
                             }
                             Info.ForeTexture = "Was.Auto";
                             BItemWnd.SetItem(Index, Info);
-                        }                        
+                        }
                     }
                     else
                     {
                         // End:0x1C8
-                        if(UnknownFunction154(Info.ClassID, 1323))
+                        if((Info.ClassID == 1323))
                         {
-                            b_UnkBool2 = false;                            
+                            bAutoNoblesseEnabled = false;
                         }
                         else
                         {
-                            UnknownFunction_2(Info.ClassID);
+                            RemoveBottomBuffSkill(Info.ClassID);
                         }
                         Info.ForeTexture = "";
                         BItemWnd.SetItem(Index, Info);
@@ -232,7 +232,7 @@ function LooksLikeEnableDisableAutoBuff(string param, int Index)
         }
         Me.KillTimer(4448);
         // End:0x265
-        if(UnknownFunction132(UnknownFunction132(UnknownFunction151(buffInfoArr_1.Length, 0), UnknownFunction151(buffInfoArr_2.Length, 0)), b_UnkBool2))
+        if((((TopBuffSkills.Length > 0) || (BottomBuffSkills.Length > 0)) || bAutoNoblesseEnabled))
         {
             HandleAddNormalStatus(BuffParam);
             Me.SetTimer(4448, 500);
@@ -241,22 +241,22 @@ function LooksLikeEnableDisableAutoBuff(string param, int Index)
     return;
 }
 
-function bool MaybeSkillValid(int SkillID)
+function bool IsKnownSkill(int SkillID)
 {
-    return UnknownFunction151(Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithClassID("MagicSkillWnd.ASkill.SkillItem", SkillID), -1);
+    return (Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithClassID("MagicSkillWnd.ASkill.SkillItem", SkillID) > -1);
 }
 
-function UnknownFunction_4(ItemInfo Info)
+function AddTopBuffSkill(ItemInfo Info)
 {
-    buffInfoArr_1.Length = UnknownFunction146(buffInfoArr_1.Length, 1);
-    buffInfoArr_1[UnknownFunction147(buffInfoArr_1.Length, 1)].Id = Info.ClassID;
-    buffInfoArr_1[UnknownFunction147(buffInfoArr_1.Length, 1)].BuffInfo_Bool = false;
-    buffInfoArr_1[UnknownFunction147(buffInfoArr_1.Length, 1)].BuffInfo_Int = UnkFuncSomeID_1(Info.ClassID);
-    buffInfoArr_1[UnknownFunction147(buffInfoArr_1.Length, 1)].Name = Info.Name;
+    TopBuffSkills.Length = (TopBuffSkills.Length + 1);
+    TopBuffSkills[(TopBuffSkills.Length - 1)].Id = Info.ClassID;
+    TopBuffSkills[(TopBuffSkills.Length - 1)].BuffInfo_Bool = false;
+    TopBuffSkills[(TopBuffSkills.Length - 1)].BuffInfo_Int = GetRequiredWeaponType(Info.ClassID);
+    TopBuffSkills[(TopBuffSkills.Length - 1)].Name = Info.Name;
     return;
 }
 
-function UnknownFunction_5(int Id)
+function RemoveTopBuffSkill(int Id)
 {
     local int i;
 
@@ -264,17 +264,17 @@ function UnknownFunction_5(int Id)
     J0x07:
 
     // End:0x7D [Loop If]
-    if(UnknownFunction150(i, buffInfoArr_1.Length))
+    if((i < TopBuffSkills.Length))
     {
         // End:0x6F
-        if(UnknownFunction154(buffInfoArr_1[i].Id, Id))
+        if((TopBuffSkills[i].Id == Id))
         {
-            buffInfoArr_1[i] = buffInfoArr_1[UnknownFunction147(buffInfoArr_1.Length, 1)];
-            buffInfoArr_1.Length = UnknownFunction147(buffInfoArr_1.Length, 1);
+            TopBuffSkills[i] = TopBuffSkills[(TopBuffSkills.Length - 1)];
+            TopBuffSkills.Length = (TopBuffSkills.Length - 1);
             // [Explicit Break]
             goto J0x7D;
         }
-        UnknownFunction165(i);
+        i++;
         // [Loop Continue]
         goto J0x07;
     }
@@ -283,17 +283,17 @@ function UnknownFunction_5(int Id)
     return;
 }
 
-function UnknownFunction_1(ItemInfo Info)
+function AddBottomBuffSkill(ItemInfo Info)
 {
-    buffInfoArr_2.Length = UnknownFunction146(buffInfoArr_2.Length, 1);
-    buffInfoArr_2[UnknownFunction147(buffInfoArr_2.Length, 1)].Id = Info.ClassID;
-    buffInfoArr_2[UnknownFunction147(buffInfoArr_2.Length, 1)].BuffInfo_Bool = false;
-    buffInfoArr_2[UnknownFunction147(buffInfoArr_2.Length, 1)].BuffInfo_Int = UnkFuncSomeID_1(Info.ClassID);
-    buffInfoArr_2[UnknownFunction147(buffInfoArr_2.Length, 1)].Name = Info.Name;
+    BottomBuffSkills.Length = (BottomBuffSkills.Length + 1);
+    BottomBuffSkills[(BottomBuffSkills.Length - 1)].Id = Info.ClassID;
+    BottomBuffSkills[(BottomBuffSkills.Length - 1)].BuffInfo_Bool = false;
+    BottomBuffSkills[(BottomBuffSkills.Length - 1)].BuffInfo_Int = GetRequiredWeaponType(Info.ClassID);
+    BottomBuffSkills[(BottomBuffSkills.Length - 1)].Name = Info.Name;
     return;
 }
 
-function UnknownFunction_2(int Id)
+function RemoveBottomBuffSkill(int Id)
 {
     local int i;
 
@@ -301,17 +301,17 @@ function UnknownFunction_2(int Id)
     J0x07:
 
     // End:0x7D [Loop If]
-    if(UnknownFunction150(i, buffInfoArr_2.Length))
+    if((i < BottomBuffSkills.Length))
     {
         // End:0x6F
-        if(UnknownFunction154(buffInfoArr_2[i].Id, Id))
+        if((BottomBuffSkills[i].Id == Id))
         {
-            buffInfoArr_2[i] = buffInfoArr_2[UnknownFunction147(buffInfoArr_2.Length, 1)];
-            buffInfoArr_2.Length = UnknownFunction147(buffInfoArr_2.Length, 1);
+            BottomBuffSkills[i] = BottomBuffSkills[(BottomBuffSkills.Length - 1)];
+            BottomBuffSkills.Length = (BottomBuffSkills.Length - 1);
             // [Explicit Break]
             goto J0x7D;
         }
-        UnknownFunction165(i);
+        i++;
         // [Loop Continue]
         goto J0x07;
     }
@@ -325,15 +325,15 @@ function OnTimer(int Index)
     local int i;
 
     // End:0x2AD
-    if(UnknownFunction154(Index, 4448))
+    if((Index == 4448))
     {
         // End:0x50
-        if(UnknownFunction130(b_UnkBool2, UnknownFunction129(b_UnkBool1)))
+        if((bAutoNoblesseEnabled && (!bHasNoblesseOrCelestialStatus)))
         {
             // End:0x4A
-            if(UnknownFunction154(targetID, PlayerID))
+            if((targetID == PlayerID))
             {
-                isCanUseNoblesse();                
+                TryUseNoblesse();
             }
             else
             {
@@ -344,42 +344,42 @@ function OnTimer(int Index)
         J0x57:
 
         // End:0x198 [Loop If]
-        if(UnknownFunction150(i, buffInfoArr_1.Length))
+        if((i < TopBuffSkills.Length))
         {
             // End:0x18A
-            if(UnknownFunction129(buffInfoArr_1[i].BuffInfo_Bool))
+            if((!TopBuffSkills[i].BuffInfo_Bool))
             {
                 // End:0x12C
-                if(UnknownFunction151(buffInfoArr_1[i].BuffInfo_Int, -1))
+                if((TopBuffSkills[i].BuffInfo_Int > -1))
                 {
                     // End:0xDB
-                    if(UnknownFunction154(buffInfoArr_1[i].BuffInfo_Int, getWeaponType()))
+                    if((TopBuffSkills[i].BuffInfo_Int == GetEquippedWeaponType()))
                     {
-                        TryUseSkill(buffInfoArr_1[i].Id);                        
+                        TryUseSkill(TopBuffSkills[i].Id);
                     }
                     else
                     {
-                        ChatSystemMsg(UnknownFunction112(UnknownFunction112("Cannot use ", buffInfoArr_1[i].Name), ". Change Weapon!"), GetColor("Amber"));
-                    }                    
+                        ChatSystemMsg((("Cannot use " $ TopBuffSkills[i].Name) $ ". Change Weapon!"), GetColor("Amber"));
+                    }
                 }
                 else
                 {
                     // End:0x174
-                    if(UnknownFunction154(buffInfoArr_1[i].Id, 337))
+                    if((TopBuffSkills[i].Id == 337))
                     {
                         // End:0x171
-                        if(UnknownFunction151(getUserHP(), 150))
+                        if((GetUserCurrentHP() > 150))
                         {
-                            TryUseSkill(buffInfoArr_1[i].Id);
-                        }                        
+                            TryUseSkill(TopBuffSkills[i].Id);
+                        }
                     }
                     else
                     {
-                        TryUseSkill(buffInfoArr_1[i].Id);
+                        TryUseSkill(TopBuffSkills[i].Id);
                     }
                 }
             }
-            UnknownFunction165(i);
+            i++;
             // [Loop Continue]
             goto J0x57;
         }
@@ -387,34 +387,34 @@ function OnTimer(int Index)
         J0x19F:
 
         // End:0x2AD [Loop If]
-        if(UnknownFunction150(i, buffInfoArr_2.Length))
+        if((i < BottomBuffSkills.Length))
         {
             // End:0x29F
-            if(UnknownFunction129(buffInfoArr_2[i].BuffInfo_Bool))
+            if((!BottomBuffSkills[i].BuffInfo_Bool))
             {
                 // End:0x29F
-                if(UnknownFunction_3())
+                if(CanUseBottomBuffSkills())
                 {
                     // End:0x289
-                    if(UnknownFunction151(buffInfoArr_2[i].BuffInfo_Int, -1))
+                    if((BottomBuffSkills[i].BuffInfo_Int > -1))
                     {
                         // End:0x22C
-                        if(UnknownFunction154(buffInfoArr_2[i].BuffInfo_Int, getWeaponType()))
+                        if((BottomBuffSkills[i].BuffInfo_Int == GetEquippedWeaponType()))
                         {
-                            TryUseSkill(buffInfoArr_2[i].Id);                            
+                            TryUseSkill(BottomBuffSkills[i].Id);
                         }
                         else
                         {
-                            ChatSystemMsg(UnknownFunction112(UnknownFunction112("[AI SKILLS] Cannot use ", buffInfoArr_2[i].Name), ". Change Weapon!"), GetColor("Amber"));
-                        }                        
+                            ChatSystemMsg((("[AI SKILLS] Cannot use " $ BottomBuffSkills[i].Name) $ ". Change Weapon!"), GetColor("Amber"));
+                        }
                     }
                     else
                     {
-                        TryUseSkill(buffInfoArr_2[i].Id);
+                        TryUseSkill(BottomBuffSkills[i].Id);
                     }
                 }
             }
-            UnknownFunction165(i);
+            i++;
             // [Loop Continue]
             goto J0x19F;
         }
@@ -427,29 +427,29 @@ function HandleAddNormalStatus(string param)
     local int i, j, Max, ClassID;
     local bool localBool;
 
-    b_UnkBool3 = false;
+    bInvincibleStatusActive = false;
     ParseInt(param, "Max", Max);
     i = 0;
     J0x24:
 
     // End:0xA3 [Loop If]
-    if(UnknownFunction150(i, Max))
+    if((i < Max))
     {
-        b_UnkBool1 = false;
-        ParseInt(param, UnknownFunction112("SkillID_", string(i)), ClassID);
+        bHasNoblesseOrCelestialStatus = false;
+        ParseInt(param, ("SkillID_" $ string(i)), ClassID);
         // End:0x7F
-        if(NoblesseCele(ClassID))
+        if(IsNoblesseOrCelestialStatus(ClassID))
         {
-            b_UnkBool1 = true;
+            bHasNoblesseOrCelestialStatus = true;
             // [Explicit Break]
             goto J0xA3;
         }
         // End:0x95
-        if(isInvincible(ClassID))
+        if(IsInvincibleStatus(ClassID))
         {
-            b_UnkBool3 = true;
+            bInvincibleStatusActive = true;
         }
-        UnknownFunction165(i);
+        i++;
         // [Loop Continue]
         goto J0x24;
     }
@@ -459,36 +459,36 @@ function HandleAddNormalStatus(string param)
     J0xAA:
 
     // End:0x188 [Loop If]
-    if(UnknownFunction150(i, buffInfoArr_1.Length))
+    if((i < TopBuffSkills.Length))
     {
         localBool = false;
-        j = UnknownFunction147(Max, 1);
+        j = (Max - 1);
         J0xD8:
 
         // End:0x158 [Loop If]
-        if(UnknownFunction153(j, 0))
+        if((j >= 0))
         {
-            ParseInt(param, UnknownFunction112("SkillID_", string(j)), ClassID);
+            ParseInt(param, ("SkillID_" $ string(j)), ClassID);
             // End:0x14A
-            if(UnknownFunction154(buffInfoArr_1[i].Id, ClassID))
+            if((TopBuffSkills[i].Id == ClassID))
             {
-                buffInfoArr_1[i].BuffInfo_Bool = true;
+                TopBuffSkills[i].BuffInfo_Bool = true;
                 localBool = true;
                 // [Explicit Break]
                 goto J0x158;
             }
-            UnknownFunction166(j);
+            j--;
             // [Loop Continue]
             goto J0xD8;
         }
         J0x158:
 
         // End:0x17A
-        if(UnknownFunction129(localBool))
+        if((!localBool))
         {
-            buffInfoArr_1[i].BuffInfo_Bool = false;
+            TopBuffSkills[i].BuffInfo_Bool = false;
         }
-        UnknownFunction165(i);
+        i++;
         // [Loop Continue]
         goto J0xAA;
     }
@@ -496,36 +496,36 @@ function HandleAddNormalStatus(string param)
     J0x18F:
 
     // End:0x266 [Loop If]
-    if(UnknownFunction150(i, buffInfoArr_2.Length))
+    if((i < BottomBuffSkills.Length))
     {
         localBool = false;
         j = 0;
         J0x1B2:
 
         // End:0x236 [Loop If]
-        if(UnknownFunction150(j, Max))
+        if((j < Max))
         {
-            ParseInt(param, UnknownFunction112("SkillID_", string(j)), ClassID);
+            ParseInt(param, ("SkillID_" $ string(j)), ClassID);
             // End:0x228
-            if(UnknownFunction154(buffInfoArr_2[i].Id, ClassID))
+            if((BottomBuffSkills[i].Id == ClassID))
             {
-                buffInfoArr_2[i].BuffInfo_Bool = true;
+                BottomBuffSkills[i].BuffInfo_Bool = true;
                 localBool = true;
                 // [Explicit Break]
                 goto J0x236;
             }
-            UnknownFunction165(j);
+            j++;
             // [Loop Continue]
             goto J0x1B2;
         }
         J0x236:
 
         // End:0x258
-        if(UnknownFunction129(localBool))
+        if((!localBool))
         {
-            buffInfoArr_2[i].BuffInfo_Bool = false;
+            BottomBuffSkills[i].BuffInfo_Bool = false;
         }
-        UnknownFunction165(i);
+        i++;
         // [Loop Continue]
         goto J0x18F;
     }
@@ -535,29 +535,29 @@ function HandleAddNormalStatus(string param)
 function TargetUpdate()
 {
     // End:0x5B
-    if(b_UnkBool2)
+    if(bAutoNoblesseEnabled)
     {
         PlayerID = Class'NWindow.UIDATA_PLAYER'.static.GetPlayerID();
         targetID = Class'NWindow.UIDATA_TARGET'.static.GetTargetID();
         // End:0x5B
-        if(UnknownFunction129(b_UnkBool1))
+        if((!bHasNoblesseOrCelestialStatus))
         {
             // End:0x5B
-            if(UnknownFunction154(PlayerID, targetID))
+            if((PlayerID == targetID))
             {
-                isCanUseNoblesse();
+                TryUseNoblesse();
             }
         }
     }
     return;
 }
 
-function isCanUseNoblesse()
+function TryUseNoblesse()
 {
     // End:0x24
-    if(UnknownFunction153(getItemCount(3031), 5))
+    if((CountInventoryItemByClassID(3031) >= 5))
     {
-        TryUseSkill(1323);        
+        TryUseSkill(1323);
     }
     else
     {
@@ -571,26 +571,26 @@ function HandleUpdateHP(string param)
     local int ServerID;
 
     // End:0x74
-    if(b_UnkBool2)
+    if(bAutoNoblesseEnabled)
     {
         ParseInt(param, "ServerID", ServerID);
         // End:0x74
-        if(UnknownFunction154(ServerID, PlayerID))
+        if((ServerID == PlayerID))
         {
             // End:0x58
-            if(b_UnkBool4 && isNotUserDead())
+            if(bWaitForSelfTargetRestore && IsUserAlive())
             {
                 RequestSelfTarget();
-                b_UnkBool4 = false;
+                bWaitForSelfTargetRestore = false;
             }
             // End:0x6C
-            if(isNotUserDead())
+            if(IsUserAlive())
             {
-                b_UnkBool4 = false;                
+                bWaitForSelfTargetRestore = false;
             }
             else
             {
-                b_UnkBool4 = true;
+                bWaitForSelfTargetRestore = true;
             }
         }
     }
@@ -635,9 +635,9 @@ function HandleSkillList(string param)
     Info.ItemSubType = 2;
     Info.MacroCommand = strCommand;
     // End:0x165
-    if(UnknownFunction151(Lock, 0))
+    if((Lock > 0))
     {
-        Info.bIsLock = true;        
+        Info.bIsLock = true;
     }
     else
     {
@@ -645,42 +645,42 @@ function HandleSkillList(string param)
     }
     Info.ForeTexture = "";
     // End:0x203
-    if(UnknownFunction_6(SkillID))
+    if(IsTopBuffSkill(SkillID))
     {
         i = 0;
         J0x194:
 
         // End:0x1EC [Loop If]
-        if(UnknownFunction150(i, buffInfoArr_1.Length))
+        if((i < TopBuffSkills.Length))
         {
             // End:0x1DE
-            if(UnknownFunction154(buffInfoArr_1[i].Id, SkillID))
+            if((TopBuffSkills[i].Id == SkillID))
             {
                 Info.ForeTexture = "Was.Auto";
                 // [Explicit Break]
                 goto J0x1EC;
             }
-            UnknownFunction165(i);
+            i++;
             // [Loop Continue]
             goto J0x194;
         }
         J0x1EC:
 
-        TItemWnd.AddItem(Info);        
+        TItemWnd.AddItem(Info);
     }
     else
     {
         // End:0x302
-        if(UnknownFunction132(UnknownFunction_7(SkillID), UnknownFunction_8(SkillID)))
+        if((IsBottomBuffSkill(SkillID) || IsSongDanceSkill(SkillID)))
         {
             // End:0x256
-            if(UnknownFunction154(SkillID, 1323))
+            if((SkillID == 1323))
             {
                 // End:0x253
-                if(b_UnkBool2)
+                if(bAutoNoblesseEnabled)
                 {
                     Info.ForeTexture = "Was.Auto";
-                }                
+                }
             }
             else
             {
@@ -688,16 +688,16 @@ function HandleSkillList(string param)
                 J0x25D:
 
                 // End:0x2B5 [Loop If]
-                if(UnknownFunction150(i, buffInfoArr_2.Length))
+                if((i < BottomBuffSkills.Length))
                 {
                     // End:0x2A7
-                    if(UnknownFunction154(buffInfoArr_2[i].Id, SkillID))
+                    if((BottomBuffSkills[i].Id == SkillID))
                     {
                         Info.ForeTexture = "Was.Auto";
                         // [Explicit Break]
                         goto J0x2B5;
                     }
-                    UnknownFunction165(i);
+                    i++;
                     // [Loop Continue]
                     goto J0x25D;
                 }
@@ -706,26 +706,26 @@ function HandleSkillList(string param)
 
             BItemWnd.AddItem(Info);
             // End:0x302
-            if(UnknownFunction154(SkillID, 1323))
+            if((SkillID == 1323))
             {
-                BItemWnd.SwapItems(0, UnknownFunction147(BItemWnd.GetItemNum(), 1));
+                BItemWnd.SwapItems(0, (BItemWnd.GetItemNum() - 1));
             }
         }
     }
     return;
 }
 
-function bool UnknownFunction_3()
+function bool CanUseBottomBuffSkills()
 {
     // End:0x11
-    if(UnknownFunction129(b_UnkBool3))
+    if((!bInvincibleStatusActive))
     {
         return true;
     }
     return false;
 }
 
-function bool UnknownFunction_8(int ClassID)
+function bool IsSongDanceSkill(int ClassID)
 {
     switch(ClassID)
     {
@@ -792,7 +792,7 @@ function bool UnknownFunction_8(int ClassID)
     return false;
 }
 
-function bool UnknownFunction_6(int ClassID)
+function bool IsTopBuffSkill(int ClassID)
 {
     switch(ClassID)
     {
@@ -847,11 +847,11 @@ function bool UnknownFunction_6(int ClassID)
         default:
             return false;
             break;
-    }    
+    }
     return false;
 }
 
-function bool UnknownFunction_7(int ClassID)
+function bool IsBottomBuffSkill(int ClassID)
 {
     switch(ClassID)
     {
@@ -924,11 +924,11 @@ function bool UnknownFunction_7(int ClassID)
         default:
             return false;
             break;
-    }    
+    }
     return false;
 }
 
-function int UnkFuncSomeID_1(int SkillID)
+function int GetRequiredWeaponType(int SkillID)
 {
     switch(SkillID)
     {
@@ -988,12 +988,12 @@ function int UnkFuncSomeID_1(int SkillID)
     return 0;
 }
 
-function bool isNotUserDead()
+function bool IsUserAlive()
 {
     // End:0x15
-    if(UnknownFunction151(getUserHP(), 0))
+    if((GetUserCurrentHP() > 0))
     {
-        return true;        
+        return true;
     }
     else
     {
@@ -1002,7 +1002,7 @@ function bool isNotUserDead()
     return false;
 }
 
-function int getUserHP()
+function int GetUserCurrentHP()
 {
     local UserInfo Info;
 
@@ -1014,7 +1014,7 @@ function int getUserHP()
     return 0;
 }
 
-function int getItemCount(int ItemID)
+function int CountInventoryItemByClassID(int ItemID)
 {
     local int i, idx, resultInt;
     local ItemInfo Info, info2;
@@ -1025,34 +1025,34 @@ function int getItemCount(int ItemID)
     if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("InventoryWnd.InventoryItem", i, Info))
     {
         // End:0x139
-        if(UnknownFunction154(Info.ItemNum, 1))
+        if((Info.ItemNum == 1))
         {
             i = 0;
             J0xBA:
 
             // End:0x136 [Loop If]
-            if(UnknownFunction152(i, idx))
+            if((i <= idx))
             {
                 // End:0x128
                 if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("InventoryWnd.InventoryItem", i, info2))
                 {
                     // End:0x128
-                    if(UnknownFunction154(info2.ClassID, ItemID))
+                    if((info2.ClassID == ItemID))
                     {
-                        UnknownFunction165(resultInt);
+                        resultInt++;
                     }
                 }
-                UnknownFunction163(i);
+                ++i;
                 // [Loop Continue]
                 goto J0xBA;
-            }            
+            }
         }
         else
         {
             // End:0x157
-            if(UnknownFunction154(Info.ItemNum, 0))
+            if((Info.ItemNum == 0))
             {
-                resultInt = 0;                
+                resultInt = 0;
             }
             else
             {
@@ -1066,7 +1066,7 @@ function int getItemCount(int ItemID)
 function TryUseSkill(int SkillID)
 {
     // End:0x14
-    if(isNotUserDead())
+    if(IsUserAlive())
     {
         UseSkill(SkillID);
     }
@@ -1078,7 +1078,7 @@ function ChatSystemMsg(string param, Color Color)
     // End:0x55
     if(GetOptionBool("Game", "SystemMsgWnd"))
     {
-        Class'NWindow.UIAPI_TEXTLISTBOX'.static.AddString("SystemMsgWnd.SystemMsgList", param, Color);        
+        Class'NWindow.UIAPI_TEXTLISTBOX'.static.AddString("SystemMsgWnd.SystemMsgList", param, Color);
     }
     else
     {
@@ -1152,7 +1152,7 @@ function Color GetColor(string Colors)
     return RGB;
 }
 
-function bool NoblesseCele(int SkillID)
+function bool IsNoblesseOrCelestialStatus(int SkillID)
 {
     switch(SkillID)
     {
@@ -1171,7 +1171,7 @@ function bool NoblesseCele(int SkillID)
     return false;
 }
 
-function bool isInvincible(int ClassID)
+function bool IsInvincibleStatus(int ClassID)
 {
     switch(ClassID)
     {
@@ -1197,7 +1197,7 @@ function ItemInfo GetWeapon()
     return Info;
 }
 
-function int getWeaponType()
+function int GetEquippedWeaponType()
 {
     return GetWeapon().WeaponType;
 }

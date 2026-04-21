@@ -280,7 +280,7 @@ function unkFunc8(string param)
     local Vector unkVar;
 
     // End:0xBD
-    if(UnknownFunction130(UnknownFunction130(ParseFloat(param, "X", unkVar.X), ParseFloat(param, "Y", unkVar.Y)), ParseFloat(param, "Z", unkVar.Z)))
+    if(((ParseFloat(param, "X", unkVar.X) && ParseFloat(param, "Y", unkVar.Y)) && ParseFloat(param, "Z", unkVar.Z)))
     {
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AddTarget("NPHRN_MiniMapWnd_OLD.Minimap", unkVar);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", unkVar, false, false);
@@ -294,7 +294,7 @@ function unkFunc9(string param)
     local int LocX, LocY, LocZ;
 
     // End:0xB0
-    if(UnknownFunction130(UnknownFunction130(ParseInt(param, "X", LocX), ParseInt(param, "Y", LocY)), ParseInt(param, "Z", LocZ)))
+    if(((ParseInt(param, "X", LocX) && ParseInt(param, "Y", LocY)) && ParseInt(param, "Z", LocZ)))
     {
         unkVar.X = float(LocX);
         unkVar.Y = float(LocY);
@@ -323,12 +323,12 @@ function unkFunc5()
 
     unkInt2 = GetPartyMemberCount();
     // End:0x1D
-    if(UnknownFunction154(0, unkInt2))
+    if((0 == unkInt2))
     {
         return;
     }
     unkFunc10();
-    unkInt1 = UnknownFunction173(UnknownFunction146(unkInt1, 1), unkInt2);
+    unkInt1 = int(float((unkInt1 + 1)) % float(unkInt2));
     // End:0x86
     if(GetPartyMemberLocation(unkInt1, PartyMemberLocation))
     {
@@ -405,7 +405,7 @@ function ResizeWnd()
     Curtain = GetHandle("NPHRN_MiniMapWnd_OLD.Curtain");
     Minimap = GetHandle("NPHRN_MiniMapWnd_OLD.Minimap");
     // End:0x238
-    if(UnknownFunction129(Large))
+    if((!Large))
     {
         unkWndHandle1.SetWindowSize(209, 207);
         Tex.SetWindowSize(209, 207);

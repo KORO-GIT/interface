@@ -40,9 +40,9 @@ function OnLoad()
     // End:0x189 [Loop If]
     if(int_4 < 4)
     {
-        int_1[int_4].item_3 = ItemWindowHandle(GetHandle(UnknownFunction112("AutoShotItemWnd.ShotItem", string(int_4))));
-        int_1[int_4].text_1 = TextBoxHandle(GetHandle(UnknownFunction112("AutoShotItemWnd.Counter", string(int_4))));
-        int_1[int_4].texture_1 = TextureHandle(GetHandle(UnknownFunction112("AutoShotItemWnd.Toggle", string(int_4))));
+        int_1[int_4].item_3 = ItemWindowHandle(GetHandle(("AutoShotItemWnd.ShotItem" $ string(int_4))));
+        int_1[int_4].text_1 = TextBoxHandle(GetHandle(("AutoShotItemWnd.Counter" $ string(int_4))));
+        int_1[int_4].texture_1 = TextureHandle(GetHandle(("AutoShotItemWnd.Toggle" $ string(int_4))));
         MessageBox(string(int_4));
         int_1[int_4].texture_1.HideWindow();
         int_4++;
@@ -60,7 +60,7 @@ function OnLoad()
 function OnEnterState(name a_PreStateName)
 {
     // End:0x42
-    if(UnknownFunction129(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.Cb_AutoSS")))
+    if((!Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.Cb_AutoSS")))
     {
         Me.ShowWindow();
         GetShotItemInfo();
@@ -124,7 +124,7 @@ function function2(string string_1)
                 if(int_1[3].bool_6)
                 {
                     RequestUseItem(int_1[3].int_2);
-                }                
+                }
             }
             else
             {
@@ -271,9 +271,9 @@ function function4(optional string string_1, optional ItemInfo Info)
     local int int_4;
 
     // End:0x23
-    if(UnknownFunction123(string_1, ""))
+    if((string_1 != ""))
     {
-        function5(string_1, info_2);        
+        function5(string_1, info_2);
     }
     else
     {
@@ -286,29 +286,29 @@ function function4(optional string string_1, optional ItemInfo Info)
     if(int_4 < 4)
     {
         // End:0x117
-        if(UnknownFunction154(info_2.ClassID, int_1[int_4].int_3))
+        if((info_2.ClassID == int_1[int_4].int_3))
         {
             // End:0x90
-            if(UnknownFunction154(int_1[int_4].int_2, 0))
+            if((int_1[int_4].int_2 == 0))
             {
                 function12(int_4, info_2);
                 return;
             }
             // End:0xC7
-            if(UnknownFunction151(info_2.ItemNum, 99))
+            if((info_2.ItemNum > 99))
             {
                 int_1[int_4].text_1.SetText("99+");
                 // [Explicit Continue]
                 goto J0x117;
             }
             // End:0xE9
-            if(UnknownFunction154(info_2.ItemNum, 0))
+            if((info_2.ItemNum == 0))
             {
                 ClearContainer(int_4);
                 // [Explicit Continue]
                 goto J0x117;
             }
-            int_1[int_4].text_1.SetText(UnknownFunction112("", string(info_2.ItemNum)));
+            int_1[int_4].text_1.SetText(("" $ string(info_2.ItemNum)));
         }
         J0x117:
 
@@ -322,7 +322,7 @@ function function4(optional string string_1, optional ItemInfo Info)
 function function12(int int_6, ItemInfo info_2)
 {
     // End:0x148
-    if(UnknownFunction132(UnknownFunction154(info_2.ClassID, int_1[int_6].int_3), UnknownFunction154(info_2.ClassID, int_1[int_6].Reserve)))
+    if(((info_2.ClassID == int_1[int_6].int_3) || (info_2.ClassID == int_1[int_6].Reserve)))
     {
         int_1[int_6].item_3.Clear();
         int_1[int_6].item_3.AddItem(info_2);
@@ -339,7 +339,7 @@ function function12(int int_6, ItemInfo info_2)
         if(!bool_2)
         {
             // End:0x148
-            if(UnknownFunction130(UnknownFunction155(int_1[0].int_2, 0), UnknownFunction155(int_1[1].int_2, 0)))
+            if(((int_1[0].int_2 != 0) && (int_1[1].int_2 != 0)))
             {
                 bool_2 = true;
                 OnClickButton("");
@@ -384,7 +384,7 @@ function OnClickButton(string strID)
     // End:0xB4
     if(!bool_1)
     {
-        bool_1 = true;        
+        bool_1 = true;
     }
     else
     {
@@ -399,7 +399,7 @@ function GetShotItemInfo(optional int int_5)
     local int int_6, int_4, temp;
 
     // End:0x2F
-    if(UnknownFunction129(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.Cb_AutoSS")))
+    if((!Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.Cb_AutoSS")))
     {
         return;
     }
@@ -407,12 +407,13 @@ function GetShotItemInfo(optional int int_5)
     int_1[3].int_3 = 6647;
     int_1[3].Reserve = 6646;
     // End:0x32F
-    if(UnknownFunction132(item_2.GetItem(int_4, Info), UnknownFunction155(int_5, 0)))
+    if((item_2.GetItem(int_4, Info) || (int_5 != 0)))
     {
         // End:0xB9
-        if(UnknownFunction155(int_5, 0))
+        if((int_5 != 0))
         {
-            temp = UnknownFunction166(int_5);            
+            temp = int_5;
+            int_5--;
         }
         else
         {
@@ -482,7 +483,7 @@ function GetShotItemInfo(optional int int_5)
                 goto J0x322;
             }
             // End:0x322
-            if(UnknownFunction155(int_1[int_4].Reserve, 0))
+            if((int_1[int_4].Reserve != 0))
             {
                 int_6 = item_1.FindItemWithClassID(int_1[int_4].Reserve);
                 // End:0x322
@@ -496,7 +497,7 @@ function GetShotItemInfo(optional int int_5)
             int_4++;
             // [Loop Continue]
             goto J0x24C;
-        }        
+        }
     }
     else
     {
@@ -528,7 +529,7 @@ function OnClickItem(string string_5, int int_6)
 {
     local int int_5;
 
-    int_5 = int(UnknownFunction234(string_5, 1));
+    int_5 = int(Right(string_5, 1));
     RequestUseItem(int_1[int_5].int_2);
     return;
 }
@@ -543,12 +544,12 @@ function function8(string string_5)
 {
     local int int_5;
 
-    int_5 = int(UnknownFunction234(string_5, 1));
+    int_5 = int(Right(string_5, 1));
     // End:0x4B
     if(!int_1[int_5].bool_6)
     {
         function6(int_5);
-        int_1[int_5].bool_5 = true;        
+        int_1[int_5].bool_5 = true;
     }
     else
     {
@@ -602,9 +603,9 @@ function OnDropItem(string string_5, ItemInfo Info, int X, int Y)
 {
     local int int_5;
 
-    int_5 = int(UnknownFunction234(string_5, 1));
+    int_5 = int(Right(string_5, 1));
     // End:0x6D
-    if(UnknownFunction132(UnknownFunction154(Info.ClassID, int_1[int_5].int_3), UnknownFunction154(Info.ClassID, int_1[int_5].Reserve)))
+    if(((Info.ClassID == int_1[int_5].int_3) || (Info.ClassID == int_1[int_5].Reserve)))
     {
         function12(int_5, Info);
     }
@@ -624,6 +625,6 @@ function OnRegisterEvent()
 
 function function1()
 {
-    function11(UnknownFunction112(Me.GetWindowName(), ".BtnOn"), 1, 1);
+    function11((Me.GetWindowName() $ ".BtnOn"), 1, 1);
     return;
 }
