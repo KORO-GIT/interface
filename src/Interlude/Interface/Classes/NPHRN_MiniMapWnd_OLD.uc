@@ -1,17 +1,16 @@
 class NPHRN_MiniMapWnd_OLD extends UICommonAPI;
 
-var WindowHandle unkWndHandle1;
-var WindowHandle unkWndHandle2;
-var int unkInt2;
-var int unkInt1;
-var ButtonHandle ButtonHandle;
+var WindowHandle MinimapWnd;
+var WindowHandle MinimapHandlerWnd;
+var int PartyMemberCount;
+var int CurrentPartyMemberIndex;
+var ButtonHandle BtnFixLoc;
 var ButtonHandle BtnResize;
-var bool unkBool;
+var bool bFollowPlayer;
 var bool Large;
 
 function OnLoad()
 {
-    BtnResize.SetTooltipCustomType(MakeTooltipSimpleText("Resize"));
     RegisterEvent(2900);
     RegisterEvent(110);
     RegisterEvent(2420);
@@ -22,35 +21,36 @@ function OnLoad()
     RegisterEvent(1820);
     RegisterEvent(1830);
     RegisterEvent(11223344);
-    unkWndHandle1 = GetHandle("NPHRN_MiniMapWnd_OLD");
-    unkWndHandle2 = GetHandle("NPHRN_MiniMapHandler_OLD");
-    ButtonHandle = ButtonHandle(GetHandle("NPHRN_MiniMapWnd_OLD.Curtain.BtnFixLoc"));
+    MinimapWnd = GetHandle("NPHRN_MiniMapWnd_OLD");
+    MinimapHandlerWnd = GetHandle("NPHRN_MiniMapHandler_OLD");
+    BtnFixLoc = ButtonHandle(GetHandle("NPHRN_MiniMapWnd_OLD.Curtain.BtnFixLoc"));
     BtnResize = ButtonHandle(GetHandle("NPHRN_MiniMapWnd_OLD.Curtain.BtnResize"));
-    unkBool = true;
-    unkFunc2();
+    BtnResize.SetTooltipCustomType(MakeTooltipSimpleText("Resize"));
+    bFollowPlayer = true;
+    UpdateTransparencyState();
     return;
 }
 
 function OnShow()
 {
     AdjustMapToPlayerPosition(true);
-    unkWndHandle1.SetTimer(1, 1000);
-    unkFunc1();
-    unkFunc2();
+    MinimapWnd.SetTimer(1, 1000);
+    UpdateZoneName();
+    UpdateTransparencyState();
     return;
 }
 
 function OnTimer(int Id)
 {
-    unkWndHandle1.KillTimer(Id);
-    unkFunc1();
+    MinimapWnd.KillTimer(Id);
+    UpdateZoneName();
     return;
 }
 
 function OnTick()
 {
     // End:0x10
-    if(unkBool)
+    if(bFollowPlayer)
     {
         AdjustMapToPlayerPosition(true);
     }
@@ -63,7 +63,7 @@ function OnClickButton(string param)
     {
         // End:0x1E
         case "BtnFixLoc":
-            unkFunc3();
+            ToggleFollowPlayer();
             // End:0x9D
             break;
         // End:0x34
@@ -73,12 +73,12 @@ function OnClickButton(string param)
             break;
         // End:0x4E
         case "BtnTargetLoc":
-            unkFunc4();
+            ShowQuestLocation();
             // End:0x9D
             break;
         // End:0x67
         case "BtnPartyLoc":
-            unkFunc5();
+            ShowNextPartyMemberLocation();
             // End:0x9D
             break;
         // End:0x9A
@@ -86,7 +86,7 @@ function OnClickButton(string param)
             // End:0x89
             if(Large)
             {
-                Large = false;                
+                Large = false;
             }
             else
             {
@@ -110,34 +110,34 @@ function OnEvent(int Index, string param)
     {
         // End:0x4C
         case 2900:
-            unkWndHandle2.SetAnchor("", "TopRight", "TopRight", -1, 1);
-            unkWndHandle2.ClearAnchor();
+            MinimapHandlerWnd.SetAnchor("", "TopRight", "TopRight", -1, 1);
+            MinimapHandlerWnd.ClearAnchor();
             // End:0x18A
             break;
         // End:0x79
         case 110:
             ParseInt(param, "ZoneCode", idx);
-            unkFunc6(idx);
+            UpdateZoneTexture(idx);
             // End:0x18A
             break;
         // End:0x8A
         case 2420:
-            unkFunc1();
+            UpdateZoneName();
             // End:0x18A
             break;
         // End:0xA0
         case 520:
-            unkFunc7(param);
+            HandlePartyMemberCount(param);
             // End:0x18A
             break;
         // End:0xB6
         case 1790:
-            unkFunc8(param);
+            HandleAddTarget(param);
             // End:0x18A
             break;
         // End:0xCC
         case 1800:
-            unkFunc9(param);
+            HandleDeleteTarget(param);
             // End:0x18A
             break;
         // End:0x104
@@ -205,7 +205,7 @@ function HandleRadarShowHide()
     return;
 }
 
-function unkFunc6(int idx)
+function UpdateZoneTexture(int idx)
 {
     switch(idx)
     {
@@ -253,84 +253,84 @@ function unkFunc6(int idx)
 
 function AdjustMapToPlayerPosition(bool a_ZoomToTownMap)
 {
-    local Vector unkVar;
+    local Vector PlayerLocation;
 
-    unkVar = GetPlayerPosition();
-    Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", unkVar, a_ZoomToTownMap);
+    PlayerLocation = GetPlayerPosition();
+    Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", PlayerLocation, a_ZoomToTownMap);
     return;
 }
 
-function unkFunc1()
+function UpdateZoneName()
 {
-    local string unkVar;
+    local string ZoneName;
 
-    unkVar = GetCurrentZoneName();
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("NPHRN_MiniMapWnd_OLD.HeadZone", unkVar);
+    ZoneName = GetCurrentZoneName();
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("NPHRN_MiniMapWnd_OLD.HeadZone", ZoneName);
     return;
 }
 
-function unkFunc7(string param)
+function HandlePartyMemberCount(string param)
 {
-    ParseInt(param, "PartyMemberCount", unkInt2);
+    ParseInt(param, "PartyMemberCount", PartyMemberCount);
     return;
 }
 
-function unkFunc8(string param)
+function HandleAddTarget(string param)
 {
-    local Vector unkVar;
+    local Vector TargetLocation;
 
     // End:0xBD
-    if(((ParseFloat(param, "X", unkVar.X) && ParseFloat(param, "Y", unkVar.Y)) && ParseFloat(param, "Z", unkVar.Z)))
+    if(((ParseFloat(param, "X", TargetLocation.X) && ParseFloat(param, "Y", TargetLocation.Y)) && ParseFloat(param, "Z", TargetLocation.Z)))
     {
-        Class'NWindow.UIAPI_MINIMAPCTRL'.static.AddTarget("NPHRN_MiniMapWnd_OLD.Minimap", unkVar);
-        Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", unkVar, false, false);
+        Class'NWindow.UIAPI_MINIMAPCTRL'.static.AddTarget("NPHRN_MiniMapWnd_OLD.Minimap", TargetLocation);
+        Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", TargetLocation, false, false);
     }
     return;
 }
 
-function unkFunc9(string param)
+function HandleDeleteTarget(string param)
 {
-    local Vector unkVar;
+    local Vector TargetLocation;
     local int LocX, LocY, LocZ;
 
     // End:0xB0
     if(((ParseInt(param, "X", LocX) && ParseInt(param, "Y", LocY)) && ParseInt(param, "Z", LocZ)))
     {
-        unkVar.X = float(LocX);
-        unkVar.Y = float(LocY);
-        unkVar.Z = float(LocZ);
-        Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteTarget("NPHRN_MiniMapWnd_OLD.Minimap", unkVar);
+        TargetLocation.X = float(LocX);
+        TargetLocation.Y = float(LocY);
+        TargetLocation.Z = float(LocZ);
+        Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteTarget("NPHRN_MiniMapWnd_OLD.Minimap", TargetLocation);
     }
     return;
 }
 
-function unkFunc4()
+function ShowQuestLocation()
 {
     local Vector QuestLocation;
 
     // End:0x46
     if(GetQuestLocation(QuestLocation))
     {
-        unkFunc10();
+        DisableFollowPlayer();
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", QuestLocation);
     }
     return;
 }
 
-function unkFunc5()
+function ShowNextPartyMemberLocation()
 {
     local Vector PartyMemberLocation;
 
-    unkInt2 = GetPartyMemberCount();
+    PartyMemberCount = GetPartyMemberCount();
     // End:0x1D
-    if((0 == unkInt2))
+    if((0 == PartyMemberCount))
     {
         return;
     }
-    unkFunc10();
-    unkInt1 = int(float((unkInt1 + 1)) % float(unkInt2));
+    DisableFollowPlayer();
+    CurrentPartyMemberIndex = int(float((CurrentPartyMemberIndex + 1)) % float(PartyMemberCount));
     // End:0x86
-    if(GetPartyMemberLocation(unkInt1, PartyMemberLocation))
+    if(GetPartyMemberLocation(CurrentPartyMemberIndex, PartyMemberLocation))
     {
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("NPHRN_MiniMapWnd_OLD.Minimap", PartyMemberLocation, false);
     }
@@ -340,11 +340,11 @@ function unkFunc5()
 function HandleRadarButtonClick()
 {
     SetOptionBool("Custom", "RadarTransparency", !GetOptionBool("Custom", "RadarTransparency"));
-    unkFunc2();
+    UpdateTransparencyState();
     return;
 }
 
-function unkFunc2()
+function UpdateTransparencyState()
 {
     local ButtonHandle btnHandle;
 
@@ -354,7 +354,7 @@ function unkFunc2()
     {
         Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("NPHRN_MiniMapWnd_OLD.Minimap", 255, 0.5000000);
         Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("NPHRN_MiniMapWnd_OLD.Circle", 255, 0.5000000);
-        btnHandle.SetTexture("Was.NPHRN_Radar_BtnTrans", "Was.NPHRN_Radar_BtnTrans_Down", "Was.NPHRN_Radar_BtnTrans_Over");        
+        btnHandle.SetTexture("Was.NPHRN_Radar_BtnTrans", "Was.NPHRN_Radar_BtnTrans_Down", "Was.NPHRN_Radar_BtnTrans_Over");
     }
     else
     {
@@ -365,31 +365,31 @@ function unkFunc2()
     return;
 }
 
-function unkFunc3()
+function ToggleFollowPlayer()
 {
     // End:0x12
-    if(unkBool)
+    if(bFollowPlayer)
     {
-        unkFunc10();        
+        DisableFollowPlayer();
     }
     else
     {
-        unkFunc11();
+        EnableFollowPlayer();
     }
     return;
 }
 
-function unkFunc11()
+function EnableFollowPlayer()
 {
-    ButtonHandle.SetTexture("Was.NPHRN_Radar_Fix_Enabled", "Was.NPHRN_Radar_Fix_Down", "Was.NPHRN_Radar_Fix_Over");
-    unkBool = true;
+    BtnFixLoc.SetTexture("Was.NPHRN_Radar_Fix_Enabled", "Was.NPHRN_Radar_Fix_Down", "Was.NPHRN_Radar_Fix_Over");
+    bFollowPlayer = true;
     return;
 }
 
-function unkFunc10()
+function DisableFollowPlayer()
 {
-    ButtonHandle.SetTexture("Was.NPHRN_Radar_Fix", "Was.NPHRN_Radar_Fix_Down", "Was.NPHRN_Radar_Fix_Over");
-    unkBool = false;
+    BtnFixLoc.SetTexture("Was.NPHRN_Radar_Fix", "Was.NPHRN_Radar_Fix_Down", "Was.NPHRN_Radar_Fix_Over");
+    bFollowPlayer = false;
     return;
 }
 
@@ -407,31 +407,31 @@ function ResizeWnd()
     // End:0x238
     if((!Large))
     {
-        unkWndHandle1.SetWindowSize(209, 207);
+        MinimapWnd.SetWindowSize(209, 207);
         Tex.SetWindowSize(209, 207);
         Tex.SetTexture("Was.NPHRN_Radar_CaseSolid");
         Circle.SetTexture("Was.NPHRN_Radar_Circle");
         CurtainBg.SetTexture("Was.NPHRN_Radar_Curtain");
         CurtainBg.SetWindowSize(40, 175);
         TexZone.SetWindowSize(202, 24);
-        unkWndHandle2.SetWindowSize(202, 24);
+        MinimapHandlerWnd.SetWindowSize(202, 24);
         Curtain.SetWindowSize(40, 175);
         Minimap.SetWindowSize(197, 175);
-        unkWndHandle2.Move(97, 0);        
+        MinimapHandlerWnd.Move(97, 0);
     }
     else
     {
-        unkWndHandle1.SetWindowSize(312, 309);
+        MinimapWnd.SetWindowSize(312, 309);
         Tex.SetWindowSize(312, 309);
         Tex.SetTexture("Was.NPHRN_Radar_CaseSolid_Big");
         Circle.SetTexture("Was.Null");
         CurtainBg.SetTexture("Was.NPHRN_Radar_Curtain_Big");
         CurtainBg.SetWindowSize(40, 277);
         TexZone.SetWindowSize(300, 24);
-        unkWndHandle2.SetWindowSize(300, 24);
+        MinimapHandlerWnd.SetWindowSize(300, 24);
         Curtain.SetWindowSize(40, 277);
         Minimap.SetWindowSize(298, 276);
-        unkWndHandle2.Move(-97, 0);
+        MinimapHandlerWnd.Move(-97, 0);
     }
     return;
 }
