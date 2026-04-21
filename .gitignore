@@ -1,0 +1,27 @@
+# Build workspace and local tools
+/build_work/
+/decompiled/
+/tools/
+/interface_Perfect/
+
+# Root input binaries kept locally for reference
+/Interface.u
+/Interface.xdat
+
+# Local decompile helpers depend on ignored tools
+/export_interface_u.bat
+/export_xdat_ct0.bat
+/run_xdat_editor.bat
+
+# Temporary and generated noise
+*.log
+*.tmp
+*.bak
+*.codexbak_*
+Save.tmp
+
+# OS/editor files
+Thumbs.db
+.DS_Store
+.idea/
+.vscode/
