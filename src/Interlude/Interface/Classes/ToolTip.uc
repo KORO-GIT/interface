@@ -356,6 +356,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 {
                     AddTooltipItemOption(0, (strTmp $ " / ") $ SlotString, false, true, false);
                 }
+                AddTooltipAugmentSummary(item);
                 AddTooltipItemBlank(12);
                 AddTooltipItemOption(1489, "", true, false, false);
                 SetTooltipItemColor(255, 255, 255, 0);
@@ -382,8 +383,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 if((item.RefineryOp1 != 0) || item.RefineryOp2 != 0)
                 {
                     AddTooltipItemBlank(12);
-                    AddTooltipItemOption(1490, "", true, false, false);
-                    SetTooltipItemColor(255, 255, 255, 0);
+                    AddTooltipItemSectionTitle(1490);
                     // End:0x8E6
                     if(item.RefineryOp2 != 0)
                     {
@@ -806,6 +806,63 @@ function AddTooltipAdminItemIDLine(string Label, string Value)
     m_Info.t_color.B = 121;
     m_Info.t_color.A = byte(255);
     m_Info.t_strText = Value;
+    EndItem();
+    return;
+}
+
+function AddTooltipAugmentSummary(ItemInfo item)
+{
+    AddTooltipAugmentSummaryLine(item.RefineryOp2);
+    AddTooltipAugmentSummaryLine(item.RefineryOp1);
+    return;
+}
+
+function AddTooltipAugmentSummaryLine(int RefineryOp)
+{
+    local string strDesc1, strDesc2, strDesc3;
+
+    if((RefineryOp <= 14561) || (RefineryOp >= 16380))
+    {
+        return;
+    }
+    strDesc1 = "";
+    strDesc2 = "";
+    strDesc3 = "";
+    if(Class'NWindow.UIDATA_REFINERYOPTION'.static.GetOptionDescription(RefineryOp, strDesc1, strDesc2, strDesc3))
+    {
+        if(Len(strDesc1) > 0)
+        {
+            AddTooltipPlainText(strDesc1, 255, 102, 255, 6, true, true);
+        }
+    }
+    return;
+}
+
+function AddTooltipItemSectionTitle(int TitleID)
+{
+    local string Title;
+
+    Title = GetSystemString(TitleID);
+    if((Left(Title, 1) == "<") && (Right(Title, 1) == ">"))
+    {
+        Title = Mid(Title, 1, Len(Title) - 2);
+    }
+    AddTooltipPlainText(Title, 178, 190, 207, 6, true, true);
+    return;
+}
+
+function AddTooltipPlainText(string Text, int R, int G, int B, int OffsetY, bool bLineBreak, bool bOneLine)
+{
+    StartItem();
+    m_Info.eType = DIT_TEXT;
+    m_Info.nOffSetY = OffsetY;
+    m_Info.bLineBreak = bLineBreak;
+    m_Info.t_bDrawOneLine = bOneLine;
+    m_Info.t_color.R = byte(R);
+    m_Info.t_color.G = byte(G);
+    m_Info.t_color.B = byte(B);
+    m_Info.t_color.A = byte(255);
+    m_Info.t_strText = Text;
     EndItem();
     return;
 }
