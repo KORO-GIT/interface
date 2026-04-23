@@ -5,10 +5,12 @@ const TOOLTIP_SETITEM_MAX = 3;
 
 var CustomTooltip m_Tooltip;
 var DrawItemInfo m_Info;
+var bool m_bAdminItemIDMode;
 
 function OnLoad()
 {
     RegisterEvent(2920);
+    RegisterEvent(2280);
     return;
 }
 
@@ -19,6 +21,10 @@ function OnEvent(int Event_ID, string param)
         // End:0x1D
         case 2920:
             HandleRequestTooltipInfo(param);
+            // End:0x20
+            break;
+        case 2280:
+            m_bAdminItemIDMode = true;
             // End:0x20
             break;
         // End:0xFFFF
@@ -624,6 +630,13 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
             m_Info.t_strText = item.Description;
             EndItem();
         }
+        // End:0x11FD
+        if((TooltipType == "Inventory") && ShouldShowAdminItemIDs())
+        {
+            bLargeWidth = true;
+            AddTooltipItemBlank(6);
+            AddTooltipAdminItemIDs(item);
+        }
         // End:0x16B8
         if(item.ClassID > 0)
         {
@@ -722,6 +735,79 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
         m_Tooltip.MinimumWidth = 144;
     }
     ReturnTooltipInfo(m_Tooltip);
+    return;
+}
+
+function bool ShouldShowAdminItemIDs()
+{
+    local UserInfo Info;
+    local int Value;
+
+    // EV_ShowGMWnd is only expected for GM/admin sessions.
+    if(m_bAdminItemIDMode)
+    {
+        return true;
+    }
+    if(GetOptionBool("Game", "ShowAdminItemIDs"))
+    {
+        return true;
+    }
+    if(GetPlayerInfo(Info))
+    {
+        if(GetINIInt(Info.Name, "ShowAdminItemIDs", Value, "Option"))
+        {
+            return Value != 0;
+        }
+    }
+    return false;
+}
+
+function AddTooltipAdminItemIDs(ItemInfo item)
+{
+    AddTooltipAdminItemIDLine("ID", string(item.ClassID));
+    // ServerID is the runtime object id; it may be empty for static/preview items.
+    if(item.ServerID > 0)
+    {
+        AddTooltipAdminItemIDLine("Server ID", string(item.ServerID));
+    }
+    return;
+}
+
+function AddTooltipAdminItemIDLine(string Label, string Value)
+{
+    StartItem();
+    m_Info.eType = DIT_TEXT;
+    m_Info.nOffSetY = 6;
+    m_Info.bLineBreak = true;
+    m_Info.t_bDrawOneLine = true;
+    m_Info.t_color.R = 163;
+    m_Info.t_color.G = 163;
+    m_Info.t_color.B = 163;
+    m_Info.t_color.A = byte(255);
+    m_Info.t_strText = Label;
+    EndItem();
+
+    StartItem();
+    m_Info.eType = DIT_TEXT;
+    m_Info.nOffSetY = 6;
+    m_Info.t_bDrawOneLine = true;
+    m_Info.t_color.R = 163;
+    m_Info.t_color.G = 163;
+    m_Info.t_color.B = 163;
+    m_Info.t_color.A = byte(255);
+    m_Info.t_strText = " : ";
+    EndItem();
+
+    StartItem();
+    m_Info.eType = DIT_TEXT;
+    m_Info.nOffSetY = 6;
+    m_Info.t_bDrawOneLine = true;
+    m_Info.t_color.R = 176;
+    m_Info.t_color.G = 155;
+    m_Info.t_color.B = 121;
+    m_Info.t_color.A = byte(255);
+    m_Info.t_strText = Value;
+    EndItem();
     return;
 }
 
