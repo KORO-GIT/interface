@@ -459,10 +459,8 @@ function OnClickNPCListButton()
         return;
     }
     Id = Class'NWindow.UIDATA_NPC'.static.GetFirstID();
-    J0x4F:
 
-    // End:0x11C [Loop If]
-    if(-1 != Id)
+    while(-1 != Id)
     {
         // End:0x104
         if(Class'NWindow.UIDATA_NPC'.static.IsValidData(Id) && Class'NWindow.UIDATA_NPC'.static.GetNPCName(Id) == EditBoxString)
@@ -475,14 +473,10 @@ function OnClickNPCListButton()
             }
             DialogSetID(2);
             DialogShow(DIALOG_OK, (("ClassID:" $ string(Id + 1000000)) @ "Name:") $ EditBoxString);
-            // [Explicit Break]
-            goto J0x11C;
+            break;
         }
         Id = Class'NWindow.UIDATA_NPC'.static.GetNextID();
-        // [Loop Continue]
-        goto J0x4F;
     }
-    J0x11C:
 
     return;
 }
@@ -501,10 +495,8 @@ function OnClickItemListButton()
         return;
     }
     Id = Class'NWindow.UIDATA_ITEM'.static.GetFirstID();
-    J0x4F:
 
-    // End:0xFC [Loop If]
-    if(-1 != Id)
+    while(-1 != Id)
     {
         // End:0xE4
         if(Class'NWindow.UIDATA_ITEM'.static.GetItemName(Id) == EditBoxString)
@@ -517,14 +509,10 @@ function OnClickItemListButton()
             }
             DialogSetID(3);
             DialogShow(DIALOG_OK, (("ClassID:" $ string(Id)) @ "Name:") $ EditBoxString);
-            // [Explicit Break]
-            goto J0xFC;
+            break;
         }
         Id = Class'NWindow.UIDATA_ITEM'.static.GetNextID();
-        // [Loop Continue]
-        goto J0x4F;
     }
-    J0xFC:
 
     return;
 }
@@ -543,10 +531,8 @@ function OnClickSkillListButton()
         return;
     }
     Id = Class'NWindow.UIDATA_SKILL'.static.GetFirstID();
-    J0x4F:
 
-    // End:0xFD [Loop If]
-    if(-1 != Id)
+    while(-1 != Id)
     {
         // End:0xE5
         if(Class'NWindow.UIDATA_SKILL'.static.GetName(Id, 1) == EditBoxString)
@@ -559,14 +545,10 @@ function OnClickSkillListButton()
             }
             DialogSetID(4);
             DialogShow(DIALOG_OK, (("ClassID:" $ string(Id)) @ "Name:") $ EditBoxString);
-            // [Explicit Break]
-            goto J0xFD;
+            break;
         }
         Id = Class'NWindow.UIDATA_SKILL'.static.GetNextID();
-        // [Loop Continue]
-        goto J0x4F;
     }
-    J0xFD:
 
     return;
 }

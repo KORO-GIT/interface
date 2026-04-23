@@ -224,28 +224,20 @@ function AddRecipeItem(int ProductID, int SuccessRate, int NeedCount, string Nod
         arrMatRate.Length = nMax;
         arrMatNeedCount.Length = nMax;
         i = 0;
-        J0x611:
 
-        // End:0x67B [Loop If]
-        if(i < nMax)
+        while(i < nMax)
         {
             arrMatID[i] = param.GetInt();
             arrMatRate[i] = param.GetInt();
             arrMatNeedCount[i] = param.GetInt();
             i++;
-            // [Loop Continue]
-            goto J0x611;
         }
         i = 0;
-        J0x682:
 
-        // End:0x6C7 [Loop If]
-        if(i < nMax)
+        while(i < nMax)
         {
             AddRecipeItem(arrMatID[i], arrMatRate[i], arrMatNeedCount[i], strRetName);
             i++;
-            // [Loop Continue]
-            goto J0x682;
         }        
     }
     else

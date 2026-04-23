@@ -175,10 +175,8 @@ function OnDBClickItem(string strID, int Index)
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.BookItemWnd", Index, infItem);
         Max = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("RecipeShopWnd.ShopItemWnd");
         i = 0;
-        J0x99:
 
-        // End:0x10F [Loop If]
-        if(i < Max)
+        while(i < Max)
         {
             // End:0x105
             if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.ShopItemWnd", i, DeleteItem))
@@ -191,8 +189,6 @@ function OnDBClickItem(string strID, int Index)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x99;
         }
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.BookItemWnd", Index, infItem);
         ShowShopItemAddDialog(infItem);        
@@ -322,10 +318,8 @@ function UpdateShopItem(ItemInfo AddItem)
     bDuplicated = false;
     Max = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("RecipeShopWnd.ShopItemWnd");
     i = 0;
-    J0x3F:
 
-    // End:0xB3 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         // End:0xA9
         if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.ShopItemWnd", i, infItem))
@@ -334,15 +328,11 @@ function UpdateShopItem(ItemInfo AddItem)
             if(AddItem.ClassID == infItem.ClassID)
             {
                 bDuplicated = true;
-                // [Explicit Break]
-                goto J0xB3;
+                break;
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x3F;
     }
-    J0xB3:
 
     // End:0xFF
     if(!bDuplicated)
@@ -361,10 +351,8 @@ function DeleteShopItem(ItemInfo DeleteItem)
 
     Max = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("RecipeShopWnd.ShopItemWnd");
     i = 0;
-    J0x37:
 
-    // End:0xE4 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         // End:0xDA
         if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.ShopItemWnd", i, infItem))
@@ -375,15 +363,11 @@ function DeleteShopItem(ItemInfo DeleteItem)
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.DeleteItem("RecipeShopWnd.ShopItemWnd", i);
                 m_ShopItemCount--;
                 UpdateShopItemCount(m_ShopItemCount);
-                // [Explicit Break]
-                goto J0xE4;
+                break;
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x37;
     }
-    J0xE4:
 
     return;
 }
@@ -404,10 +388,8 @@ function StartRecipeShop()
     Max = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("RecipeShopWnd.ShopItemWnd");
     ParamAdd(param, "Max", string(Max));
     i = 0;
-    J0x4E:
 
-    // End:0x115 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ServerID = 0;
         Price = 0;
@@ -420,8 +402,6 @@ function StartRecipeShop()
         ParamAdd(param, "ServerID_" $ string(i), string(ServerID));
         ParamAdd(param, "Price_" $ string(i), string(Price));
         i++;
-        // [Loop Continue]
-        goto J0x4E;
     }
     Class'NWindow.RecipeAPI'.static.RequestRecipeShopListSet(param);
     return;

@@ -120,10 +120,8 @@ function OnClickItem(string strID, int Index)
         if((Index >= 0) && Index < m_itemLIst.Length)
         {
             i = 0;
-            J0x86:
 
-            // End:0x229 [Loop If]
-            if(i < m_itemLIst[Index].NeededItemList.Length)
+            while(i < m_itemLIst[Index].NeededItemList.Length)
             {
                 param = "";
                 ParamAdd(param, "Name", m_itemLIst[Index].NeededItemList[i].Name);
@@ -135,19 +133,13 @@ function OnClickItem(string strID, int Index)
                 ParamAdd(param, "ItemType", string(m_itemLIst[Index].NeededItemList[i].ItemType));
                 Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.AddData("MultiSellWnd.NeededItem", param);
                 ++i;
-                // [Loop Continue]
-                goto J0x86;
             }
             i = 0;
-            J0x230:
 
-            // End:0x295 [Loop If]
-            if(i < m_itemLIst[Index].NeededItemNum)
+            while(i < m_itemLIst[Index].NeededItemNum)
             {
                 Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.SetItemInfo("MultiSellWnd.ItemInfo", i, m_itemLIst[Index].ItemInfoList[i]);
                 ++i;
-                // [Loop Continue]
-                goto J0x230;
             }
             Class'NWindow.UIAPI_EDITBOX'.static.Clear("MultiSellWnd.ItemCountEdit");
             // End:0x332
@@ -184,25 +176,17 @@ function Print()
     local int i, j;
 
     i = 0;
-    J0x07:
 
-    // End:0x97 [Loop If]
-    if(i < m_itemLIst.Length)
+    while(i < m_itemLIst.Length)
     {
         j = 0;
-        J0x1E:
 
-        // End:0x8D [Loop If]
-        if(j < m_itemLIst[i].NeededItemList.Length)
+        while(j < m_itemLIst[i].NeededItemList.Length)
         {
             Debug((((("Print (" $ string(i)) $ ",") $ string(j)) $ "), ") $ m_itemLIst[i].NeededItemList[j].Name);
             ++j;
-            // [Loop Continue]
-            goto J0x1E;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -262,23 +246,17 @@ function HandleItemList(string param)
         {
             bMatchFound = false;
             i = m_itemLIst.Length - 1;
-            J0x207:
 
-            // End:0x29D [Loop If]
-            if(i >= 0)
+            while(i >= 0)
             {
                 // End:0x293
                 if(((m_itemLIst[i].ItemInfoList[0].Reserved == Info.Reserved) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == Info.RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == Info.RefineryOp2)
                 {
                     bMatchFound = true;
-                    // [Explicit Break]
-                    goto J0x29D;
+                    break;
                 }
                 --i;
-                // [Loop Continue]
-                goto J0x207;
             }
-            J0x29D:
 
             // End:0x322
             if(bMatchFound)
@@ -341,10 +319,8 @@ function HandleNeededItemList(string param)
         }
     }
     i = m_itemLIst.Length - 1;
-    J0x252:
 
-    // End:0x366 [Loop If]
-    if(i >= 0)
+    while(i >= 0)
     {
         // End:0x35C
         if(((m_itemLIst[i].ItemInfoList[0].Reserved == Id) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == RefineryOp2)
@@ -354,14 +330,10 @@ function HandleNeededItemList(string param)
             item.ItemType = Class'NWindow.UIDATA_ITEM'.static.GetItemDataType(item.Id);
             item.CrystalType = Class'NWindow.UIDATA_ITEM'.static.GetItemCrystalType(item.Id);
             m_itemLIst[i].NeededItemList[Index] = item;
-            // [Explicit Break]
-            goto J0x366;
+            break;
         }
         --i;
-        // [Loop Continue]
-        goto J0x252;
     }
-    J0x366:
 
     return;
 }
@@ -388,16 +360,12 @@ function ShowItemList()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x64 [Loop If]
-    if(i < m_itemLIst.Length)
+    while(i < m_itemLIst.Length)
     {
         Info = m_itemLIst[i].ItemInfoList[0];
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MultiSellWnd.ItemList", Info);
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }

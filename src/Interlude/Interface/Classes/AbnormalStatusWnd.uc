@@ -187,17 +187,13 @@ function ClearStatus(bool bEtcItem, bool bShortItem)
     }
     RowCount = StatusIcon.GetRowCount();
     i = 0;
-    J0xA1:
 
-    // End:0x1A9 [Loop If]
-    if(i < RowCount)
+    while(i < RowCount)
     {
         ColCount = StatusIcon.GetColCount(i);
         j = 0;
-        J0xD1:
 
-        // End:0x19F [Loop If]
-        if(j < ColCount)
+        while(j < ColCount)
         {
             StatusIcon.GetItem(i, j, Info);
             // End:0x195
@@ -219,12 +215,8 @@ function ClearStatus(bool bEtcItem, bool bShortItem)
                 }
             }
             j++;
-            // [Loop Continue]
-            goto J0xD1;
         }
         i++;
-        // [Loop Continue]
-        goto J0xA1;
     }
     return;
 }
@@ -253,10 +245,8 @@ function HandleAddNormalStatus(string param)
     i_UnkIntLocal1 = 0;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0xAF:
 
-    // End:0x315 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         ParseInt(param, "SkillLevel_" $ string(i), Info.Level);
@@ -273,16 +263,18 @@ function HandleAddNormalStatus(string param)
             {
                 a_ArrayStatusIcon1.Length = a_ArrayStatusIcon1.Length + 1;
                 a_ArrayStatusIcon1[a_ArrayStatusIcon1.Length - 1] = Info;
-                // [Explicit Continue]
-                goto J0x30B;
+
+                i++;
+                continue;
             }
             // End:0x27B
             if((f_UnkFunc1(Info.ClassID)) && checkAbPrior)
             {
                 a_ArrayStatusIcon2.Length = a_ArrayStatusIcon2.Length + 1;
                 a_ArrayStatusIcon2[a_ArrayStatusIcon2.Length - 1] = Info;
-                // [Explicit Continue]
-                goto J0x30B;
+
+                i++;
+                continue;
             }
             // End:0x30B
             if(isDebuffCustom(Info.ClassID))
@@ -293,24 +285,20 @@ function HandleAddNormalStatus(string param)
                 {
                     a_ArrayStatusIcon2.Length = a_ArrayStatusIcon2.Length + 1;
                     a_ArrayStatusIcon2[a_ArrayStatusIcon2.Length - 1] = Info;
-                    // [Explicit Continue]
-                    goto J0x30B;
+
+                    i++;
+                    continue;
                 }
                 a_ArrayStatusIcon3.Length = a_ArrayStatusIcon3.Length + 1;
                 a_ArrayStatusIcon3[a_ArrayStatusIcon3.Length - 1] = Info;
             }
         }
-        J0x30B:
 
         i++;
-        // [Loop Continue]
-        goto J0xAF;
     }
     i = 0;
-    J0x31C:
 
-    // End:0x3DC [Loop If]
-    if(i < a_ArrayStatusIcon2.Length)
+    while(i < a_ArrayStatusIcon2.Length)
     {
         // End:0x371
         if((i_UnkInt3 == -1) && i_UnkInt4 == -1)
@@ -329,14 +317,10 @@ function HandleAddNormalStatus(string param)
         }
         StatusIcon.AddCol(i_UnkInt3, a_ArrayStatusIcon2[i]);
         i++;
-        // [Loop Continue]
-        goto J0x31C;
     }
     i = 0;
-    J0x3E3:
 
-    // End:0x50A [Loop If]
-    if(i < a_ArrayStatusIcon3.Length)
+    while(i < a_ArrayStatusIcon3.Length)
     {
         // End:0x449
         if(((i_UnkInt2 == -1) && i_UnkInt3 == -1) && i_UnkInt4 == -1)
@@ -364,8 +348,6 @@ function HandleAddNormalStatus(string param)
         }
         StatusIcon.AddCol(i_UnkInt2, a_ArrayStatusIcon3[i]);
         i++;
-        // [Loop Continue]
-        goto J0x3E3;
     }
     // End:0x57E
     if(i_UnkInt5 > -1)
@@ -455,10 +437,8 @@ function HandleAddEtcStatus(string param)
     ParseInt(param, "Max", Max);
     ProbablyRemoveEmptyBuff();
     i = 0;
-    J0x12C:
 
-    // End:0x2AB [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         ParseInt(param, "SkillLevel_" $ string(i), Info.Level);
@@ -481,8 +461,6 @@ function HandleAddEtcStatus(string param)
             BuffCnt++;
         }
         i++;
-        // [Loop Continue]
-        goto J0x12C;
     }
     ProbablyAddEmptyBuff();
     UpdateWindowSize();
@@ -531,10 +509,8 @@ function HandleAddShortStatus(string param)
     ParseInt(param, "Max", Max);
     ProbablyRemoveEmptyBuff();
     i = 0;
-    J0x12C:
 
-    // End:0x2AB [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         ParseInt(param, "SkillLevel_" $ string(i), Info.Level);
@@ -557,8 +533,6 @@ function HandleAddShortStatus(string param)
             BuffCnt++;
         }
         i++;
-        // [Loop Continue]
-        goto J0x12C;
     }
     ProbablyAddEmptyBuff();
     UpdateWindowSize();
@@ -601,17 +575,13 @@ function HandleLanguageChanged()
 
     RowCount = StatusIcon.GetRowCount();
     i = 0;
-    J0x1C:
 
-    // End:0x117 [Loop If]
-    if(i < RowCount)
+    while(i < RowCount)
     {
         ColCount = StatusIcon.GetColCount(i);
         j = 0;
-        J0x4C:
 
-        // End:0x10D [Loop If]
-        if(j < ColCount)
+        while(j < ColCount)
         {
             StatusIcon.GetItem(i, j, Info);
             // End:0x103
@@ -622,12 +592,8 @@ function HandleLanguageChanged()
                 StatusIcon.SetItem(i, j, Info);
             }
             j++;
-            // [Loop Continue]
-            goto J0x4C;
         }
         i++;
-        // [Loop Continue]
-        goto J0x1C;
     }
     return;
 }
@@ -642,17 +608,13 @@ function ReHandleAddNormalStatus()
 
     RowCount = StatusIcon.GetRowCount();
     i = 0;
-    J0x1C:
 
-    // End:0xFC [Loop If]
-    if(i < RowCount)
+    while(i < RowCount)
     {
         ColCount = StatusIcon.GetColCount(i);
         j = 0;
-        J0x4C:
 
-        // End:0xF2 [Loop If]
-        if(j < ColCount)
+        while(j < ColCount)
         {
             StatusIcon.GetItem(i, j, Info);
             // End:0xE8
@@ -662,22 +624,16 @@ function ReHandleAddNormalStatus()
                 a_ArrayStatusIcon5[a_ArrayStatusIcon5.Length - 1] = Info;
             }
             j++;
-            // [Loop Continue]
-            goto J0x4C;
         }
         i++;
-        // [Loop Continue]
-        goto J0x1C;
     }
     ClearStatus(false, false);
     BuffCnt = 0;
     i_UnkIntLocal1 = 0;
     i_UnkIntLocal2 = a_ArrayStatusIcon5.Length;
     i = 0;
-    J0x125:
 
-    // End:0x2D1 [Loop If]
-    if(i < i_UnkIntLocal2)
+    while(i < i_UnkIntLocal2)
     {
         Info = a_ArrayStatusIcon5[i];
         Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalSize"));
@@ -690,16 +646,18 @@ function ReHandleAddNormalStatus()
             {
                 a_ArrayStatusIcon1.Length = a_ArrayStatusIcon1.Length + 1;
                 a_ArrayStatusIcon1[a_ArrayStatusIcon1.Length - 1] = Info;
-                // [Explicit Continue]
-                goto J0x2C7;
+
+                i++;
+                continue;
             }
             // End:0x237
             if((f_UnkFunc1(Info.ClassID)) && checkAbPrior)
             {
                 a_ArrayStatusIcon2.Length = a_ArrayStatusIcon2.Length + 1;
                 a_ArrayStatusIcon2[a_ArrayStatusIcon2.Length - 1] = Info;
-                // [Explicit Continue]
-                goto J0x2C7;
+
+                i++;
+                continue;
             }
             // End:0x2C7
             if(isDebuffCustom(Info.ClassID))
@@ -710,24 +668,20 @@ function ReHandleAddNormalStatus()
                 {
                     a_ArrayStatusIcon2.Length = a_ArrayStatusIcon2.Length + 1;
                     a_ArrayStatusIcon2[a_ArrayStatusIcon2.Length - 1] = Info;
-                    // [Explicit Continue]
-                    goto J0x2C7;
+
+                    i++;
+                    continue;
                 }
                 a_ArrayStatusIcon3.Length = a_ArrayStatusIcon3.Length + 1;
                 a_ArrayStatusIcon3[a_ArrayStatusIcon3.Length - 1] = Info;
             }
         }
-        J0x2C7:
 
         i++;
-        // [Loop Continue]
-        goto J0x125;
     }
     i = 0;
-    J0x2D8:
 
-    // End:0x348 [Loop If]
-    if(i < a_ArrayStatusIcon4.Length)
+    while(i < a_ArrayStatusIcon4.Length)
     {
         // End:0x318
         if((float(BuffCnt) % float(12)) == float(0))
@@ -738,14 +692,10 @@ function ReHandleAddNormalStatus()
         StatusIcon.AddCol(i_UnkInt1, a_ArrayStatusIcon4[i]);
         BuffCnt++;
         i++;
-        // [Loop Continue]
-        goto J0x2D8;
     }
     i = 0;
-    J0x34F:
 
-    // End:0x3D9 [Loop If]
-    if(i < a_ArrayStatusIcon1.Length)
+    while(i < a_ArrayStatusIcon1.Length)
     {
         // End:0x379
         if(i_UnkInt4 == -1)
@@ -761,14 +711,10 @@ function ReHandleAddNormalStatus()
         StatusIcon.AddCol(i_UnkInt4, a_ArrayStatusIcon1[i]);
         i_UnkIntLocal1++;
         i++;
-        // [Loop Continue]
-        goto J0x34F;
     }
     i = 0;
-    J0x3E0:
 
-    // End:0x4A0 [Loop If]
-    if(i < a_ArrayStatusIcon2.Length)
+    while(i < a_ArrayStatusIcon2.Length)
     {
         // End:0x435
         if((i_UnkInt3 == -1) && i_UnkInt4 == -1)
@@ -787,14 +733,10 @@ function ReHandleAddNormalStatus()
         }
         StatusIcon.AddCol(i_UnkInt3, a_ArrayStatusIcon2[i]);
         i++;
-        // [Loop Continue]
-        goto J0x3E0;
     }
     i = 0;
-    J0x4A7:
 
-    // End:0x5CE [Loop If]
-    if(i < a_ArrayStatusIcon3.Length)
+    while(i < a_ArrayStatusIcon3.Length)
     {
         // End:0x50D
         if(((i_UnkInt2 == -1) && i_UnkInt3 == -1) && i_UnkInt4 == -1)
@@ -822,8 +764,6 @@ function ReHandleAddNormalStatus()
         }
         StatusIcon.AddCol(i_UnkInt2, a_ArrayStatusIcon3[i]);
         i++;
-        // [Loop Continue]
-        goto J0x4A7;
     }
     // End:0x642
     if(i_UnkInt5 > -1)
@@ -876,10 +816,8 @@ function bool f_UnkFunc1(int ClassID)
     local int j;
 
     j = 0;
-    J0x07:
 
-    // End:0x38 [Loop If]
-    if(j < a_UnkArrayInt1.Length)
+    while(j < a_UnkArrayInt1.Length)
     {
         // End:0x2E
         if(a_UnkArrayInt1[j] == ClassID)
@@ -887,8 +825,6 @@ function bool f_UnkFunc1(int ClassID)
             return true;
         }
         j++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return false;
 }
@@ -947,17 +883,13 @@ function ProbablyRemoveEmptyBuff()
 
     RowCount = StatusIcon.GetRowCount();
     i = RowCount;
-    J0x20:
 
-    // End:0xCF [Loop If]
-    if(i >= 0)
+    while(i >= 0)
     {
         ColCount = StatusIcon.GetColCount(i);
         j = ColCount;
-        J0x50:
 
-        // End:0xC5 [Loop If]
-        if(j >= 0)
+        while(j >= 0)
         {
             StatusIcon.GetItem(i, j, Info);
             // End:0xBB
@@ -967,12 +899,8 @@ function ProbablyRemoveEmptyBuff()
                 return;
             }
             j--;
-            // [Loop Continue]
-            goto J0x50;
         }
         i--;
-        // [Loop Continue]
-        goto J0x20;
     }
     return;
 }

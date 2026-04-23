@@ -96,26 +96,18 @@ function OnLoad()
     m_TextOffsetCorrection[14] = 0;
     m_TextOffsetCorrection[15] = 0;
     i = 1;
-    J0x269:
 
-    // End:0x310 [Loop If]
-    if(i <= 30)
+    while(i <= 30)
     {
         C = i * 10;
         ii = 0;
-        J0x28B:
 
-        // End:0x306 [Loop If]
-        if(ii < 10)
+        while(ii < 10)
         {
             m_Digits[C + ii] = TextureHandle(GetHandle(((("DamageText2Wnd.DamageText2" $ string(i)) $ "Wnd.Digit") $ string(i)) $ string(ii + 1)));
             ++ii;
-            // [Loop Continue]
-            goto J0x28B;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x269;
     }
     return;
 }
@@ -150,15 +142,11 @@ function HandleRestart()
     local int i;
 
     i = 1;
-    J0x07:
 
-    // End:0x4F [Loop If]
-    if(i <= 30)
+    while(i <= 30)
     {
         HideWindow(("DamageText2Wnd.DamageText2" $ string(i)) $ "Wnd");
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -456,15 +444,11 @@ function TimerFadeOut(int Container, int Duration, int Steps)
     i = 1;
     C = 100 / Steps;
     D = Duration / Steps;
-    J0x28:
 
-    // End:0x8A [Loop If]
-    if(i <= Steps)
+    while(i <= Steps)
     {
         Class'NWindow.UIAPI_WINDOW'.static.SetUITimer("DamageText2Wnd", (-100 * Container) - (100 - (i * C)), i * D);
         i++;
-        // [Loop Continue]
-        goto J0x28;
     }
     return;
 }
@@ -479,16 +463,12 @@ function SetValue(int Type, int Container, int Value, bool bGrouped)
     WindowName = ("DamageText2Wnd.DamageText2" $ string(Container)) $ "Wnd";
     C = Container * 10;
     i = 0;
-    J0x59:
 
-    // End:0xAB [Loop If]
-    if(i < 10)
+    while(i < 10)
     {
         m_Digits[C + i].SetUV(0, 0);
         m_Digits[C + i].SetWindowSize(0, 0);
         ++i;
-        // [Loop Continue]
-        goto J0x59;
     }
     wValue = string(Value);
     // End:0x102
@@ -554,10 +534,8 @@ function SetValue(int Type, int Container, int Value, bool bGrouped)
     }
     Length = Len(wValue);
     i = 1;
-    J0x1E9:
 
-    // End:0x3F4 [Loop If]
-    if(i <= Length)
+    while(i <= Length)
     {
         S = Right(Left(wValue, i), 1);
         // End:0x225
@@ -642,8 +620,6 @@ function SetValue(int Type, int Container, int Value, bool bGrouped)
         }
         PreviousDigit = nDigit;
         ++i;
-        // [Loop Continue]
-        goto J0x1E9;
     }
     return;
 }

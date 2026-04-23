@@ -207,30 +207,22 @@ function LoadAllSelectList()
     m_hAllSelectListCtrl.DeleteAllItem();
     GetRefinerySelectList(arrCurrentSelect);
     i = 14578;
-    J0x3C:
 
-    // End:0x1E1 [Loop If]
-    if(i <= 16380)
+    while(i <= 16380)
     {
         B = 0;
-        J0x52:
 
-        // End:0x96 [Loop If]
-        if(B <= arrCurrentSelect.Length)
+        while(B <= arrCurrentSelect.Length)
         {
             IgnoreRecord = false;
             // End:0x8C
             if(int(arrCurrentSelect[B]) == i)
             {
                 IgnoreRecord = true;
-                // [Explicit Break]
-                goto J0x96;
+                break;
             }
             B++;
-            // [Loop Continue]
-            goto J0x52;
         }
-        J0x96:
 
         // End:0x1D7
         if(!IgnoreRecord)
@@ -259,8 +251,6 @@ function LoadAllSelectList()
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x3C;
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("EditSelectListWnd.valListSelectAll", (string(m_hAllSelectListCtrl.GetRecordCount()) $ "/") $ string(1650));
     return;
@@ -282,16 +272,12 @@ function LoadCurSelectList()
     GetRefinerySelectList(arrCurrentSelect);
     m_hCurSelectListCtrl.DeleteAllItem();
     i = 14578;
-    J0x34:
 
-    // End:0x1BE [Loop If]
-    if(i <= 16380)
+    while(i <= 16380)
     {
         B = 0;
-        J0x4A:
 
-        // End:0x1B4 [Loop If]
-        if(B <= arrCurrentSelect.Length)
+        while(B <= arrCurrentSelect.Length)
         {
             // End:0x1AA
             if(int(arrCurrentSelect[B]) == i)
@@ -318,18 +304,12 @@ function LoadCurSelectList()
                     ++j;
                     m_hCurSelectListCtrl.InsertRecord(Record);
                 }
-                // [Explicit Break]
-                goto J0x1B4;
+                break;
             }
             B++;
-            // [Loop Continue]
-            goto J0x4A;
         }
-        J0x1B4:
 
         i++;
-        // [Loop Continue]
-        goto J0x34;
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("EditSelectListWnd.valListSelectCur", (string(m_hCurSelectListCtrl.GetRecordCount()) $ "/") $ string(20));
     script.ComboBoxParam();
@@ -354,30 +334,22 @@ function LoadAllCustomList()
     m_hAllCustomListCtrl.DeleteAllItem();
     GetRefineryCustomList(arrCurrentSelect);
     i = 14578;
-    J0x3C:
 
-    // End:0x1E1 [Loop If]
-    if(i <= 16380)
+    while(i <= 16380)
     {
         B = 0;
-        J0x52:
 
-        // End:0x96 [Loop If]
-        if(B <= arrCurrentSelect.Length)
+        while(B <= arrCurrentSelect.Length)
         {
             IgnoreRecord = false;
             // End:0x8C
             if(int(arrCurrentSelect[B]) == i)
             {
                 IgnoreRecord = true;
-                // [Explicit Break]
-                goto J0x96;
+                break;
             }
             B++;
-            // [Loop Continue]
-            goto J0x52;
         }
-        J0x96:
 
         // End:0x1D7
         if(!IgnoreRecord)
@@ -406,8 +378,6 @@ function LoadAllCustomList()
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x3C;
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("EditCustomListWnd.valListCustomAll", (string(m_hAllCustomListCtrl.GetRecordCount()) $ "/") $ string(1650));
     return;
@@ -429,16 +399,12 @@ function LoadCurCustomList()
     GetRefineryCustomList(arrCurrentSelect);
     m_hCurCustomListCtrl.DeleteAllItem();
     i = 14578;
-    J0x34:
 
-    // End:0x1BE [Loop If]
-    if(i <= 16380)
+    while(i <= 16380)
     {
         B = 0;
-        J0x4A:
 
-        // End:0x1B4 [Loop If]
-        if(B <= arrCurrentSelect.Length)
+        while(B <= arrCurrentSelect.Length)
         {
             // End:0x1AA
             if(int(arrCurrentSelect[B]) == i)
@@ -465,18 +431,12 @@ function LoadCurCustomList()
                     ++j;
                     m_hCurCustomListCtrl.InsertRecord(Record);
                 }
-                // [Explicit Break]
-                goto J0x1B4;
+                break;
             }
             B++;
-            // [Loop Continue]
-            goto J0x4A;
         }
-        J0x1B4:
 
         i++;
-        // [Loop Continue]
-        goto J0x34;
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("EditCustomListWnd.valListCustomCur", (string(m_hCurCustomListCtrl.GetRecordCount()) $ "/") $ string(100));
     return;
@@ -579,10 +539,8 @@ function DelSelectListOption(int Id)
     ResultSelectList = "";
     GetRefinerySelectList(arrCurrentSelect);
     i = 0;
-    J0x22:
 
-    // End:0x61 [Loop If]
-    if(i <= arrCurrentSelect.Length)
+    while(i <= arrCurrentSelect.Length)
     {
         // End:0x57
         if(int(arrCurrentSelect[i]) == Id)
@@ -590,8 +548,6 @@ function DelSelectListOption(int Id)
             arrCurrentSelect[i] = "";
         }
         i++;
-        // [Loop Continue]
-        goto J0x22;
     }
     JoinArray(arrCurrentSelect, ResultSelectList, ",", true);
     SetINIString("AutoRefinery", "SelectList", ResultSelectList, "Option");
@@ -638,10 +594,8 @@ function DelCustomListOption(int Id)
     ResultCustomList = "";
     GetRefineryCustomList(arrCurrentCustom);
     i = 0;
-    J0x22:
 
-    // End:0x61 [Loop If]
-    if(i <= arrCurrentCustom.Length)
+    while(i <= arrCurrentCustom.Length)
     {
         // End:0x57
         if(int(arrCurrentCustom[i]) == Id)
@@ -649,8 +603,6 @@ function DelCustomListOption(int Id)
             arrCurrentCustom[i] = "";
         }
         i++;
-        // [Loop Continue]
-        goto J0x22;
     }
     JoinArray(arrCurrentCustom, ResultCustomList, ",", true);
     SetINIString("AutoRefinery", "CustomList", ResultCustomList, "Option");

@@ -256,10 +256,8 @@ function HandlePartyMatchRoomMember(string param)
     Class'NWindow.UIAPI_LISTCTRL'.static.DeleteAllItem("PartyMatchRoomWnd.PartyMemberListCtrl");
     ParseInt(param, "MemberCount", CurPartyMemberCount);
     i = 0;
-    J0xAA:
 
-    // End:0x1C1 [Loop If]
-    if(i < CurPartyMemberCount)
+    while(i < CurPartyMemberCount)
     {
         ParseInt(param, "MemberID_" $ string(i), MemberID);
         ParseString(param, "MemberName_" $ string(i), memberName);
@@ -269,8 +267,6 @@ function HandlePartyMatchRoomMember(string param)
         ParseInt(param, "MembershipType_" $ string(i), MembershipType);
         AddMember(MemberID, memberName, ClassID, Level, ZoneID, MembershipType);
         ++i;
-        // [Loop Continue]
-        goto J0xAA;
     }
     UpdateData(true);
     // End:0x20F
@@ -331,24 +327,18 @@ function RemoveMember(int a_MemberID)
 
     RecordCount = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecordCount("PartyMatchRoomWnd.PartyMemberListCtrl");
     i = 0;
-    J0x43:
 
-    // End:0xF6 [Loop If]
-    if(i < RecordCount)
+    while(i < RecordCount)
     {
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("PartyMatchRoomWnd.PartyMemberListCtrl", i);
         // End:0xEC
         if(Record.LVDataList[0].nReserved1 == a_MemberID)
         {
             Class'NWindow.UIAPI_LISTCTRL'.static.DeleteRecord("PartyMatchRoomWnd.PartyMemberListCtrl", i);
-            // [Explicit Break]
-            goto J0xF6;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x43;
     }
-    J0xF6:
 
     return;
 }

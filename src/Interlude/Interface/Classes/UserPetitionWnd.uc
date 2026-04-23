@@ -11,15 +11,11 @@ function OnLoad()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x60 [Loop If]
-    if(i < PetitionCategoryCount)
+    while(i < PetitionCategoryCount)
     {
         Class'NWindow.UIAPI_COMBOBOX'.static.SYS_AddString("UserPetitionWnd.PetitionTypeComboBox", PetitionCategoryTitle[i]);
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     RegisterEvent(1921);
     RegisterEvent(1221);

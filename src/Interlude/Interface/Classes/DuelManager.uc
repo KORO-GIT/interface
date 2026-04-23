@@ -28,10 +28,8 @@ function OnLoad()
     RegisterEvent(1720);
     m_TopWnd = GetHandle("DuelManager");
     idx = 0;
-    J0x78:
 
-    // End:0x22C [Loop If]
-    if(idx < 9)
+    while(idx < 9)
     {
         m_StatusWnd[idx] = GetHandle("DuelManager.PartyStatusWnd" $ string(idx));
         m_PlayerName[idx] = NameCtrlHandle(GetHandle(("DuelManager.PartyStatusWnd" $ string(idx)) $ ".PlayerName"));
@@ -40,8 +38,6 @@ function OnLoad()
         m_BarHP[idx] = BarHandle(GetHandle(("DuelManager.PartyStatusWnd" $ string(idx)) $ ".barHP"));
         m_BarMP[idx] = BarHandle(GetHandle(("DuelManager.PartyStatusWnd" $ string(idx)) $ ".barMP"));
         idx++;
-        // [Loop Continue]
-        goto J0x78;
     }
     Clear();
     m_bDuelState = false;
@@ -206,10 +202,8 @@ function HandleUpdateUserInfo(string param)
     ParseInt(param, "maxCP", maxCP);
     bFound = false;
     i = 0;
-    J0x10E:
 
-    // End:0x15B [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         // End:0x14E
         if(m_memberInfo[i] != 0)
@@ -218,21 +212,16 @@ function HandleUpdateUserInfo(string param)
             if(Id == m_memberInfo[i])
             {
                 bFound = true;
-                // [Explicit Break]
-                goto J0x15B;
+                break;
             }
-            // [Explicit Continue]
-            goto J0x151;
+
+            ++i;
+            continue;
         }
-        // [Explicit Break]
-        goto J0x15B;
-        J0x151:
+        break;
 
         ++i;
-        // [Loop Continue]
-        goto J0x10E;
     }
-    J0x15B:
 
     // End:0x19A
     if(!bFound)
@@ -256,16 +245,12 @@ function Clear()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x3F [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         m_StatusWnd[i].HideWindow();
         m_memberInfo[i] = 0;
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }

@@ -102,36 +102,26 @@ function HandleSeedInfoShow(string a_Param)
     Class'NWindow.UIAPI_LISTCTRL'.static.DeleteAllItem("ManorInfoWnd.SeedInfoWnd.SeedInfoListCtrl");
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("ManorInfoWnd.SeedInfoWnd.cbManorSelectInSeedInfo");
     i = 0;
-    J0x123:
 
-    // End:0x19F [Loop If]
-    if(i < GetManorCount())
+    while(i < GetManorCount())
     {
         ManorID = GetManorIDInManorList(i);
         Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("ManorInfoWnd.SeedInfoWnd.cbManorSelectInSeedInfo", GetManorNameInManorList(i), ManorID);
         ++i;
-        // [Loop Continue]
-        goto J0x123;
     }
     NumOfManor = Class'NWindow.UIAPI_COMBOBOX'.static.GetNumOfItems("ManorInfoWnd.SeedInfoWnd.cbManorSelectInSeedInfo");
     i = 0;
-    J0x1ED:
 
-    // End:0x29F [Loop If]
-    if(i < NumOfManor)
+    while(i < NumOfManor)
     {
         // End:0x295
         if(m_ManorID == Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("ManorInfoWnd.SeedInfoWnd.cbManorSelectInSeedInfo", i))
         {
             Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("ManorInfoWnd.SeedInfoWnd.cbManorSelectInSeedInfo", i);
-            // [Explicit Break]
-            goto J0x29F;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x1ED;
     }
-    J0x29F:
 
     // End:0x2C3
     if(!IsShowWindow("ManorInfoWnd"))
@@ -148,23 +138,17 @@ function HandleSeedInfoShow(string a_Param)
         ShowWindow("ManorInfoWnd.SeedInfoWnd.btnBuySeed");
         ManorCnt = GetManorCount();
         i = 0;
-        J0x33A:
 
-        // End:0x37C [Loop If]
-        if(i < ManorCnt)
+        while(i < ManorCnt)
         {
             // End:0x372
             if(m_MyManorID == GetManorIDInManorList(i))
             {
                 MyManorName = GetManorNameInManorList(i);
-                // [Explicit Break]
-                goto J0x37C;
+                break;
             }
             ++i;
-            // [Loop Continue]
-            goto J0x33A;
         }
-        J0x37C:
 
         ParamAdd(ParamString, "Type", string(0));
         ParamAdd(ParamString, "param1", MyManorName);
@@ -225,36 +209,26 @@ function HandleCropInfoShow(string a_Param)
     Class'NWindow.UIAPI_LISTCTRL'.static.DeleteAllItem("ManorInfoWnd.CropInfoWnd.CropInfoListCtrl");
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("ManorInfoWnd.CropInfoWnd.cbManorSelectInCropInfo");
     i = 0;
-    J0xD8:
 
-    // End:0x154 [Loop If]
-    if(i < GetManorCount())
+    while(i < GetManorCount())
     {
         ManorID = GetManorIDInManorList(i);
         Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("ManorInfoWnd.CropInfoWnd.cbManorSelectInCropInfo", GetManorNameInManorList(i), ManorID);
         ++i;
-        // [Loop Continue]
-        goto J0xD8;
     }
     NumOfManor = Class'NWindow.UIAPI_COMBOBOX'.static.GetNumOfItems("ManorInfoWnd.CropInfoWnd.cbManorSelectInCropInfo");
     i = 0;
-    J0x1A2:
 
-    // End:0x254 [Loop If]
-    if(i < NumOfManor)
+    while(i < NumOfManor)
     {
         // End:0x24A
         if(m_ManorID == Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("ManorInfoWnd.CropInfoWnd.cbManorSelectInCropInfo", i))
         {
             Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("ManorInfoWnd.CropInfoWnd.cbManorSelectInCropInfo", i);
-            // [Explicit Break]
-            goto J0x254;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x1A2;
     }
-    J0x254:
 
     // End:0x28E
     if(MerchantOrChamberlain == 1)

@@ -40,10 +40,8 @@ function OnLoad()
     m_wndTop = GetHandle("PartyWndCompact");
     m_PartyOption = GetHandle("PartyWndOption");
     idx = 0;
-    J0xA8:
 
-    // End:0x2CD [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         m_PartyStatus[idx] = GetHandle("PartyWndCompact.PartyStatusWnd" $ string(idx));
         m_ClassIcon[idx] = TextureHandle(GetHandle(("PartyWndCompact.PartyStatusWnd" $ string(idx)) $ ".ClassIcon"));
@@ -53,21 +51,15 @@ function OnLoad()
         m_BarHP[idx] = BarHandle(GetHandle(("PartyWndCompact.PartyStatusWnd" $ string(idx)) $ ".barHP"));
         m_BarMP[idx] = BarHandle(GetHandle(("PartyWndCompact.PartyStatusWnd" $ string(idx)) $ ".barMP"));
         idx++;
-        // [Loop Continue]
-        goto J0xA8;
     }
     btnBuff = ButtonHandle(GetHandle("PartyWndCompact.btnBuff"));
     idx = 0;
-    J0x2FE:
 
-    // End:0x3BC [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         m_StatusIconBuff[idx].SetAnchor("PartyWndCompact.PartyStatusWnd" $ string(idx), "TopRight", "TopLeft", 1, 3);
         m_StatusIconDeBuff[idx].SetAnchor("PartyWndCompact.PartyStatusWnd" $ string(idx), "TopRight", "TopLeft", 1, 3);
         idx++;
-        // [Loop Continue]
-        goto J0x2FE;
     }
     m_ClassIcon[0].Move(0, 7);
     m_PartyOption.HideWindow();
@@ -158,15 +150,11 @@ function Clear()
     local int idx;
 
     idx = 0;
-    J0x07:
 
-    // End:0x28 [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         ClearStatus(idx);
         idx++;
-        // [Loop Continue]
-        goto J0x07;
     }
     m_CurCount = 0;
     ResizeWnd();
@@ -207,54 +195,38 @@ function CopyStatus(int DesIndex, int SrcIndex)
     m_StatusIconBuff[DesIndex].Clear();
     MaxRow = m_StatusIconBuff[SrcIndex].GetRowCount();
     row = 0;
-    J0x19A:
 
-    // End:0x24B [Loop If]
-    if(row < MaxRow)
+    while(row < MaxRow)
     {
         m_StatusIconBuff[DesIndex].AddRow();
         MaxCol = m_StatusIconBuff[SrcIndex].GetColCount(row);
         col = 0;
-        J0x1E5:
 
-        // End:0x241 [Loop If]
-        if(col < MaxCol)
+        while(col < MaxCol)
         {
             m_StatusIconBuff[SrcIndex].GetItem(row, col, Info);
             m_StatusIconBuff[DesIndex].AddCol(row, Info);
             col++;
-            // [Loop Continue]
-            goto J0x1E5;
         }
         row++;
-        // [Loop Continue]
-        goto J0x19A;
     }
     m_StatusIconDeBuff[DesIndex].Clear();
     MaxRow = m_StatusIconDeBuff[SrcIndex].GetRowCount();
     row = 0;
-    J0x282:
 
-    // End:0x333 [Loop If]
-    if(row < MaxRow)
+    while(row < MaxRow)
     {
         m_StatusIconDeBuff[DesIndex].AddRow();
         MaxCol = m_StatusIconDeBuff[SrcIndex].GetColCount(row);
         col = 0;
-        J0x2CD:
 
-        // End:0x329 [Loop If]
-        if(col < MaxCol)
+        while(col < MaxCol)
         {
             m_StatusIconDeBuff[SrcIndex].GetItem(row, col, Info);
             m_StatusIconDeBuff[DesIndex].AddCol(row, Info);
             col++;
-            // [Loop Continue]
-            goto J0x2CD;
         }
         row++;
-        // [Loop Continue]
-        goto J0x282;
     }
     return;
 }
@@ -282,24 +254,20 @@ function ResizeWnd()
             m_wndTop.HideWindow();
         }
         idx = 0;
-        J0xAF:
 
-        // End:0x104 [Loop If]
-        if(idx < 8)
+        while(idx < 8)
         {
             // End:0xE5
             if(idx <= (m_CurCount - 1))
             {
                 m_PartyStatus[idx].ShowWindow();
-                // [Explicit Continue]
-                goto J0xFA;
+
+                idx++;
+                continue;
             }
             m_PartyStatus[idx].HideWindow();
-            J0xFA:
 
             idx++;
-            // [Loop Continue]
-            goto J0xAF;
         }        
     }
     else
@@ -314,10 +282,8 @@ function int FindPartyID(int Id)
     local int idx;
 
     idx = 0;
-    J0x07:
 
-    // End:0x38 [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         // End:0x2E
         if(m_arrID[idx] == Id)
@@ -325,8 +291,6 @@ function int FindPartyID(int Id)
             return idx;
         }
         idx++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return -1;
 }
@@ -374,15 +338,11 @@ function HandlePartyDeleteParty(string param)
         if(idx > -1)
         {
             i = idx;
-            J0x4A:
 
-            // End:0x79 [Loop If]
-            if(i < (m_CurCount - 1))
+            while(i < (m_CurCount - 1))
             {
                 CopyStatus(i, i + 1);
                 i++;
-                // [Loop Continue]
-                goto J0x4A;
             }
             ClearStatus(m_CurCount);
             m_CurCount--;
@@ -494,10 +454,8 @@ function HandlePartySpelledList(string param)
     Info.bShow = true;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0xB5:
 
-    // End:0x22B [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         ParseInt(param, "Level_" $ string(i), Info.Level);
@@ -516,8 +474,9 @@ function HandlePartySpelledList(string param)
                 }
                 m_StatusIconDeBuff[idx].AddCol(DeBuffCurRow, Info);
                 DeBuffCnt++;
-                // [Explicit Continue]
-                goto J0x221;
+
+                i++;
+                continue;
             }
             // End:0x1FB
             if((float(BuffCnt) % float(12)) == float(0))
@@ -528,11 +487,8 @@ function HandlePartySpelledList(string param)
             m_StatusIconBuff[idx].AddCol(BuffCurRow, Info);
             BuffCnt++;
         }
-        J0x221:
 
         i++;
-        // [Loop Continue]
-        goto J0xB5;
     }
     UpdateBuff();
     return;
@@ -627,16 +583,12 @@ function UpdateBuff()
     if(m_CurBf == 1)
     {
         idx = 0;
-        J0x12:
 
-        // End:0x52 [Loop If]
-        if(idx < 8)
+        while(idx < 8)
         {
             m_StatusIconBuff[idx].ShowWindow();
             m_StatusIconDeBuff[idx].HideWindow();
             idx++;
-            // [Loop Continue]
-            goto J0x12;
         }        
     }
     else
@@ -645,31 +597,23 @@ function UpdateBuff()
         if(m_CurBf == 2)
         {
             idx = 0;
-            J0x68:
 
-            // End:0xA8 [Loop If]
-            if(idx < 8)
+            while(idx < 8)
             {
                 m_StatusIconBuff[idx].HideWindow();
                 m_StatusIconDeBuff[idx].ShowWindow();
                 idx++;
-                // [Loop Continue]
-                goto J0x68;
             }            
         }
         else
         {
             idx = 0;
-            J0xB2:
 
-            // End:0xF2 [Loop If]
-            if(idx < 8)
+            while(idx < 8)
             {
                 m_StatusIconBuff[idx].HideWindow();
                 m_StatusIconDeBuff[idx].HideWindow();
                 idx++;
-                // [Loop Continue]
-                goto J0xB2;
             }
         }
     }

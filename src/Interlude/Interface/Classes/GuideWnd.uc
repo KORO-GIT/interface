@@ -270,10 +270,8 @@ function LoadHuntingZoneList()
     comboxFiller("HuntingZoneComboBox");
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("GuideWnd.HuntingZoneComboBox", 0);
     i = 0;
-    J0x5F:
 
-    // End:0x263 [Loop If]
-    if(i < 500)
+    while(i < 500)
     {
         // End:0x259
         if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -317,8 +315,6 @@ function LoadHuntingZoneList()
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x5F;
     }
     return;
 }
@@ -345,10 +341,8 @@ function LoadHuntingZoneListSearchResult(int SearchZone)
     {
         m_hHuntingZoneListCtrl.DeleteAllItem();
         i = 0;
-        J0x2E:
 
-        // End:0x26A [Loop If]
-        if(i < 500)
+        while(i < 500)
         {
             // End:0x260
             if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -397,8 +391,6 @@ function LoadHuntingZoneListSearchResult(int SearchZone)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x2E;
         }
     }
     return;
@@ -440,10 +432,8 @@ function LoadRaidList(string a_Param)
     RaidRecordList.Remove(0, RaidRecordList.Length);
     RaidRecordList.Insert(0, RaidNum);
     i = 0;
-    J0x131:
 
-    // End:0x1FC [Loop If]
-    if(i < RaidNum)
+    while(i < RaidNum)
     {
         ParseInt(a_Param, "MonsterID" $ string(i), ClearRaidMonsterID);
         ParseInt(a_Param, "CurrentPoint" $ string(i), ClearSeasonPoint);
@@ -452,14 +442,10 @@ function LoadRaidList(string a_Param)
         RaidRecordList[i].B = ClearSeasonPoint;
         RaidRecordList[i].C = ClearTotalPoint;
         i++;
-        // [Loop Continue]
-        goto J0x131;
     }
     i = 0;
-    J0x203:
 
-    // End:0x5F9 [Loop If]
-    if(i < 2000)
+    while(i < 2000)
     {
         // End:0x5EF
         if(Class'NWindow.UIDATA_RAID'.static.IsValidData(i))
@@ -473,15 +459,17 @@ function LoadRaidList(string a_Param)
             if(RaidMonsterID == 29066)
             {
                 Debug("안타라스 1");
-                // [Explicit Continue]
-                goto J0x5EF;
+
+                i++;
+                continue;
             }
             // End:0x2F3
             if(RaidMonsterID == 29067)
             {
                 Debug("안타라스 2");
-                // [Explicit Continue]
-                goto J0x5EF;
+
+                i++;
+                continue;
             }
             // End:0x48E
             if(RaidMonsterID == 29068)
@@ -505,10 +493,8 @@ function LoadRaidList(string a_Param)
                 Record.LVDataList[2] = data3;
                 RaidPointStr = "0";
                 j = 0;
-                J0x3DF:
 
-                // End:0x42E [Loop If]
-                if(j < RaidNum)
+                while(j < RaidNum)
                 {
                     // End:0x424
                     if(RaidRecordList[j].A == RaidMonsterID)
@@ -516,16 +502,15 @@ function LoadRaidList(string a_Param)
                         RaidPointStr = string(RaidRecordList[j].B) $ "";
                     }
                     j++;
-                    // [Loop Continue]
-                    goto J0x3DF;
                 }
                 AntarasPoint = int(RaidPointStr) + AntarasPoint;
                 data4.szData = string(AntarasPoint);
                 Record.LVDataList[3] = data4;
                 Record.szReserved = RaidDescription;
                 m_hRaidListCtrl.InsertRecord(Record);
-                // [Explicit Continue]
-                goto J0x5EF;
+
+                i++;
+                continue;
             }
             // End:0x4BB
             if(RaidMonsterLevel > 0)
@@ -545,10 +530,8 @@ function LoadRaidList(string a_Param)
             Record.LVDataList[2] = data3;
             RaidPointStr = "0";
             j = 0;
-            J0x559:
 
-            // End:0x5A8 [Loop If]
-            if(j < RaidNum)
+            while(j < RaidNum)
             {
                 // End:0x59E
                 if(RaidRecordList[j].A == RaidMonsterID)
@@ -556,19 +539,14 @@ function LoadRaidList(string a_Param)
                     RaidPointStr = string(RaidRecordList[j].B) $ "";
                 }
                 j++;
-                // [Loop Continue]
-                goto J0x559;
             }
             data4.szData = RaidPointStr;
             Record.LVDataList[3] = data4;
             Record.szReserved = RaidDescription;
             m_hRaidListCtrl.InsertRecord(Record);
         }
-        J0x5EF:
 
         i++;
-        // [Loop Continue]
-        goto J0x203;
     }
     return;
 }
@@ -583,10 +561,8 @@ function LoadRaidList2()
 
     m_hRaidListCtrl.DeleteAllItem();
     i = 0;
-    J0x16:
 
-    // End:0x21A [Loop If]
-    if(i < 2000)
+    while(i < 2000)
     {
         // End:0x210
         if(Class'NWindow.UIDATA_RAID'.static.IsValidData(i))
@@ -628,8 +604,6 @@ function LoadRaidList2()
             m_hRaidListCtrl.InsertRecord(Record);
         }
         i++;
-        // [Loop Continue]
-        goto J0x16;
     }
     return;
 }
@@ -653,10 +627,8 @@ function LoadRaidSearchResult(int SearchZone)
         RaidNum = RaidRecordList.Length;
         RaidCount = 0;
         i = 0;
-        J0x41:
 
-        // End:0x25C [Loop If]
-        if(i < 2000)
+        while(i < 2000)
         {
             // End:0x252
             if(Class'NWindow.UIDATA_RAID'.static.IsValidData(i))
@@ -703,8 +675,6 @@ function LoadRaidSearchResult(int SearchZone)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x41;
         }
     }
     return;
@@ -729,10 +699,8 @@ function LoadQuestList()
     TypeText[3] = GetSystemString(862);
     TypeText[4] = GetSystemString(861);
     Id = Class'NWindow.UIDATA_QUEST'.static.GetFirstID();
-    J0xAB:
 
-    // End:0x2B3 [Loop If]
-    if(-1 != Id)
+    while(-1 != Id)
     {
         QuestName = Class'NWindow.UIDATA_QUEST'.static.GetQuestName(Id);
         MinLevel = Class'NWindow.UIDATA_QUEST'.static.GetMinLevel(Id, 1);
@@ -772,8 +740,6 @@ function LoadQuestList()
         Record.LVDataList[3] = data4;
         m_hQuestListCtrl.InsertRecord(Record);
         Id = Class'NWindow.UIDATA_QUEST'.static.GetNextID();
-        // [Loop Continue]
-        goto J0xAB;
     }
     return;
 }
@@ -798,10 +764,8 @@ function LoadQuestSearchResult(int SearchZone)
     {
         m_hQuestListCtrl.DeleteAllItem();
         i = 0;
-        J0x2E:
 
-        // End:0x315 [Loop If]
-        if(i < 2000)
+        while(i < 2000)
         {
             // End:0x30B
             if(Class'NWindow.UIDATA_QUEST'.static.IsValidData(i))
@@ -879,8 +843,6 @@ function LoadQuestSearchResult(int SearchZone)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x2E;
         }
     }
     return;
@@ -899,10 +861,8 @@ function LoadAreaInfoList()
     comboxFiller("AreaInfoComboBox");
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("GuideWnd.AreaInfoComboBox", 0);
     i = 0;
-    J0x59:
 
-    // End:0x1CA [Loop If]
-    if(i < 500)
+    while(i < 500)
     {
         // End:0x1C0
         if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -929,8 +889,6 @@ function LoadAreaInfoList()
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x59;
     }
     return;
 }
@@ -953,10 +911,8 @@ function LoadAreaInfoListSearchResult(int SearchZone)
     {
         m_hAreaInfoListCtrl.DeleteAllItem();
         i = 0;
-        J0x2E:
 
-        // End:0x19D [Loop If]
-        if(i < 2000)
+        while(i < 2000)
         {
             // End:0x193
             if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -985,8 +941,6 @@ function LoadAreaInfoListSearchResult(int SearchZone)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x2E;
         }
     }
     return;
@@ -1027,10 +981,8 @@ function proc_combox(string ComboboxName)
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear(ComboboxNameFull);
     Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved(ComboboxNameFull, GetSystemString(144), 9999);
     i = 0;
-    J0x54:
 
-    // End:0xF0 [Loop If]
-    if(i < 500)
+    while(i < 500)
     {
         // End:0xE6
         if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -1044,8 +996,6 @@ function proc_combox(string ComboboxName)
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x54;
     }
     return;
 }
@@ -1056,10 +1006,8 @@ function string conv_dom(int ZoneNameNum)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x89 [Loop If]
-    if(i < 500)
+    while(i < 500)
     {
         // End:0x7F
         if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -1075,8 +1023,6 @@ function string conv_dom(int ZoneNameNum)
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return ZoneNameStr;
 }
@@ -1135,10 +1081,8 @@ function string conv_zoneName(int search_zoneid)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x89 [Loop If]
-    if(i < 500)
+    while(i < 500)
     {
         // End:0x7F
         if(Class'NWindow.UIDATA_HUNTINGZONE'.static.IsValidData(i))
@@ -1154,8 +1098,6 @@ function string conv_zoneName(int search_zoneid)
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return HuntingZoneName;
 }

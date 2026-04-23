@@ -104,10 +104,8 @@ function HandleStop()
 
     RecordCnt = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecordCount("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
     i = 0;
-    J0x52:
 
-    // End:0x157 [Loop If]
-    if(i < RecordCnt)
+    while(i < RecordCnt)
     {
         Record = recordClear;
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl", i);
@@ -116,8 +114,6 @@ function HandleStop()
         Record.LVDataList[6].szData = "0";
         Class'NWindow.UIAPI_LISTCTRL'.static.ModifyRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl", i, Record);
         ++i;
-        // [Loop Continue]
-        goto J0x52;
     }
     CalculateSumOfDefaultPrice();
     return;
@@ -130,10 +126,8 @@ function HandleSetToday()
 
     RecordCnt = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecordCount("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
     i = 0;
-    J0x52:
 
-    // End:0x183 [Loop If]
-    if(i < RecordCnt)
+    while(i < RecordCnt)
     {
         Record = recordClear;
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl", i);
@@ -142,8 +136,6 @@ function HandleSetToday()
         Record.LVDataList[6].szData = Record.LVDataList[3].szData;
         Class'NWindow.UIAPI_LISTCTRL'.static.ModifyRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl", i, Record);
         ++i;
-        // [Loop Continue]
-        goto J0x52;
     }
     CalculateSumOfDefaultPrice();
     return;
@@ -235,10 +227,8 @@ function OnOk()
     ParamAdd(param, "ManorID", string(m_ManorID));
     ParamAdd(param, "CropCnt", string(RecordCount));
     i = 0;
-    J0x88:
 
-    // End:0x1B2 [Loop If]
-    if(i < RecordCount)
+    while(i < RecordCount)
     {
         Record = recordClear;
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl", i);
@@ -247,8 +237,6 @@ function OnOk()
         ParamAdd(param, "Price" $ string(i), Record.LVDataList[5].szData);
         ParamAdd(param, "ProcureType" $ string(i), Record.LVDataList[6].szData);
         ++i;
-        // [Loop Continue]
-        goto J0x88;
     }
     RequestSetCrop(param);
     return;
@@ -309,18 +297,14 @@ function CalculateSumOfDefaultPrice()
     m_SumOfDefaultPrice = 0;
     ItemCnt = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecordCount("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
     i = 0;
-    J0x59:
 
-    // End:0x109 [Loop If]
-    if(i < ItemCnt)
+    while(i < ItemCnt)
     {
         Record = recordClear;
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl", i);
         tmpMulti = int(Record.LVDataList[5].szData) * int(Record.LVDataList[4].szData);
         m_SumOfDefaultPrice += tmpMulti;
         ++i;
-        // [Loop Continue]
-        goto J0x59;
     }
     adenaString = MakeCostString(string(m_SumOfDefaultPrice));
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ManorCropInfoSettingWnd.txtVarNextTotalExpense", adenaString);

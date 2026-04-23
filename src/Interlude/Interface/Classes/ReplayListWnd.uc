@@ -25,17 +25,13 @@ function InitReplayList()
     Class'NWindow.UIAPI_LISTCTRL'.static.DeleteAllItem("ReplayListWnd.ReplayListCtrl");
     GetFileList(strReplayFileList, "..\\REPLAY", ".L2R");
     i = 0;
-    J0x50:
 
-    // End:0xAF [Loop If]
-    if(i < strReplayFileList.Length)
+    while(i < strReplayFileList.Length)
     {
         iLength = Len(strReplayFileList[i]) - Len(".L2R");
         strFileName = Left(strReplayFileList[i], iLength);
         AddItem(i, strFileName);
         ++i;
-        // [Loop Continue]
-        goto J0x50;
     }
     return;
 }

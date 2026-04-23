@@ -88,15 +88,11 @@ function Clear()
     m_MaxCP = 0;
     m_CurCP = 0;
     i = 0;
-    J0x39:
 
-    // End:0x5D [Loop If]
-    if(i < 5)
+    while(i < 5)
     {
         m_Msg[i] = "";
         i++;
-        // [Loop Continue]
-        goto J0x39;
     }
     UpdateStatus();
     UpdateMsg("");
@@ -220,16 +216,12 @@ function UpdateMsg(string strMsg)
     m_Msg[m_MsgStartLine] = strMsg;
     m_MsgStartLine = int(float(m_MsgStartLine + 1) % float(5));
     i = 0;
-    J0x30:
 
-    // End:0x9C [Loop If]
-    if(i < 5)
+    while(i < 5)
     {
         CurPos = int(float(m_MsgStartLine + i) % float(5));
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText((m_WindowName $ ".txtMsg") $ string((5 - 1) - i), m_Msg[CurPos]);
         i++;
-        // [Loop Continue]
-        goto J0x30;
     }
     return;
 }

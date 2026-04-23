@@ -188,16 +188,12 @@ function HandleShortcutPageUpdate(string param)
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText(("ShortcutWnd." $ m_ShortcutWndName) $ ".PageNumTextBox", string(CurrentShortcutPage + 1));
         nShortcutID = CurrentShortcutPage * 12;
         i = 0;
-        J0x9E:
 
-        // End:0xFD [Loop If]
-        if(i < 12)
+        while(i < 12)
         {
             Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut((("ShortcutWnd." $ m_ShortcutWndName) $ ".Shortcut") $ string(i + 1), nShortcutID);
             nShortcutID++;
             ++i;
-            // [Loop Continue]
-            goto J0x9E;
         }
     }
     return;
@@ -242,10 +238,8 @@ function HandleShortcutClear()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x212 [Loop If]
-    if(i < 12)
+    while(i < 12)
     {
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical_1.Shortcut" $ string(i + 1));
@@ -255,19 +249,13 @@ function HandleShortcutClear()
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal_2.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndJoypadExpand.Shortcut" $ string(i + 1));
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     i = 0;
-    J0x219:
 
-    // End:0x272 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndJoypad.Shortcut" $ string(i + 1));
         ++i;
-        // [Loop Continue]
-        goto J0x219;
     }
     return;
 }
@@ -336,16 +324,12 @@ function SetJoypadShortcut(ShortcutWnd.EJoyShortcut a_JoyShortcut)
             Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndJoypad.JoypadRButtonTex", "L2UI_ch3.Joypad.joypad_R");
             nShortcutID = (CurrentShortcutPage * 12) + 4;
             i = 0;
-            J0x1D0:
 
-            // End:0x235 [Loop If]
-            if(i < 4)
+            while(i < 4)
             {
                 Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut("ShortcutWnd.ShortcutWndJoypad.Shortcut" $ string(i + 1), nShortcutID);
                 nShortcutID++;
                 ++i;
-                // [Loop Continue]
-                goto J0x1D0;
             }
             // End:0x697
             break;
@@ -357,16 +341,12 @@ function SetJoypadShortcut(ShortcutWnd.EJoyShortcut a_JoyShortcut)
             Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndJoypad.JoypadRButtonTex", "L2UI_ch3.Joypad.joypad_R");
             nShortcutID = CurrentShortcutPage * 12;
             i = 0;
-            J0x3F8:
 
-            // End:0x45D [Loop If]
-            if(i < 4)
+            while(i < 4)
             {
                 Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut("ShortcutWnd.ShortcutWndJoypad.Shortcut" $ string(i + 1), nShortcutID);
                 nShortcutID++;
                 ++i;
-                // [Loop Continue]
-                goto J0x3F8;
             }
             // End:0x697
             break;
@@ -378,16 +358,12 @@ function SetJoypadShortcut(ShortcutWnd.EJoyShortcut a_JoyShortcut)
             Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndJoypad.JoypadRButtonTex", "L2UI_ch3.Joypad.joypad_R_HOLD");
             nShortcutID = (CurrentShortcutPage * 12) + 8;
             i = 0;
-            J0x62C:
 
-            // End:0x691 [Loop If]
-            if(i < 4)
+            while(i < 4)
             {
                 Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut("ShortcutWnd.ShortcutWndJoypad.Shortcut" $ string(i + 1), nShortcutID);
                 nShortcutID++;
                 ++i;
-                // [Loop Continue]
-                goto J0x62C;
             }
             // End:0x697
             break;
@@ -754,16 +730,12 @@ function SetCurPage2(int a_nCurPage)
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1") $ ".PageNumTextBox", string(CurrentShortcutPage2 + 1));
     nShortcutID = CurrentShortcutPage2 * 12;
     i = 0;
-    J0x8F:
 
-    // End:0x100 [Loop If]
-    if(i < 12)
+    while(i < 12)
     {
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;
-        // [Loop Continue]
-        goto J0x8F;
     }
     return;
 }
@@ -781,16 +753,12 @@ function SetCurPage3(int a_nCurPage)
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_2") $ ".PageNumTextBox", string(CurrentShortcutPage3 + 1));
     nShortcutID = CurrentShortcutPage3 * 12;
     i = 0;
-    J0x9D:
 
-    // End:0x11C [Loop If]
-    if(i < 12)
+    while(i < 12)
     {
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_2") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;
-        // [Loop Continue]
-        goto J0x9D;
     }
     return;
 }
@@ -808,17 +776,13 @@ function SetCurPage4(int a_nCurPage)
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_3") $ ".PageNumTextBox", string(CurrentShortcutPage4 + 1));
     nShortcutID = CurrentShortcutPage4 * 12;
     i = 0;
-    J0x9D:
 
-    // End:0x179 [Loop If]
-    if(i < 12)
+    while(i < 12)
     {
         Debug((((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_3") $ ".Shortcut") $ string(i + 1)) @ string(nShortcutID));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_3") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;
-        // [Loop Continue]
-        goto J0x9D;
     }
     return;
 }
@@ -836,17 +800,13 @@ function SetCurPage5(int a_nCurPage)
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".PageNumTextBox", string(CurrentShortcutPage5 + 1));
     nShortcutID = CurrentShortcutPage5 * 12;
     i = 0;
-    J0x9D:
 
-    // End:0x179 [Loop If]
-    if(i < 12)
+    while(i < 12)
     {
         Debug((((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".Shortcut") $ string(i + 1)) @ string(nShortcutID));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;
-        // [Loop Continue]
-        goto J0x9D;
     }
     return;
 }

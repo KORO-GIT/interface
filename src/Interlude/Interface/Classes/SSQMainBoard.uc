@@ -136,10 +136,8 @@ function OnEvent(int Event_ID, string param)
             ParseInt(param, "Winner", g_sinfopre.m_nWinner);
             ParseInt(param, "RoomNum", g_sinfopre.m_nRoomNum);
             i = 0;
-            J0x2DB:
 
-            // End:0x3DE [Loop If]
-            if(i < g_sinfopre.m_nRoomNum)
+            while(i < g_sinfopre.m_nRoomNum)
             {
                 g_sinfopre.m_nSealNumArray.Insert(g_sinfopre.m_nSealNumArray.Length, 1);
                 ParseInt(param, "SealNum_" $ string(i), g_sinfopre.m_nSealNumArray[g_sinfopre.m_nSealNumArray.Length - 1]);
@@ -148,8 +146,6 @@ function OnEvent(int Event_ID, string param)
                 g_sinfopre.m_nMsgArray.Insert(g_sinfopre.m_nMsgArray.Length, 1);
                 ParseInt(param, "Msg_" $ string(i), g_sinfopre.m_nMsgArray[g_sinfopre.m_nMsgArray.Length - 1]);
                 i++;
-                // [Loop Continue]
-                goto J0x2DB;
             }
             SetSSQPreInfo();            
         }
@@ -162,29 +158,23 @@ function OnEvent(int Event_ID, string param)
                 Info.m_nSSQStatus = m_nSSQStatus;
                 ParseInt(param, "EventNum", eventnum);
                 i = 0;
-                J0x442:
 
-                // End:0x760 [Loop If]
-                if(i < eventnum)
+                while(i < eventnum)
                 {
                     ParseInt(param, "EventType_" $ string(i), nEventType);
                     Info.m_nEventType = nEventType;
                     ParseInt(param, "RoomNum_" $ string(i), roomnum);
                     j = 0;
-                    J0x4B0:
 
-                    // End:0x756 [Loop If]
-                    if(j < roomnum)
+                    while(j < roomnum)
                     {
                         ParseInt(param, (("EventNo_" $ string(i)) $ "_") $ string(j), Info.m_nEventNo);
                         ParseInt(param, (("WinPoint_" $ string(i)) $ "_") $ string(j), Info.m_nWinPoint);
                         ParseInt(param, (("Team2Score_" $ string(i)) $ "_") $ string(j), Info.m_nTeam2Score);
                         ParseInt(param, (("Team2Num_" $ string(i)) $ "_") $ string(j), team2num);
                         k = 0;
-                        J0x59E:
 
-                        // End:0x621 [Loop If]
-                        if(k < team2num)
+                        while(k < team2num)
                         {
                             ParseString(param, (((("Team2MemberName_" $ string(i)) $ "_") $ string(j)) $ "_") $ string(k), strTmp);
                             // End:0x617
@@ -193,16 +183,12 @@ function OnEvent(int Event_ID, string param)
                                 Info.m_Team2MemberName[k] = strTmp;
                             }
                             k++;
-                            // [Loop Continue]
-                            goto J0x59E;
                         }
                         ParseInt(param, (("Team1Score_" $ string(i)) $ "_") $ string(j), Info.m_nTeam1Score);
                         ParseInt(param, (("Team1Num_" $ string(i)) $ "_") $ string(j), team1num);
                         L = 0;
-                        J0x693:
 
-                        // End:0x716 [Loop If]
-                        if(L < team1num)
+                        while(L < team1num)
                         {
                             ParseString(param, (((("Team1MemberName_" $ string(i)) $ "_") $ string(j)) $ "_") $ string(L), strTmp);
                             // End:0x70C
@@ -211,20 +197,14 @@ function OnEvent(int Event_ID, string param)
                                 Info.m_Team1MemberName[L] = strTmp;
                             }
                             L++;
-                            // [Loop Continue]
-                            goto J0x693;
                         }
                         AddSSQMainEvent(Info);
                         ClearSSQMainEventInfo(Info);
                         Info.m_nSSQStatus = m_nSSQStatus;
                         Info.m_nEventType = nEventType;
                         j++;
-                        // [Loop Continue]
-                        goto J0x4B0;
                     }
                     i++;
-                    // [Loop Continue]
-                    goto J0x442;
                 }                
             }
             else
@@ -237,10 +217,8 @@ function OnEvent(int Event_ID, string param)
                     ParseInt(param, "NeedPoint2", m_nNeedPoint2);
                     ParseInt(param, "SealNum", sealnum);
                     i = 0;
-                    J0x7E5:
 
-                    // End:0x8BA [Loop If]
-                    if(i < sealnum)
+                    while(i < sealnum)
                     {
                         ParseInt(param, "SealID_" $ string(i), m_nSealID);
                         ParseInt(param, "OwnerTeamID_" $ string(i), m_nOwnerTeamID);
@@ -248,8 +226,6 @@ function OnEvent(int Event_ID, string param)
                         ParseInt(param, "Team1Mark_" $ string(i), m_nTeam1Mark);
                         AddSSQSealStatus(m_nSSQStatus, m_nNeedPoint1, m_nNeedPoint2, m_nSealID, m_nOwnerTeamID, m_nTeam1Mark, m_nTeam2Mark);
                         i++;
-                        // [Loop Continue]
-                        goto J0x7E5;
                     }
                 }
             }
@@ -491,10 +467,8 @@ function AddSSQPreInfoSealStatus()
         return;
     }
     i = 0;
-    J0x257:
 
-    // End:0x5CE [Loop If]
-    if(i < g_sinfopre.m_nSealNumArray.Length)
+    while(i < g_sinfopre.m_nSealNumArray.Length)
     {
         nSealNum = g_sinfopre.m_nSealNumArray[i];
         nWinner = g_sinfopre.m_nWinnerArray[i];
@@ -555,8 +529,6 @@ function AddSSQPreInfoSealStatus()
             Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("SSQMainBoard.pre_MainTree", strRetName, infNodeItem);
         }
         i++;
-        // [Loop Continue]
-        goto J0x257;
     }
     return;
 }
@@ -566,16 +538,12 @@ function ClearSSQMainEventInfo(out SSQMainEventInfo Info)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x43 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         Info.m_Team1MemberName[i] = "";
         Info.m_Team2MemberName[i] = "";
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -811,10 +779,8 @@ function AddSSQMainEvent(SSQMainEventInfo Info)
     infNodeItem.t_color.A = byte(255);
     Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("SSQMainBoard.me_MainTree", strRetName, infNodeItem);
     i = 0;
-    J0xDE0:
 
-    // End:0xEE5 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         strTmp = Info.m_Team1MemberName[i];
         // End:0xEDB
@@ -833,8 +799,6 @@ function AddSSQMainEvent(SSQMainEventInfo Info)
             Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("SSQMainBoard.me_MainTree", strRetName, infNodeItem);
         }
         i++;
-        // [Loop Continue]
-        goto J0xDE0;
     }
     infNodeItem = infNodeItemClear;
     infNodeItem.eType = XTNITEM_BLANK;
@@ -883,10 +847,8 @@ function AddSSQMainEvent(SSQMainEventInfo Info)
     infNodeItem.t_color.A = byte(255);
     Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("SSQMainBoard.me_MainTree", strRetName, infNodeItem);
     i = 0;
-    J0x1272:
 
-    // End:0x1377 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         strTmp = Info.m_Team2MemberName[i];
         // End:0x136D
@@ -905,8 +867,6 @@ function AddSSQMainEvent(SSQMainEventInfo Info)
             Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("SSQMainBoard.me_MainTree", strRetName, infNodeItem);
         }
         i++;
-        // [Loop Continue]
-        goto J0x1272;
     }
     infNodeItem = infNodeItemClear;
     infNodeItem.eType = XTNITEM_BLANK;
@@ -1251,10 +1211,8 @@ function AddSSQSealStatus(int m_nSSQStatus, int m_nNeedPoint1, int m_nNeedPoint2
         }
     }
     i = 0;
-    J0x146B:
 
-    // End:0x16D1 [Loop If]
-    if(i < nMax)
+    while(i < nMax)
     {
         infNodeItem = infNodeItemClear;
         infNodeItem.eType = XTNITEM_TEXT;
@@ -1286,8 +1244,6 @@ function AddSSQSealStatus(int m_nSSQStatus, int m_nNeedPoint1, int m_nNeedPoint2
         infNodeItem.t_color.A = byte(255);
         Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("SSQMainBoard.ss_MainTree", strRetName, infNodeItem);
         i += 2;
-        // [Loop Continue]
-        goto J0x146B;
     }
     infNodeItem = infNodeItemClear;
     infNodeItem.eType = XTNITEM_BLANK;

@@ -99,10 +99,8 @@ function InitializeComboBox()
     Debug(countnum2);
     cnt1 = Len(countnum2);
     i = 0;
-    J0x8E:
 
-    // End:0x1E6 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         countnum = "" $ string(m_knighthoodIndex[i]);
         Debug(countnum);
@@ -115,8 +113,9 @@ function InitializeComboBox()
             {
                 Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("InviteClanPopWnd.ComboboxInviteClandPopWnd", script.m_memberList[i].m_sName, m_knighthoodIndex[i]);
                 ++addedCount;
-                // [Explicit Continue]
-                goto J0x1DC;
+
+                ++i;
+                continue;
             }
             // End:0x1DC
             if(cnt1 <= cnt2)
@@ -125,11 +124,8 @@ function InitializeComboBox()
                 ++addedCount;
             }
         }
-        J0x1DC:
 
         ++i;
-        // [Loop Continue]
-        goto J0x8E;
     }
     // End:0x22D
     if(addedCount > 0)

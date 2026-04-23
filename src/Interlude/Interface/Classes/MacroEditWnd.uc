@@ -118,10 +118,8 @@ function InitTabOrder()
     Class'NWindow.UIAPI_WINDOW'.static.SetTabOrder("MacroEditWnd.TxtName", "MacroEditWnd.TxtShortName", "MacroEditWnd");
     Class'NWindow.UIAPI_WINDOW'.static.SetTabOrder("MacroEditWnd.TxtShortName", "MacroEditWnd.TxtEdit0", "MacroEditWnd.txtName");
     idx = 0;
-    J0xFA:
 
-    // End:0x277 [Loop If]
-    if((idx < 12))
+    while((idx < 12))
     {
         // End:0x174
         if((idx == 0))
@@ -141,8 +139,6 @@ function InitTabOrder()
             }
         }
         idx++;
-        // [Loop Continue]
-        goto J0xFA;
     }
     return;
 }
@@ -178,30 +174,22 @@ function HandleMacroList()
     ItemInfo.Name = "105";
     Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MacroEditWnd.MacroItem", ItemInfo);
     idx = 1;
-    J0x62:
 
-    // End:0xEF [Loop If]
-    if((idx < 8))
+    while((idx < 8))
     {
         ItemInfo.IconName = ("L2UI.Macro_Icon" $ string(idx));
         ItemInfo.Name = ("" $ string(idx));
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MacroEditWnd.MacroItem", ItemInfo);
         idx++;
-        // [Loop Continue]
-        goto J0x62;
     }
     idx = 104;
-    J0xF7:
 
-    // End:0x184 [Loop If]
-    if((idx > 7))
+    while((idx > 7))
     {
         ItemInfo.IconName = ("L2UI.Macro_Icon" $ string(idx));
         ItemInfo.Name = ("" $ string(idx));
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MacroEditWnd.MacroItem", ItemInfo);
         idx--;
-        // [Loop Continue]
-        goto J0xF7;
     }
     return;
 }
@@ -359,15 +347,11 @@ function Clear()
     Class'NWindow.UIAPI_EDITBOX'.static.SetString("MacroEditWnd.TxtName", "");
     Class'NWindow.UIAPI_EDITBOX'.static.SetString("MacroEditWnd.TxtShortName", "");
     idx = 0;
-    J0x85:
 
-    // End:0xD7 [Loop If]
-    if((idx < 12))
+    while((idx < 12))
     {
         Class'NWindow.UIAPI_EDITBOX'.static.SetString(("MacroEditWnd.txtEdit" $ string(idx)), "");
         idx++;
-        // [Loop Continue]
-        goto J0x85;
     }
     UpdateIcon();
     UpdateIconName();
@@ -463,15 +447,11 @@ function SetMacroID(int MacroID)
         MacroInfoWnd = MacroInfoWnd(GetScript("MacroInfoWnd"));
         MacroInfoWnd.SetInfoText(Info.Description);
         idx = 0;
-        J0x113:
 
-        // End:0x173 [Loop If]
-        if((idx < 12))
+        while((idx < 12))
         {
             Class'NWindow.UIAPI_EDITBOX'.static.SetString(("MacroEditWnd.TxtEdit" $ string(idx)), Info.CommandList[idx]);
             idx++;
-            // [Loop Continue]
-            goto J0x113;
         }
     }
     return;
@@ -489,17 +469,13 @@ function SaveMacro()
     IconName = Class'NWindow.UIAPI_EDITBOX'.static.GetString("MacroEditWnd.TxtShortName");
     Description = MacroInfoWnd.GetInfoText();
     idx = 0;
-    J0x96:
 
-    // End:0x112 [Loop If]
-    if((idx < 12))
+    while((idx < 12))
     {
         unkLocStr = Class'NWindow.UIAPI_EDITBOX'.static.GetString(("MacroEditWnd.TxtEdit" $ string(idx)));
         CommandList.Insert(CommandList.Length, 1);
         CommandList[(CommandList.Length - 1)] = unkLocStr;
         idx++;
-        // [Loop Continue]
-        goto J0x96;
     }
     // End:0x147
     if((unkInt3 > 7))

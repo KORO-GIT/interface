@@ -431,10 +431,8 @@ function HandleCursedWeaponList(string param)
     ParseInt(param, "NUM", Num);
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("MinimapWnd_Expand.CursedComboBox");
     i = 0;
-    J0x4D:
 
-    // End:0x160 [Loop If]
-    if(i < (Num + 1))
+    while(i < (Num + 1))
     {
         // End:0xA7
         if(i == 0)
@@ -446,8 +444,6 @@ function HandleCursedWeaponList(string param)
         Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("MinimapWnd_Expand.CursedComboBox", cursedName, ItemID);
         Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("MinimapWnd_Expand.CursedComboBox", 0);
         ++i;
-        // [Loop Continue]
-        goto J0x4D;
     }
     Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteAllTarget("MinimapWnd_Expand.Minimap");
     return;
@@ -479,10 +475,8 @@ function HandleCursedWeaponLoctaion(string param)
     else
     {
         i = 0;
-        J0x8F:
 
-        // End:0x27D [Loop If]
-        if(i < Num)
+        while(i < Num)
         {
             ParseInt(param, "ID" $ string(i), ItemID);
             ParseString(param, "NAME" $ string(i), cursedName);
@@ -523,8 +517,6 @@ function HandleCursedWeaponLoctaion(string param)
                     break;
             }
             ++i;
-            // [Loop Continue]
-            goto J0x8F;
         }
     }
     // End:0x38F

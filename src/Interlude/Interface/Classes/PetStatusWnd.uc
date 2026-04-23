@@ -153,10 +153,8 @@ function HandlePetStatusSpelledList(string param)
     Info.bShow = true;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0x69:
 
-    // End:0x15C [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         // End:0x152
@@ -173,8 +171,6 @@ function HandlePetStatusSpelledList(string param)
             BuffCnt++;
         }
         i++;
-        // [Loop Continue]
-        goto J0x69;
     }
     UpdateBuff(m_bBuff);
     return;

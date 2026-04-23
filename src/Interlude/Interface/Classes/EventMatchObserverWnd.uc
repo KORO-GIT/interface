@@ -84,10 +84,8 @@ function OnLoad()
     m_hScore1Tex = TextureHandle(GetHandle("TopWnd.Score1Tex"));
     m_hScore2Tex = TextureHandle(GetHandle("TopWnd.Score2Tex"));
     i = 0;
-    J0xA7:
 
-    // End:0x287 [Loop If]
-    if(i < 2)
+    while(i < 2)
     {
         m_hPlayerWnd[i] = GetHandle(("Player" $ string(i + 1)) $ "Wnd");
         m_hPlayerCPBar[i] = BarHandle(GetHandle(("Player" $ string(i + 1)) $ "Wnd.CPBar"));
@@ -98,15 +96,11 @@ function OnLoad()
         m_hPlayerBuffCoverWnd[i] = GetHandle(("Player" $ string(i + 1)) $ "BuffWnd");
         m_hPlayerBuffWnd[i] = StatusIconHandle(GetHandle(("Player" $ string(i + 1)) $ "BuffWnd.StatusIconCtrl"));
         ++i;
-        // [Loop Continue]
-        goto J0xA7;
     }
     m_hParty1Wnd = GetHandle("Party1Wnd");
     i = 0;
-    J0x2A5:
 
-    // End:0x4A1 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         m_hParty1MemberWnd[i] = GetHandle(("Party1Wnd.PartyMember" $ string(i + 1)) $ "Wnd");
         m_hParty1MemberNameTextBox[i] = TextBoxHandle(GetHandle(("Party1Wnd.PartyMember" $ string(i + 1)) $ "Wnd.Name"));
@@ -116,15 +110,11 @@ function OnLoad()
         m_hParty1MemberMPBar[i] = BarHandle(GetHandle(("Party1Wnd.PartyMember" $ string(i + 1)) $ "Wnd.MPBar"));
         m_hParty1MemberSelectedTex[i] = GetHandle(("Party1Wnd.PartyMember" $ string(i + 1)) $ "Wnd.SelectedTex");
         ++i;
-        // [Loop Continue]
-        goto J0x2A5;
     }
     m_hParty2Wnd = GetHandle("Party2Wnd");
     i = 0;
-    J0x4BF:
 
-    // End:0x6BB [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         m_hParty2MemberWnd[i] = GetHandle(("Party2Wnd.PartyMember" $ string(i + 1)) $ "Wnd");
         m_hParty2MemberNameTextBox[i] = TextBoxHandle(GetHandle(("Party2Wnd.PartyMember" $ string(i + 1)) $ "Wnd.Name"));
@@ -134,14 +124,10 @@ function OnLoad()
         m_hParty2MemberMPBar[i] = BarHandle(GetHandle(("Party2Wnd.PartyMember" $ string(i + 1)) $ "Wnd.MPBar"));
         m_hParty2MemberSelectedTex[i] = GetHandle(("Party2Wnd.PartyMember" $ string(i + 1)) $ "Wnd.SelectedTex");
         ++i;
-        // [Loop Continue]
-        goto J0x4BF;
     }
     i = 0;
-    J0x6C2:
 
-    // End:0x8D2 [Loop If]
-    if(i < 6)
+    while(i < 6)
     {
         m_hMsgLeftWnd[i] = GetHandle("MsgWnd.MsgLeft.Msg" $ string(i + 1));
         m_hMsgRightWnd[i] = GetHandle("MsgWnd.MsgRight.Msg" $ string(i + 1));
@@ -152,8 +138,6 @@ function OnLoad()
         m_hMsgRightDefenderTextBox[i] = TextBoxHandle(GetHandle(("MsgWnd.MsgRight.Msg" $ string(i + 1)) $ ".Defender"));
         m_hMsgRightSkillTextBox[i] = TextBoxHandle(GetHandle(("MsgWnd.MsgRight.Msg" $ string(i + 1)) $ ".Skill"));
         ++i;
-        // [Loop Continue]
-        goto J0x6C2;
     }
     RegisterEvent(2220);
     RegisterEvent(2240);
@@ -238,32 +222,25 @@ function OnTimer(int a_TimerID)
         // End:0x126
         case 2:
             i = 0;
-            J0x39:
 
-            // End:0x123 [Loop If]
-            if(i < 6)
+            while(i < 6)
             {
                 // End:0xAF
                 if(m_hMsgLeftWnd[i].IsShowWindow() && 0 != m_hMsgLeftWnd[i].GetAlpha())
                 {
                     m_hMsgLeftWnd[i].SetAlpha(255);
                     m_hMsgLeftWnd[i].SetAlpha(0, 2.0000000);
-                    // [Explicit Break]
-                    goto J0x123;
+                    break;
                 }
                 // End:0x119
                 if(m_hMsgRightWnd[i].IsShowWindow() && 0 != m_hMsgRightWnd[i].GetAlpha())
                 {
                     m_hMsgRightWnd[i].SetAlpha(255);
                     m_hMsgRightWnd[i].SetAlpha(0, 2.0000000);
-                    // [Explicit Break]
-                    goto J0x123;
+                    break;
                 }
                 ++i;
-                // [Loop Continue]
-                goto J0x39;
             }
-            J0x123:
 
             // End:0x129
             break;
@@ -279,10 +256,8 @@ function OnLButtonDown(WindowHandle a_WindowHandle, int X, int Y)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x48 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         // End:0x3E
         if(a_WindowHandle.IsChildOf(m_hParty1MemberWnd[i]))
@@ -291,14 +266,10 @@ function OnLButtonDown(WindowHandle a_WindowHandle, int X, int Y)
             return;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     i = 0;
-    J0x4F:
 
-    // End:0x90 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         // End:0x86
         if(a_WindowHandle.IsChildOf(m_hParty2MemberWnd[i]))
@@ -307,8 +278,6 @@ function OnLButtonDown(WindowHandle a_WindowHandle, int X, int Y)
             return;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x4F;
     }
     return;
 }
@@ -499,35 +468,27 @@ function RefreshClassOrName()
     if(m_ClassOrName)
     {
         i = 0;
-        J0x10:
 
-        // End:0x7A [Loop If]
-        if(i < 9)
+        while(i < 9)
         {
             m_hParty1MemberNameTextBox[i].HideWindow();
             m_hParty2MemberNameTextBox[i].HideWindow();
             m_hParty1MemberClassTextBox[i].ShowWindow();
             m_hParty2MemberClassTextBox[i].ShowWindow();
             ++i;
-            // [Loop Continue]
-            goto J0x10;
         }        
     }
     else
     {
         i = 0;
-        J0x84:
 
-        // End:0xEE [Loop If]
-        if(i < 9)
+        while(i < 9)
         {
             m_hParty1MemberNameTextBox[i].ShowWindow();
             m_hParty2MemberNameTextBox[i].ShowWindow();
             m_hParty1MemberClassTextBox[i].HideWindow();
             m_hParty2MemberClassTextBox[i].HideWindow();
             ++i;
-            // [Loop Continue]
-            goto J0x84;
         }
     }
     return;
@@ -558,26 +519,22 @@ function UpdateTeamInfo(int a_TeamID)
         case 0:
             m_hParty1Wnd.SetWindowSize(280, 70 * PartyMemberCount);
             i = 0;
-            J0x63:
 
-            // End:0xCE [Loop If]
-            if(i < 9)
+            while(i < 9)
             {
                 // End:0xA2
                 if(i < PartyMemberCount)
                 {
                     m_hParty1MemberWnd[i].ShowWindow();
                     UpdateUserInfo(0, i);
-                    // [Explicit Continue]
-                    goto J0xC4;
+
+                    ++i;
+                    continue;
                 }
                 m_hParty1MemberWnd[i].HideWindow();
                 m_Party1UserIDList[i] = 0;
-                J0xC4:
 
                 ++i;
-                // [Loop Continue]
-                goto J0x63;
             }
             // End:0x16A
             break;
@@ -585,26 +542,22 @@ function UpdateTeamInfo(int a_TeamID)
         case 1:
             m_hParty2Wnd.SetWindowSize(280, 70 * PartyMemberCount);
             i = 0;
-            J0xF9:
 
-            // End:0x164 [Loop If]
-            if(i < 9)
+            while(i < 9)
             {
                 // End:0x138
                 if(i < PartyMemberCount)
                 {
                     m_hParty2MemberWnd[i].ShowWindow();
                     UpdateUserInfo(1, i);
-                    // [Explicit Continue]
-                    goto J0x15A;
+
+                    ++i;
+                    continue;
                 }
                 m_hParty2MemberWnd[i].HideWindow();
                 m_Party2UserIDList[i] = 0;
-                J0x15A:
 
                 ++i;
-                // [Loop Continue]
-                goto J0xF9;
             }
             // End:0x16A
             break;
@@ -677,10 +630,8 @@ function UpdateUserInfo(int a_TeamID, int a_UserID)
             CurRow = -1;
             Debug("Length=" $ string(UserData.BuffIDList.Length));
             i = 0;
-            J0x313:
 
-            // End:0x44E [Loop If]
-            if(i < UserData.BuffIDList.Length)
+            while(i < UserData.BuffIDList.Length)
             {
                 // End:0x35E
                 if(float(0) == (float(i) % float(12)))
@@ -703,8 +654,6 @@ function UpdateUserInfo(int a_TeamID, int a_UserID)
                     m_hPlayerBuffWnd[a_TeamID].AddCol(CurRow, Info);
                 }
                 ++i;
-                // [Loop Continue]
-                goto J0x313;
             }
             m_hPlayerBuffWnd[a_TeamID].GetWindowSize(Width, Height);
             m_hPlayerBuffCoverWnd[a_TeamID].SetWindowSize(Width, Height);
@@ -722,48 +671,40 @@ function SetSelectedUser(int a_TeamID, int a_UserID)
         // End:0x67
         case 0:
             i = 0;
-            J0x12:
 
-            // End:0x64 [Loop If]
-            if(i < 9)
+            while(i < 9)
             {
                 // End:0x45
                 if(i == a_UserID)
                 {
                     m_hParty1MemberSelectedTex[i].ShowWindow();
-                    // [Explicit Continue]
-                    goto J0x5A;
+
+                    ++i;
+                    continue;
                 }
                 m_hParty1MemberSelectedTex[i].HideWindow();
-                J0x5A:
 
                 ++i;
-                // [Loop Continue]
-                goto J0x12;
             }
             // End:0xCA
             break;
         // End:0xC7
         case 1:
             i = 0;
-            J0x72:
 
-            // End:0xC4 [Loop If]
-            if(i < 9)
+            while(i < 9)
             {
                 // End:0xA5
                 if(i == a_UserID)
                 {
                     m_hParty2MemberSelectedTex[i].ShowWindow();
-                    // [Explicit Continue]
-                    goto J0xBA;
+
+                    ++i;
+                    continue;
                 }
                 m_hParty2MemberSelectedTex[i].HideWindow();
-                J0xBA:
 
                 ++i;
-                // [Loop Continue]
-                goto J0x72;
             }
             // End:0xCA
             break;
@@ -811,16 +752,12 @@ function ClearMsg()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x47 [Loop If]
-    if(i < 6)
+    while(i < 6)
     {
         m_hMsgLeftWnd[i].HideWindow();
         m_hMsgRightWnd[i].HideWindow();
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -835,10 +772,8 @@ function bool GetTeamUserID(int a_UserClassID, out int a_TeamID, out int a_UserI
         return false;
     }
     i = 0;
-    J0x14:
 
-    // End:0x53 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         // End:0x49
         if(m_Party1UserIDList[i] == a_UserClassID)
@@ -848,14 +783,10 @@ function bool GetTeamUserID(int a_UserClassID, out int a_TeamID, out int a_UserI
             return true;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x14;
     }
     i = 0;
-    J0x5A:
 
-    // End:0x99 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         // End:0x8F
         if(m_Party2UserIDList[i] == a_UserClassID)
@@ -865,8 +796,6 @@ function bool GetTeamUserID(int a_UserClassID, out int a_TeamID, out int a_UserI
             return true;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x5A;
     }
     return false;
 }
@@ -924,29 +853,24 @@ function UpdateSkillMsg()
         // End:0x25C
         case MESSAGEMODE_Normal:
             i = 0;
-            J0x63:
 
-            // End:0x8E [Loop If]
-            if(i < 6)
+            while(i < 6)
             {
                 m_hMsgRightWnd[i].HideWindow();
                 ++i;
-                // [Loop Continue]
-                goto J0x63;
             }
             i = 0;
-            J0x95:
 
-            // End:0x259 [Loop If]
-            if(i < 6)
+            while(i < 6)
             {
                 SkillMsgIndex = int(float(m_MsgStartIndex + i) % float(6));
                 // End:0xEC
                 if(m_MsgList[SkillMsgIndex].AttackerName == "")
                 {
                     m_hMsgLeftWnd[i].HideWindow();
-                    // [Explicit Continue]
-                    goto J0x24F;
+
+                    ++i;
+                    continue;
                 }
                 m_hMsgLeftAttackerTextBox[i].SetText(string(m_MsgList[SkillMsgIndex].AttackerUserID + 1) $ m_MsgList[SkillMsgIndex].AttackerName);
                 m_hMsgLeftDefenderTextBox[i].SetText(string(m_MsgList[SkillMsgIndex].DefenderUserID + 1) $ m_MsgList[SkillMsgIndex].DefenderName);
@@ -971,29 +895,25 @@ function UpdateSkillMsg()
                 }
                 m_hMsgLeftWnd[i].ShowWindow();
                 m_hMsgLeftWnd[i].SetAlpha(255);
-                J0x24F:
 
                 ++i;
-                // [Loop Continue]
-                goto J0x95;
             }
             // End:0x59E
             break;
         // End:0x54C
         case MESSAGEMODE_LeftRight:
             i = 0;
-            J0x268:
 
-            // End:0x3D5 [Loop If]
-            if(i < 6)
+            while(i < 6)
             {
                 SkillMsgIndex = int(float(m_Team1MsgStartIndex + i) % float(6));
                 // End:0x2BF
                 if(m_Team1MsgList[SkillMsgIndex].AttackerName == "")
                 {
                     m_hMsgLeftWnd[i].HideWindow();
-                    // [Explicit Continue]
-                    goto J0x3CB;
+
+                    ++i;
+                    continue;
                 }
                 m_hMsgLeftAttackerTextBox[i].SetText(string(m_Team1MsgList[SkillMsgIndex].AttackerUserID + 1));
                 m_hMsgLeftDefenderTextBox[i].SetText(string(m_Team1MsgList[SkillMsgIndex].DefenderUserID + 1));
@@ -1010,25 +930,21 @@ function UpdateSkillMsg()
                 }
                 m_hMsgLeftWnd[i].ShowWindow();
                 m_hMsgLeftWnd[i].SetAlpha(255);
-                J0x3CB:
 
                 ++i;
-                // [Loop Continue]
-                goto J0x268;
             }
             i = 0;
-            J0x3DC:
 
-            // End:0x549 [Loop If]
-            if(i < 6)
+            while(i < 6)
             {
                 SkillMsgIndex = int(float(m_MsgStartIndex + i) % float(6));
                 // End:0x433
                 if(m_Team2MsgList[SkillMsgIndex].AttackerName == "")
                 {
                     m_hMsgRightWnd[i].HideWindow();
-                    // [Explicit Continue]
-                    goto J0x53F;
+
+                    ++i;
+                    continue;
                 }
                 m_hMsgRightAttackerTextBox[i].SetText(string(m_Team2MsgList[SkillMsgIndex].AttackerUserID + 1));
                 m_hMsgRightDefenderTextBox[i].SetText(string(m_Team2MsgList[SkillMsgIndex].DefenderUserID + 1));
@@ -1045,27 +961,20 @@ function UpdateSkillMsg()
                 }
                 m_hMsgRightWnd[i].ShowWindow();
                 m_hMsgRightWnd[i].SetAlpha(255);
-                J0x53F:
 
                 ++i;
-                // [Loop Continue]
-                goto J0x3DC;
             }
             // End:0x59E
             break;
         // End:0x59B
         case MESSAGEMODE_Off:
             i = 0;
-            J0x558:
 
-            // End:0x598 [Loop If]
-            if(i < 6)
+            while(i < 6)
             {
                 m_hMsgLeftWnd[i].HideWindow();
                 m_hMsgRightWnd[i].HideWindow();
                 ++i;
-                // [Loop Continue]
-                goto J0x558;
             }
             // End:0x59E
             break;

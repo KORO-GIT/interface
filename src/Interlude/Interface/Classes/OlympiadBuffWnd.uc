@@ -93,10 +93,7 @@ function HandleBuffInfo(string param)
     CurRow = -1;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0x65:
-
-    // End:0x225 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         // End:0xB3
         if((float(i) % float(12)) == float(0))
@@ -115,8 +112,6 @@ function HandleBuffInfo(string param)
         Info.bShow = true;
         Class'NWindow.UIAPI_STATUSICONCTRL'.static.AddCol(m_WindowName $ ".StatusIcon", CurRow, Info);
         i++;
-        // [Loop Continue]
-        goto J0x65;
     }
     // End:0x2B9
     if(Max > 0)

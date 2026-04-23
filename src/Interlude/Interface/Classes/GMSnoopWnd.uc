@@ -13,28 +13,20 @@ function OnLoad()
     local int i, j;
 
     i = 0;
-    J0x07:
 
-    // End:0x124 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         m_hSnoopWndList[i] = GetHandle("SnoopWnd" $ string(i + 1));
         m_hSnoopChatWndList[i] = TextListBoxHandle(GetHandle(("SnoopWnd" $ string(i + 1)) $ ".Chat"));
         m_hCancelButtonList[i] = ButtonHandle(GetHandle(("SnoopWnd" $ string(i + 1)) $ ".CancelButton"));
         j = 0;
-        J0xB6:
 
-        // End:0x11A [Loop If]
-        if(j < 7)
+        while(j < 7)
         {
             m_hCheckBox[(i * 7) + j] = CheckBoxHandle(GetHandle((("SnoopWnd" $ string(i + 1)) $ ".CheckBox") $ string(j)));
             ++j;
-            // [Loop Continue]
-            goto J0xB6;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     RegisterEvent(2410);
     ClearAllSnoop();
@@ -46,15 +38,11 @@ function OnShow()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x32 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         m_hSnoopWndList[i].HideWindow();
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -69,10 +57,8 @@ function OnClickButtonWithHandle(ButtonHandle a_ButtonHandle)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x57 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         // End:0x4D
         if(a_ButtonHandle == m_hCancelButtonList[i])
@@ -81,8 +67,6 @@ function OnClickButtonWithHandle(ButtonHandle a_ButtonHandle)
             ClearSnoop(i);
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -143,15 +127,11 @@ function ClearAllSnoop()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x28 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         ClearSnoop(i);
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -176,23 +156,17 @@ function ClearSnoop(int a_SnoopIndex)
     m_hSnoopChatWndList[a_SnoopIndex].HideWindow();
     AllHidden = true;
     i = 0;
-    J0x65:
 
-    // End:0x9B [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         // End:0x91
         if(-1 != m_SnoopIDList[a_SnoopIndex])
         {
             AllHidden = false;
-            // [Explicit Break]
-            goto J0x9B;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x65;
     }
-    J0x9B:
 
     // End:0xB3
     if(AllHidden)
@@ -234,10 +208,8 @@ function int GetSnoopIndexByID(int a_SnoopID)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x38 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         // End:0x2E
         if(a_SnoopID == m_SnoopIDList[i])
@@ -245,8 +217,6 @@ function int GetSnoopIndexByID(int a_SnoopID)
             return i;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return -1;
 }

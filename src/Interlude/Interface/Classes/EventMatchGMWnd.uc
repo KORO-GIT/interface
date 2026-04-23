@@ -264,10 +264,8 @@ function OnClickShowCommandWndButton()
     }
     HtmlString = "<html><body>";
     i = 0;
-    J0x85:
 
-    // End:0xFE [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         // End:0xF4
         if(GetINIString("Cmd", "Cmd" $ string(i), CommandString, CommandFileName))
@@ -275,8 +273,6 @@ function OnClickShowCommandWndButton()
             HtmlString = ((((HtmlString $ "<a cmd = \"") $ CommandString) $ "\">") $ CommandString) $ "</a><br1>";
         }
         ++i;
-        // [Loop Continue]
-        goto J0x85;
     }
     HtmlString = HtmlString $ "</body></html>";
     m_hEventMatchGMCommandWnd.ShowWindow();
@@ -366,10 +362,8 @@ function HandleEventMatchUpdateTeamInfo(string a_Param)
         hTeamListCtrl.DeleteAllItem();
         Record.LVDataList.Length = 3;
         i = 0;
-        J0xF6:
 
-        // End:0x1A1 [Loop If]
-        if(i < PartyMemberCount)
+        while(i < PartyMemberCount)
         {
             // End:0x197
             if(Class'NWindow.EventMatchAPI'.static.GetUserData(TeamID, i, UserData))
@@ -380,8 +374,6 @@ function HandleEventMatchUpdateTeamInfo(string a_Param)
                 hTeamListCtrl.InsertRecord(Record);
             }
             ++i;
-            // [Loop Continue]
-            goto J0xF6;
         }
         RefreshLockStatus();
     }
@@ -426,10 +418,8 @@ function bool ApplySkillRule(string a_OptionFile)
         Count = 0;
     }
     i = 0;
-    J0xDB:
 
-    // End:0x189 [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         // End:0x13D
         if(!GetINIBool("Skill", "ExpSkillID" $ string(i), Id, a_OptionFile))
@@ -448,8 +438,6 @@ function bool ApplySkillRule(string a_OptionFile)
         }
         Command = Command $ string(Id);
         ++i;
-        // [Loop Continue]
-        goto J0xDB;
     }
     ExecuteCommand(Command);
     return true;
@@ -483,10 +471,8 @@ function bool ApplyItemRule(string a_OptionFile)
         Count = 0;
     }
     i = 0;
-    J0xD7:
 
-    // End:0x183 [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         // End:0x137
         if(!GetINIInt("Item", "ExpItemID" $ string(i), Id, a_OptionFile))
@@ -505,8 +491,6 @@ function bool ApplyItemRule(string a_OptionFile)
         }
         Command = Command $ string(Id);
         ++i;
-        // [Loop Continue]
-        goto J0xD7;
     }
     ExecuteCommand(Command);
     return true;
@@ -531,10 +515,8 @@ function bool ApplyBuffRule()
     }
     Command = "//eventmatch useskill" @ string(m_MatchID);
     i = 0;
-    J0x88:
 
-    // End:0x15A [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         // End:0xE5
         if(!GetINIInt("Buff", "BuffID" $ string(i), Id, OptionFile))
@@ -550,8 +532,6 @@ function bool ApplyBuffRule()
         }
         Command = (Command @ string(Id)) @ string(Level);
         ++i;
-        // [Loop Continue]
-        goto J0x88;
     }
     ExecuteCommand(Command);
     return true;
@@ -568,10 +548,8 @@ function bool CheckBuffRule(string a_OptionFile)
         return false;
     }
     i = 0;
-    J0x40:
 
-    // End:0xF5 [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         // End:0x9D
         if(!GetINIInt("Buff", "BuffID" $ string(i), Id, a_OptionFile))
@@ -586,8 +564,6 @@ function bool CheckBuffRule(string a_OptionFile)
             return false;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x40;
     }
     return true;
 }
@@ -647,10 +623,8 @@ function Firecracker(int a_TeamID)
 
     PartyMemberCount = Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(a_TeamID);
     i = 0;
-    J0x21:
 
-    // End:0x87 [Loop If]
-    if(i < PartyMemberCount)
+    while(i < PartyMemberCount)
     {
         // End:0x7D
         if(Class'NWindow.EventMatchAPI'.static.GetUserData(a_TeamID, i, UserData))
@@ -658,8 +632,6 @@ function Firecracker(int a_TeamID)
             ExecuteCommand("//eventmatch firecracker" @ UserData.Username);
         }
         ++i;
-        // [Loop Continue]
-        goto J0x21;
     }
     return;
 }

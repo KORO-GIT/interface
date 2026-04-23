@@ -1656,10 +1656,8 @@ function int UpdateGiantBookCount()
         if(BookInfo.ItemNum == 1)
         {
             i = 0;
-            J0xBD:
 
-            // End:0x129 [Loop If]
-            if(i <= InvetoryItems)
+            while(i <= InvetoryItems)
             {
                 // End:0x11F
                 if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("InventoryWnd.InventoryItem", InvetoryItems, InventoryItem))
@@ -1671,8 +1669,6 @@ function int UpdateGiantBookCount()
                     }
                 }
                 ++i;
-                // [Loop Continue]
-                goto J0xBD;
             }            
         }
         else
@@ -1955,10 +1951,8 @@ function int UpdateLifeStoneCount()
         if(LSInfo.ItemNum == 1)
         {
             i = 0;
-            J0xCD:
 
-            // End:0x145 [Loop If]
-            if(i <= InvetoryItems)
+            while(i <= InvetoryItems)
             {
                 // End:0x13B
                 if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("InventoryWnd.InventoryItem", i, InventoryItem))
@@ -1970,8 +1964,6 @@ function int UpdateLifeStoneCount()
                     }
                 }
                 ++i;
-                // [Loop Continue]
-                goto J0xCD;
             }            
         }
         else
@@ -2654,21 +2646,16 @@ function bool IsRefineryTarget(int Id)
                                 if(SearchCustom == true)
                                 {
                                     i = 0;
-                                    J0x2D2:
 
-                                    // End:0x30E [Loop If]
-                                    if(i < arrSplit2.Length)
+                                    while(i < arrSplit2.Length)
                                     {
                                         // End:0x304
                                         if(Id == int(arrSplit2[i]))
                                         {
                                             SearchResult = true;
-                                            // [Explicit Break]
-                                            goto J0x30E;
+                                            break;
                                         }
                                         ++i;
-                                        // [Loop Continue]
-                                        goto J0x2D2;
                                     }
                                 }
                             }
@@ -2678,7 +2665,6 @@ function bool IsRefineryTarget(int Id)
             }
         }
     }
-    J0x30E:
 
     return SearchResult;
 }
@@ -2799,15 +2785,11 @@ function ComboBoxParam()
     if(arrSplit[0] != "")
     {
         i = 0;
-        J0x52:
 
-        // End:0xE6 [Loop If]
-        if(i < arrSplit.Length)
+        while(i < arrSplit.Length)
         {
             Class'NWindow.UIAPI_COMBOBOX'.static.AddString("EnchantAIWnd.comboTypeAll", (((((GetRefineryTypeName(int(arrSplit[i]))) $ ": ") $ (GetRefinerySkillName(int(arrSplit[i])))) $ " ") $ (GetRefinerySkillLvl(int(arrSplit[i])))) $ " lvl");
             ++i;
-            // [Loop Continue]
-            goto J0x52;
         }
         Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("EnchantAIWnd.comboTypeAll", 0);
     }

@@ -254,10 +254,8 @@ function CheckBuffs()
         have_8 = false;
         ParseInt(BuffsParams, "Max", Max);
         i = 0;
-        J0xB2:
 
-        // End:0x2E3 [Loop If]
-        if(i < Max)
+        while(i < Max)
         {
             ParseInt(BuffsParams, "SkillID_" $ string(i), Info.ClassID);
             // End:0x127
@@ -301,8 +299,6 @@ function CheckBuffs()
                 have_8 = true;
             }
             i++;
-            // [Loop Continue]
-            goto J0xB2;
         }
         GetPlayerInfo(UserInfo);
         // End:0x5A3

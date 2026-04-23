@@ -181,10 +181,8 @@ function ProcessAbnormalStatusList(out array<StatusIconInfo> a_Items, string a_P
 
     ParseInt(a_Param, "Max", Max);
     i = 0;
-    J0x1C:
 
-    // End:0xC4 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         Info = ProcessAbmormalItem(a_Param, i);
         Info.Size = 24;
@@ -194,8 +192,6 @@ function ProcessAbnormalStatusList(out array<StatusIconInfo> a_Items, string a_P
         Info.bShortItem = a_bShortItem;
         a_Items[a_Items.Length] = Info;
         i++;
-        // [Loop Continue]
-        goto J0x1C;
     }
     return;
 }

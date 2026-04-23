@@ -118,10 +118,8 @@ function HandlePartyMatchList(string param)
     ParseInt(param, "PageNum", m_CurrentPageNum);
     ParseInt(param, "RoomCount", Count);
     i = 0;
-    J0x7A:
 
-    // End:0x29C [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         ParseInt(param, "RoomNum_" $ string(i), Number);
         ParseString(param, "Leader_" $ string(i), PartyLeader);
@@ -139,8 +137,6 @@ function HandlePartyMatchList(string param)
         Record.LVDataList[5].szData = (string(MinMemberCnt) $ "/") $ string(MaxMemberCnt);
         Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord("PartyMatchWnd.PartyMatchListCtrl", Record);
         ++i;
-        // [Loop Continue]
-        goto J0x7A;
     }
     return;
 }

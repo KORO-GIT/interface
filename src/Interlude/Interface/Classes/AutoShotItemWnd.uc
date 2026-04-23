@@ -35,10 +35,8 @@ function OnLoad()
     item_2 = ItemWindowHandle(GetHandle("InventoryWnd.EquipItem_RHand"));
     OnRegisterEvent();
     int_4 = 0;
-    J0x86:
 
-    // End:0x189 [Loop If]
-    if(int_4 < 4)
+    while(int_4 < 4)
     {
         int_1[int_4].item_3 = ItemWindowHandle(GetHandle(("AutoShotItemWnd.ShotItem" $ string(int_4))));
         int_1[int_4].text_1 = TextBoxHandle(GetHandle(("AutoShotItemWnd.Counter" $ string(int_4))));
@@ -46,8 +44,6 @@ function OnLoad()
         MessageBox(string(int_4));
         int_1[int_4].texture_1.HideWindow();
         int_4++;
-        // [Loop Continue]
-        goto J0x86;
     }
     function1();
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoShotItemWnd.PetShotItemWnd");
@@ -280,10 +276,8 @@ function function4(optional string string_1, optional ItemInfo Info)
         info_2 = Info;
     }
     int_4 = 0;
-    J0x35:
 
-    // End:0x121 [Loop If]
-    if(int_4 < 4)
+    while(int_4 < 4)
     {
         // End:0x117
         if((info_2.ClassID == int_1[int_4].int_3))
@@ -298,23 +292,22 @@ function function4(optional string string_1, optional ItemInfo Info)
             if((info_2.ItemNum > 99))
             {
                 int_1[int_4].text_1.SetText("99+");
-                // [Explicit Continue]
-                goto J0x117;
+
+                int_4++;
+                continue;
             }
             // End:0xE9
             if((info_2.ItemNum == 0))
             {
                 ClearContainer(int_4);
-                // [Explicit Continue]
-                goto J0x117;
+
+                int_4++;
+                continue;
             }
             int_1[int_4].text_1.SetText(("" $ string(info_2.ItemNum)));
         }
-        J0x117:
 
         int_4++;
-        // [Loop Continue]
-        goto J0x35;
     }
     return;
 }
@@ -354,18 +347,17 @@ function OnClickButton(string strID)
     local int int_4;
 
     int_4 = 0;
-    J0x07:
 
-    // End:0x9E [Loop If]
-    if(int_4 < 4)
+    while(int_4 < 4)
     {
         // End:0x3D
         if(bool_1)
         {
             function3(int_4);
             int_1[int_4].bool_5 = false;
-            // [Explicit Continue]
-            goto J0x94;
+
+            int_4++;
+            continue;
         }
         // End:0x94
         if(int_1[int_4].int_2 != 0)
@@ -375,11 +367,8 @@ function OnClickButton(string strID)
             Me.SetTimer(1, 1);
             Me.SetTimer(2, 1);
         }
-        J0x94:
 
         int_4++;
-        // [Loop Continue]
-        goto J0x07;
     }
     // End:0xB4
     if(!bool_1)
@@ -468,10 +457,8 @@ function GetShotItemInfo(optional int int_5)
                 break;
         }
         int_4 = 0;
-        J0x24C:
 
-        // End:0x32C [Loop If]
-        if(int_4 < 4)
+        while(int_4 < 4)
         {
             ClearContainer(int_4);
             int_6 = item_1.FindItemWithClassID(int_1[int_4].int_3);
@@ -479,8 +466,9 @@ function GetShotItemInfo(optional int int_5)
             if(item_1.GetItem(int_6, Info))
             {
                 function12(int_4, Info);
-                // [Explicit Continue]
-                goto J0x322;
+
+                int_4++;
+                continue;
             }
             // End:0x322
             if((int_1[int_4].Reserve != 0))
@@ -492,11 +480,8 @@ function GetShotItemInfo(optional int int_5)
                     function12(int_4, Info);
                 }
             }
-            J0x322:
 
             int_4++;
-            // [Loop Continue]
-            goto J0x24C;
         }
     }
     else
@@ -512,15 +497,11 @@ function function7()
     local int int_4;
 
     int_4 = 0;
-    J0x07:
 
-    // End:0x28 [Loop If]
-    if(int_4 < 4)
+    while(int_4 < 4)
     {
         ClearContainer(int_4);
         int_4++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }

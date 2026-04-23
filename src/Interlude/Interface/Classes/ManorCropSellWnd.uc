@@ -114,10 +114,8 @@ function OnSellBtn()
     RecordCount = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecordCount("ManorCropSellWnd.ManorCropSellListCtrl");
     CropCnt = 0;
     i = 0;
-    J0x4B:
 
-    // End:0xD2 [Loop If]
-    if(i < RecordCount)
+    while(i < RecordCount)
     {
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropSellWnd.ManorCropSellListCtrl", i);
         SellCnt = int(Record.LVDataList[6].szData);
@@ -127,35 +125,29 @@ function OnSellBtn()
             CropCnt++;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x4B;
     }
     ParamAdd(param, "CropCnt", string(CropCnt));
     CropNum = 0;
     i = 0;
-    J0xFB:
 
-    // End:0x235 [Loop If]
-    if(i < RecordCount)
+    while(i < RecordCount)
     {
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropSellWnd.ManorCropSellListCtrl", i);
         SellCnt = int(Record.LVDataList[6].szData);
         // End:0x174
         if(SellCnt <= 0)
         {
-            // [Explicit Continue]
-            goto J0x22B;
+
+            ++i;
+            continue;
         }
         ParamAdd(param, "CropServerID" $ string(CropNum), string(Record.nReserved3));
         ParamAdd(param, "CropID" $ string(CropNum), string(Record.nReserved2));
         ParamAdd(param, "ManorID" $ string(CropNum), string(Record.nReserved1));
         ParamAdd(param, "SellCount" $ string(CropNum), Record.LVDataList[6].szData);
         CropNum++;
-        J0x22B:
 
         ++i;
-        // [Loop Continue]
-        goto J0xFB;
     }
     RequestProcureCropList(param);
     HideWindow("ManorCropSellWnd");

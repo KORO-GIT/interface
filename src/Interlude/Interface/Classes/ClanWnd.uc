@@ -60,16 +60,12 @@ function int findmyClanData(string C_Name)
     local int i, j, clannum;
 
     i = 0;
-    J0x07:
 
-    // End:0x93 [Loop If]
-    if(i < m_memberList.Length)
+    while(i < m_memberList.Length)
     {
         j = 0;
-        J0x1E:
 
-        // End:0x89 [Loop If]
-        if(j < m_memberList[i].m_array.Length)
+        while(j < m_memberList[i].m_array.Length)
         {
             // End:0x7F
             if(m_memberList[i].m_array[j].sName == C_Name)
@@ -77,12 +73,8 @@ function int findmyClanData(string C_Name)
                 clannum = m_memberList[i].m_array[j].clanType;
             }
             ++j;
-            // [Loop Continue]
-            goto J0x1E;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return clannum;
 }
@@ -175,16 +167,12 @@ function UpdateOnline()
 
     m_Online = 1;
     i = 0;
-    J0x0E:
 
-    // End:0x7C [Loop If]
-    if(i < m_memberList.Length)
+    while(i < m_memberList.Length)
     {
         N = 0;
-        J0x25:
 
-        // End:0x72 [Loop If]
-        if(N < m_memberList[i].m_array.Length)
+        while(N < m_memberList[i].m_array.Length)
         {
             // End:0x68
             if(m_memberList[i].m_array[N].Id > 0)
@@ -192,12 +180,8 @@ function UpdateOnline()
                 m_Online++;
             }
             N++;
-            // [Loop Continue]
-            goto J0x25;
         }
         i++;
-        // [Loop Continue]
-        goto J0x0E;
     }
     ParamAdd(m_Param, "Count", string(m_Online));
     ExecuteEvent(200000, m_Param);
@@ -260,10 +244,8 @@ function OnShow()
     resetBtnShowHide();
     NoblessMenuValidate();
     i = 10;
-    J0x20:
 
-    // End:0xA1 [Loop If]
-    if(i >= 0)
+    while(i >= 0)
     {
         // End:0x97
         if(Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved(m_WindowName $ ".ComboboxMainClanWnd", i) == m_myClanType)
@@ -271,8 +253,6 @@ function OnShow()
             Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum(m_WindowName $ ".ComboboxMainClanWnd", i);
         }
         --i;
-        // [Loop Continue]
-        goto J0x20;
     }
     ShowList(m_myClanType);
     Class'NWindow.UIAPI_LISTCTRL'.static.SetSelectedIndex(m_WindowName $ ".ClanMemberList", m_indexNum, true);
@@ -911,17 +891,13 @@ function Clear()
     m_bManageMaster = 0;
     m_bOustMember = 0;
     i = 0;
-    J0x1E2:
 
-    // End:0x241 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         m_memberList[i].m_array.Remove(0, m_memberList[i].m_array.Length);
         m_memberList[i].m_sName = "";
         m_memberList[i].m_sMasterName = "";
         ++i;
-        // [Loop Continue]
-        goto J0x1E2;
     }
     return;
 }
@@ -1131,10 +1107,8 @@ function int getClanKnighthoodMasterInfo(string NameVal)
     local int i, ReturnVal;
 
     i = 0;
-    J0x07:
 
-    // End:0x54 [Loop If]
-    if(i < m_memberList[0].m_array.Length)
+    while(i < m_memberList[0].m_array.Length)
     {
         // End:0x4A
         if(m_memberList[0].m_array[i].sName == NameVal)
@@ -1142,8 +1116,6 @@ function int getClanKnighthoodMasterInfo(string NameVal)
             ReturnVal = i;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return ReturnVal;
 }
@@ -1222,10 +1194,8 @@ function AddToList(int idx)
         i = 0;
     }
     i = 0;
-    J0x448:
 
-    // End:0x7F5 [Loop If]
-    if(i < m_memberList[idx].m_array.Length)
+    while(i < m_memberList[idx].m_array.Length)
     {
         Record.LVDataList[0].bUseTextColor = true;
         Record.LVDataList[0].szData = m_memberList[idx].m_array[i].sName;
@@ -1285,8 +1255,6 @@ function AddToList(int idx)
         }
         Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord(m_WindowName $ ".ClanMemberList", Record);
         ++i;
-        // [Loop Continue]
-        goto J0x448;
     }
     // End:0x85B
     if((GetClanTypeFromIndex(m_currentShowIndex)) <= 0)
@@ -1333,17 +1301,13 @@ function HandleMemberInfoUpdate(string a_Param)
     ParseInt(a_Param, "PledgeType", Info.clanType);
     ParseInt(a_Param, "HaveMaster", Info.bHaveMaster);
     i = 0;
-    J0xFD:
 
-    // End:0x451 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         Count = m_memberList[i].m_array.Length;
         j = 0;
-        J0x127:
 
-        // End:0x435 [Loop If]
-        if(j < Count)
+        while(j < Count)
         {
             // End:0x42B
             if(m_memberList[i].m_array[j].sName == Info.sName)
@@ -1380,26 +1344,18 @@ function HandleMemberInfoUpdate(string a_Param)
                     m_memberList[i].m_array[j] = Info;
                     ShowList(Info.clanType);
                 }
-                // [Explicit Break]
-                goto J0x435;
+                break;
             }
             ++j;
-            // [Loop Continue]
-            goto J0x127;
         }
-        J0x435:
 
         // End:0x447
         if(j < Count)
         {
-            // [Explicit Break]
-            goto J0x451;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0xFD;
     }
-    J0x451:
 
     // End:0x51B
     if(bHaveMasterChanged && Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("ClanDrawerWnd.ClanMemberInfoWnd"))
@@ -1433,10 +1389,8 @@ function RefreshCombobox1(int ClanT)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0xAA [Loop If]
-    if(i < 10)
+    while(i < 10)
     {
         // End:0xA0
         if(Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved(m_WindowName $ ".ComboboxMainClanWnd", i) == ClanT)
@@ -1445,8 +1399,6 @@ function RefreshCombobox1(int ClanT)
             Debug("CurrentSelected:" @ string(i));
         }
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -1552,53 +1504,37 @@ function HandleDeleteMember(string a_Param)
 
     ParseString(a_Param, "Name", sName);
     i = 0;
-    J0x1D:
 
-    // End:0x115 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         Count = m_memberList[i].m_array.Length;
         j = 0;
-        J0x47:
 
-        // End:0xF9 [Loop If]
-        if(j < Count)
+        while(j < Count)
         {
             // End:0xEF
             if(m_memberList[i].m_array[j].sName == sName)
             {
                 k = j;
-                J0x86:
 
-                // End:0xD2 [Loop If]
-                if(k < (Count - 1))
+                while(k < (Count - 1))
                 {
                     m_memberList[i].m_array[k] = m_memberList[i].m_array[k + 1];
                     ++k;
-                    // [Loop Continue]
-                    goto J0x86;
                 }
                 m_memberList[i].m_array.Length = Count - 1;
-                // [Explicit Break]
-                goto J0xF9;
+                break;
             }
             ++j;
-            // [Loop Continue]
-            goto J0x47;
         }
-        J0xF9:
 
         // End:0x10B
         if(j < Count)
         {
-            // [Explicit Break]
-            goto J0x115;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x1D;
     }
-    J0x115:
 
     // End:0x12F
     if(i == m_currentShowIndex)
@@ -1617,10 +1553,8 @@ function RefreshCombobox()
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear(m_WindowName $ ".ComboboxMainClanWnd");
     addedCount = -1;
     i = 0;
-    J0x70:
 
-    // End:0x11D [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         // End:0x113
         if(m_memberList[i].m_sName != "")
@@ -1634,14 +1568,10 @@ function RefreshCombobox()
             }
         }
         ++i;
-        // [Loop Continue]
-        goto J0x70;
     }
     i = 0;
-    J0x124:
 
-    // End:0x1A6 [Loop If]
-    if(i < 10)
+    while(i < 10)
     {
         // End:0x19C
         if(Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved(m_WindowName $ ".ComboboxMainClanWnd", i) == m_myClanType)
@@ -1649,8 +1579,6 @@ function RefreshCombobox()
             Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum(m_WindowName $ ".ComboboxMainClanWnd", i);
         }
         ++i;
-        // [Loop Continue]
-        goto J0x124;
     }
     return;
 }

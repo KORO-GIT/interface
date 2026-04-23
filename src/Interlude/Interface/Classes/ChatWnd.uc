@@ -121,6 +121,7 @@ function OnCompleteEditBox(string strID)
         {
             return;
         }
+        HandleLanguageCommand(strInput);
         ProcessChatMessage(strInput, m_chatType);
         ChatEditBox.SetString("");
         // End:0xB1
@@ -451,7 +452,45 @@ function HandleChatWndMacroCommand(string param)
     {
         return;
     }
+    HandleLanguageCommand(Command);
     ProcessChatMessage(Command, m_chatType);
+    return;
+}
+
+function HandleLanguageCommand(string Command)
+{
+    if((Command == ".lang ru") || (Left(Command, 9) == ".lang ru "))
+    {
+        SetLocalLanguage(true);        
+    }
+    else
+    {
+        if((Command == ".lang en") || (Left(Command, 9) == ".lang en "))
+        {
+            SetLocalLanguage(false);
+        }
+    }
+    return;
+}
+
+function SetLocalLanguage(bool bIsNative)
+{
+    local bool bWasNative;
+
+    bWasNative = GetOptionBool("Game", "IsNative");
+    SetOptionBool("Game", "IsNative", bIsNative);
+    if(bIsNative)
+    {
+        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 0);        
+    }
+    else
+    {
+        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 1);
+    }
+    if(bWasNative != bIsNative)
+    {
+        ExecuteEvent(1900);
+    }
     return;
 }
 
@@ -746,10 +785,8 @@ function InitFilterInfo()
 
     SetDefaultFilterValue();
     i = 0;
-    J0x0D:
 
-    // End:0x3B5 [Loop If]
-    if(i < 5)
+    while(i < 5)
     {
         // End:0x60
         if(GetINIBool(m_sectionName[i], "system", tempVal, "chatfilter.ini"))
@@ -817,8 +854,6 @@ function InitFilterInfo()
             m_filterInfo[i].bUnion = tempVal;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x0D;
     }
     SetDefaultFilterOn();
     // End:0x3F5

@@ -124,15 +124,11 @@ function HandleShowBoardPacket(string param)
         return;
     }
     idx = 0;
-    J0x41:
 
-    // End:0x65 [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         m_Command[idx] = "";
         idx++;
-        // [Loop Continue]
-        goto J0x41;
     }
     ParseString(param, "Command1", m_Command[0]);
     ParseString(param, "Command2", m_Command[1]);

@@ -13,6 +13,8 @@ var TextBoxHandle m_hClanText2;
 var TextureHandle m_hClanIcon;
 var TextBoxHandle m_hAdenaTextBox;
 var TextBoxHandle m_hMessageCountText;
+var ButtonHandle m_hBtnLangRu;
+var ButtonHandle m_hBtnLangEn;
 var ItemWindowHandle m_invenItem;
 var ButtonHandle btnQuit;
 
@@ -90,8 +92,65 @@ function InitHandle()
     m_hClanText2 = TextBoxHandle(GetHandle(m_WindowName $ ".ClanText2"));
     m_hClanIcon = TextureHandle(GetHandle(m_WindowName $ ".ClanIcon"));
     m_hMessageCountText = TextBoxHandle(GetHandle(m_WindowName $ ".MessageCountText"));
+    m_hBtnLangRu = ButtonHandle(GetHandle(m_WindowName $ ".BtnLangRu"));
+    m_hBtnLangEn = ButtonHandle(GetHandle(m_WindowName $ ".BtnLangEn"));
     m_invenItem = ItemWindowHandle(GetHandle(m_WindowName $ ".InventoryItem"));
     btnQuit.SetTooltipCustomType(MakeTooltipSimpleText("Exit"));
+    m_hBtnLangRu.SetTooltipCustomType(MakeTooltipSimpleText("Change Language"));
+    m_hBtnLangEn.SetTooltipCustomType(MakeTooltipSimpleText("Change Language"));
+    UpdateLanguageButtons();
+    return;
+}
+
+function UpdateLanguageButtons()
+{
+    // Highlight the active client/server dialog language without moving the belt layout.
+    if(GetOptionBool("Game", "IsNative"))
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("Menu.BtnLangRu", 255);
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("Menu.BtnLangEn", 115);        
+    }
+    else
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("Menu.BtnLangRu", 115);
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("Menu.BtnLangEn", 255);
+    }
+    return;
+}
+
+function SetMenuLanguage(bool bIsNative)
+{
+    local bool bWasNative;
+    local UserInfo Info;
+
+    bWasNative = GetOptionBool("Game", "IsNative");
+    SetOptionBool("Game", "IsNative", bIsNative);
+    if(bIsNative)
+    {
+        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 0);        
+    }
+    else
+    {
+        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 1);
+    }
+    UpdateLanguageButtons();
+    if(bWasNative == bIsNative)
+    {
+        return;
+    }
+    ExecuteEvent(1900);
+    if(!GetPlayerInfo(Info))
+    {
+        return;
+    }
+    if(bIsNative)
+    {
+        ProcessChatMessage(".lang ru", 0);        
+    }
+    else
+    {
+        ProcessChatMessage(".lang en", 0);
+    }
     return;
 }
 
@@ -103,6 +162,7 @@ function OnEnterState(name a_PreStateName)
     UserNameH.SetText(UserInfo.Name @ ":");
     m_bReceivedUserInfo = false;
     UpdateUserInfo();
+    UpdateLanguageButtons();
     bClanMember = false;
     return;
 }
@@ -112,6 +172,7 @@ function OnShow()
     HandleUpdateUserInfo();
     m_bShow = true;
     SetAdenaText();
+    UpdateLanguageButtons();
     return;
 }
 
@@ -153,6 +214,14 @@ function OnClickButton(string strID)
 {
     switch(strID)
     {
+        case "BtnLangRu":
+            SetMenuLanguage(true);
+            // End:0xA5
+            break;
+        case "BtnLangEn":
+            SetMenuLanguage(false);
+            // End:0xA5
+            break;
         // End:0x1C
         case "BtnClan":
             ToggleOpenClanWnd();
@@ -244,6 +313,10 @@ function OnEvent(int a_EventID, string a_Param)
         // End:0x6D
         case 320:
             bClanMember = true;
+            // End:0x11B
+            break;
+        case 1900:
+            UpdateLanguageButtons();
             // End:0x11B
             break;
         // End:0x7E

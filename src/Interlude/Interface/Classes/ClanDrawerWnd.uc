@@ -37,15 +37,11 @@ function InitHandle()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x58 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         Clan3_OrgIcon[i] = GetHandle("ClanDrawerWnd.Clan3_OrgIcon" $ string(i + 1));
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -127,37 +123,25 @@ function SetStateAndShow(string State)
         {
             Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ClanDrawerWnd.ClanMemberAuthWnd");
             i = 0;
-            J0x1E5:
 
-            // End:0x231 [Loop If]
-            if(i <= 9)
+            while(i <= 9)
             {
                 Class'NWindow.UIAPI_CHECKBOX'.static.SetDisable("ClanDrawerWnd.Clan2_Check10" $ string(i), true);
                 ++i;
-                // [Loop Continue]
-                goto J0x1E5;
             }
             i = 0;
-            J0x238:
 
-            // End:0x284 [Loop If]
-            if(i <= 5)
+            while(i <= 5)
             {
                 Class'NWindow.UIAPI_CHECKBOX'.static.SetDisable("ClanDrawerWnd.Clan2_Check20" $ string(i), true);
                 ++i;
-                // [Loop Continue]
-                goto J0x238;
             }
             i = 0;
-            J0x28B:
 
-            // End:0x2D7 [Loop If]
-            if(i <= 8)
+            while(i <= 8)
             {
                 Class'NWindow.UIAPI_CHECKBOX'.static.SetDisable("ClanDrawerWnd.Clan2_Check30" $ string(i), true);
                 ++i;
-                // [Loop Continue]
-                goto J0x28B;
             }            
         }
         else
@@ -509,30 +493,22 @@ function OnClickCheckBox(string CheckBoxID)
                 // End:0xDA
                 case true:
                     i = 0;
-                    J0x8B:
 
-                    // End:0xD7 [Loop If]
-                    if(i <= 9)
+                    while(i <= 9)
                     {
                         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check10" $ string(i), true);
                         ++i;
-                        // [Loop Continue]
-                        goto J0x8B;
                     }
                     // End:0x137
                     break;
                 // End:0x134
                 case false:
                     i = 0;
-                    J0xE5:
 
-                    // End:0x131 [Loop If]
-                    if(i <= 9)
+                    while(i <= 9)
                     {
                         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check10" $ string(i), false);
                         ++i;
-                        // [Loop Continue]
-                        goto J0xE5;
                     }
                     // End:0x137
                     break;
@@ -567,30 +543,22 @@ function OnClickCheckBox(string CheckBoxID)
                 // End:0x276
                 case true:
                     i = 0;
-                    J0x227:
 
-                    // End:0x273 [Loop If]
-                    if(i <= 5)
+                    while(i <= 5)
                     {
                         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check20" $ string(i), true);
                         ++i;
-                        // [Loop Continue]
-                        goto J0x227;
                     }
                     // End:0x2D3
                     break;
                 // End:0x2D0
                 case false:
                     i = 0;
-                    J0x281:
 
-                    // End:0x2CD [Loop If]
-                    if(i <= 5)
+                    while(i <= 5)
                     {
                         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check20" $ string(i), false);
                         ++i;
-                        // [Loop Continue]
-                        goto J0x281;
                     }
                     // End:0x2D3
                     break;
@@ -625,30 +593,22 @@ function OnClickCheckBox(string CheckBoxID)
                 // End:0x412
                 case true:
                     i = 0;
-                    J0x3C3:
 
-                    // End:0x40F [Loop If]
-                    if(i <= 9)
+                    while(i <= 9)
                     {
                         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check30" $ string(i), true);
                         ++i;
-                        // [Loop Continue]
-                        goto J0x3C3;
                     }
                     // End:0x46F
                     break;
                 // End:0x46C
                 case false:
                     i = 0;
-                    J0x41D:
 
-                    // End:0x469 [Loop If]
-                    if(i <= 9)
+                    while(i <= 9)
                     {
                         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check30" $ string(i), false);
                         ++i;
-                        // [Loop Continue]
-                        goto J0x41D;
                     }
                     // End:0x46F
                     break;
@@ -680,10 +640,8 @@ function bool count_all_check(string numString, int TotalNum)
 
     checkall = false;
     i = 1;
-    J0x0F:
 
-    // End:0x7D [Loop If]
-    if(i <= TotalNum)
+    while(i <= TotalNum)
     {
         currentcheck = Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked(("ClanDrawerWnd.Clan6_Check" $ numString) $ string(i));
         // End:0x73
@@ -692,8 +650,6 @@ function bool count_all_check(string numString, int TotalNum)
             checkall = true;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x0F;
     }
     return checkall;
 }
@@ -705,10 +661,8 @@ function bool count_all_check2(string numString, int TotalNum)
 
     checkall = false;
     i = 1;
-    J0x0F:
 
-    // End:0x7D [Loop If]
-    if(i <= TotalNum)
+    while(i <= TotalNum)
     {
         currentcheck = Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked(("ClanDrawerWnd.Clan2_Check" $ numString) $ string(i));
         // End:0x73
@@ -717,8 +671,6 @@ function bool count_all_check2(string numString, int TotalNum)
             checkall = true;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x0F;
     }
     return checkall;
 }
@@ -795,10 +747,8 @@ function HandleClanAuthGradeList(string a_Param)
     Class'NWindow.UIAPI_LISTCTRL'.static.DeleteAllItem("ClanDrawerWnd.Clan5_AuthListCtrl2");
     ParseInt(a_Param, "Count", Count);
     i = 0;
-    J0x8F:
 
-    // End:0x184 [Loop If]
-    if(i < 5)
+    while(i < 5)
     {
         ParseInt(a_Param, "GradeID" $ string(i), Id);
         ParseInt(a_Param, "GradeMemberCount" $ string(i), members);
@@ -809,14 +759,10 @@ function HandleClanAuthGradeList(string a_Param)
         Record.nReserved1 = Id;
         Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord("ClanDrawerWnd.Clan5_AuthListCtrl", Record);
         ++i;
-        // [Loop Continue]
-        goto J0x8F;
     }
     i = 5;
-    J0x18C:
 
-    // End:0x282 [Loop If]
-    if(i < 9)
+    while(i < 9)
     {
         ParseInt(a_Param, "GradeID" $ string(i), Id);
         ParseInt(a_Param, "GradeMemberCount" $ string(i), members);
@@ -827,8 +773,6 @@ function HandleClanAuthGradeList(string a_Param)
         Record.nReserved1 = Id;
         Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord("ClanDrawerWnd.Clan5_AuthListCtrl2", Record);
         ++i;
-        // [Loop Continue]
-        goto J0x18C;
     }
     Class'NWindow.UIAPI_LISTCTRL'.static.SetSelectedIndex("ClanDrawerWnd.Clan5_AuthListCtrl", 0, true);
     Class'NWindow.UIAPI_LISTCTRL'.static.SetSelectedIndex("ClanDrawerWnd.Clan5_AuthListCtrl2", 0, true);
@@ -1136,17 +1080,13 @@ function HandleSkillList(string a_Param)
     ParseInt(a_Param, "Count", Count);
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("ClanDrawerWnd.ClanSkillWnd");
     i = 0;
-    J0x49:
 
-    // End:0xB9 [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         ParseInt(a_Param, "SkillID" $ string(i), Id);
         ParseInt(a_Param, "SkillLevel" $ string(i), Level);
         AddSkill(Id, Level);
         ++i;
-        // [Loop Continue]
-        goto J0x49;
     }
     return;
 }
@@ -1160,23 +1100,17 @@ function HandleSkillListAdd(string a_Param)
     ParseInt(a_Param, "SkillLevel", Level);
     Count = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("ClanDrawerWnd.ClanSkillWnd");
     i = 0;
-    J0x6D:
 
-    // End:0xD2 [Loop If]
-    if(i < Count)
+    while(i < Count)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("ClanDrawerWnd.ClanSkillWnd", i, Info);
         // End:0xC8
         if(Info.ClassID == Id)
         {
-            // [Explicit Break]
-            goto J0xD2;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x6D;
     }
-    J0xD2:
 
     // End:0xF9
     if(i < Count)
@@ -1251,50 +1185,34 @@ function HandleClanAuth(string a_Param)
     ParseInt(a_Param, "Command", Command);
     powers.Length = 32;
     i = 0;
-    J0x42:
 
-    // End:0x83 [Loop If]
-    if(i < 32)
+    while(i < 32)
     {
         ParseInt(a_Param, "PowerValue" $ string(i), powers[i]);
         ++i;
-        // [Loop Continue]
-        goto J0x42;
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan6_CurrentSelectedRankName", (GetStringByGradeID(gradeID)) $ GetSystemString(1376));
     Index = 1;
     i = 1;
-    J0xE5:
 
-    // End:0x13F [Loop If]
-    if(i <= 9)
+    while(i <= 9)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check10" $ string(i), bool(powers[Index++]));
         ++i;
-        // [Loop Continue]
-        goto J0xE5;
     }
     i = 1;
-    J0x146:
 
-    // End:0x1A0 [Loop If]
-    if(i <= 5)
+    while(i <= 5)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check20" $ string(i), bool(powers[Index++]));
         ++i;
-        // [Loop Continue]
-        goto J0x146;
     }
     i = 1;
-    J0x1A7:
 
-    // End:0x201 [Loop If]
-    if(i <= 8)
+    while(i <= 8)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan6_Check30" $ string(i), bool(powers[Index++]));
         ++i;
-        // [Loop Continue]
-        goto J0x1A7;
     }
     // End:0x244
     if((count_all_check("10", 9)) == true)
@@ -1348,50 +1266,34 @@ function HandleClanAuthMember(string a_Param)
     ParseString(a_Param, "Name", sName);
     powers.Length = 32;
     i = 0;
-    J0x57:
 
-    // End:0x98 [Loop If]
-    if(i < 32)
+    while(i < 32)
     {
         ParseInt(a_Param, "PowerValue" $ string(i), powers[i]);
         ++i;
-        // [Loop Continue]
-        goto J0x57;
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan2_CurrentSelectedMemberName", (sName @ "-") @ (GetStringByGradeID(gradeID)));
     Index = 1;
     i = 1;
-    J0xFB:
 
-    // End:0x155 [Loop If]
-    if(i <= 9)
+    while(i <= 9)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan2_Check10" $ string(i), bool(powers[Index++]));
         ++i;
-        // [Loop Continue]
-        goto J0xFB;
     }
     i = 1;
-    J0x15C:
 
-    // End:0x1B6 [Loop If]
-    if(i <= 5)
+    while(i <= 5)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan2_Check20" $ string(i), bool(powers[Index++]));
         ++i;
-        // [Loop Continue]
-        goto J0x15C;
     }
     i = 1;
-    J0x1BD:
 
-    // End:0x217 [Loop If]
-    if(i <= 8)
+    while(i <= 8)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan2_Check30" $ string(i), bool(powers[Index++]));
         ++i;
-        // [Loop Continue]
-        goto J0x1BD;
     }
     // End:0x25A
     if((count_all_check2("10", 9)) == true)
@@ -1457,37 +1359,25 @@ function HandleClanAuthMember(string a_Param)
     {
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan2_CurrentSelectedMemberName", (sName @ "-") @ GetSystemString(342));
         i = 0;
-        J0x507:
 
-        // End:0x553 [Loop If]
-        if(i <= 9)
+        while(i <= 9)
         {
             Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan2_Check10" $ string(i), true);
             ++i;
-            // [Loop Continue]
-            goto J0x507;
         }
         i = 0;
-        J0x55A:
 
-        // End:0x5A6 [Loop If]
-        if(i <= 5)
+        while(i <= 5)
         {
             Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan2_Check20" $ string(i), true);
             ++i;
-            // [Loop Continue]
-            goto J0x55A;
         }
         i = 0;
-        J0x5AD:
 
-        // End:0x5F9 [Loop If]
-        if(i <= 8)
+        while(i <= 8)
         {
             Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("ClanDrawerWnd.Clan2_Check30" $ string(i), true);
             ++i;
-            // [Loop Continue]
-            goto J0x5AD;
         }
     }
     return;
@@ -1610,10 +1500,8 @@ function InitializeAcademyList()
     script = ClanWnd(GetScript("ClanWnd"));
     InitializeClan1_AssignApprenticeList();
     i = 0;
-    J0x35:
 
-    // End:0x271 [Loop If]
-    if(i < script.m_memberList[script.GetIndexFromType(-1)].m_array.Length)
+    while(i < script.m_memberList[script.GetIndexFromType(-1)].m_array.Length)
     {
         // End:0x267
         if(script.m_memberList[script.GetIndexFromType(-1)].m_array[i].bHaveMaster == 0)
@@ -1628,8 +1516,6 @@ function InitializeAcademyList()
             Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord("ClanDrawerWnd.Clan1_AssignApprenticeList", Record);
         }
         ++i;
-        // [Loop Continue]
-        goto J0x35;
     }
     return;
 }
@@ -1702,10 +1588,8 @@ function InitializeClanInfoWnd()
     }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan3_ClanRanking", ClanRankStr);
     i = 0;
-    J0x2B1:
 
-    // End:0x4E8 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         // End:0x4DE
         if(script.m_memberList[i].m_sName != "")
@@ -1740,8 +1624,6 @@ function InitializeClanInfoWnd()
             }
         }
         ++i;
-        // [Loop Continue]
-        goto J0x2B1;
     }
     return;
 }
@@ -1753,15 +1635,11 @@ function InitializeGradeComboBox()
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("ClanDrawerWnd.Clan1_MemberGradeList");
     Class'NWindow.UIAPI_COMBOBOX'.static.AddString("ClanDrawerWnd.Clan1_MemberGradeList", GetSystemString(1451));
     i = 1;
-    J0x7A:
 
-    // End:0xCF [Loop If]
-    if(i < 6)
+    while(i < 6)
     {
         Class'NWindow.UIAPI_COMBOBOX'.static.AddString("ClanDrawerWnd.Clan1_MemberGradeList", GetStringByGradeID(i));
         ++i;
-        // [Loop Continue]
-        goto J0x7A;
     }
     return;
 }
@@ -1780,10 +1658,8 @@ function KnighthoodCombobox()
     Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("ClanDrawerWnd.Clan1_ChangeMemberKnightHoodBtn");
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan1_ChangeMemberKnightHoodTXT1", MakeFullSystemMsg(GetSystemMessage(1906), m_currentName, ""));
     i = 0;
-    J0x1F9:
 
-    // End:0x2B1 [Loop If]
-    if(i < script.m_memberList.Length)
+    while(i < script.m_memberList.Length)
     {
         // End:0x2A7
         if(script.m_memberList[i].m_sName != "")
@@ -1795,8 +1671,6 @@ function KnighthoodCombobox()
             }
         }
         ++i;
-        // [Loop Continue]
-        goto J0x1F9;
     }
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("ClanDrawerWnd.Clan1_targetknighthoodcombobox", 0);
     return;
@@ -1812,10 +1686,8 @@ function swapTargetSelect(int clanNo)
     Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("ClanDrawerWnd.Clan1_targetknighthoodmember", GetSystemString(1466), 0);
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan1_ChangeMemberKnightHoodTXT1", MakeFullSystemMsg(GetSystemMessage(1907), m_currentName, ""));
     i = 0;
-    J0xFA:
 
-    // End:0x1E2 [Loop If]
-    if(i <= script.m_memberList[clanNo].m_array.Length)
+    while(i <= script.m_memberList[clanNo].m_array.Length)
     {
         // End:0x1D8
         if(script.m_memberList[clanNo].m_array[i].sName != script.m_CurrentclanMasterReal)
@@ -1823,8 +1695,6 @@ function swapTargetSelect(int clanNo)
             Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("ClanDrawerWnd.Clan1_targetknighthoodmember", script.m_memberList[clanNo].m_array[i].sName, script.m_memberList[clanNo].m_array[i].clanType);
         }
         ++i;
-        // [Loop Continue]
-        goto J0xFA;
     }
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("ClanDrawerWnd.Clan1_targetknighthoodmember", 0);
     return;
@@ -1903,10 +1773,8 @@ function ApplyEditGrade()
     powers[0] = 0;
     Index = 1;
     i = 1;
-    J0x20:
 
-    // End:0x82 [Loop If]
-    if(i <= 9)
+    while(i <= 9)
     {
         // End:0x71
         if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("ClanDrawerWnd.Clan6_Check10" $ string(i)))
@@ -1915,14 +1783,10 @@ function ApplyEditGrade()
         }
         ++Index;
         ++i;
-        // [Loop Continue]
-        goto J0x20;
     }
     i = 1;
-    J0x89:
 
-    // End:0xEB [Loop If]
-    if(i <= 5)
+    while(i <= 5)
     {
         // End:0xDA
         if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("ClanDrawerWnd.Clan6_Check20" $ string(i)))
@@ -1931,14 +1795,10 @@ function ApplyEditGrade()
         }
         ++Index;
         ++i;
-        // [Loop Continue]
-        goto J0x89;
     }
     i = 1;
-    J0xF2:
 
-    // End:0x154 [Loop If]
-    if(i <= 8)
+    while(i <= 8)
     {
         // End:0x143
         if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("ClanDrawerWnd.Clan6_Check30" $ string(i)))
@@ -1947,8 +1807,6 @@ function ApplyEditGrade()
         }
         ++Index;
         ++i;
-        // [Loop Continue]
-        goto J0xF2;
     }
     RequestEditClanAuth(m_currentEditGradeID, powers);
     return;
@@ -2133,17 +1991,13 @@ function reset_clan_org()
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x64 [Loop If]
-    if(i < 8)
+    while(i < 8)
     {
         Clan3_OrgIcon[i].HideWindow();
         Clan3_OrgIcon[i].DisableWindow();
         Clan3_OrgIcon[i].SetTooltipCustomType(SetTooltip(""));
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }

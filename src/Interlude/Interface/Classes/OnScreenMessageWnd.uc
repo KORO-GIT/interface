@@ -88,10 +88,8 @@ function ResetAllMessage()
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd7");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd8");
     i = 1;
-    J0x17B:
 
-    // End:0x27C [Loop If]
-    if(i <= 8)
+    while(i <= 8)
     {
         WndName = "OnScreenMessageWnd" $ string(i);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor((WndName $ ".TextBox") $ string(i), DefaultColor);
@@ -99,8 +97,6 @@ function ResetAllMessage()
         Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor((WndName $ ".TextBoxsm") $ string(i), DefaultColor);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(((WndName $ ".TextBoxsm") $ string(i)) $ "-1", DefaultColor);
         ++i;
-        // [Loop Continue]
-        goto J0x17B;
     }
     return;
 }
@@ -123,10 +119,8 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
     FontColor.B = byte(ColorB);
     Debug("totalval" @ TextValue);
     i = 1;
-    J0x80:
 
-    // End:0x135 [Loop If]
-    if(i <= TotalLength)
+    while(i <= TotalLength)
     {
         LengthTotal = Len(TextValue) - 1;
         CurText = Left(TextValue, 1);
@@ -147,15 +141,13 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
         if(j == 1)
         {
             TextValue1 = TextValue1 $ CurText;
-            // [Explicit Continue]
-            goto J0x12B;
+
+            ++i;
+            continue;
         }
         TextValue2 = TextValue2 $ CurText;
-        J0x12B:
 
         ++i;
-        // [Loop Continue]
-        goto J0x80;
     }
     Debug(TextValue1);
     Debug(TextValue2);

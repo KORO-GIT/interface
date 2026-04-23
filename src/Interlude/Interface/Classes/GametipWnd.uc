@@ -37,16 +37,12 @@ function LoadGameTipData()
 
     CountRecord = Class'NWindow.UIDATA_GAMETIP'.static.GetDataCount();
     i = 0;
-    J0x1C:
 
-    // End:0x66 [Loop If]
-    if(i < CountRecord)
+    while(i < CountRecord)
     {
         gamedataloaded = Class'NWindow.UIDATA_GAMETIP'.static.GetDataByIndex(i, TipData1);
         TipData[i] = TipData1;
         ++i;
-        // [Loop Continue]
-        goto J0x1C;
     }
     return;
 }
@@ -142,10 +138,8 @@ function OnShow()
         }
     }
     i = 0;
-    J0x1AE:
 
-    // End:0x283 [Loop If]
-    if(i < TipData.Length)
+    while(i < TipData.Length)
     {
         // End:0x279
         if(TipData[i].TipMsg != "")
@@ -162,8 +156,6 @@ function OnShow()
             }
         }
         ++i;
-        // [Loop Continue]
-        goto J0x1AE;
     }
     NumberSelect = Rand(SelectedCondition.Length);
     // End:0x2A8

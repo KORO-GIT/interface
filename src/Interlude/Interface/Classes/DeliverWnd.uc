@@ -385,17 +385,13 @@ function HandleOKButton()
     ParamAdd(param, "targetID", string(m_targetID));
     ParamAdd(param, "num", string(Count));
     Index = 0;
-    J0x66:
 
-    // End:0xFC [Loop If]
-    if(Index < Count)
+    while(Index < Count)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("DeliverWnd.BottomList", Index, ItemInfo);
         ParamAdd(param, "dbID" $ string(Index), string(ItemInfo.Reserved));
         ParamAdd(param, "count" $ string(Index), string(ItemInfo.ItemNum));
         ++Index;
-        // [Loop Continue]
-        goto J0x66;
     }
     RequestPackageSend(param);
     HideWindow("DeliverWnd");

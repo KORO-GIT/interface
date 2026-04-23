@@ -244,10 +244,8 @@ function UpdateItemCount(int ClassID, optional int a_ItemCount)
     local string strTmp;
 
     i = 0;
-    J0x07:
 
-    // End:0x128 [Loop If]
-    if(i < m_arrItemClassID.Length)
+    while(i < m_arrItemClassID.Length)
     {
         // End:0x11E
         if((ClassID == 0) || ClassID == m_arrItemClassID[i])
@@ -280,8 +278,6 @@ function UpdateItemCount(int ClassID, optional int a_ItemCount)
             }
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -329,10 +325,8 @@ function UpdateTargetInfo()
     arrSplit.Remove(0, arrSplit.Length);
     SplitCount = Split(strTargetNode, ".", arrSplit);
     i = 0;
-    J0xF1:
 
-    // End:0x16B [Loop If]
-    if(i < SplitCount)
+    while(i < SplitCount)
     {
         switch(i)
         {
@@ -360,8 +354,6 @@ function UpdateTargetInfo()
                 break;
         }
         i++;
-        // [Loop Continue]
-        goto J0xF1;
     }
     // End:0x252
     if((QuestID > 0) && Level > 0)
@@ -685,22 +677,16 @@ function AddQuestInfo(string strParentName, int QuestID, int Level, int Complete
     arrItemIDList.Length = ItemCount;
     arrItemNumList.Length = ItemCount;
     i = 0;
-    J0xE6F:
 
-    // End:0xED9 [Loop If]
-    if(i < ItemCount)
+    while(i < ItemCount)
     {
         ParseInt(strTmp, "ItemID_" $ string(i), arrItemIDList[i]);
         ParseInt(strTmp, "ItemNum_" $ string(i), arrItemNumList[i]);
         i++;
-        // [Loop Continue]
-        goto J0xE6F;
     }
     i = 0;
-    J0xEE0:
 
-    // End:0x145E [Loop If]
-    if(i < ItemCount)
+    while(i < ItemCount)
     {
         strTmp = Class'NWindow.UIDATA_ITEM'.static.GetItemTextureName(arrItemIDList[i]);
         // End:0x1454
@@ -807,8 +793,6 @@ function AddQuestInfo(string strParentName, int QuestID, int Level, int Complete
             Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem(m_WindowName $ ".MainTree", strRetName, infNodeItem);
         }
         i++;
-        // [Loop Continue]
-        goto J0xEE0;
     }
     infNodeItem = infNodeItemClear;
     infNodeItem.eType = XTNITEM_BLANK;

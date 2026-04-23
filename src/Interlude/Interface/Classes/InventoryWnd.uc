@@ -384,10 +384,8 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
         return;
     }
     int_6 = 0;
-    J0x558:
 
-    // End:0x598 [Loop If]
-    if(int_6 < 15)
+    while(int_6 < 15)
     {
         // End:0x58E
         if(item_10 != item_3[int_6])
@@ -395,8 +393,6 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
             item_3[int_6].ClearSelect();
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x558;
     }
     return;
 }
@@ -424,40 +420,28 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                 // End:0x289
                 if(int_7 != int_8)
                 {
-                    J0x21D:
 
-                    // End:0x253 [Loop If]
-                    if(int_8 < int_7)
+                    while(int_8 < int_7)
                     {
                         function12().SwapItems(int_8, int_8 + 1);
                         ++int_8;
-                        // [Loop Continue]
-                        goto J0x21D;
                     }
-                    J0x253:
 
-                    // End:0x289 [Loop If]
-                    if(int_7 < int_8)
+                    while(int_7 < int_8)
                     {
                         function12().SwapItems(int_8, int_8 - 1);
                         --int_8;
-                        // [Loop Continue]
-                        goto J0x253;
                     }
                 }
             }
             else
             {
                 int_8 = function12().GetItemNum();
-                J0x2A2:
 
-                // End:0x2DB [Loop If]
-                if(int_7 < (int_8 - 1))
+                while(int_7 < (int_8 - 1))
                 {
                     function12().SwapItems(int_7, int_7 + 1);
                     ++int_7;
-                    // [Loop Continue]
-                    goto J0x2A2;
                 }
             }
         }
@@ -517,40 +501,28 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                     // End:0x525
                     if(int_7 != int_8)
                     {
-                        J0x4BB:
 
-                        // End:0x4F0 [Loop If]
-                        if(int_8 < int_7)
+                        while(int_8 < int_7)
                         {
                             item_2.SwapItems(int_8, int_8 + 1);
                             ++int_8;
-                            // [Loop Continue]
-                            goto J0x4BB;
                         }
-                        J0x4F0:
 
-                        // End:0x525 [Loop If]
-                        if(int_7 < int_8)
+                        while(int_7 < int_8)
                         {
                             item_2.SwapItems(int_8, int_8 - 1);
                             --int_8;
-                            // [Loop Continue]
-                            goto J0x4F0;
                         }
                     }
                 }
                 else
                 {
                     int_8 = item_1.GetItemNum();
-                    J0x53D:
 
-                    // End:0x575 [Loop If]
-                    if(int_7 < (int_8 - 1))
+                    while(int_7 < (int_8 - 1))
                     {
                         item_1.SwapItems(int_7, int_7 + 1);
                         ++int_7;
-                        // [Loop Continue]
-                        goto J0x53D;
                     }
                 }
             }
@@ -590,10 +562,8 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                     if(bool_1)
                     {
                         int_6 = 1;
-                        J0x645:
 
-                        // End:0x6A4 [Loop If]
-                        if(int_6 < 100)
+                        while(int_6 < 100)
                         {
                             GetINIInt("TrashList", ("" $ string(int_6)), string_4, "TrashGrp");
                             // End:0x69A
@@ -602,8 +572,6 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                                 return;
                             }
                             int_6++;
-                            // [Loop Continue]
-                            goto J0x645;
                         }
                         SetINIInt("TrashList", string((int_2 + 1)), info_3.ClassID, "TrashGrp");
                         SetINIInt("TrashList", string((int_2 + 2)), 0, "TrashGrp");
@@ -746,10 +714,8 @@ function int function19()
     local int int_6, ItemNum;
 
     int_6 = 0;
-    J0x07:
 
-    // End:0x5B [Loop If]
-    if(int_6 < 15)
+    while(int_6 < 15)
     {
         // End:0x51
         if(item_3[int_6].IsEnableWindow())
@@ -757,8 +723,6 @@ function int function19()
             ItemNum = (ItemNum + item_3[int_6].GetItemNum());
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return ItemNum;
 }
@@ -768,15 +732,11 @@ function function18()
     local int int_6;
 
     int_6 = 0;
-    J0x07:
 
-    // End:0x32 [Loop If]
-    if(int_6 < 15)
+    while(int_6 < 15)
     {
         item_3[int_6].Clear();
         int_6++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -786,10 +746,8 @@ function bool function20(int int_9)
     local int int_6, int_4;
 
     int_6 = 0;
-    J0x07:
 
-    // End:0x52 [Loop If]
-    if(int_6 < 15)
+    while(int_6 < 15)
     {
         int_4 = item_3[int_6].FindItemWithServerID(int_9);
         // End:0x48
@@ -798,8 +756,6 @@ function bool function20(int int_9)
             return true;
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return false;
 }
@@ -810,10 +766,8 @@ function function21(int int_9)
     local ItemInfo info_5;
 
     int_6 = 0;
-    J0x07:
 
-    // End:0xE3 [Loop If]
-    if(int_6 < 15)
+    while(int_6 < 15)
     {
         int_4 = item_3[int_6].FindItemWithServerID(int_9);
         // End:0xD9
@@ -837,8 +791,6 @@ function function21(int int_9)
             }
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -850,10 +802,8 @@ function function22()
     int_10 = -1;
     int_11 = -1;
     int_6 = 0;
-    J0x1D:
 
-    // End:0x8D [Loop If]
-    if(int_6 < info_1.Length)
+    while(int_6 < info_1.Length)
     {
         switch(function44(info_1[int_6].ServerID))
         {
@@ -877,8 +827,6 @@ function function22()
                 break;
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x1D;
     }
     // End:0xCF
     if((-1 != int_10))
@@ -902,10 +850,8 @@ function function23()
     int_12 = -1;
     int_13 = -1;
     int_6 = 0;
-    J0x1D:
 
-    // End:0x8D [Loop If]
-    if(int_6 < info_2.Length)
+    while(int_6 < info_2.Length)
     {
         switch(function45(info_2[int_6].ServerID))
         {
@@ -929,8 +875,6 @@ function function23()
                 break;
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x1D;
     }
     // End:0xCF
     if((-1 != int_12))
@@ -971,18 +915,14 @@ function function24(ItemInfo info_6)
         // End:0xC4
         case 6:
             int_6 = 0;
-            J0x36:
 
-            // End:0x73 [Loop If]
-            if(int_6 < info_1.Length)
+            while(int_6 < info_1.Length)
             {
                 // End:0x69
                 if((info_1[int_6].ServerID == info_6.ServerID))
                 {
                 }
                 int_6++;
-                // [Loop Continue]
-                goto J0x36;
             }
             // End:0xB4
             if((int_6 == info_1.Length))
@@ -1006,18 +946,14 @@ function function24(ItemInfo info_6)
         // End:0x17E
         case 48:
             int_6 = 0;
-            J0xF0:
 
-            // End:0x12D [Loop If]
-            if(int_6 < info_2.Length)
+            while(int_6 < info_2.Length)
             {
                 // End:0x123
                 if((info_2[int_6].ServerID == info_6.ServerID))
                 {
                 }
                 int_6++;
-                // [Loop Continue]
-                goto J0xF0;
             }
             // End:0x16E
             if((int_6 == info_2.Length))
@@ -1303,45 +1239,33 @@ function function34(string string_2)
             {
                 item_2.AddItem(info_3);
                 int_4 = item_2.GetItemNum() - 1;
-                J0x8F:
 
-                // End:0xC0 [Loop If]
-                if(int_4 > 0)
+                while(int_4 > 0)
                 {
                     item_2.SwapItems(int_4 - 1, int_4);
                     --int_4;
-                    // [Loop Continue]
-                    goto J0x8F;
                 }
             }
             else
             {
                 item_1.AddItem(info_3);
                 int_4 = item_1.GetItemNum() - 1;
-                J0xEF:
 
-                // End:0x120 [Loop If]
-                if(int_4 > 0)
+                while(int_4 > 0)
                 {
                     item_1.SwapItems(int_4 - 1, int_4);
                     --int_4;
-                    // [Loop Continue]
-                    goto J0xEF;
                 }
                 // End:0x18E
                 if(function31(info_3))
                 {
                     item_5.AddItem(info_3);
                     int_4 = item_5.GetItemNum() - 1;
-                    J0x15A:
 
-                    // End:0x18B [Loop If]
-                    if(int_4 > 0)
+                    while(int_4 > 0)
                     {
                         item_5.SwapItems(int_4 - 1, int_4);
                         --int_4;
-                        // [Loop Continue]
-                        goto J0x15A;
                     }
                 }
                 else
@@ -1351,15 +1275,11 @@ function function34(string string_2)
                     {
                         item_6.AddItem(info_3);
                         int_4 = item_6.GetItemNum() - 1;
-                        J0x1C8:
 
-                        // End:0x1F9 [Loop If]
-                        if(int_4 > 0)
+                        while(int_4 > 0)
                         {
                             item_6.SwapItems(int_4 - 1, int_4);
                             --int_4;
-                            // [Loop Continue]
-                            goto J0x1C8;
                         }
                     }
                     else
@@ -1369,15 +1289,11 @@ function function34(string string_2)
                         {
                             item_7.AddItem(info_3);
                             int_4 = item_7.GetItemNum() - 1;
-                            J0x236:
 
-                            // End:0x267 [Loop If]
-                            if(int_4 > 0)
+                            while(int_4 > 0)
                             {
                                 item_7.SwapItems(int_4 - 1, int_4);
                                 --int_4;
-                                // [Loop Continue]
-                                goto J0x236;
                             }
                         }
                     }
@@ -1511,30 +1427,22 @@ function function34(string string_2)
                         function21(info_3.ServerID);
                         item_1.AddItem(info_3);
                         int_4 = item_1.GetItemNum() - 1;
-                        J0x623:
 
-                        // End:0x654 [Loop If]
-                        if(int_4 > 0)
+                        while(int_4 > 0)
                         {
                             item_1.SwapItems(int_4 - 1, int_4);
                             --int_4;
-                            // [Loop Continue]
-                            goto J0x623;
                         }
                         // End:0x6BF
                         if(function31(info_3))
                         {
                             item_5.AddItem(info_3);
                             int_4 = item_5.GetItemNum() - 1;
-                            J0x68E:
 
-                            // End:0x6BF [Loop If]
-                            if(int_4 > 0)
+                            while(int_4 > 0)
                             {
                                 item_5.SwapItems(int_4 - 1, int_4);
                                 --int_4;
-                                // [Loop Continue]
-                                goto J0x68E;
                             }
                         }
                     }
@@ -1649,10 +1557,8 @@ function function8()
         int_1 = int_3;
     }
     int_6 = 0;
-    J0xAF:
 
-    // End:0x1A7 [Loop If]
-    if(int_6 < int_1)
+    while(int_6 < int_1)
     {
         // End:0x19D
         if(Class'NWindow.HennaAPI'.static.GetHennaInfo(int_6, HennaID, int_2))
@@ -1660,20 +1566,17 @@ function function8()
             // End:0x109
             if((!Class'NWindow.UIDATA_HENNA'.static.GetItemName(HennaID, Info.Name)))
             {
-                // [Explicit Break]
-                goto J0x1A7;
+                break;
             }
             // End:0x133
             if((!Class'NWindow.UIDATA_HENNA'.static.GetDescription(HennaID, Info.Description)))
             {
-                // [Explicit Break]
-                goto J0x1A7;
+                break;
             }
             // End:0x15D
             if((!Class'NWindow.UIDATA_HENNA'.static.GetIconTex(HennaID, Info.IconName)))
             {
-                // [Explicit Break]
-                goto J0x1A7;
+                break;
             }
             // End:0x17C
             if((0 == int_2))
@@ -1687,10 +1590,7 @@ function function8()
             item_4.AddItem(Info);
         }
         int_6++;
-        // [Loop Continue]
-        goto J0xAF;
     }
-    J0x1A7:
 
     return;
 }
@@ -1744,16 +1644,12 @@ function function9()
 
     int_1.Length = item_1.GetItemNum();
     int_6 = 0;
-    J0x1D:
 
-    // End:0x66 [Loop If]
-    if(int_6 < int_1.Length)
+    while(int_6 < int_1.Length)
     {
         item_1.GetItem(int_6, info_3);
         int_1[int_6] = info_3.ClassID;
         int_6++;
-        // [Loop Continue]
-        goto J0x1D;
     }
     SaveInventoryOrder(int_1);
     return;
@@ -1774,18 +1670,14 @@ function function36()
     int_4 = 0;
     ItemNum = item_1.GetItemNum();
     int_2 = 0;
-    J0x23:
 
-    // End:0xDA [Loop If]
-    if(int_2 < ItemNum)
+    while(int_2 < ItemNum)
     {
         item_1.GetItem(int_2, info_3);
         bool_1 = false;
         int_3 = 0;
-        J0x5A:
 
-        // End:0x9D [Loop If]
-        if(int_3 < int_1.Length)
+        while(int_3 < int_1.Length)
         {
             // End:0x93
             if((info_3.ClassID == int_1[int_3]))
@@ -1794,8 +1686,6 @@ function function36()
                 // [Explicit Continue]
             }
             int_3++;
-            // [Loop Continue]
-            goto J0x5A;
         }
         // End:0xD0
         if((!bool_1))
@@ -1804,20 +1694,14 @@ function function36()
             ++int_4;
         }
         int_2++;
-        // [Loop Continue]
-        goto J0x23;
     }
     int_3 = 0;
-    J0xE1:
 
-    // End:0x179 [Loop If]
-    if(int_3 < int_1.Length)
+    while(int_3 < int_1.Length)
     {
         int_2 = 0;
-        J0xF8:
 
-        // End:0x16F [Loop If]
-        if(int_2 < ItemNum)
+        while(int_2 < ItemNum)
         {
             item_1.GetItem(int_2, info_3);
             // End:0x165
@@ -1828,12 +1712,8 @@ function function36()
                 // [Explicit Continue]
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xF8;
         }
         int_3++;
-        // [Loop Continue]
-        goto J0xE1;
     }
     return;
 }
@@ -2107,10 +1987,8 @@ function function2()
     local int int_6, string_4;
 
     int_6 = 1;
-    J0x07:
 
-    // End:0x70 [Loop If]
-    if(int_6 < 100)
+    while(int_6 < 100)
     {
         GetINIInt("TrashList", ("" $ string(int_6)), string_4, "TrashGrp");
         // End:0x66
@@ -2120,8 +1998,6 @@ function function2()
             // [Explicit Continue]
         }
         int_6++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -2155,10 +2031,8 @@ function function46()
     local ItemInfo info_3;
 
     int_6 = 1;
-    J0x07:
 
-    // End:0xB3 [Loop If]
-    if(int_6 <= int_2)
+    while(int_6 <= int_2)
     {
         GetINIInt("TrashList", ("" $ string(int_6)), string_4, "TrashGrp");
         // End:0xA7
@@ -2170,15 +2044,13 @@ function function46()
             {
                 RequestDestroyItem(info_3.ServerID, info_3.ItemNum);
             }
-            // [Explicit Continue]
-            goto J0xA9;
+
+            int_6++;
+            continue;
         }
         return;
-        J0xA9:
 
         int_6++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }

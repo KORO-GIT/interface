@@ -434,27 +434,23 @@ function HandleCursedWeaponList(string param)
     ParseInt(param, "NUM", Num);
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("MinimapWnd.CursedComboBox");
     i = 0;
-    J0x46:
 
-    // End:0x147 [Loop If]
-    if(i < (Num + 1))
+    while(i < (Num + 1))
     {
         // End:0x9C
         if(i == 0)
         {
             Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("MinimapWnd.CursedComboBox", GetSystemString(1463), 0);
-            // [Explicit Continue]
-            goto J0x13D;
+
+            ++i;
+            continue;
         }
         ParseInt(param, "ID" $ string(i - 1), ItemID);
         ParseString(param, "NAME" $ string(i - 1), cursedName);
         Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("MinimapWnd.CursedComboBox", cursedName, ItemID);
         Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("MinimapWnd.CursedComboBox", 0);
-        J0x13D:
 
         ++i;
-        // [Loop Continue]
-        goto J0x46;
     }
     Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteAllTarget("MinimapWnd.Minimap");
     return;
@@ -486,10 +482,8 @@ function HandleCursedWeaponLoctaion(string param)
     else
     {
         i = 0;
-        J0x81:
 
-        // End:0x2C1 [Loop If]
-        if(i < Num)
+        while(i < Num)
         {
             ParseInt(param, "ID" $ string(i), ItemID);
             ParseString(param, "NAME" $ string(i), cursedName);
@@ -532,8 +526,6 @@ function HandleCursedWeaponLoctaion(string param)
                     break;
             }
             ++i;
-            // [Loop Continue]
-            goto J0x81;
         }
     }
     // End:0x3B7

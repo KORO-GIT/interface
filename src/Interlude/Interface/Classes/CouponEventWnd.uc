@@ -30,15 +30,11 @@ function resetEditBox()
     local int i;
 
     i = 1;
-    J0x07:
 
-    // End:0x4D [Loop If]
-    if(i <= 5)
+    while(i <= 5)
     {
         Class'NWindow.UIAPI_EDITBOX'.static.SetString("CouponEventWnd.input" $ string(i), "");
         ++i;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -141,14 +137,10 @@ function count_editBox(string currentboxnum)
         completebox[currentboxNumint] = 0;
     }
     i = 1;
-    J0xCC:
 
-    // End:0xE2 [Loop If]
-    if(i <= 5)
+    while(i <= 5)
     {
         ++i;
-        // [Loop Continue]
-        goto J0xCC;
     }
     // End:0x235
     if(((((completebox[1] == 1) && completebox[2] == 1) && completebox[3] == 1) && completebox[4] == 1) && completebox[5] == 1)

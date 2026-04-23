@@ -433,24 +433,18 @@ function int FindMasterID(int MasterID)
 
     SearchIdx = -1;
     idx = 0;
-    J0x12:
 
-    // End:0x71 [Loop If]
-    if(idx < lstParty.GetRecordCount())
+    while(idx < lstParty.GetRecordCount())
     {
         Record = lstParty.GetRecord(idx);
         // End:0x67
         if(Record.nReserved1 == MasterID)
         {
             SearchIdx = idx;
-            // [Explicit Break]
-            goto J0x71;
+            break;
         }
         idx++;
-        // [Loop Continue]
-        goto J0x12;
     }
-    J0x71:
 
     return SearchIdx;
 }

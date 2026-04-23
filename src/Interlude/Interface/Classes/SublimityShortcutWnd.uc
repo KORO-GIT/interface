@@ -48,15 +48,11 @@ function OnDefaultPosition()
     SetExpand(0);
     SetLock(false);
     i = 0;
-    J0x15:
 
-    // End:0x3B [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         SetPage(i, i);
         i++;
-        // [Loop Continue]
-        goto J0x15;
     }
     SetVertical(true);
     return;
@@ -71,15 +67,11 @@ function OnShortcutClear()
     HandleLock();
     HandleExpand();
     i = 0;
-    J0x1F:
 
-    // End:0x40 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         HandleSetPage(i);
         i++;
-        // [Loop Continue]
-        goto J0x1F;
     }
     HandleVertical();
     return;
@@ -254,37 +246,25 @@ function Clear()
     local int i, N;
 
     i = 0;
-    J0x07:
 
-    // End:0x29 [Loop If]
-    if(i < 120)
+    while(i < 120)
     {
         SetActive(i, false);
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     i = 0;
-    J0x30:
 
-    // End:0xCB [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         N = 0;
-        J0x43:
 
-        // End:0xC1 [Loop If]
-        if(N < 12)
+        while(N < 12)
         {
             Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear(((GetPanelNameEx(i, false)) $ ".Shortcut") $ string(i + 1));
             Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear(((GetPanelNameEx(i, true)) $ ".Shortcut") $ string(i + 1));
             N++;
-            // [Loop Continue]
-            goto J0x43;
         }
         i++;
-        // [Loop Continue]
-        goto J0x30;
     }
     return;
 }
@@ -310,10 +290,8 @@ function SetShortcut(int a_ShortcutID, bool a_bDelete)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0xC0 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         // End:0xB6
         if(IsShortcutIDInCurPage(m_ShortcutPage[i], a_ShortcutID))
@@ -322,8 +300,6 @@ function SetShortcut(int a_ShortcutID, bool a_bDelete)
             Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((GetPanelNameEx(i, false)) $ ".Shortcut") $ string(int((float(a_ShortcutID) % float(12)) + float(1))), a_ShortcutID);
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     SetActive(a_ShortcutID, !a_bDelete);
     return;
@@ -381,10 +357,8 @@ function HideText(int a_ShortcutID)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0xA4 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         // End:0x9A
         if(IsShortcutIDInCurPage(m_ShortcutPage[i], a_ShortcutID))
@@ -393,8 +367,6 @@ function HideText(int a_ShortcutID)
             HideWindow((((GetPanelNameEx(i, true)) $ ".F") $ string(int((float(a_ShortcutID) % float(12)) + float(1)))) $ "Tex");
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -404,10 +376,8 @@ function ShowText(int a_ShortcutID)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0xA4 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         // End:0x9A
         if(IsShortcutIDInCurPage(m_ShortcutPage[i], a_ShortcutID))
@@ -416,8 +386,6 @@ function ShowText(int a_ShortcutID)
             ShowWindow((((GetPanelNameEx(i, true)) $ ".F") $ string(int((float(a_ShortcutID) % float(12)) + float(1)))) $ "Tex");
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -431,15 +399,11 @@ function LoadConfig()
     m_IsVertical = GetPcOptionBool("Game", "ShortcutIsVertical");
     m_IsLocked = GetOptionBool("Game", "IsLockShortcutWnd");
     i = 0;
-    J0x81:
 
-    // End:0xC7 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         m_ShortcutPage[i] = GetPcOptionInt("Game", "ShortcutPage_" $ string(i));
         i++;
-        // [Loop Continue]
-        goto J0x81;
     }
     return;
 }
@@ -458,15 +422,11 @@ function InitConfig()
     SetPcOptionBool("Game", "ShortcutIsVertical", false);
     SetOptionBool("Game", "IsLockShortcutWnd", false);
     i = 0;
-    J0xA9:
 
-    // End:0xE8 [Loop If]
-    if(i < 4)
+    while(i < 4)
     {
         SetPcOptionInt("Game", "ShortcutPage_" $ string(i), i);
         i++;
-        // [Loop Continue]
-        goto J0xA9;
     }
     return;
 }
@@ -584,28 +544,20 @@ function HandleExpand()
     local int i, N;
 
     i = 0;
-    J0x07:
 
-    // End:0x4A [Loop If]
-    if(i < m_ExpandCount)
+    while(i < m_ExpandCount)
     {
         ShowWindow(GetPanelNameEx(i + 1, false));
         ShowWindow(GetPanelNameEx(i + 1, true));
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     N = i;
-    J0x55:
 
-    // End:0x98 [Loop If]
-    if(N < (4 - 1))
+    while(N < (4 - 1))
     {
         HideWindow(GetPanelNameEx(N + 1, false));
         HideWindow(GetPanelNameEx(N + 1, true));
         N++;
-        // [Loop Continue]
-        goto J0x55;
     }
     // End:0x123
     if(m_ExpandCount == 3)
@@ -634,10 +586,8 @@ function HandleSetPage(int a_PanelIndex)
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText((GetPanelNameEx(a_PanelIndex, true)) $ ".PageNumTextBox", string(i));
     nShortcutID = m_ShortcutPage[a_PanelIndex] * 12;
     i = 0;
-    J0x9A:
 
-    // End:0x1E6 [Loop If]
-    if(i < 12)
+    while(i < 12)
     {
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((GetPanelNameEx(a_PanelIndex, false)) $ ".Shortcut") $ string(i + 1), nShortcutID);
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((GetPanelNameEx(a_PanelIndex, true)) $ ".Shortcut") $ string(i + 1), nShortcutID);
@@ -654,8 +604,6 @@ function HandleSetPage(int a_PanelIndex)
         }
         nShortcutID++;
         i++;
-        // [Loop Continue]
-        goto J0x9A;
     }
     return;
 }

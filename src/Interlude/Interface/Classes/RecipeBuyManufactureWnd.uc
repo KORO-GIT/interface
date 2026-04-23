@@ -181,10 +181,8 @@ function ReceiveRecipeShopSellList(int MerchantID, int RecipeID, int currentMP, 
     param = Class'NWindow.UIDATA_RECIPE'.static.GetRecipeMaterialItem(RecipeID);
     nTmp = param.GetInt();
     i = 0;
-    J0x3C4:
 
-    // End:0x527 [Loop If]
-    if(i < nTmp)
+    while(i < nTmp)
     {
         infItem.ClassID = param.GetInt();
         infItem.Reserved = param.GetInt();
@@ -204,8 +202,6 @@ function ReceiveRecipeShopSellList(int MerchantID, int RecipeID, int currentMP, 
         }
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("RecipeBuyManufactureWnd.ItemWnd", infItem);
         i++;
-        // [Loop Continue]
-        goto J0x3C4;
     }
     return;
 }

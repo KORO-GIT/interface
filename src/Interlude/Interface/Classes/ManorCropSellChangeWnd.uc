@@ -186,23 +186,17 @@ function LVDataRecord GetComboBoxSelectedRecord()
     ManorID = GetComboBoxSelectedManorID();
     RecordCount = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecordCount("ManorCropSellChangeWnd.ManorCropSellChangeListCtrl");
     i = 0;
-    J0x5C:
 
-    // End:0xDA [Loop If]
-    if(i < RecordCount)
+    while(i < RecordCount)
     {
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("ManorCropSellChangeWnd.ManorCropSellChangeListCtrl", i);
         // End:0xD0
         if(Record.nReserved1 == ManorID)
         {
-            // [Explicit Break]
-            goto J0xDA;
+            break;
         }
         ++i;
-        // [Loop Continue]
-        goto J0x5C;
     }
-    J0xDA:
 
     return Record;
 }

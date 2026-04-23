@@ -64,10 +64,8 @@ function OnLoad()
     m_wndTop = GetHandle("PartyWnd");
     m_PartyOption = GetHandle("PartyWndOption");
     idx = 0;
-    J0xC0:
 
-    // End:0x3E0 [Loop If]
-    if(idx < 9)
+    while(idx < 9)
     {
         m_PartyStatus[idx] = GetHandle("PartyWnd.PartyStatusWnd" $ string(idx));
         m_PlayerName[idx] = NameCtrlHandle(GetHandle(("PartyWnd.PartyStatusWnd" $ string(idx)) $ ".PlayerName"));
@@ -81,15 +79,11 @@ function OnLoad()
         m_BarHP[idx] = BarHandle(GetHandle(("PartyWnd.PartyStatusWnd" $ string(idx)) $ ".barHP"));
         m_BarMP[idx] = BarHandle(GetHandle(("PartyWnd.PartyStatusWnd" $ string(idx)) $ ".barMP"));
         idx++;
-        // [Loop Continue]
-        goto J0xC0;
     }
     btnBuff = ButtonHandle(GetHandle("PartyWnd.btnBuff"));
     idx = 0;
-    J0x40A:
 
-    // End:0x5C1 [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         m_StatusIconBuff[idx].SetAnchor("PartyWnd.PartyStatusWnd" $ string(idx), "TopRight", "TopLeft", -3, 1);
         m_StatusIconDeBuff[idx].SetAnchor("PartyWnd.PartyStatusWnd" $ string(idx), "TopRight", "TopLeft", -3, 3);
@@ -97,8 +91,6 @@ function OnLoad()
         m_PlayerName[idx].SetAnchor(("PartyWnd.PartyStatusWnd" $ string(idx)) $ ".ClassIcon", "TopLeft", "TopLeft", 1, -16);
         m_ClassIconCustom[idx].SetAnchor("PartyWnd.PartyStatusWnd" $ string(idx), "TopRight", "TopRight", -11, 1);
         idx++;
-        // [Loop Continue]
-        goto J0x40A;
     }
     m_PartyOption.HideWindow();
     LeaderNameColor.R = byte(255);
@@ -258,24 +250,18 @@ function HandleAddNormalStatus(string param)
     is_Nobless = false;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0x24:
 
-    // End:0x84 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         // End:0x7A
         if(Info.ClassID == 1323)
         {
             is_Nobless = true;
-            // [Explicit Break]
-            goto J0x84;
+            break;
         }
         i++;
-        // [Loop Continue]
-        goto J0x24;
     }
-    J0x84:
 
     return;
 }
@@ -329,15 +315,11 @@ function ReHandlePartySpelledList()
     local int A;
 
     A = 0;
-    J0x07:
 
-    // End:0x2E [Loop If]
-    if(A < 8)
+    while(A < 8)
     {
         HandlePartySpelledList(ParamSpelledList[A]);
         A++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -393,10 +375,8 @@ function HandleUpdateComboBox()
     m_cb1stAssist.SetSelectedNum(0);
     m_cb2ndAssist.SetSelectedNum(0);
     A = 0;
-    J0x6D:
 
-    // End:0x10C [Loop If]
-    if(A < m_CurCount)
+    while(A < m_CurCount)
     {
         m_cb1stAssist.AddString(GetMemberName(A));
         m_cb2ndAssist.AddString(GetMemberName(A));
@@ -411,8 +391,6 @@ function HandleUpdateComboBox()
             m_cb2ndAssist.SetSelectedNum(A);
         }
         A++;
-        // [Loop Continue]
-        goto J0x6D;
     }
     return;
 }
@@ -498,48 +476,36 @@ function SetAssistIndex()
     if((GetSelectedNumAssist(1)) > 0)
     {
         A = 0;
-        J0x2A:
 
-        // End:0x66 [Loop If]
-        if(A < m_CurCount)
+        while(A < m_CurCount)
         {
             // End:0x5C
             if((GetMemberName(A)) == s_AssistName_1)
             {
                 i_AssistIndex_1 = A;
-                // [Explicit Break]
-                goto J0x66;
+                break;
             }
             A++;
-            // [Loop Continue]
-            goto J0x2A;
         }
     }
-    J0x66:
 
     // End:0xC2
     if((GetSelectedNumAssist(2)) > 0)
     {
         i_AssistIndex_2 = -1;
         A = 0;
-        J0x86:
 
-        // End:0xC2 [Loop If]
-        if(A < m_CurCount)
+        while(A < m_CurCount)
         {
             // End:0xB8
             if((GetMemberName(A)) == s_AssistName_2)
             {
                 i_AssistIndex_2 = A;
-                // [Explicit Break]
-                goto J0xC2;
+                break;
             }
             A++;
-            // [Loop Continue]
-            goto J0x86;
         }
     }
-    J0xC2:
 
     return;
 }
@@ -600,15 +566,11 @@ function Clear(bool b_Value)
     local int idx;
 
     idx = 0;
-    J0x07:
 
-    // End:0x2E [Loop If]
-    if(idx < 9)
+    while(idx < 9)
     {
         ClearStatus(idx, b_Value);
         idx++;
-        // [Loop Continue]
-        goto J0x07;
     }
     m_CurCount = 0;
     ResizeWnd();
@@ -696,24 +658,20 @@ function ResizeWnd()
             m_wndTop.HideWindow();
         }
         idx = 0;
-        J0xB1:
 
-        // End:0x106 [Loop If]
-        if(idx < 8)
+        while(idx < 8)
         {
             // End:0xE7
             if(idx <= (m_CurCount - 1))
             {
                 m_PartyStatus[idx].ShowWindow();
-                // [Explicit Continue]
-                goto J0xFC;
+
+                idx++;
+                continue;
             }
             m_PartyStatus[idx].HideWindow();
-            J0xFC:
 
             idx++;
-            // [Loop Continue]
-            goto J0xB1;
         }        
     }
     else
@@ -728,10 +686,8 @@ function int GetMemberIndex(int Id)
     local int idx;
 
     idx = 0;
-    J0x07:
 
-    // End:0x38 [Loop If]
-    if(idx < 8)
+    while(idx < 8)
     {
         // End:0x2E
         if(m_arrID[idx] == Id)
@@ -739,8 +695,6 @@ function int GetMemberIndex(int Id)
             return idx;
         }
         idx++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return -1;
 }
@@ -790,15 +744,11 @@ function HandlePartyDeleteParty(string param)
         if(idx > -1)
         {
             A = idx;
-            J0x4A:
 
-            // End:0x79 [Loop If]
-            if(A < (m_CurCount - 1))
+            while(A < (m_CurCount - 1))
             {
                 f_UnkFunc_1(A, A + 1);
                 A++;
-                // [Loop Continue]
-                goto J0x4A;
             }
             ClearStatus(m_CurCount - 1, true);
             m_CurCount--;
@@ -889,38 +839,36 @@ function SetPartyMembersColors()
     local int idx;
 
     idx = 0;
-    J0x07:
 
-    // End:0x11F [Loop If]
-    if(idx < m_CurCount)
+    while(idx < m_CurCount)
     {
         // End:0x5D
         if(isLeader[idx] == 1)
         {
             m_PlayerName[idx].SetNameWithColor(m_PlayerName[idx].GetName(), NCT_Normal, TA_Left, LeaderNameColor);
-            // [Explicit Continue]
-            goto J0x115;
+
+            idx++;
+            continue;
         }
         // End:0xA2
         if(idx == i_AssistIndex_1)
         {
             m_PlayerName[idx].SetNameWithColor(m_PlayerName[idx].GetName(), NCT_Normal, TA_Left, AssistNameColor_1);
-            // [Explicit Continue]
-            goto J0x115;
+
+            idx++;
+            continue;
         }
         // End:0xE7
         if(idx == i_AssistIndex_2)
         {
             m_PlayerName[idx].SetNameWithColor(m_PlayerName[idx].GetName(), NCT_Normal, TA_Left, AssistNameColor_2);
-            // [Explicit Continue]
-            goto J0x115;
+
+            idx++;
+            continue;
         }
         m_PlayerName[idx].SetName(m_PlayerName[idx].GetName(), NCT_Normal, TA_Left);
-        J0x115:
 
         idx++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return;
 }
@@ -948,26 +896,20 @@ function int HandlePartySpelledList(string param)
     m_StatusNoblessBuff[idx].Clear();
     m_StatusIconDeBuff[idx].Clear();
     A = 0;
-    J0x98:
 
-    // End:0xD8 [Loop If]
-    if(A < 9)
+    while(A < 9)
     {
         m_StatusIconDeBuff[A].AddRow();
         m_StatusIconDeBuff[A].AddRow();
         A++;
-        // [Loop Continue]
-        goto J0x98;
     }
     StatusInfo.Size = 14;
     StatusInfo.bShow = true;
     ParseInt(param, "Max", Max);
     m_ClassIconCustom[idx].SetAnchor("PartyWnd.PartyStatusWnd" $ string(idx), "TopRight", "TopRight", -11, 1);
     A = 0;
-    J0x15F:
 
-    // End:0x367 [Loop If]
-    if(A < Max)
+    while(A < Max)
     {
         ParseInt(param, "SkillID_" $ string(A), StatusInfo.ClassID);
         ParseInt(param, "Level_" $ string(A), StatusInfo.Level);
@@ -1006,8 +948,6 @@ function int HandlePartySpelledList(string param)
             HandleOnPartyBuff(idx, StatusInfo);
         }
         A++;
-        // [Loop Continue]
-        goto J0x15F;
     }
     UpdateBuff();
     return idx;
@@ -1018,10 +958,8 @@ function bool f_UnkFunc1(int ClassID)
     local int j;
 
     j = 0;
-    J0x07:
 
-    // End:0x38 [Loop If]
-    if(j < a_UnkArrayInt1.Length)
+    while(j < a_UnkArrayInt1.Length)
     {
         // End:0x2E
         if(a_UnkArrayInt1[j] == ClassID)
@@ -1029,8 +967,6 @@ function bool f_UnkFunc1(int ClassID)
             return true;
         }
         j++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return false;
 }
@@ -1149,16 +1085,12 @@ function UpdateBuff()
     if(m_CurBf == 1)
     {
         idx = 0;
-        J0x12:
 
-        // End:0x52 [Loop If]
-        if(idx < 8)
+        while(idx < 8)
         {
             m_StatusIconBuff[idx].ShowWindow();
             m_StatusIconDeBuff[idx].HideWindow();
             idx++;
-            // [Loop Continue]
-            goto J0x12;
         }        
     }
     else
@@ -1167,31 +1099,23 @@ function UpdateBuff()
         if(m_CurBf == 2)
         {
             idx = 0;
-            J0x68:
 
-            // End:0xA8 [Loop If]
-            if(idx < 8)
+            while(idx < 8)
             {
                 m_StatusIconBuff[idx].HideWindow();
                 m_StatusIconDeBuff[idx].ShowWindow();
                 idx++;
-                // [Loop Continue]
-                goto J0x68;
             }            
         }
         else
         {
             idx = 0;
-            J0xB2:
 
-            // End:0xF2 [Loop If]
-            if(idx < 8)
+            while(idx < 8)
             {
                 m_StatusIconBuff[idx].HideWindow();
                 m_StatusIconDeBuff[idx].HideWindow();
                 idx++;
-                // [Loop Continue]
-                goto J0xB2;
             }
         }
     }
@@ -1387,15 +1311,11 @@ function ProbablyMove(int UnkInt_ProbablyMemberPos, int idx)
         {
             f_UnkFunc_1(9 - 1, UnkInt_ProbablyMemberPos);
             A = UnkInt_ProbablyMemberPos;
-            J0x88:
 
-            // End:0xB4 [Loop If]
-            if(A < idx)
+            while(A < idx)
             {
                 f_UnkFunc_1(A, A + 1);
                 A++;
-                // [Loop Continue]
-                goto J0x88;
             }
             f_UnkFunc_1(idx, 9 - 1);            
         }
@@ -1403,15 +1323,11 @@ function ProbablyMove(int UnkInt_ProbablyMemberPos, int idx)
         {
             f_UnkFunc_1(9 - 1, UnkInt_ProbablyMemberPos);
             A = UnkInt_ProbablyMemberPos;
-            J0xE2:
 
-            // End:0x10E [Loop If]
-            if(A > idx)
+            while(A > idx)
             {
                 f_UnkFunc_1(A, A - 1);
                 A--;
-                // [Loop Continue]
-                goto J0xE2;
             }
             f_UnkFunc_1(idx, 9 - 1);
         }

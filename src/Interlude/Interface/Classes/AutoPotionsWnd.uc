@@ -937,10 +937,8 @@ function HandleBuffs(string param)
     hasBlockBuffEffect = false;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0x3C:
 
-    // End:0xE9 [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         // End:0x8E
@@ -964,8 +962,6 @@ function HandleBuffs(string param)
             hasBlockBuffEffect = true;
         }
         i++;
-        // [Loop Continue]
-        goto J0x3C;
     }
     AutoPotionsWnd.KillTimer(4443);
     // End:0x196

@@ -628,17 +628,13 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
         if(item.ClassID > 0)
         {
             idx = 0;
-            J0x118F:
 
-            // End:0x1535 [Loop If]
-            if(idx < 3)
+            while(idx < 3)
             {
                 Class'NWindow.UIDATA_ITEM'.static.GetSetItemIDList(item.ClassID, idx, arrID);
                 SetID = 0;
-                J0x11C5:
 
-                // End:0x1384 [Loop If]
-                if(SetID < arrID.Length)
+                while(SetID < arrID.Length)
                 {
                     bLargeWidth = true;
                     ClassID = arrID[SetID];
@@ -668,8 +664,6 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         }
                     }
                     SetID++;
-                    // [Loop Continue]
-                    goto J0x11C5;
                 }
                 strTmp = Class'NWindow.UIDATA_ITEM'.static.GetSetItemEffectDescription(item.ClassID, idx);
                 // End:0x152B
@@ -694,8 +688,6 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     EndItem();
                 }
                 idx++;
-                // [Loop Continue]
-                goto J0x118F;
             }
             strTmp = Class'NWindow.UIDATA_ITEM'.static.GetSetItemEnchantEffectDescription(item.ClassID);
             // End:0x16B8

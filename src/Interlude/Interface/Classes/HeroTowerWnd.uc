@@ -114,10 +114,8 @@ function HandleHeroShowList(string param)
 
     ParseInt(param, "Max", nMax);
     i = 0;
-    J0x1C:
 
-    // End:0x5E0 [Loop If]
-    if(i < nMax)
+    while(i < nMax)
     {
         strName = "";
         ClassID = 0;
@@ -194,8 +192,6 @@ function HandleHeroShowList(string param)
         Record.nReserved1 = ClassID;
         Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord("HeroTowerWnd.lstHero", Record);
         i++;
-        // [Loop Continue]
-        goto J0x1C;
     }
     return;
 }

@@ -261,24 +261,18 @@ function RemoveTopBuffSkill(int Id)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x7D [Loop If]
-    if((i < TopBuffSkills.Length))
+    while((i < TopBuffSkills.Length))
     {
         // End:0x6F
         if((TopBuffSkills[i].Id == Id))
         {
             TopBuffSkills[i] = TopBuffSkills[(TopBuffSkills.Length - 1)];
             TopBuffSkills.Length = (TopBuffSkills.Length - 1);
-            // [Explicit Break]
-            goto J0x7D;
+            break;
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
-    J0x7D:
 
     return;
 }
@@ -298,24 +292,18 @@ function RemoveBottomBuffSkill(int Id)
     local int i;
 
     i = 0;
-    J0x07:
 
-    // End:0x7D [Loop If]
-    if((i < BottomBuffSkills.Length))
+    while((i < BottomBuffSkills.Length))
     {
         // End:0x6F
         if((BottomBuffSkills[i].Id == Id))
         {
             BottomBuffSkills[i] = BottomBuffSkills[(BottomBuffSkills.Length - 1)];
             BottomBuffSkills.Length = (BottomBuffSkills.Length - 1);
-            // [Explicit Break]
-            goto J0x7D;
+            break;
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
-    J0x7D:
 
     return;
 }
@@ -341,10 +329,8 @@ function OnTimer(int Index)
             }
         }
         i = 0;
-        J0x57:
 
-        // End:0x198 [Loop If]
-        if((i < TopBuffSkills.Length))
+        while((i < TopBuffSkills.Length))
         {
             // End:0x18A
             if((!TopBuffSkills[i].BuffInfo_Bool))
@@ -380,14 +366,10 @@ function OnTimer(int Index)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x57;
         }
         i = 0;
-        J0x19F:
 
-        // End:0x2AD [Loop If]
-        if((i < BottomBuffSkills.Length))
+        while((i < BottomBuffSkills.Length))
         {
             // End:0x29F
             if((!BottomBuffSkills[i].BuffInfo_Bool))
@@ -415,8 +397,6 @@ function OnTimer(int Index)
                 }
             }
             i++;
-            // [Loop Continue]
-            goto J0x19F;
         }
     }
     return;
@@ -430,10 +410,8 @@ function HandleAddNormalStatus(string param)
     bInvincibleStatusActive = false;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0x24:
 
-    // End:0xA3 [Loop If]
-    if((i < Max))
+    while((i < Max))
     {
         bHasNoblesseOrCelestialStatus = false;
         ParseInt(param, ("SkillID_" $ string(i)), ClassID);
@@ -441,8 +419,7 @@ function HandleAddNormalStatus(string param)
         if(IsNoblesseOrCelestialStatus(ClassID))
         {
             bHasNoblesseOrCelestialStatus = true;
-            // [Explicit Break]
-            goto J0xA3;
+            break;
         }
         // End:0x95
         if(IsInvincibleStatus(ClassID))
@@ -450,23 +427,16 @@ function HandleAddNormalStatus(string param)
             bInvincibleStatusActive = true;
         }
         i++;
-        // [Loop Continue]
-        goto J0x24;
     }
-    J0xA3:
 
     i = 0;
-    J0xAA:
 
-    // End:0x188 [Loop If]
-    if((i < TopBuffSkills.Length))
+    while((i < TopBuffSkills.Length))
     {
         localBool = false;
         j = (Max - 1);
-        J0xD8:
 
-        // End:0x158 [Loop If]
-        if((j >= 0))
+        while((j >= 0))
         {
             ParseInt(param, ("SkillID_" $ string(j)), ClassID);
             // End:0x14A
@@ -474,14 +444,10 @@ function HandleAddNormalStatus(string param)
             {
                 TopBuffSkills[i].BuffInfo_Bool = true;
                 localBool = true;
-                // [Explicit Break]
-                goto J0x158;
+                break;
             }
             j--;
-            // [Loop Continue]
-            goto J0xD8;
         }
-        J0x158:
 
         // End:0x17A
         if((!localBool))
@@ -489,21 +455,15 @@ function HandleAddNormalStatus(string param)
             TopBuffSkills[i].BuffInfo_Bool = false;
         }
         i++;
-        // [Loop Continue]
-        goto J0xAA;
     }
     i = 0;
-    J0x18F:
 
-    // End:0x266 [Loop If]
-    if((i < BottomBuffSkills.Length))
+    while((i < BottomBuffSkills.Length))
     {
         localBool = false;
         j = 0;
-        J0x1B2:
 
-        // End:0x236 [Loop If]
-        if((j < Max))
+        while((j < Max))
         {
             ParseInt(param, ("SkillID_" $ string(j)), ClassID);
             // End:0x228
@@ -511,14 +471,10 @@ function HandleAddNormalStatus(string param)
             {
                 BottomBuffSkills[i].BuffInfo_Bool = true;
                 localBool = true;
-                // [Explicit Break]
-                goto J0x236;
+                break;
             }
             j++;
-            // [Loop Continue]
-            goto J0x1B2;
         }
-        J0x236:
 
         // End:0x258
         if((!localBool))
@@ -526,8 +482,6 @@ function HandleAddNormalStatus(string param)
             BottomBuffSkills[i].BuffInfo_Bool = false;
         }
         i++;
-        // [Loop Continue]
-        goto J0x18F;
     }
     return;
 }
@@ -648,23 +602,17 @@ function HandleSkillList(string param)
     if(IsTopBuffSkill(SkillID))
     {
         i = 0;
-        J0x194:
 
-        // End:0x1EC [Loop If]
-        if((i < TopBuffSkills.Length))
+        while((i < TopBuffSkills.Length))
         {
             // End:0x1DE
             if((TopBuffSkills[i].Id == SkillID))
             {
                 Info.ForeTexture = "Was.Auto";
-                // [Explicit Break]
-                goto J0x1EC;
+                break;
             }
             i++;
-            // [Loop Continue]
-            goto J0x194;
         }
-        J0x1EC:
 
         TItemWnd.AddItem(Info);
     }
@@ -685,24 +633,18 @@ function HandleSkillList(string param)
             else
             {
                 i = 0;
-                J0x25D:
 
-                // End:0x2B5 [Loop If]
-                if((i < BottomBuffSkills.Length))
+                while((i < BottomBuffSkills.Length))
                 {
                     // End:0x2A7
                     if((BottomBuffSkills[i].Id == SkillID))
                     {
                         Info.ForeTexture = "Was.Auto";
-                        // [Explicit Break]
-                        goto J0x2B5;
+                        break;
                     }
                     i++;
-                    // [Loop Continue]
-                    goto J0x25D;
                 }
             }
-            J0x2B5:
 
             BItemWnd.AddItem(Info);
             // End:0x302
@@ -1028,10 +970,8 @@ function int CountInventoryItemByClassID(int ItemID)
         if((Info.ItemNum == 1))
         {
             i = 0;
-            J0xBA:
 
-            // End:0x136 [Loop If]
-            if((i <= idx))
+            while((i <= idx))
             {
                 // End:0x128
                 if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("InventoryWnd.InventoryItem", i, info2))
@@ -1043,8 +983,6 @@ function int CountInventoryItemByClassID(int ItemID)
                     }
                 }
                 ++i;
-                // [Loop Continue]
-                goto J0xBA;
             }
         }
         else

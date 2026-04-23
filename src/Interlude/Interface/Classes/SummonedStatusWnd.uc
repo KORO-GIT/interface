@@ -193,10 +193,8 @@ function HandleSummonedStatusSpelledList(string param)
     Info.bShow = true;
     ParseInt(param, "Max", Max);
     i = 0;
-    J0x6E:
 
-    // End:0x16B [Loop If]
-    if(i < Max)
+    while(i < Max)
     {
         ParseInt(param, "SkillID_" $ string(i), Info.ClassID);
         // End:0x161
@@ -213,8 +211,6 @@ function HandleSummonedStatusSpelledList(string param)
             BuffCnt++;
         }
         i++;
-        // [Loop Continue]
-        goto J0x6E;
     }
     UpdateBuff(m_bBuff);
     return;

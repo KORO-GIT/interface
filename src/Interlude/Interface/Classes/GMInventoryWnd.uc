@@ -268,28 +268,23 @@ function UpdateHennaInfo()
     item_4.Clear();
     item_4.SetRow(m_HennaInfoList.Length);
     i = 0;
-    J0x2B:
 
-    // End:0x11F [Loop If]
-    if(i < m_HennaInfoList.Length)
+    while(i < m_HennaInfoList.Length)
     {
         // End:0x6C
         if(!Class'NWindow.UIDATA_HENNA'.static.GetItemName(m_HennaInfoList[i].HennaID, HennaItemInfo.Name))
         {
-            // [Explicit Break]
-            goto J0x11F;
+            break;
         }
         // End:0x9D
         if(!Class'NWindow.UIDATA_HENNA'.static.GetDescription(m_HennaInfoList[i].HennaID, HennaItemInfo.Description))
         {
-            // [Explicit Break]
-            goto J0x11F;
+            break;
         }
         // End:0xCE
         if(!Class'NWindow.UIDATA_HENNA'.static.GetIconTex(m_HennaInfoList[i].HennaID, HennaItemInfo.IconName))
         {
-            // [Explicit Break]
-            goto J0x11F;
+            break;
         }
         // End:0xF4
         if(0 == m_HennaInfoList[i].IsActive)
@@ -302,10 +297,7 @@ function UpdateHennaInfo()
         }
         item_4.AddItem(HennaItemInfo);
         ++i;
-        // [Loop Continue]
-        goto J0x2B;
     }
-    J0x11F:
 
     return;
 }

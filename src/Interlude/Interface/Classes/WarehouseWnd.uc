@@ -538,17 +538,13 @@ function HandleOKButton()
     {
         ParamAdd(param, "num", string(bottomCount));
         bottomIndex = 0;
-        J0x43:
 
-        // End:0xC2 [Loop If]
-        if(bottomIndex < bottomCount)
+        while(bottomIndex < bottomCount)
         {
             m_bottomList.GetItem(bottomIndex, bottomInfo);
             ParamAdd(param, "dbID" $ string(bottomIndex), string(bottomInfo.Reserved));
             ParamAdd(param, "count" $ string(bottomIndex), string(bottomInfo.ItemNum));
             ++bottomIndex;
-            // [Loop Continue]
-            goto J0x43;
         }
         RequestWarehouseDeposit(param);        
     }
@@ -559,17 +555,13 @@ function HandleOKButton()
         {
             ParamAdd(param, "num", string(bottomCount));
             bottomIndex = 0;
-            J0xFE:
 
-            // End:0x17D [Loop If]
-            if(bottomIndex < bottomCount)
+            while(bottomIndex < bottomCount)
             {
                 m_bottomList.GetItem(bottomIndex, bottomInfo);
                 ParamAdd(param, "dbID" $ string(bottomIndex), string(bottomInfo.Reserved));
                 ParamAdd(param, "count" $ string(bottomIndex), string(bottomInfo.ItemNum));
                 ++bottomIndex;
-                // [Loop Continue]
-                goto J0xFE;
             }
             RequestWarehouseWithdraw(param);
         }

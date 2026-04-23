@@ -108,10 +108,8 @@ function HandleCommandChannelPartyMember(string param)
     lstPartyMember.DeleteAllItem();
     ParseInt(param, "MemberCount", MemberCount);
     idx = 0;
-    J0x33:
 
-    // End:0x167 [Loop If]
-    if(idx < MemberCount)
+    while(idx < MemberCount)
     {
         ParseString(param, "Name_" $ string(idx), Name);
         ParseInt(param, "ClassID_" $ string(idx), ClassID);
@@ -129,8 +127,6 @@ function HandleCommandChannelPartyMember(string param)
             lstPartyMember.InsertRecord(Record);
         }
         idx++;
-        // [Loop Continue]
-        goto J0x33;
     }
     script = UnionWnd(GetScript("UnionWnd"));
     script.UpdatePartyMemberCount(m_MasterID, MemberCount);

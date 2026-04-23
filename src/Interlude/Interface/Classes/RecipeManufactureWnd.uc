@@ -178,10 +178,8 @@ function ReceiveRecipeItemMakeInfo(int RecipeID, int currentMP, int maxMP, int M
     param = Class'NWindow.UIDATA_RECIPE'.static.GetRecipeMaterialItem(RecipeID);
     nTmp = param.GetInt();
     i = 0;
-    J0x35E:
 
-    // End:0x4BE [Loop If]
-    if(i < nTmp)
+    while(i < nTmp)
     {
         infItem.ClassID = param.GetInt();
         infItem.Reserved = param.GetInt();
@@ -201,8 +199,6 @@ function ReceiveRecipeItemMakeInfo(int RecipeID, int currentMP, int maxMP, int M
         }
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("RecipeManufactureWnd.ItemWnd", infItem);
         i++;
-        // [Loop Continue]
-        goto J0x35E;
     }
     return;
 }

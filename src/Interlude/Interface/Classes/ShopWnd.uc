@@ -408,16 +408,12 @@ function HandleDialogOK()
                         ParamAdd(param, "npc", string(m_npcID));
                         ParamAdd(param, "num", string(Num));
                         Index = 0;
-                        J0x5B6:
 
-                        // End:0x625 [Loop If]
-                        if(Index < Num)
+                        while(Index < Num)
                         {
                             Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".BottomList", Index, Info);
                             ParamAdd(param, "classID" $ string(Index), string(Info.ClassID));
                             ++Index;
-                            // [Loop Continue]
-                            goto J0x5B6;
                         }
                         RequestPreviewItem(param);
                     }
@@ -558,10 +554,8 @@ function HandleOKButton()
     {
         topCount = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum(m_WindowName $ ".TopList");
         topIndex = 0;
-        J0x66:
 
-        // End:0x189 [Loop If]
-        if(topIndex < topCount)
+        while(topIndex < topCount)
         {
             Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".TopList", topIndex, topInfo);
             // End:0x17F
@@ -570,10 +564,8 @@ function HandleOKButton()
                 limitedItemCount = 0;
                 bottomCount = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum(m_WindowName $ ".BottomList");
                 bottomIndex = 0;
-                J0xE6:
 
-                // End:0x156 [Loop If]
-                if(bottomIndex < bottomCount)
+                while(bottomIndex < bottomCount)
                 {
                     Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".BottomList", bottomIndex, bottomInfo);
                     // End:0x14C
@@ -582,8 +574,6 @@ function HandleOKButton()
                         limitedItemCount += bottomInfo.ItemNum;
                     }
                     ++bottomIndex;
-                    // [Loop Continue]
-                    goto J0xE6;
                 }
                 // End:0x17F
                 if(limitedItemCount > topInfo.ItemNum)
@@ -593,23 +583,17 @@ function HandleOKButton()
                 }
             }
             ++topIndex;
-            // [Loop Continue]
-            goto J0x66;
         }
         ParamAdd(param, "merchant", string(m_merchantID));
         ParamAdd(param, "num", string(bottomCount));
         bottomIndex = 0;
-        J0x1C3:
 
-        // End:0x259 [Loop If]
-        if(bottomIndex < bottomCount)
+        while(bottomIndex < bottomCount)
         {
             Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".BottomList", bottomIndex, bottomInfo);
             ParamAdd(param, "classID" $ string(bottomIndex), string(bottomInfo.ClassID));
             ParamAdd(param, "count" $ string(bottomIndex), string(bottomInfo.ItemNum));
             ++bottomIndex;
-            // [Loop Continue]
-            goto J0x1C3;
         }
         RequestBuyItem(param);        
     }
@@ -621,18 +605,14 @@ function HandleOKButton()
             ParamAdd(param, "merchant", string(m_merchantID));
             ParamAdd(param, "num", string(bottomCount));
             bottomIndex = 0;
-            J0x2B1:
 
-            // End:0x371 [Loop If]
-            if(bottomIndex < bottomCount)
+            while(bottomIndex < bottomCount)
             {
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".BottomList", bottomIndex, bottomInfo);
                 ParamAdd(param, "serverID" $ string(bottomIndex), string(bottomInfo.ServerID));
                 ParamAdd(param, "classID" $ string(bottomIndex), string(bottomInfo.ClassID));
                 ParamAdd(param, "count" $ string(bottomIndex), string(bottomInfo.ItemNum));
                 ++bottomIndex;
-                // [Loop Continue]
-                goto J0x2B1;
             }
             RequestSellItem(param);            
         }

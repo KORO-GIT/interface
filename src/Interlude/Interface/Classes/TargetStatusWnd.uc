@@ -184,10 +184,8 @@ function bool isPartyMember(int m_targetID)
     local bool ResultBool;
 
     j = 0;
-    J0x07:
 
-    // End:0x43 [Loop If]
-    if(j < 8)
+    while(j < 8)
     {
         // End:0x39
         if(m_targetID == PartyWnd.m_arrID[j])
@@ -195,8 +193,6 @@ function bool isPartyMember(int m_targetID)
             ResultBool = true;
         }
         j++;
-        // [Loop Continue]
-        goto J0x07;
     }
     return ResultBool;
 }
@@ -828,10 +824,8 @@ function UpdateNpcInfoTree(array<int> arrNpcInfo)
         return;
     }
     i = 0;
-    J0xBD:
 
-    // End:0x2FA [Loop If]
-    if(i < arrNpcInfo.Length)
+    while(i < arrNpcInfo.Length)
     {
         SkillID = arrNpcInfo[i];
         SkillLevel = arrNpcInfo[i + 1];
@@ -874,8 +868,6 @@ function UpdateNpcInfoTree(array<int> arrNpcInfo)
         infNodeItem.u_strTexture = Class'NWindow.UIDATA_SKILL'.static.GetIconName(SkillID, SkillLevel);
         Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("TargetStatusWnd.NpcInfo", strNodeName, infNodeItem);
         i += 2;
-        // [Loop Continue]
-        goto J0xBD;
     }
     return;
 }

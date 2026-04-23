@@ -319,16 +319,12 @@ function MoveItemTopToBottom(int Index, bool bAllItem)
                     {
                         Num = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("PrivateShopWnd.TopList");
                         i = 0;
-                        J0x195:
 
-                        // End:0x20E [Loop If]
-                        if(i < Num)
+                        while(i < Num)
                         {
                             Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.TopList", i, Info);
                             Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("PrivateShopWnd.BottomList", Info);
                             ++i;
-                            // [Loop Continue]
-                            goto J0x195;
                         }
                         Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("PrivateShopWnd.TopList");
                         AdjustPrice();
@@ -413,16 +409,12 @@ function MoveItemBottomToTop(int Index, bool bAllItem)
         {
             Num = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("PrivateShopWnd.BottomList");
             i = 0;
-            J0x89:
 
-            // End:0x102 [Loop If]
-            if(i < Num)
+            while(i < Num)
             {
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", i, Info);
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("PrivateShopWnd.TopList", Info);
                 ++i;
-                // [Loop Continue]
-                goto J0x89;
             }
             Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("PrivateShopWnd.BottomList");
             AdjustPrice();
@@ -772,10 +764,8 @@ function HandleDialogOK()
                         if(bottomIndex >= 0)
                         {
                             i = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("PrivateShopWnd.BottomList");
-                            J0xC5A:
 
-                            // End:0xCE6 [Loop If]
-                            if(i >= 0)
+                            while(i >= 0)
                             {
                                 Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", i, bottomInfo);
                                 // End:0xCDC
@@ -784,8 +774,6 @@ function HandleDialogOK()
                                     Class'NWindow.UIAPI_ITEMWINDOW'.static.DeleteItem("PrivateShopWnd.BottomList", i);
                                 }
                                 --i;
-                                // [Loop Continue]
-                                goto J0xC5A;
                             }
                         }
                         // End:0xD57
@@ -802,15 +790,11 @@ function HandleDialogOK()
                             bottomInfo.ItemNum = 1;
                             bottomInfo.Price = DialogGetReservedInt2();
                             i = 0;
-                            J0xD86:
 
-                            // End:0xDCE [Loop If]
-                            if(i < inputNum)
+                            while(i < inputNum)
                             {
                                 Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("PrivateShopWnd.BottomList", bottomInfo);
                                 ++i;
-                                // [Loop Continue]
-                                goto J0xD86;
                             }
                         }
                     }
@@ -1263,17 +1247,13 @@ function AdjustPrice()
     Count = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("PrivateShopWnd.BottomList");
     Price = Int2Int64(0);
     addPrice64 = Int2Int64(0);
-    J0x4A:
 
-    // End:0xCC [Loop If]
-    if(Count > 0)
+    while(Count > 0)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", Count - 1, Info);
         addPrice64 = Int64Mul(Info.Price, Info.ItemNum);
         Price = Int64Add(Price, addPrice64);
         --Count;
-        // [Loop Continue]
-        goto J0x4A;
     }
     // End:0xFB
     if((Price.nLeft < 0) || Price.nRight < 0)
@@ -1318,16 +1298,12 @@ function AdjustWeight()
     Class'NWindow.UIAPI_INVENWEIGHT'.static.ZeroWeight("PrivateShopWnd.InvenWeight");
     Count = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("PrivateShopWnd.BottomList");
     Weight = 0;
-    J0x62:
 
-    // End:0xCB [Loop If]
-    if(Count > 0)
+    while(Count > 0)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", Count - 1, Info);
         Weight += (Info.Weight * Info.ItemNum);
         --Count;
-        // [Loop Continue]
-        goto J0x62;
     }
     Class'NWindow.UIAPI_INVENWEIGHT'.static.AddWeight("PrivateShopWnd.InvenWeight", Weight);
     return;
@@ -1354,18 +1330,14 @@ function HandleOKButton(bool bPriceCheck)
         }
         ParamAdd(param, "num", string(ItemCount));
         itemIndex = 0;
-        J0xB5:
 
-        // End:0x17A [Loop If]
-        if(itemIndex < ItemCount)
+        while(itemIndex < ItemCount)
         {
             Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", itemIndex, ItemInfo);
             ParamAdd(param, "serverID" $ string(itemIndex), string(ItemInfo.ServerID));
             ParamAdd(param, "count" $ string(itemIndex), string(ItemInfo.ItemNum));
             ParamAdd(param, "price" $ string(itemIndex), string(ItemInfo.Price));
             ++itemIndex;
-            // [Loop Continue]
-            goto J0xB5;
         }
         SendPrivateShopList("sellList", param);        
     }
@@ -1377,26 +1349,20 @@ function HandleOKButton(bool bPriceCheck)
             ParamAdd(param, "merchantID", string(m_merchantID));
             ParamAdd(param, "num", string(ItemCount));
             itemIndex = 0;
-            J0x1DE:
 
-            // End:0x2CB [Loop If]
-            if(itemIndex < ItemCount)
+            while(itemIndex < ItemCount)
             {
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", itemIndex, ItemInfo);
                 // End:0x249
                 if(bPriceCheck && !IsProperPrice(ItemInfo, ItemInfo.Price))
                 {
-                    // [Explicit Break]
-                    goto J0x2CB;
+                    break;
                 }
                 ParamAdd(param, "serverID" $ string(itemIndex), string(ItemInfo.ServerID));
                 ParamAdd(param, "count" $ string(itemIndex), string(ItemInfo.ItemNum));
                 ParamAdd(param, "price" $ string(itemIndex), string(ItemInfo.Price));
                 ++itemIndex;
-                // [Loop Continue]
-                goto J0x1DE;
             }
-            J0x2CB:
 
             // End:0x308
             if(bPriceCheck && itemIndex < ItemCount)
@@ -1417,10 +1383,8 @@ function HandleOKButton(bool bPriceCheck)
             {
                 ParamAdd(param, "num", string(ItemCount));
                 itemIndex = 0;
-                J0x349:
 
-                // End:0x461 [Loop If]
-                if(itemIndex < ItemCount)
+                while(itemIndex < ItemCount)
                 {
                     Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", itemIndex, ItemInfo);
                     ParamAdd(param, "classID" $ string(itemIndex), string(ItemInfo.ClassID));
@@ -1429,8 +1393,6 @@ function HandleOKButton(bool bPriceCheck)
                     ParamAdd(param, "count" $ string(itemIndex), string(ItemInfo.ItemNum));
                     ParamAdd(param, "price" $ string(itemIndex), string(ItemInfo.Price));
                     ++itemIndex;
-                    // [Loop Continue]
-                    goto J0x349;
                 }
                 SendPrivateShopList("buyList", param);                
             }
@@ -1442,17 +1404,14 @@ function HandleOKButton(bool bPriceCheck)
                     ParamAdd(param, "merchantID", string(m_merchantID));
                     ParamAdd(param, "num", string(ItemCount));
                     itemIndex = 0;
-                    J0x4C4:
 
-                    // End:0x62E [Loop If]
-                    if(itemIndex < ItemCount)
+                    while(itemIndex < ItemCount)
                     {
                         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("PrivateShopWnd.BottomList", itemIndex, ItemInfo);
                         // End:0x52F
                         if(bPriceCheck && !IsProperPrice(ItemInfo, ItemInfo.Price))
                         {
-                            // [Explicit Break]
-                            goto J0x62E;
+                            break;
                         }
                         ParamAdd(param, "serverID" $ string(itemIndex), string(ItemInfo.ServerID));
                         ParamAdd(param, "classID" $ string(itemIndex), string(ItemInfo.ClassID));
@@ -1461,10 +1420,7 @@ function HandleOKButton(bool bPriceCheck)
                         ParamAdd(param, "count" $ string(itemIndex), string(ItemInfo.ItemNum));
                         ParamAdd(param, "price" $ string(itemIndex), string(ItemInfo.Price));
                         ++itemIndex;
-                        // [Loop Continue]
-                        goto J0x4C4;
                     }
-                    J0x62E:
 
                     // End:0x66B
                     if(bPriceCheck && itemIndex < ItemCount)

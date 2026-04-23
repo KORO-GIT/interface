@@ -310,16 +310,12 @@ function int Split(string strInput, string delim, out array<string> arrToken)
 {
     local int arrSize;
 
-    J0x00:
-    // End:0x6F [Loop If]
-    if(InStr(strInput, delim) > 0)
+    while(InStr(strInput, delim) > 0)
     {
         arrToken.Insert(arrToken.Length, 1);
         arrToken[arrToken.Length - 1] = Left(strInput, InStr(strInput, delim));
         strInput = Mid(strInput, InStr(strInput, delim) + 1);
         arrSize = arrSize + 1;
-        // [Loop Continue]
-        goto J0x00;
     }
     arrToken.Insert(arrToken.Length, 1);
     arrToken[arrToken.Length - 1] = strInput;
@@ -333,10 +329,8 @@ function JoinArray(array<string> StringArray, out string out_Result, string deli
     local string S;
 
     i = 0;
-    J0x07:
 
-    // End:0x76 [Loop If]
-    if(i < StringArray.Length)
+    while(i < StringArray.Length)
     {
         // End:0x6C
         if((StringArray[i] != "") || !bIgnoreBlanks)
@@ -349,8 +343,6 @@ function JoinArray(array<string> StringArray, out string out_Result, string deli
             S = S $ StringArray[i];
         }
         i++;
-        // [Loop Continue]
-        goto J0x07;
     }
     out_Result = S;
     return;
@@ -464,10 +456,8 @@ function ParamToRecord(string param, out LVDataRecord Record)
     ParseInt(param, "MaxColumn", MaxColumn);
     Record.LVDataList.Length = MaxColumn;
     idx = 0;
-    J0xB7:
 
-    // End:0x1DA [Loop If]
-    if(idx < MaxColumn)
+    while(idx < MaxColumn)
     {
         ParseString(param, "szData_" $ string(idx), Record.LVDataList[idx].szData);
         ParseString(param, "szReserved_" $ string(idx), Record.LVDataList[idx].szReserved);
@@ -475,8 +465,6 @@ function ParamToRecord(string param, out LVDataRecord Record)
         ParseInt(param, "nReserved2_" $ string(idx), Record.LVDataList[idx].nReserved2);
         ParseInt(param, "nReserved3_" $ string(idx), Record.LVDataList[idx].nReserved3);
         idx++;
-        // [Loop Continue]
-        goto J0xB7;
     }
     return;
 }
@@ -599,16 +587,12 @@ function string GetSuperRace(string Text)
     texttemp.Length = 0;
     SplitCount = Split(Text, ",", texttemp);
     i = 0;
-    J0x30:
 
-    // End:0x7D [Loop If]
-    if(i <= texttemp.Length)
+    while(i <= texttemp.Length)
     {
         temp[i] = Chr(int(texttemp[i]));
         Result = Result $ temp[i];
         ++i;
-        // [Loop Continue]
-        goto J0x30;
     }
     return Result;
 }
@@ -11389,16 +11373,12 @@ static final function string ReplaceText(coerce string Text, coerce string Repla
     local string output;
 
     i = InStr(Text, Replace);
-    J0x12:
 
-    // End:0x71 [Loop If]
-    if(i != -1)
+    while(i != -1)
     {
         output = (output $ Left(Text, i)) $ With;
         Text = Mid(Text, i + Len(Replace));
         i = InStr(Text, Replace);
-        // [Loop Continue]
-        goto J0x12;
     }
     output = output $ Text;
     return output;
@@ -14405,10 +14385,8 @@ function SortItem(ItemWindowHandle Handle)
     int_19 = 0;
     int_3 = Handle.GetItemNum();
     int_1 = 0;
-    J0xA6:
 
-    // End:0x36B [Loop If]
-    if(int_1 < int_3)
+    while(int_1 < int_3)
     {
         Handle.GetItem(int_1, int_4);
         EItemType = byte(int_4.ItemType);
@@ -14510,20 +14488,14 @@ function SortItem(ItemWindowHandle Handle)
                 break;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xA6;
     }
     int_1 = 0;
-    J0x372:
 
-    // End:0x443 [Loop If]
-    if(int_1 < int_5)
+    while(int_1 < int_5)
     {
         int_2 = 0;
-        J0x388:
 
-        // End:0x439 [Loop If]
-        if(int_2 < (int_5 - int_1))
+        while(int_2 < (int_5 - int_1))
         {
             // End:0x42F
             if((int_2 < (int_5 - 1)))
@@ -14537,24 +14509,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x388;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x372;
     }
     int_1 = 0;
-    J0x44A:
 
-    // End:0x51B [Loop If]
-    if(int_1 < int_6)
+    while(int_1 < int_6)
     {
         int_2 = 0;
-        J0x460:
 
-        // End:0x511 [Loop If]
-        if(int_2 < (int_6 - int_1))
+        while(int_2 < (int_6 - int_1))
         {
             // End:0x507
             if((int_2 < (int_6 - 1)))
@@ -14568,24 +14532,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x460;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x44A;
     }
     int_1 = 0;
-    J0x522:
 
-    // End:0x5F3 [Loop If]
-    if(int_1 < int_7)
+    while(int_1 < int_7)
     {
         int_2 = 0;
-        J0x538:
 
-        // End:0x5E9 [Loop If]
-        if(int_2 < (int_7 - int_1))
+        while(int_2 < (int_7 - int_1))
         {
             // End:0x5DF
             if((int_2 < (int_7 - 1)))
@@ -14599,24 +14555,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x538;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x522;
     }
     int_1 = 0;
-    J0x5FA:
 
-    // End:0x6CB [Loop If]
-    if(int_1 < int_8)
+    while(int_1 < int_8)
     {
         int_2 = 0;
-        J0x610:
 
-        // End:0x6C1 [Loop If]
-        if(int_2 < (int_8 - int_1))
+        while(int_2 < (int_8 - int_1))
         {
             // End:0x6B7
             if((int_2 < (int_8 - 1)))
@@ -14630,24 +14578,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x610;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x5FA;
     }
     int_1 = 0;
-    J0x6D2:
 
-    // End:0x7A3 [Loop If]
-    if(int_1 < int_10)
+    while(int_1 < int_10)
     {
         int_2 = 0;
-        J0x6E8:
 
-        // End:0x799 [Loop If]
-        if(int_2 < (int_10 - int_1))
+        while(int_2 < (int_10 - int_1))
         {
             // End:0x78F
             if((int_2 < (int_10 - 1)))
@@ -14661,24 +14601,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x6E8;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x6D2;
     }
     int_1 = 0;
-    J0x7AA:
 
-    // End:0x87B [Loop If]
-    if(int_1 < int_11)
+    while(int_1 < int_11)
     {
         int_2 = 0;
-        J0x7C0:
 
-        // End:0x871 [Loop If]
-        if(int_2 < (int_11 - int_1))
+        while(int_2 < (int_11 - int_1))
         {
             // End:0x867
             if((int_2 < (int_11 - 1)))
@@ -14692,24 +14624,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x7C0;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x7AA;
     }
     int_1 = 0;
-    J0x882:
 
-    // End:0x953 [Loop If]
-    if(int_1 < int_12)
+    while(int_1 < int_12)
     {
         int_2 = 0;
-        J0x898:
 
-        // End:0x949 [Loop If]
-        if(int_2 < (int_12 - int_1))
+        while(int_2 < (int_12 - int_1))
         {
             // End:0x93F
             if((int_2 < (int_12 - 1)))
@@ -14723,24 +14647,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x898;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x882;
     }
     int_1 = 0;
-    J0x95A:
 
-    // End:0xA2B [Loop If]
-    if(int_1 < int_13)
+    while(int_1 < int_13)
     {
         int_2 = 0;
-        J0x970:
 
-        // End:0xA21 [Loop If]
-        if(int_2 < (int_13 - int_1))
+        while(int_2 < (int_13 - int_1))
         {
             // End:0xA17
             if((int_2 < (int_13 - 1)))
@@ -14754,24 +14670,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0x970;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0x95A;
     }
     int_1 = 0;
-    J0xA32:
 
-    // End:0xB03 [Loop If]
-    if(int_1 < int_14)
+    while(int_1 < int_14)
     {
         int_2 = 0;
-        J0xA48:
 
-        // End:0xAF9 [Loop If]
-        if(int_2 < (int_14 - int_1))
+        while(int_2 < (int_14 - int_1))
         {
             // End:0xAEF
             if((int_2 < (int_14 - 1)))
@@ -14785,24 +14693,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xA48;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xA32;
     }
     int_1 = 0;
-    J0xB0A:
 
-    // End:0xBDB [Loop If]
-    if(int_1 < int_15)
+    while(int_1 < int_15)
     {
         int_2 = 0;
-        J0xB20:
 
-        // End:0xBD1 [Loop If]
-        if(int_2 < (int_15 - int_1))
+        while(int_2 < (int_15 - int_1))
         {
             // End:0xBC7
             if((int_2 < (int_15 - 1)))
@@ -14816,24 +14716,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xB20;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xB0A;
     }
     int_1 = 0;
-    J0xBE2:
 
-    // End:0xCB3 [Loop If]
-    if(int_1 < int_16)
+    while(int_1 < int_16)
     {
         int_2 = 0;
-        J0xBF8:
 
-        // End:0xCA9 [Loop If]
-        if(int_2 < (int_16 - int_1))
+        while(int_2 < (int_16 - int_1))
         {
             // End:0xC9F
             if((int_2 < (int_16 - 1)))
@@ -14847,24 +14739,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xBF8;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xBE2;
     }
     int_1 = 0;
-    J0xCBA:
 
-    // End:0xD8B [Loop If]
-    if(int_1 < int_17)
+    while(int_1 < int_17)
     {
         int_2 = 0;
-        J0xCD0:
 
-        // End:0xD81 [Loop If]
-        if(int_2 < (int_17 - int_1))
+        while(int_2 < (int_17 - int_1))
         {
             // End:0xD77
             if((int_2 < (int_17 - 1)))
@@ -14878,24 +14762,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xCD0;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xCBA;
     }
     int_1 = 0;
-    J0xD92:
 
-    // End:0xE63 [Loop If]
-    if(int_1 < int_18)
+    while(int_1 < int_18)
     {
         int_2 = 0;
-        J0xDA8:
 
-        // End:0xE59 [Loop If]
-        if(int_2 < (int_18 - int_1))
+        while(int_2 < (int_18 - int_1))
         {
             // End:0xE4F
             if((int_2 < (int_18 - 1)))
@@ -14909,24 +14785,16 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xDA8;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xD92;
     }
     int_1 = 0;
-    J0xE6A:
 
-    // End:0xF3B [Loop If]
-    if(int_1 < int_9)
+    while(int_1 < int_9)
     {
         int_2 = 0;
-        J0xE80:
 
-        // End:0xF31 [Loop If]
-        if(int_2 < (int_9 - int_1))
+        while(int_2 < (int_9 - int_1))
         {
             // End:0xF27
             if((int_2 < (int_9 - 1)))
@@ -14940,167 +14808,111 @@ function SortItem(ItemWindowHandle Handle)
                 }
             }
             int_2++;
-            // [Loop Continue]
-            goto J0xE80;
         }
         int_1++;
-        // [Loop Continue]
-        goto J0xE6A;
     }
     int_1 = 0;
-    J0xF42:
 
-    // End:0xF85 [Loop If]
-    if(int_1 < int_5)
+    while(int_1 < int_5)
     {
         Handle.SetItem((int_19 + int_1), info_1[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0xF42;
     }
     int_19 = (int_19 + int_5);
     int_1 = 0;
-    J0xFA2:
 
-    // End:0xFE5 [Loop If]
-    if(int_1 < int_6)
+    while(int_1 < int_6)
     {
         Handle.SetItem((int_19 + int_1), info_2[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0xFA2;
     }
     int_19 = (int_19 + int_6);
     int_1 = 0;
-    J0x1002:
 
-    // End:0x1045 [Loop If]
-    if(int_1 < int_7)
+    while(int_1 < int_7)
     {
         Handle.SetItem((int_19 + int_1), info_3[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1002;
     }
     int_19 = (int_19 + int_7);
     int_1 = 0;
-    J0x1062:
 
-    // End:0x10A5 [Loop If]
-    if(int_1 < int_8)
+    while(int_1 < int_8)
     {
         Handle.SetItem((int_19 + int_1), info_4[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1062;
     }
     int_19 = (int_19 + int_8);
     int_1 = 0;
-    J0x10C2:
 
-    // End:0x1105 [Loop If]
-    if(int_1 < int_10)
+    while(int_1 < int_10)
     {
         Handle.SetItem((int_19 + int_1), info_6[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x10C2;
     }
     int_19 = (int_19 + int_10);
     int_1 = 0;
-    J0x1122:
 
-    // End:0x1165 [Loop If]
-    if(int_1 < int_11)
+    while(int_1 < int_11)
     {
         Handle.SetItem((int_19 + int_1), info_7[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1122;
     }
     int_19 = (int_19 + int_11);
     int_1 = 0;
-    J0x1182:
 
-    // End:0x11C5 [Loop If]
-    if(int_1 < int_12)
+    while(int_1 < int_12)
     {
         Handle.SetItem((int_19 + int_1), info_8[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1182;
     }
     int_19 = (int_19 + int_12);
     int_1 = 0;
-    J0x11E2:
 
-    // End:0x1225 [Loop If]
-    if(int_1 < int_13)
+    while(int_1 < int_13)
     {
         Handle.SetItem((int_19 + int_1), info_9[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x11E2;
     }
     int_19 = (int_19 + int_13);
     int_1 = 0;
-    J0x1242:
 
-    // End:0x1285 [Loop If]
-    if(int_1 < int_14)
+    while(int_1 < int_14)
     {
         Handle.SetItem((int_19 + int_1), info_10[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1242;
     }
     int_19 = (int_19 + int_14);
     int_1 = 0;
-    J0x12A2:
 
-    // End:0x12E5 [Loop If]
-    if(int_1 < int_15)
+    while(int_1 < int_15)
     {
         Handle.SetItem((int_19 + int_1), info_11[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x12A2;
     }
     int_19 = (int_19 + int_15);
     int_1 = 0;
-    J0x1302:
 
-    // End:0x1345 [Loop If]
-    if(int_1 < int_16)
+    while(int_1 < int_16)
     {
         Handle.SetItem((int_19 + int_1), info_12[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1302;
     }
     int_19 = (int_19 + int_16);
     int_1 = 0;
-    J0x1362:
 
-    // End:0x13A5 [Loop If]
-    if(int_1 < int_18)
+    while(int_1 < int_18)
     {
         Handle.SetItem((int_19 + int_1), info_14[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x1362;
     }
     int_19 = (int_19 + int_18);
     int_1 = 0;
-    J0x13C2:
 
-    // End:0x1405 [Loop If]
-    if(int_1 < int_9)
+    while(int_1 < int_9)
     {
         Handle.SetItem((int_19 + int_1), info_5[int_1]);
         int_1++;
-        // [Loop Continue]
-        goto J0x13C2;
     }
     int_19 = (int_19 + int_9);
     return;

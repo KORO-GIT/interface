@@ -24,16 +24,12 @@ function ResetRefreshRate(optional int a_nWidth, optional int a_nHeight)
     GetRefreshRateList(RefreshRateList, a_nWidth, a_nHeight);
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.RefreshRateBox");
     i = 0;
-    J0x45:
 
-    // End:0xC7 [Loop If]
-    if(i < RefreshRateList.Length)
+    while(i < RefreshRateList.Length)
     {
         Debug("RefreshRateList[ i ] " $ string(RefreshRateList[i]));
         Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.RefreshRateBox", string(RefreshRateList[i]) $ "Hz");
         ++i;
-        // [Loop Continue]
-        goto J0x45;
     }
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.RefreshRateBox", i - 1);
     return;
@@ -42,8 +38,6 @@ function ResetRefreshRate(optional int a_nWidth, optional int a_nHeight)
 function OnLoad()
 {
     local int i, nMultiSample;
-    local bool bEnableEngSelection;
-    local UIEventManager.ELanguageType Language;
     local string strResolution;
 
     RegisterEvent(510);
@@ -62,16 +56,12 @@ function OnLoad()
     GetResolutionList(ResolutionList);
     SetOptionBool("Game", "HideDropItem", false);
     i = 0;
-    J0x178:
 
-    // End:0x20D [Loop If]
-    if(i < ResolutionList.Length)
+    while(i < ResolutionList.Length)
     {
         strResolution = ((((("" $ string(ResolutionList[i].nWidth)) $ "*") $ string(ResolutionList[i].nHeight)) $ " ") $ string(ResolutionList[i].nColorBit)) $ "bit";
         Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.ResBox", strResolution);
         ++i;
-        // [Loop Continue]
-        goto J0x178;
     }
     ResetRefreshRate();
     nMultiSample = GetMultiSample();
@@ -102,105 +92,7 @@ function OnLoad()
             }
         }
     }
-    bEnableEngSelection = IsEnableEngSelection();
-    Language = GetLanguage();
-    switch(Language)
-    {
-        // End:0x3AD
-        case LANG_None:
-            // End:0x7DA
-            break;
-        // End:0x46A
-        case LANG_Korean:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "Korean");
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x441
-            if(bEnableEngSelection)
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("OptionWnd.LanguageBox");
-            }
-            // End:0x7DA
-            break;
-        // End:0x4A1
-        case LANG_English:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x7DA
-            break;
-        // End:0x560
-        case LANG_Japanese:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "Russian ");
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x537
-            if(bEnableEngSelection)
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("OptionWnd.LanguageBox");
-            }
-            // End:0x7DA
-            break;
-        // End:0x626
-        case LANG_Taiwan:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "Chinese(Taiwan)");
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x5FD
-            if(bEnableEngSelection)
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("OptionWnd.LanguageBox");
-            }
-            // End:0x7DA
-            break;
-        // End:0x6E2
-        case LANG_Chinese:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "China");
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x6B9
-            if(bEnableEngSelection)
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("OptionWnd.LanguageBox");
-            }
-            // End:0x7DA
-            break;
-        // End:0x79D
-        case LANG_Thai:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "Thai");
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x774
-            if(bEnableEngSelection)
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.DisableWindow("OptionWnd.LanguageBox");
-            }
-            // End:0x7DA
-            break;
-        // End:0x7D4
-        case LANG_Philippine:
-            Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
-            // End:0x7DA
-            break;
-        // End:0xFFFF
-        default:
-            // End:0x7DA
-            break;
-            break;
-    }
+    InitLanguageOption();
     // End:0x855
     if(CanUseHDR())
     {
@@ -217,6 +109,15 @@ function OnLoad()
     AutoShotItemWnd = AutoShotItemWnd(GetScript("AutoShotItemWnd"));
     Cb_AutoSS.SetTitle(" Show Auto SoulShot/SpiritShot");
     Cb_AutoSS.SetTooltipCustomType(MakeTooltipSimpleText("Open Auto SoulShot/SpiritShot Window"));
+    return;
+}
+
+function InitLanguageOption()
+{
+    Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.LanguageBox");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "Russian");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
+    Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");
     return;
 }
 
@@ -251,22 +152,16 @@ function InitVideoOption()
     GetRefreshRateList(RefreshRateList);
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.RefreshRateBox");
     i = 0;
-    J0x6D:
 
-    // End:0xC3 [Loop If]
-    if(i < RefreshRateList.Length)
+    while(i < RefreshRateList.Length)
     {
         Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.RefreshRateBox", string(RefreshRateList[i]) $ "Hz");
         ++i;
-        // [Loop Continue]
-        goto J0x6D;
     }
     nOption = GetOptionInt("Video", "RefreshRate");
     i = 0;
-    J0xEA:
 
-    // End:0x181 [Loop If]
-    if(i < RefreshRateList.Length)
+    while(i < RefreshRateList.Length)
     {
         Debug((("RefreshRateList[ " $ string(i)) $ " ] = ") $ string(RefreshRateList[i]));
         // End:0x177
@@ -275,8 +170,6 @@ function InitVideoOption()
             Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.RefreshRateBox", i);
         }
         ++i;
-        // [Loop Continue]
-        goto J0xEA;
     }
     fGamma = GetOptionFloat("Video", "Gamma");
     // End:0x1D1
@@ -1416,12 +1309,14 @@ function ApplyAudioOption()
 function ApplyGameOption()
 {
     local int nSelectedNum;
-    local bool bChecked;
+    local bool bChecked, bWasNative, bIsNative;
 
+    bWasNative = GetOptionBool("Game", "IsNative");
     nSelectedNum = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("OptionWnd.LanguageBox");
     // End:0x51
     if(0 == nSelectedNum)
     {
+        bIsNative = true;
         SetOptionBool("Game", "IsNative", true);        
     }
     else
@@ -1429,8 +1324,14 @@ function ApplyGameOption()
         // End:0x73
         if(1 == nSelectedNum)
         {
+            bIsNative = false;
             SetOptionBool("Game", "IsNative", false);
         }
+    }
+    SyncServerLanguage(bIsNative, bWasNative);
+    if(bWasNative != bIsNative)
+    {
+        ExecuteEvent(1900);
     }
     bChecked = Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.NameBox0");
     SetOptionBool("Game", "MyName", bChecked);
@@ -1487,6 +1388,29 @@ function ApplyGameOption()
     {
         bChecked = Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.KeyboardBox");
         SetKeyCrypt(bChecked);
+    }
+    return;
+}
+
+function SyncServerLanguage(bool bIsNative, bool bWasNative)
+{
+    local UserInfo Info;
+
+    if(bIsNative == bWasNative)
+    {
+        return;
+    }
+    if(!GetPlayerInfo(Info))
+    {
+        return;
+    }
+    if(bIsNative)
+    {
+        ProcessChatMessage(".lang ru", 0);        
+    }
+    else
+    {
+        ProcessChatMessage(".lang en", 0);
     }
     return;
 }

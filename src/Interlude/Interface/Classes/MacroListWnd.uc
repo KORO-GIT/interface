@@ -185,10 +185,8 @@ function OnRClickItem(string strID, int Index)
             if(Class'NWindow.UIDATA_MACRO'.static.GetMacroInfo(ItemInfo.ClassID, MacroInfo))
             {
                 idx = MacroTimerBaseID;
-                J0xB8:
 
-                // End:0x182 [Loop If]
-                if((idx < MacroCommandCount))
+                while((idx < MacroCommandCount))
                 {
                     // End:0x158
                     if((Left(MacroInfo.CommandList[idx], (DelayCommandValueOffset - NextCommandOffset)) ~= DelayCommand))
@@ -201,8 +199,6 @@ function OnRClickItem(string strID, int Index)
                         MacroCommands[idx] = MacroInfo.CommandList[idx];
                     }
                     idx++;
-                    // [Loop Continue]
-                    goto J0xB8;
                 }
             }
         }
@@ -263,15 +259,11 @@ function ResetMacroPlayback()
     local int idx;
 
     idx = MacroTimerBaseID;
-    J0x0B:
 
-    // End:0x40 [Loop If]
-    if((idx < MacroCommandCount))
+    while((idx < MacroCommandCount))
     {
         WndHandle.KillTimer(idx);
         idx++;
-        // [Loop Continue]
-        goto J0x0B;
     }
     MacroDelayFlags.Length = MacroTimerBaseID;
     MacroDelaySeconds.Length = MacroTimerBaseID;
@@ -292,10 +284,8 @@ function HandleMacroList(string param)
     ParseInt(param, "Max", MacroCount);
     m_Max = MacroCount;
     idx = MacroTimerBaseID;
-    J0x31:
 
-    // End:0x27B [Loop If]
-    if((idx < MacroCount))
+    while((idx < MacroCount))
     {
         MacroID = MacroTimerBaseID;
         strIconName = EmptyString;
@@ -334,8 +324,6 @@ function HandleMacroList(string param)
         }
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MacroListWnd.MacroItem", ItemInfo);
         idx++;
-        // [Loop Continue]
-        goto J0x31;
     }
     // End:0x29F
     if((MacroCount < 10))
