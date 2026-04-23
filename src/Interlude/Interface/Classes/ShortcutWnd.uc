@@ -18,6 +18,7 @@ var int CurrentShortcutPage2;
 var int CurrentShortcutPage3;
 var int CurrentShortcutPage4;
 var int CurrentShortcutPage5;
+var int CurrentShortcutPage6;
 var bool m_IsLocked;
 var bool m_IsVertical;
 var bool m_IsJoypad;
@@ -27,6 +28,7 @@ var bool m_IsExpand1;
 var bool m_IsExpand2;
 var bool m_IsExpand3;
 var bool m_IsExpand4;
+var bool m_IsExpand5;
 var bool m_IsShortcutExpand;
 var string m_ShortcutWndName;
 var WindowHandle Me_Horizontal;
@@ -54,6 +56,7 @@ function OnLoad()
     m_IsExpand2 = GetOptionBool("Game", "Is2ExpandShortcutWnd");
     m_IsExpand3 = GetOptionBool("Game", "Is3ExpandShortcutWnd");
     m_IsExpand4 = GetOptionBool("Game", "Is4ExpandShortcutWnd");
+    m_IsExpand5 = GetOptionBool("Game", "Is5ExpandShortcutWnd");
     m_IsVertical = GetOptionBool("Game", "IsShortcutWndVertical");
     InitShortPageNum();
     ShowWindow("ShortcutWnd.ShortcutWndHorizontal.TooltipMaxBtn");
@@ -72,6 +75,7 @@ function OnDefaultPosition()
     m_IsExpand2 = false;
     m_IsExpand3 = false;
     m_IsExpand4 = false;
+    m_IsExpand5 = false;
     SetVertical(true);
     InitShortPageNum();
     ArrangeWnd();
@@ -169,6 +173,7 @@ function InitShortPageNum()
     CurrentShortcutPage3 = 2;
     CurrentShortcutPage4 = 3;
     CurrentShortcutPage5 = 4;
+    CurrentShortcutPage6 = 5;
     return;
 }
 
@@ -230,6 +235,11 @@ function HandleShortcutUpdate(string param)
     {
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut((("ShortcutWnd." $ m_ShortcutWndName) $ "_4.Shortcut") $ string(nShortcutNum), nShortcutID);
     }
+    // End:0x22A
+    if(IsShortcutIDInCurPage(CurrentShortcutPage6, nShortcutID))
+    {
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut((("ShortcutWnd." $ m_ShortcutWndName) $ "_5.Shortcut") $ string(nShortcutNum), nShortcutID);
+    }
     return;
 }
 
@@ -244,9 +254,15 @@ function HandleShortcutClear()
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical_1.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical_2.Shortcut" $ string(i + 1));
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical_3.Shortcut" $ string(i + 1));
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical_4.Shortcut" $ string(i + 1));
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndVertical_5.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal_1.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal_2.Shortcut" $ string(i + 1));
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal_3.Shortcut" $ string(i + 1));
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal_4.Shortcut" $ string(i + 1));
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndHorizontal_5.Shortcut" $ string(i + 1));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.Clear("ShortcutWnd.ShortcutWndJoypadExpand.Shortcut" $ string(i + 1));
         ++i;
     }
@@ -426,6 +442,16 @@ function OnClickButton(string a_strID)
         // End:0xE1
         case "NextBtn5":
             OnNextBtn5();
+            // End:0x3BE
+            break;
+        // End:0xF7
+        case "PrevBtn6":
+            OnPrevBtn6();
+            // End:0x3BE
+            break;
+        // End:0x10E
+        case "NextBtn6":
+            OnNextBtn6();
             // End:0x3BE
             break;
         // End:0xF6
@@ -641,6 +667,34 @@ function OnNextBtn5()
     return;
 }
 
+function OnPrevBtn6()
+{
+    local int nNewPage;
+
+    nNewPage = CurrentShortcutPage6 - 1;
+    // End:0x24
+    if(0 > nNewPage)
+    {
+        nNewPage = 10 - 1;
+    }
+    SetCurPage6(nNewPage);
+    return;
+}
+
+function OnNextBtn6()
+{
+    local int nNewPage;
+
+    nNewPage = CurrentShortcutPage6 + 1;
+    // End:0x21
+    if(10 <= nNewPage)
+    {
+        nNewPage = 0;
+    }
+    SetCurPage6(nNewPage);
+    return;
+}
+
 function OnClickLockBtn()
 {
     UnLock();
@@ -670,6 +724,23 @@ function OnRotateBtn()
         Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("ShortcutWnd.ShortcutWndVertical", "ShortcutWnd.ShortcutWndHorizontal", "BottomRight", "BottomRight", 0, 0);
     }
     // End:0x256
+    if(m_IsExpand5 == true)
+    {
+        Expand1();
+        Expand2();
+        Expand3();
+        Expand4();
+        Expand5();
+    }
+    // End:0x26E
+    if(m_IsExpand4 == true)
+    {
+        Expand1();
+        Expand2();
+        Expand3();
+        Expand4();
+    }
+    // End:0x280
     if(m_IsExpand3 == true)
     {
         Expand1();
@@ -805,6 +876,29 @@ function SetCurPage5(int a_nCurPage)
     {
         Debug((((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".Shortcut") $ string(i + 1)) @ string(nShortcutID));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".Shortcut") $ string(i + 1), nShortcutID);
+        nShortcutID++;
+        ++i;
+    }
+    return;
+}
+
+function SetCurPage6(int a_nCurPage)
+{
+    local int i, nShortcutID;
+
+    // End:0x1B
+    if((0 > a_nCurPage) || 10 <= a_nCurPage)
+    {
+        return;
+    }
+    CurrentShortcutPage6 = a_nCurPage;
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_5") $ ".PageNumTextBox", string(CurrentShortcutPage6 + 1));
+    nShortcutID = CurrentShortcutPage6 * 12;
+    i = 0;
+
+    while(i < 12)
+    {
+        Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_5") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;
     }
@@ -954,61 +1048,73 @@ function ArrangeWnd()
     SetCurPage3(CurrentShortcutPage3);
     SetCurPage4(CurrentShortcutPage4);
     SetCurPage5(CurrentShortcutPage5);
-    // End:0x444
-    if(m_IsExpand1 == true)
-    {
-        m_IsShortcutExpand = true;
-        HandleExpandButton();        
-    }
-    else
-    {
-        // End:0x461
-        if(m_IsExpand2 == true)
-        {
-            m_IsShortcutExpand = true;
-            HandleExpandButton();            
-        }
-        else
-        {
-            // End:0x47E
-            if(m_IsExpand3 == true)
-            {
-                m_IsShortcutExpand = true;
-                HandleExpandButton();                
-            }
-            else
-            {
-                m_IsShortcutExpand = true;
-                HandleExpandButton();
-            }
-        }
-    }
+    SetCurPage6(CurrentShortcutPage6);
+    m_IsShortcutExpand = !m_IsExpand5;
+    HandleExpandButton();
     return;
 }
 
 function ExpandWnd()
 {
-    // End:0x87
-    if((((m_IsExpand1 == true) || m_IsExpand2 == true) || m_IsExpand3 == true) || m_IsExpand4 == true)
+    local int ExpandLevel;
+
+    if(m_IsExpand5 == true)
     {
-        // End:0x50
-        if(m_IsExpand3 == true)
+        ExpandLevel = 5;
+    }
+    else
+    {
+        if(m_IsExpand4 == true)
         {
-            m_IsShortcutExpand = false;
-            Expand3();
+            ExpandLevel = 4;
         }
-        // End:0x6A
-        if(m_IsExpand2 == true)
+        else
         {
-            m_IsShortcutExpand = false;
+            if(m_IsExpand3 == true)
+            {
+                ExpandLevel = 3;
+            }
+            else
+            {
+                if(m_IsExpand2 == true)
+                {
+                    ExpandLevel = 2;
+                }
+                else
+                {
+                    if(m_IsExpand1 == true)
+                    {
+                        ExpandLevel = 1;
+                    }
+                }
+            }
+        }
+    }
+    // End:0x9D
+    if(ExpandLevel > 0)
+    {
+        if(ExpandLevel >= 1)
+        {
+            Expand1();
+        }
+        if(ExpandLevel >= 2)
+        {
             Expand2();
         }
-        // End:0x84
-        if(m_IsExpand1 == true)
+        if(ExpandLevel >= 3)
         {
-            m_IsShortcutExpand = false;
-            Expand1();
-        }        
+            Expand3();
+        }
+        if(ExpandLevel >= 4)
+        {
+            Expand4();
+        }
+        if(ExpandLevel >= 5)
+        {
+            Expand5();
+        }
+        m_IsShortcutExpand = ExpandLevel < 5;
+        HandleExpandButton();
     }
     else
     {
@@ -1051,6 +1157,28 @@ function Expand3()
     return;
 }
 
+function Expand4()
+{
+    m_IsShortcutExpand = true;
+    m_IsExpand4 = true;
+    SetOptionBool("Game", "Is4ExpandShortcutWnd", m_IsExpand4);
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ShortcutWnd.ShortcutWndVertical_4");
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ShortcutWnd.ShortcutWndHorizontal_4");
+    HandleExpandButton();
+    return;
+}
+
+function Expand5()
+{
+    m_IsShortcutExpand = false;
+    m_IsExpand5 = true;
+    SetOptionBool("Game", "Is5ExpandShortcutWnd", m_IsExpand5);
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ShortcutWnd.ShortcutWndVertical_5");
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ShortcutWnd.ShortcutWndHorizontal_5");
+    HandleExpandButton();
+    return;
+}
+
 function Reduce()
 {
     m_IsShortcutExpand = true;
@@ -1058,18 +1186,22 @@ function Reduce()
     m_IsExpand2 = false;
     m_IsExpand3 = false;
     m_IsExpand4 = false;
+    m_IsExpand5 = false;
     SetOptionBool("Game", "Is1ExpandShortcutWnd", m_IsExpand1);
     SetOptionBool("Game", "Is2ExpandShortcutWnd", m_IsExpand2);
     SetOptionBool("Game", "Is3ExpandShortcutWnd", m_IsExpand3);
     SetOptionBool("Game", "Is4ExpandShortcutWnd", m_IsExpand4);
+    SetOptionBool("Game", "Is5ExpandShortcutWnd", m_IsExpand5);
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndVertical_1");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndVertical_2");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndVertical_3");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndVertical_4");
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndVertical_5");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndHorizontal_1");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndHorizontal_2");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndHorizontal_3");
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndHorizontal_4");
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("ShortcutWnd.ShortcutWndHorizontal_5");
     HandleExpandButton();
     return;
 }
@@ -1077,27 +1209,41 @@ function Reduce()
 function OnClickExpandShortcutButton()
 {
     // End:0x12
-    if(m_IsExpand3)
+    if(m_IsExpand5)
     {
         Reduce();        
     }
     else
     {
         // End:0x24
-        if(m_IsExpand2)
+        if(m_IsExpand4)
         {
-            Expand3();            
+            Expand5();            
         }
         else
         {
-            // End:0x36
-            if(m_IsExpand1)
+            if(m_IsExpand3)
             {
-                Expand2();                
+                Expand4();            
             }
             else
             {
-                Expand1();
+                // End:0x36
+                if(m_IsExpand2)
+                {
+                    Expand3();                
+                }
+                else
+                {
+                    if(m_IsExpand1)
+                    {
+                        Expand2();                
+                    }
+                    else
+                    {
+                        Expand1();
+                    }
+                }
             }
         }
     }
@@ -1126,6 +1272,39 @@ function AutoPotionsWndPosition()
     // End:0x821
     if(!m_IsVertical)
     {
+        // End:0x13A
+        if(IsShowWindow("ShortcutWndHorizontal_5"))
+        {
+            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopRight", "TopRight", -1, -29);
+            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopLeft", "TopLeft", 101, -29);
+            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopLeft", "TopLeft", 16, -29);
+            if(GetOptionBool("Custom", "HideAutoBuff"))
+            {
+                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopLeft", "TopLeft", 101, -29);                
+            }
+            else
+            {
+                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
+            }
+        }
+        else
+        {
+            if(IsShowWindow("ShortcutWndHorizontal_4"))
+            {
+                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopRight", "TopRight", -1, -29);
+                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopLeft", "TopLeft", 101, -29);
+                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopLeft", "TopLeft", 16, -29);
+                if(GetOptionBool("Custom", "HideAutoBuff"))
+                {
+                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopLeft", "TopLeft", 101, -29);                    
+                }
+                else
+                {
+                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
+                }
+            }
+            else
+            {
         // End:0x213
         if(IsShowWindow("ShortcutWndHorizontal_3"))
         {
@@ -1199,6 +1378,8 @@ function AutoPotionsWndPosition()
                 }
             }
         }        
+            }
+        }
     }
     else
     {

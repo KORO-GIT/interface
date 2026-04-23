@@ -1981,10 +1981,13 @@ function SetShortcutTransparency()
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_2.Tex", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_3.Tex", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_4.Tex", "Was.Null");
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_5.Tex", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical.Tex", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_1.Tex", "Was.Null");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_2.Tex", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_3.Tex", "Was.Null");        
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_3.Tex", "Was.Null");
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_4.Tex", "Was.Null");
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_5.Tex", "Was.Null");
     }
     else
     {
@@ -1993,10 +1996,13 @@ function SetShortcutTransparency()
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_2.Tex", "Was.Wnd_Shortcut_h");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_3.Tex", "Was.Wnd_Shortcut_h");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_4.Tex", "Was.Wnd_Shortcut_h");
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndHorizontal_5.Tex", "Was.Wnd_Shortcut_h");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical.Tex", "Was.Wnd_Shortcut_v");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_1.Tex", "Was.Wnd_Shortcut_v");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_2.Tex", "Was.Wnd_Shortcut_v");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_3.Tex", "Was.Wnd_Shortcut_v");
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_4.Tex", "Was.Wnd_Shortcut_v");
+        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_5.Tex", "Was.Wnd_Shortcut_v");
     }
     return;
 }
