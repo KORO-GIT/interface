@@ -392,8 +392,6 @@ function SetJoypadShortcut(ShortcutWnd.EJoyShortcut a_JoyShortcut)
 
 function OnClickButton(string a_strID)
 {
-    local OptionWnd OptionWndScript;
-
     switch(a_strID)
     {
         // End:0x1C
@@ -493,15 +491,14 @@ function OnClickButton(string a_strID)
             break;
         // End:0x21E
         case "btnKeyOption":
-            OptionWndScript = OptionWnd(GetScript("OptionWnd"));
-            // End:0x1FD
-            if(OptionWndScript != None)
+            // End:0x1F1
+            if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("InterfaceAI_KeySettingWnd"))
             {
-                OptionWndScript.ToggleShortcutBindWindow();                
+                Class'NWindow.UIAPI_WINDOW'.static.HideWindow("InterfaceAI_KeySettingWnd");                
             }
             else
             {
-                Class'NWindow.UIAPI_WINDOW'.static.HideWindow("InterfaceAI_KeySettingWnd");
+                Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("InterfaceAI_KeySettingWnd");
             }
             // End:0x3BE
             break;
