@@ -630,13 +630,6 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
             m_Info.t_strText = item.Description;
             EndItem();
         }
-        // End:0x11FD
-        if((TooltipType == "Inventory") && ShouldShowAdminItemIDs())
-        {
-            bLargeWidth = true;
-            AddTooltipItemBlank(6);
-            AddTooltipAdminItemIDs(item);
-        }
         // End:0x16B8
         if(item.ClassID > 0)
         {
@@ -723,6 +716,12 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 ParamAdd(m_Info.Condition, "EnableColor", "111,146,169");
                 EndItem();
             }
+        }
+        if((TooltipType == "Inventory") && ShouldShowAdminItemIDs())
+        {
+            bLargeWidth = true;
+            AddTooltipItemBlank(6);
+            AddTooltipAdminItemIDs(item);
         }        
     }
     else
@@ -768,7 +767,7 @@ function AddTooltipAdminItemIDs(ItemInfo item)
     // ServerID is the runtime object id; it may be empty for static/preview items.
     if(item.ServerID > 0)
     {
-        AddTooltipAdminItemIDLine("Server ID", string(item.ServerID));
+        AddTooltipAdminItemIDLine("ServerID", string(item.ServerID));
     }
     return;
 }
