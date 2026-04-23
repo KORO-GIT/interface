@@ -228,6 +228,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
     local int SetID, ClassID;
     local string strAdena, strAdenaComma;
     local Color AdenaColor;
+    local bool bAddedSetHeader;
 
     // End:0x16BB
     if(int(eSourceType) == 1)
@@ -236,6 +237,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
         EItemType = byte(item.ItemType);
         EEtcItemType = EEtcItemType(item.ItemSubType);
         ItemName = Class'NWindow.UIDATA_ITEM'.static.GetRefineryItemName(item.Name, item.RefineryOp1, item.RefineryOp2);
+        AddTooltipItemIcon(item);
         // End:0xD9
         if((TooltipType != "InventoryPrice1HideEnchant") && TooltipType != "InventoryPrice1HideEnchantStackable")
         {
@@ -354,14 +356,14 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0x6EB
                 if(Len(strTmp) > 0)
                 {
-                    AddTooltipItemOption(0, (strTmp $ " / ") $ SlotString, false, true, false);
+                    AddTooltipItemOptionETC(0, (strTmp $ " / ") $ SlotString, false, true, false, true);
                 }
+                AddTooltipItemBar(4);
                 AddTooltipAugmentSummary(item);
-                AddTooltipItemBlank(12);
-                AddTooltipItemOption(1489, "", true, false, false);
-                SetTooltipItemColor(255, 255, 255, 0);
-                AddTooltipItemOption(94, string(GetPhysicalDamage(item.WeaponType, item.SlotBitType, item.CrystalType, item.Enchanted, item.PhysicalDamage)), true, true, false);
-                AddTooltipItemOption(98, string(GetMagicalDamage(item.WeaponType, item.SlotBitType, item.CrystalType, item.Enchanted, item.MagicalDamage)), true, true, false);
+                AddTooltipItemStatWithEnchant(94, GetPhysicalDamage(item.WeaponType, item.SlotBitType, item.CrystalType, item.Enchanted, item.PhysicalDamage), item.PhysicalDamage, item.Enchanted, false);
+                AddTooltipItemStatWithEnchant(98, GetMagicalDamage(item.WeaponType, item.SlotBitType, item.CrystalType, item.Enchanted, item.MagicalDamage), item.MagicalDamage, item.Enchanted, false);
+                AddTooltipItemBlank(2);
+                AddTooltipItemBar(4);
                 AddTooltipItemOption(111, GetAttackSpeedString(item.AttackSpeed), true, true, false);
                 // End:0x7E5
                 if(item.SoulshotCount > 0)
@@ -382,8 +384,8 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0xAF8
                 if((item.RefineryOp1 != 0) || item.RefineryOp2 != 0)
                 {
-                    AddTooltipItemBlank(12);
-                    AddTooltipItemSectionTitle(1490);
+                    AddTooltipItemBlank(10);
+                    AddTooltipItemBG("LifeBG", "Augment", "");
                     // End:0x8E6
                     if(item.RefineryOp2 != 0)
                     {
@@ -453,7 +455,21 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     // End:0xAF8
                     if(Len(item.Description) > 0)
                     {
-                        AddTooltipItemBlank(12);
+                        AddTooltipItemBlank(10);
+                    }
+                }
+                if(Len(item.Description) > 0)
+                {
+                    bLargeWidth = true;
+                    if(Left(item.Description, 5) == "<Soul")
+                    {
+                        AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
+                        AddTooltipPlainText(Mid(item.Description, 29), 110, 140, 160, 0, true, false);
+                    }
+                    else
+                    {
+                        AddTooltipItemBG("", "Description ", item.AdditionalName);
+                        AddTooltipPlainText(item.Description, 110, 140, 160, 0, true, false);
                     }
                 }
                 // End:0xEBE
@@ -464,7 +480,13 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0xBAB
                 if((item.SlotBitType == 256) || item.SlotBitType == 128)
                 {
-                    AddTooltipItemOption(95, string(GetShieldDefense(item.CrystalType, item.Enchanted, item.ShieldDefense)), true, true, false);
+                    if(Len(SlotString) > 0)
+                    {
+                        AddTooltipItemOptionETC(0, SlotString, false, true, false, true);
+                    }
+                    AddTooltipItemBar(4);
+                    AddTooltipItemStatWithEnchant(95, GetShieldDefense(item.CrystalType, item.Enchanted, item.ShieldDefense), item.ShieldDefense, item.Enchanted, false);
+                    AddTooltipItemBar(4);
                     AddTooltipItemOption(317, string(item.ShieldDefenseRate), true, true, false);
                     AddTooltipItemOption(97, string(item.AvoidModify), true, true, false);
                     AddTooltipItemOption(52, string(item.Weight), true, true, false);                    
@@ -477,10 +499,12 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         // End:0xBDA
                         if(Len(SlotString) > 0)
                         {
-                            AddTooltipItemOption(0, SlotString, false, true, false);
+                            AddTooltipItemOptionETC(0, SlotString, false, true, false, true);
                         }
-                        AddTooltipItemOption(388, string(item.MpBonus), true, true, false);
-                        AddTooltipItemOption(95, string(GetPhysicalDefense(item.CrystalType, item.Enchanted, item.PhysicalDefense)), true, true, false);
+                        AddTooltipItemBar(4);
+                        AddTooltipItemOptionBonus("MP", string(item.MpBonus), true, true, false);
+                        AddTooltipItemStatWithEnchant(95, GetPhysicalDefense(item.CrystalType, item.Enchanted, item.PhysicalDefense), item.PhysicalDefense, item.Enchanted, false);
+                        AddTooltipItemBar(4);
                         AddTooltipItemOption(52, string(item.Weight), true, true, false);                        
                     }
                     else
@@ -488,9 +512,11 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         // End:0xC5B
                         if(Len(SlotString) > 0)
                         {
-                            AddTooltipItemOption(0, SlotString, false, true, false);
+                            AddTooltipItemOptionETC(0, SlotString, false, true, false, true);
                         }
-                        AddTooltipItemOption(95, string(GetPhysicalDefense(item.CrystalType, item.Enchanted, item.PhysicalDefense)), true, true, false);
+                        AddTooltipItemBar(4);
+                        AddTooltipItemStatWithEnchant(95, GetPhysicalDefense(item.CrystalType, item.Enchanted, item.PhysicalDefense), item.PhysicalDefense, item.Enchanted, false);
+                        AddTooltipItemBar(4);
                         AddTooltipItemOption(52, string(item.Weight), true, true, false);
                     }
                 }
@@ -502,9 +528,11 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0xCCF
                 if(Len(SlotString) > 0)
                 {
-                    AddTooltipItemOption(0, SlotString, false, true, false);
+                    AddTooltipItemOptionETC(0, SlotString, false, true, false, true);
                 }
-                AddTooltipItemOption(99, string(GetMagicalDefense(item.CrystalType, item.Enchanted, item.MagicalDefense)), true, true, false);
+                AddTooltipItemBar(4);
+                AddTooltipItemStatWithEnchant(99, GetMagicalDefense(item.CrystalType, item.Enchanted, item.MagicalDefense), item.MagicalDefense, item.Enchanted, false);
+                AddTooltipItemBar(4);
                 AddTooltipItemOption(52, string(item.Weight), true, true, false);
                 // End:0xEBE
                 break;
@@ -514,7 +542,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0xD43
                 if(Len(SlotString) > 0)
                 {
-                    AddTooltipItemOption(0, SlotString, false, true, false);
+                    AddTooltipItemOptionETC(0, SlotString, false, true, false, true);
                 }
                 // End:0xEBE
                 break;
@@ -574,12 +602,11 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
         if((item.CurrentDurability >= 0) && item.Durability > 0)
         {
             bLargeWidth = true;
-            AddTooltipItemBlank(12);
-            AddTooltipItemOption(1492, "", true, false, false);
-            SetTooltipItemColor(255, 255, 255, 0);
+            AddTooltipItemBlank(10);
+            AddTooltipItemBG("ClockBG", "Time Remaining", "");
             StartItem();
             m_Info.eType = DIT_TEXT;
-            m_Info.nOffSetY = 6;
+            m_Info.nOffSetX = 3;
             m_Info.bLineBreak = true;
             m_Info.t_bDrawOneLine = true;
             m_Info.t_color.R = 163;
@@ -612,23 +639,15 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
             // End:0x10CC
             if(Len(item.Description) > 0)
             {
-                AddTooltipItemBlank(12);
+                AddTooltipItemBlank(10);
             }
         }
         // End:0x1178
-        if(Len(item.Description) > 0)
+        if((Len(item.Description) > 0) && EItemType != 0)
         {
             bLargeWidth = true;
-            StartItem();
-            m_Info.eType = DIT_TEXT;
-            m_Info.nOffSetY = 6;
-            m_Info.bLineBreak = true;
-            m_Info.t_color.R = 178;
-            m_Info.t_color.G = 190;
-            m_Info.t_color.B = 207;
-            m_Info.t_color.A = byte(255);
-            m_Info.t_strText = item.Description;
-            EndItem();
+            AddTooltipItemBar(4);
+            AddTooltipPlainText(item.Description, 178, 190, 207, 4, true, false);
         }
         // End:0x16B8
         if(item.ClassID > 0)
@@ -638,6 +657,12 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
             while(idx < 3)
             {
                 Class'NWindow.UIDATA_ITEM'.static.GetSetItemIDList(item.ClassID, idx, arrID);
+                if((arrID.Length > 0) && !bAddedSetHeader)
+                {
+                    AddTooltipItemBlank(10);
+                    AddTooltipItemBG("setBG", "Armor Set", "");
+                    bAddedSetHeader = true;
+                }
                 SetID = 0;
 
                 while(SetID < arrID.Length)
@@ -652,20 +677,32 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         if(Len(strTmp) > 0)
                         {
                             StartItem();
-                            m_Info.eType = DIT_TEXT;
-                            m_Info.nOffSetY = 6;
+                            m_Info.eType = DIT_TEXTURE;
+                            m_Info.nOffSetX = 3;
+                            m_Info.nOffSetY = 5;
                             m_Info.bLineBreak = true;
                             m_Info.t_bDrawOneLine = true;
-                            m_Info.t_color.R = 112;
-                            m_Info.t_color.G = 115;
-                            m_Info.t_color.B = 123;
+                            m_Info.u_nTextureWidth = 16;
+                            m_Info.u_nTextureHeight = 16;
+                            m_Info.u_nTextureUWidth = 32;
+                            m_Info.u_nTextureUHeight = 32;
+                            m_Info.u_strTexture = Class'NWindow.UIDATA_ITEM'.static.GetItemTextureName(ClassID);
+                            EndItem();
+                            StartItem();
+                            m_Info.eType = DIT_TEXT;
+                            m_Info.nOffSetX = 3;
+                            m_Info.nOffSetY = 6;
+                            m_Info.t_bDrawOneLine = true;
+                            m_Info.t_color.R = 100;
+                            m_Info.t_color.G = 100;
+                            m_Info.t_color.B = 65;
                             m_Info.t_color.A = byte(255);
                             m_Info.t_strText = strTmp;
                             ParamAdd(m_Info.Condition, "Type", "Equip");
                             ParamAdd(m_Info.Condition, "ServerID", string(item.ServerID));
                             ParamAdd(m_Info.Condition, "EquipID", string(ClassID));
-                            ParamAdd(m_Info.Condition, "NormalColor", "112,115,123");
-                            ParamAdd(m_Info.Condition, "EnableColor", "176,185,205");
+                            ParamAdd(m_Info.Condition, "NormalColor", "100,100,65");
+                            ParamAdd(m_Info.Condition, "EnableColor", "255,250,160");
                             EndItem();
                         }
                     }
@@ -675,23 +712,31 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0x152B
                 if(Len(strTmp) > 0)
                 {
+                    if(!bAddedSetHeader)
+                    {
+                        AddTooltipItemBlank(10);
+                        AddTooltipItemBG("setBG", "Armor Set", "");
+                        bAddedSetHeader = true;
+                    }
                     bLargeWidth = true;
                     StartItem();
                     m_Info.eType = DIT_TEXT;
+                    m_Info.nOffSetX = 3;
                     m_Info.nOffSetY = 6;
                     m_Info.bLineBreak = true;
-                    m_Info.t_color.R = 128;
-                    m_Info.t_color.G = 127;
-                    m_Info.t_color.B = 103;
+                    m_Info.t_color.R = 100;
+                    m_Info.t_color.G = 70;
+                    m_Info.t_color.B = 0;
                     m_Info.t_color.A = byte(255);
                     m_Info.t_strText = strTmp;
                     ParamAdd(m_Info.Condition, "Type", "SetEffect");
                     ParamAdd(m_Info.Condition, "ServerID", string(item.ServerID));
                     ParamAdd(m_Info.Condition, "ClassID", string(item.ClassID));
                     ParamAdd(m_Info.Condition, "EffectID", string(idx));
-                    ParamAdd(m_Info.Condition, "NormalColor", "128,127,103");
-                    ParamAdd(m_Info.Condition, "EnableColor", "183,178,122");
+                    ParamAdd(m_Info.Condition, "NormalColor", "100,70,0");
+                    ParamAdd(m_Info.Condition, "EnableColor", "255,180,0");
                     EndItem();
+                    AddTooltipItemBar(4);
                 }
                 idx++;
             }
@@ -819,21 +864,19 @@ function AddTooltipAugmentSummary(ItemInfo item)
 
 function AddTooltipAugmentSummaryLine(int RefineryOp)
 {
-    local string strDesc1, strDesc2, strDesc3;
+    local string RefParam;
+    local array<string> Parts;
 
     if((RefineryOp <= 14561) || (RefineryOp >= 16380))
     {
         return;
     }
-    strDesc1 = "";
-    strDesc2 = "";
-    strDesc3 = "";
-    if(Class'NWindow.UIDATA_REFINERYOPTION'.static.GetOptionDescription(RefineryOp, strDesc1, strDesc2, strDesc3))
+    RefineryParam(RefineryOp, RefParam);
+    Parts.Length = 0;
+    Split(RefParam, ",", Parts);
+    if((Parts.Length >= 5) && (Parts[1] == "3") && (Parts[2] == "1"))
     {
-        if(Len(strDesc1) > 0)
-        {
-            AddTooltipPlainText(strDesc1, 255, 102, 255, 6, true, true);
-        }
+        AddTooltipPlainText(("Active Skill: " $ Parts[3]) $ (" " $ Parts[4]) $ " Lv.", 255, 102, 255, 6, true, true);
     }
     return;
 }
@@ -864,6 +907,19 @@ function AddTooltipPlainText(string Text, int R, int G, int B, int OffsetY, bool
     m_Info.t_color.A = byte(255);
     m_Info.t_strText = Text;
     EndItem();
+    return;
+}
+
+function AddTooltipItemStatWithEnchant(int TitleID, int TotalValue, int BaseValue, int EnchantValue, bool IamFirst)
+{
+    AddTooltipItemOptionFirst(TitleID, string(TotalValue), true, true, IamFirst);
+    if((EnchantValue > 0) && (BaseValue > 0))
+    {
+        AddTooltipItemOptionNoLine(0, " (" $ string(BaseValue), true, true, false);
+        AddTooltipItemOptionNoLineYellow(0, " +" $ string(TotalValue - BaseValue), true, true, false);
+        AddTooltipItemOptionNoLine(0, ")", true, true, false);
+    }
+    AddTooltipItemBlank(2);
     return;
 }
 
@@ -1786,6 +1842,351 @@ function AddTooltipItemOption2(int TitleID, int ContentID, bool bTitle, bool bCo
     return;
 }
 
+function AddTooltipItemOptionETC(int TitleID, string Content, bool bTitle, bool bContent, bool IamFirst, bool isCard)
+{
+    if(bTitle)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetX = 36;
+        m_Info.nOffSetY = -14;
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 163;
+        m_Info.t_color.G = 163;
+        m_Info.t_color.B = 163;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_ID = TitleID;
+        EndItem();
+    }
+    if(bContent)
+    {
+        if(bTitle)
+        {
+            StartItem();
+            m_Info.eType = DIT_TEXT;
+            m_Info.nOffSetY = -14;
+            m_Info.t_bDrawOneLine = true;
+            m_Info.t_color.R = 163;
+            m_Info.t_color.G = 163;
+            m_Info.t_color.B = 163;
+            m_Info.t_color.A = byte(255);
+            m_Info.t_strText = " : ";
+            EndItem();
+        }
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        if(!IamFirst)
+        {
+            m_Info.nOffSetY = -14;
+        }
+        if(!bTitle)
+        {
+            m_Info.bLineBreak = true;
+        }
+        if(isCard)
+        {
+            m_Info.nOffSetX = 36;
+        }
+        m_Tooltip.SimpleLineCount = 2;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 176;
+        m_Info.t_color.G = 155;
+        m_Info.t_color.B = 121;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = Content;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemOptionETC2(string TitleID, string Content, bool bTitle, bool bContent, bool IamFirst)
+{
+    if(bTitle)
+    {
+        StartItem();
+        m_Tooltip.SimpleLineCount = 2;
+        m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetX = 36;
+        m_Info.nOffSetY = -14;
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 163;
+        m_Info.t_color.G = 163;
+        m_Info.t_color.B = 163;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = TitleID;
+        EndItem();
+    }
+    if(bContent)
+    {
+        if(bTitle)
+        {
+            StartItem();
+            m_Info.eType = DIT_TEXT;
+            m_Info.nOffSetY = -14;
+            m_Info.t_bDrawOneLine = true;
+            m_Info.t_color.R = 163;
+            m_Info.t_color.G = 163;
+            m_Info.t_color.B = 163;
+            m_Info.t_color.A = byte(255);
+            m_Info.t_strText = " : ";
+            EndItem();
+        }
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        if(!IamFirst)
+        {
+            m_Info.nOffSetY = -14;
+        }
+        if(!bTitle)
+        {
+            m_Info.bLineBreak = true;
+        }
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 176;
+        m_Info.t_color.G = 155;
+        m_Info.t_color.B = 121;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = Content;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemOptionFirst(int TitleID, string Content, bool bTitle, bool bContent, bool IamFirst)
+{
+    if(bTitle)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        if(!IamFirst)
+        {
+            m_Info.nOffSetY = 3;
+        }
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.nOffSetX = 3;
+        m_Info.t_color.R = byte(255);
+        m_Info.t_color.G = byte(255);
+        m_Info.t_color.B = byte(255);
+        m_Info.t_color.A = byte(255);
+        m_Info.t_ID = TitleID;
+        EndItem();
+    }
+    if((Content != "0") && bContent)
+    {
+        if(bTitle)
+        {
+            StartItem();
+            m_Info.eType = DIT_TEXT;
+            if(!IamFirst)
+            {
+                m_Info.nOffSetY = 3;
+            }
+            m_Info.t_bDrawOneLine = true;
+            m_Info.t_color.R = 163;
+            m_Info.t_color.G = 163;
+            m_Info.t_color.B = 163;
+            m_Info.t_color.A = byte(255);
+            m_Info.t_strText = " : ";
+            EndItem();
+        }
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        if(!IamFirst)
+        {
+            m_Info.nOffSetY = 3;
+        }
+        if(!bTitle)
+        {
+            m_Info.bLineBreak = true;
+        }
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 222;
+        m_Info.t_color.G = 202;
+        m_Info.t_color.B = 105;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = Content;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemOptionNoLine(int TitleID, string Content, bool bTitle, bool bContent, bool Yellow)
+{
+    if((Content != "0") && bContent)
+    {
+        if(bTitle)
+        {
+            StartItem();
+            m_Info.eType = DIT_TEXT;
+            m_Info.t_strText = "";
+            EndItem();
+        }
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetY = 3;
+        m_Info.t_color.R = 176;
+        m_Info.t_color.G = 155;
+        m_Info.t_color.B = 121;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = Content;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemOptionNoLineYellow(int TitleID, string Content, bool bTitle, bool bContent, bool Yellow)
+{
+    if((Content != "0") && bContent)
+    {
+        if(bTitle)
+        {
+            StartItem();
+            m_Info.eType = DIT_TEXT;
+            m_Info.t_strText = "";
+            EndItem();
+        }
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetY = 3;
+        m_Info.t_color.R = 225;
+        m_Info.t_color.G = 152;
+        m_Info.t_color.B = 14;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = Content;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemBG(string Icon, string Name, string name2)
+{
+    StartItem();
+    m_Info.eType = DIT_TEXTURE;
+    m_Info.bLineBreak = true;
+    m_Info.t_bDrawOneLine = true;
+    m_Info.u_nTextureWidth = 300;
+    m_Info.u_nTextureHeight = 24;
+    m_Info.u_strTexture = "L2ui_ch3.AugBG";
+    EndItem();
+    if(Len(Icon) > 0)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXTURE;
+        m_Info.nOffSetY = -22;
+        m_Info.nOffSetX = 3;
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.u_nTextureWidth = 18;
+        m_Info.u_nTextureHeight = 18;
+        m_Info.u_strTexture = "L2ui_ch3." $ Icon;
+        EndItem();
+    }
+    StartItem();
+    m_Info.eType = DIT_TEXT;
+    m_Info.nOffSetY = -20;
+    m_Info.nOffSetX = 3;
+    if(Len(Icon) < 1)
+    {
+        m_Info.bLineBreak = true;
+    }
+    m_Info.t_color.R = byte(255);
+    m_Info.t_color.G = byte(255);
+    m_Info.t_color.B = byte(255);
+    m_Info.t_color.A = byte(255);
+    m_Info.t_strText = Name;
+    EndItem();
+    if(Len(name2) > 0)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetY = -20;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = byte(255);
+        m_Info.t_color.G = 217;
+        m_Info.t_color.B = 105;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = name2;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemOptionBonus(string TitleID, string Content, bool bTitle, bool bContent, bool IamFirst)
+{
+    if(bTitle)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        if(!IamFirst)
+        {
+            m_Info.nOffSetY = 4;
+        }
+        m_Info.nOffSetX = 3;
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 200;
+        m_Info.t_color.G = 200;
+        m_Info.t_color.B = 200;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = TitleID;
+        EndItem();
+    }
+    if((Content != "0") && bContent)
+    {
+        if(bTitle)
+        {
+            StartItem();
+            m_Info.eType = DIT_TEXT;
+            if(!IamFirst)
+            {
+                m_Info.nOffSetY = 4;
+            }
+            m_Info.t_bDrawOneLine = true;
+            m_Info.t_color.R = 163;
+            m_Info.t_color.G = 163;
+            m_Info.t_color.B = 163;
+            m_Info.t_color.A = byte(255);
+            m_Info.t_strText = " : ";
+            EndItem();
+        }
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        if(!IamFirst)
+        {
+            m_Info.nOffSetY = 4;
+        }
+        if(!bTitle)
+        {
+            m_Info.bLineBreak = true;
+        }
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 4;
+        m_Info.t_color.G = 140;
+        m_Info.t_color.B = 220;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = Content;
+        EndItem();
+    }
+    return;
+}
+
+function AddTooltipItemBar(int Y)
+{
+    StartItem();
+    m_Info.eType = DIT_TEXTURE;
+    m_Info.nOffSetY = Y;
+    m_Info.bLineBreak = true;
+    m_Info.t_bDrawOneLine = true;
+    m_Info.u_nTextureWidth = 300;
+    m_Info.u_nTextureHeight = 1;
+    m_Info.u_strTexture = "L2ui_ch3.tooltip_line";
+    EndItem();
+    return;
+}
+
 function SetTooltipItemColor(int R, int G, int B, int offset)
 {
     local int idx;
@@ -1807,6 +2208,32 @@ function AddTooltipItemBlank(int Height)
     return;
 }
 
+function AddTooltipItemIcon(ItemInfo item)
+{
+    local UIEventManager.EItemParamType EItemParamType;
+
+    EItemParamType = EItemParamType(item.ItemType);
+    StartItem();
+    m_Info.eType = DIT_TEXTURE;
+    m_Info.t_bDrawOneLine = true;
+    m_Info.u_nTextureWidth = 32;
+    m_Info.u_nTextureHeight = 32;
+    m_Info.u_strTexture = item.IconName;
+    EndItem();
+    if((item.Enchanted > 0) && (item.Enchanted < 50) && IsEnchantableItem(EItemParamType))
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXTURE;
+        m_Info.nOffSetX = -32;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.u_nTextureWidth = 32;
+        m_Info.u_nTextureHeight = 32;
+        m_Info.u_strTexture = "L2UI_CH3.EnchantNumbers.enchant" $ string(item.Enchanted);
+        EndItem();
+    }
+    return;
+}
+
 function AddTooltipItemEnchant(ItemInfo item)
 {
     local UIEventManager.EItemParamType EItemParamType;
@@ -1817,10 +2244,11 @@ function AddTooltipItemEnchant(ItemInfo item)
     {
         StartItem();
         m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetX = 4;
         m_Info.t_bDrawOneLine = true;
-        m_Info.t_color.R = 176;
-        m_Info.t_color.G = 155;
-        m_Info.t_color.B = 121;
+        m_Info.t_color.R = 170;
+        m_Info.t_color.G = 110;
+        m_Info.t_color.B = 230;
         m_Info.t_color.A = byte(255);
         m_Info.t_strText = ("+" $ string(item.Enchanted)) $ " ";
         EndItem();
@@ -1830,14 +2258,18 @@ function AddTooltipItemEnchant(ItemInfo item)
 
 function AddTooltipItemName(string Name, ItemInfo item)
 {
-    StartItem();
-    m_Info.eType = DIT_TEXT;
-    m_Info.t_bDrawOneLine = true;
-    m_Info.t_strText = Name;
-    EndItem();
     // End:0xD4
     if(Len(item.AdditionalName) > 0)
     {
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = 0;
+        m_Info.t_color.G = 97;
+        m_Info.t_color.B = 218;
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = " " $ Name;
+        EndItem();
         StartItem();
         m_Info.eType = DIT_TEXT;
         m_Info.t_bDrawOneLine = true;
@@ -1848,26 +2280,37 @@ function AddTooltipItemName(string Name, ItemInfo item)
         m_Info.t_strText = " " $ item.AdditionalName;
         EndItem();
     }
+    else
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXT;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.t_color.R = byte(255);
+        m_Info.t_color.G = byte(255);
+        m_Info.t_color.B = byte(255);
+        m_Info.t_color.A = byte(255);
+        m_Info.t_strText = " " $ Name;
+        EndItem();
+    }
     return;
 }
 
 function AddTooltipItemGrade(ItemInfo item)
 {
-    local string strTmp;
-
-    strTmp = GetItemGradeString(item.CrystalType);
     // End:0x97
-    if(Len(strTmp) > 0)
+    if(item.CrystalType > 0)
     {
         StartItem();
-        m_Info.eType = DIT_TEXT;
+        m_Info.eType = DIT_TEXTURE;
+        m_Info.nOffSetX = 3;
         m_Info.t_bDrawOneLine = true;
-        m_Info.t_strText = " ";
-        EndItem();
-        StartItem();
-        m_Info.eType = DIT_TEXT;
-        m_Info.t_bDrawOneLine = true;
-        m_Info.t_strText = ("`" $ strTmp) $ "`";
+        m_Info.u_nTextureWidth = 16;
+        if(item.CrystalType > 5)
+        {
+            m_Info.u_nTextureWidth = 32;
+        }
+        m_Info.u_nTextureHeight = 16;
+        m_Info.u_strTexture = "L2ui_ch3.grade.grade_" $ string(item.CrystalType);
         EndItem();
     }
     return;
