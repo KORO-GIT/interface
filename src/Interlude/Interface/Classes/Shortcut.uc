@@ -15,8 +15,6 @@ var bool UseBind3;
 var int Panel1;
 var int Panel2;
 var int Panel3;
-var ShortcutWnd sShortcutWnd;
-var int SCustomType;
 var MenuWnd MenuWnd;
 
 function OnLoad()
@@ -24,7 +22,6 @@ function OnLoad()
     RegisterEvent(90);
     LoadData();
     MenuWnd = MenuWnd(GetScript("MenuWnd"));
-    sShortcutWnd = ShortcutWnd(GetScript("ShortcutWnd"));
     return;
 }
 
@@ -55,17 +52,6 @@ function LoadData()
     if(Panel3 <= 0)
     {
         Panel3 = 1;
-    }
-    SCustomType = GetOptionInt("Game", "ShortcutBindType") + 1;
-    // End:0x17C
-    if(SCustomType < 1)
-    {
-        SCustomType = 1;
-    }
-    // End:0x18E
-    if(SCustomType > 5)
-    {
-        SCustomType = 1;
     }
     return;
 }
@@ -118,208 +104,6 @@ function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Pane
     return;
 }
 
-function SetShortcutBindType(bool EnterChat, int BindType)
-{
-    SetOptionBool("Game", "EnterChatting", EnterChat);
-    // End:0x2A
-    if(BindType < 0)
-    {
-        BindType = 0;
-    }
-    // End:0x3D
-    if(BindType > 4)
-    {
-        BindType = 4;
-    }
-    SetOptionInt("Game", "ShortcutBindType", BindType);
-    SCustomType = BindType + 1;
-    RefreshINI("Option.ini");
-    return;
-}
-
-function int GetShortcutSlot(string Param)
-{
-    switch(Param)
-    {
-        case "F1":
-        case "1":
-        case "Q":
-            return 1;
-        case "F2":
-        case "2":
-        case "W":
-            return 2;
-        case "F3":
-        case "3":
-        case "E":
-            return 3;
-        case "F4":
-        case "4":
-        case "R":
-            return 4;
-        case "F5":
-        case "5":
-        case "T":
-            return 5;
-        case "F6":
-        case "6":
-        case "Y":
-            return 6;
-        case "F7":
-        case "7":
-        case "U":
-            return 7;
-        case "F8":
-        case "8":
-        case "I":
-            return 8;
-        case "F9":
-        case "9":
-        case "O":
-            return 9;
-        case "F10":
-        case "10":
-        case "P":
-            return 10;
-        case "F11":
-        case "11":
-        case "LB":
-            return 11;
-        case "F12":
-        case "12":
-        case "RB":
-            return 12;
-        default:
-            return -1;
-    }
-    return -1;
-}
-
-function int GetShortcutPanel(string Param)
-{
-    switch(Param)
-    {
-        case "F1":
-        case "F2":
-        case "F3":
-        case "F4":
-        case "F5":
-        case "F6":
-        case "F7":
-        case "F8":
-        case "F9":
-        case "F10":
-        case "F11":
-        case "F12":
-            if((SCustomType == 1) || (SCustomType == 2))
-            {
-                return 1;
-            }
-            // End:0x97
-            if(SCustomType == 3)
-            {
-                return 3;
-            }
-            // End:0xA6
-            if((SCustomType == 4) || (SCustomType == 5))
-            {
-                return 2;
-            }
-            break;
-        case "1":
-        case "2":
-        case "3":
-        case "4":
-        case "5":
-        case "6":
-        case "7":
-        case "8":
-        case "9":
-        case "10":
-        case "11":
-        case "12":
-            if(((SCustomType == 1) || (SCustomType == 2)) || (SCustomType == 3))
-            {
-                return 2;
-            }
-            // End:0x131
-            if((SCustomType == 4) || (SCustomType == 5))
-            {
-                return 1;
-            }
-            break;
-        case "Q":
-        case "W":
-        case "E":
-        case "R":
-        case "T":
-        case "Y":
-        case "U":
-        case "I":
-        case "O":
-        case "P":
-        case "LB":
-        case "RB":
-            if((SCustomType == 1) || (SCustomType == 4))
-            {
-                return 3;
-            }
-            // End:0x1E4
-            if((SCustomType == 2) || (SCustomType == 5))
-            {
-                return -1;
-            }
-            // End:0x1F3
-            if(SCustomType == 3)
-            {
-                return 1;
-            }
-            break;
-        default:
-            return -1;
-    }
-    return -1;
-}
-
-function int GetCurrentPanelByType(int PanelType)
-{
-    if(sShortcutWnd == None)
-    {
-        sShortcutWnd = ShortcutWnd(GetScript("ShortcutWnd"));
-    }
-    // End:0x3F
-    if(sShortcutWnd == None)
-    {
-        return 1;
-    }
-    switch(PanelType)
-    {
-        case 1:
-            return sShortcutWnd.CurrentShortcutPage + 1;
-        case 2:
-            return sShortcutWnd.CurrentShortcutPage2 + 1;
-        case 3:
-            return sShortcutWnd.CurrentShortcutPage3 + 1;
-        default:
-            return 1;
-    }
-    return 1;
-}
-
-function ExecuteCustomShortcut(string Param)
-{
-    local int PanelType, Slot;
-
-    PanelType = GetShortcutPanel(Param);
-    Slot = GetShortcutSlot(Param);
-    // End:0x56
-    if((PanelType != -1) && (Slot != -1))
-    {
-        ExecuteCommand(("/useshortcut " $ string(GetCurrentPanelByType(PanelType))) $ (" " $ string(Slot)));
-    }
-    return;
-}
-
 function HandleShortcutCommand(string a_Param)
 {
     local string Command;
@@ -327,11 +111,6 @@ function HandleShortcutCommand(string a_Param)
     // End:0xD6
     if(ParseString(a_Param, "Command", Command))
     {
-        // End:0xE8
-        if(Left(Command, 15) == "ShortcutCustom_")
-        {
-            ExecuteCustomShortcut(Mid(Command, 15));
-        }
         switch(Command)
         {
             // End:0x3F
