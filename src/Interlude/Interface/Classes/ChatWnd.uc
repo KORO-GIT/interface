@@ -99,11 +99,11 @@ function InitHandle()
 
 function InitScrollBarPosition()
 {
-    NormalChat.SetScrollBarPosition(5, 10, -30);
-    TradeChat.SetScrollBarPosition(5, 10, -30);
-    PartyChat.SetScrollBarPosition(5, 10, -30);
-    ClanChat.SetScrollBarPosition(5, 10, -30);
-    AllyChat.SetScrollBarPosition(5, 10, -30);
+    NormalChat.SetScrollBarPosition(5, 10, -25);
+    TradeChat.SetScrollBarPosition(5, 10, -25);
+    PartyChat.SetScrollBarPosition(5, 10, -25);
+    ClanChat.SetScrollBarPosition(5, 10, -25);
+    AllyChat.SetScrollBarPosition(5, 10, -25);
     return;
 }
 
