@@ -1,0 +1,6 @@
+Patch file list for client update
+Date: 2026-04-23
+
+system\Interface.u
+system\Interface.xdat
+system\L2UI_CH3.u
