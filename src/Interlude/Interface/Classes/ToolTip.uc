@@ -2069,8 +2069,6 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
     m_Info.u_nTextureHeight = 24;
-    m_Info.u_nTextureUWidth = 300;
-    m_Info.u_nTextureUHeight = 24;
     m_Info.u_strTexture = "L2ui_ch3.AugBG";
     EndItem();
     if(Len(Icon) > 0)
@@ -2083,8 +2081,6 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
         m_Info.t_bDrawOneLine = true;
         m_Info.u_nTextureWidth = 18;
         m_Info.u_nTextureHeight = 18;
-        m_Info.u_nTextureUWidth = 18;
-        m_Info.u_nTextureUHeight = 18;
         m_Info.u_strTexture = "L2ui_ch3." $ Icon;
         EndItem();
     }
@@ -2186,8 +2182,6 @@ function AddTooltipItemBar(int Y)
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
     m_Info.u_nTextureHeight = 1;
-    m_Info.u_nTextureUWidth = 300;
-    m_Info.u_nTextureUHeight = 1;
     m_Info.u_strTexture = "L2ui_ch3.tooltip_line";
     EndItem();
     return;
@@ -2217,16 +2211,20 @@ function AddTooltipItemBlank(int Height)
 function AddTooltipItemIcon(ItemInfo item)
 {
     local UIEventManager.EItemParamType EItemParamType;
+    local string TextureName;
 
     EItemParamType = EItemParamType(item.ItemType);
+    TextureName = Class'NWindow.UIDATA_ITEM'.static.GetItemTextureName(item.ClassID);
+    if(Len(TextureName) < 1)
+    {
+        TextureName = item.IconName;
+    }
     StartItem();
     m_Info.eType = DIT_TEXTURE;
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 32;
     m_Info.u_nTextureHeight = 32;
-    m_Info.u_nTextureUWidth = 32;
-    m_Info.u_nTextureUHeight = 32;
-    m_Info.u_strTexture = item.IconName;
+    m_Info.u_strTexture = TextureName;
     EndItem();
     if((item.Enchanted > 0) && (item.Enchanted < 50) && IsEnchantableItem(EItemParamType))
     {
@@ -2236,8 +2234,6 @@ function AddTooltipItemIcon(ItemInfo item)
         m_Info.t_bDrawOneLine = true;
         m_Info.u_nTextureWidth = 32;
         m_Info.u_nTextureHeight = 32;
-        m_Info.u_nTextureUWidth = 32;
-        m_Info.u_nTextureUHeight = 32;
         m_Info.u_strTexture = "L2UI_CH3.EnchantNumbers.enchant" $ string(item.Enchanted);
         EndItem();
     }
@@ -2320,8 +2316,6 @@ function AddTooltipItemGrade(ItemInfo item)
             m_Info.u_nTextureWidth = 32;
         }
         m_Info.u_nTextureHeight = 16;
-        m_Info.u_nTextureUWidth = m_Info.u_nTextureWidth;
-        m_Info.u_nTextureUHeight = 16;
         m_Info.u_strTexture = "L2ui_ch3.grade.grade_" $ string(item.CrystalType);
         EndItem();
     }
