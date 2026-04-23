@@ -16,6 +16,9 @@ var int m_iPrevTutorialTick;
 var bool m_bPartyMatchRoomState;
 var AutoShotItemWnd AutoShotItemWnd;
 var CheckBoxHandle Cb_AutoSS;
+var WindowHandle m_hInfoWindowWnd;
+var TextBoxHandle m_txInfoDamage;
+var Shortcut sShortcut;
 
 function ResetRefreshRate(optional int a_nWidth, optional int a_nHeight)
 {
@@ -104,6 +107,11 @@ function OnLoad()
     InitAudioOption();
     InitGameOption();
     InitInterfaceOption();
+    m_hInfoWindowWnd = GetHandle("OptionWnd.InfoWindowWnd");
+    m_txInfoDamage = TextBoxHandle(GetHandle("OtherTab.txInfoDamage"));
+    sShortcut = Shortcut(GetScript("Shortcut"));
+    InitShortcutBindOption();
+    HideShortcutBindWindow();
     bShow = false;
     Cb_AutoSS = CheckBoxHandle(GetHandle("OptionWnd.Cb_AutoSS"));
     AutoShotItemWnd = AutoShotItemWnd(GetScript("AutoShotItemWnd"));
@@ -1067,6 +1075,8 @@ function OnShow()
     InitVideoOption();
     InitAudioOption();
     InitGameOption();
+    InitShortcutBindOption();
+    HideShortcutBindWindow();
     SetFocus();
     return;
 }
@@ -1074,6 +1084,7 @@ function OnShow()
 function OnHide()
 {
     bShow = false;
+    HideShortcutBindWindow();
     return;
 }
 
@@ -1431,6 +1442,7 @@ function OnClickButton(string strID)
             OnModifyCurrentTickSliderCtrl("MusicVolumeSliderCtrl", m_iPrevMusicTick);
             OnModifyCurrentTickSliderCtrl("SystemVolumeSliderCtrl", m_iPrevSystemTick);
             OnModifyCurrentTickSliderCtrl("TutorialVolumeSliderCtrl", m_iPrevTutorialTick);
+            HideShortcutBindWindow();
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OptionWnd");
             // End:0x219
             break;
@@ -1444,6 +1456,7 @@ function OnClickButton(string strID)
             ApplyAudioOption();
             ApplyGameOption();
             SetOptionInt("FirstRun", "FirstRun", 2);
+            HideShortcutBindWindow();
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OptionWnd");
             // End:0x219
             break;
@@ -1456,6 +1469,7 @@ function OnClickButton(string strID)
             ApplyVideoOption();
             ApplyAudioOption();
             ApplyGameOption();
+            HideShortcutBindWindow();
             // End:0x219
             break;
         // End:0x1EC
@@ -1465,6 +1479,7 @@ function OnClickButton(string strID)
             break;
         // End:0x216
         case "BtnClose":
+            HideShortcutBindWindow();
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OptionWnd");
             // End:0x219
             break;
@@ -1637,9 +1652,42 @@ function OnComboBoxItemSelected(string sName, int Index)
             ExecuteEvent(11223344);
             // End:0xAB
             break;
+        // End:0xAB
+        case "Shortcut":
+            SetOptionInt("Game", "ShortcutBindType", Index);
+            RefreshINI("Option.ini");
+            if(sShortcut == None)
+            {
+                sShortcut = Shortcut(GetScript("Shortcut"));
+            }
+            // End:0x105
+            if(sShortcut != None)
+            {
+                sShortcut.SCustomType = Index + 1;
+            }
+            // End:0x108
+            break;
         // End:0xFFFF
         default:
             break;
+    }
+    return;
+}
+
+function OnLButtonDown(WindowHandle a_WindowHandle, int X, int Y)
+{
+    local Rect rectWnd;
+
+    rectWnd = m_txInfoDamage.GetRect();
+    // End:0x8B
+    if((rectWnd.nWidth <= 0) || (rectWnd.nHeight <= 0))
+    {
+        return;
+    }
+    // End:0xE0
+    if((((X > rectWnd.nX) && (X < rectWnd.nX + rectWnd.nWidth)) && (Y > rectWnd.nY)) && (Y < rectWnd.nY + rectWnd.nHeight))
+    {
+        ToggleShortcutBindWindow();
     }
     return;
 }
@@ -2435,6 +2483,77 @@ function LoadingINI()
     {
         Cb_AutoSS.SetCheck(false);
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoShotItemWnd");
+    }
+    return;
+}
+
+function InitShortcutBindOption()
+{
+    local int ShortcutBindType;
+
+    Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.InfoWindowWnd.Shortcut");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.InfoWindowWnd.Shortcut", "1: F1-F12; 2: 1-12; 3: Q-P");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.InfoWindowWnd.Shortcut", "1: F1-F12; 2: 1-12");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.InfoWindowWnd.Shortcut", "1: Q-P; 2: 1-12; 3: F1-F12");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.InfoWindowWnd.Shortcut", "1: 1-12; 2: F1-F12; 3: Q-P");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.InfoWindowWnd.Shortcut", "1: 1-12; 2: F1-F12");
+    ShortcutBindType = GetOptionInt("Game", "ShortcutBindType");
+    // End:0x13E
+    if(ShortcutBindType < 0)
+    {
+        ShortcutBindType = 0;
+    }
+    // End:0x150
+    if(ShortcutBindType > 4)
+    {
+        ShortcutBindType = 0;
+    }
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.InfoWindowWnd.Shortcut", ShortcutBindType);
+    // End:0x1A0
+    if(sShortcut == None)
+    {
+        sShortcut = Shortcut(GetScript("Shortcut"));
+    }
+    // End:0x1D6
+    if(sShortcut != None)
+    {
+        sShortcut.SCustomType = ShortcutBindType + 1;
+    }
+    return;
+}
+
+function HideShortcutBindWindow()
+{
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("InterfaceAI_KeySettingWnd");
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OptionWnd.InfoWindowWnd");
+    return;
+}
+
+function ShowShortcutBindWindow()
+{
+    // End:0x3E
+    if(!Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("OptionWnd"))
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("OptionWnd");
+    }
+    Class'NWindow.UIAPI_WINDOW'.static.SetFocus("OptionWnd");
+    InitGameOption();
+    InitShortcutBindOption();
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("InterfaceAI_KeySettingWnd");
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("OptionWnd.InfoWindowWnd");
+    return;
+}
+
+function ToggleShortcutBindWindow()
+{
+    // End:0x20
+    if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("OptionWnd.InfoWindowWnd"))
+    {
+        HideShortcutBindWindow();        
+    }
+    else
+    {
+        ShowShortcutBindWindow();
     }
     return;
 }
