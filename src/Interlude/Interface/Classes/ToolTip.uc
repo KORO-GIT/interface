@@ -468,17 +468,17 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
                         if(DescStart >= 0)
                         {
-                            AddTooltipPlainText(Mid(item.Description, DescStart + 1), 110, 140, 160, 3, true, false);
+                            AddTooltipPlainText(CleanTooltipDescription(Mid(item.Description, DescStart + 1)), 110, 140, 160, 1, true, false);
                         }
                         else
                         {
-                            AddTooltipPlainText(item.Description, 110, 140, 160, 3, true, false);
+                            AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 1, true, false);
                         }
                     }
                     else
                     {
                         AddTooltipItemBG("", "Description ", item.AdditionalName);
-                        AddTooltipPlainText(item.Description, 110, 140, 160, 3, true, false);
+                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 1, true, false);
                     }
                 }
                 // End:0xEBE
@@ -917,6 +917,22 @@ function AddTooltipPlainText(string Text, int R, int G, int B, int OffsetY, bool
     m_Info.t_strText = Text;
     EndItem();
     return;
+}
+
+function string CleanTooltipDescription(string Text)
+{
+    local string FirstChar;
+
+    while(Len(Text) > 0)
+    {
+        FirstChar = Left(Text, 1);
+        if(((FirstChar != " ") && FirstChar != Chr(9)) && ((FirstChar != Chr(10)) && FirstChar != Chr(13)))
+        {
+            break;
+        }
+        Text = Mid(Text, 1);
+    }
+    return Text;
 }
 
 function AddTooltipItemStatWithEnchant(int TitleID, int TotalValue, int BaseValue, int EnchantValue, bool IamFirst)

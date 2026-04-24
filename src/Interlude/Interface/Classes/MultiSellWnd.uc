@@ -109,6 +109,7 @@ function OnClickButton(string ControlName)
 function OnClickItem(string strID, int Index)
 {
     local int i, HaveCount;
+    local string NeedName;
     local string param;
 
     Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.Clear("MultiSellWnd.ItemInfo");
@@ -124,34 +125,15 @@ function OnClickItem(string strID, int Index)
             while(i < m_itemLIst[Index].NeededItemList.Length)
             {
                 HaveCount = GetInventoryItemCount(m_itemLIst[Index].NeededItemList[i].Id);
+                NeedName = FormatNeededItemName(m_itemLIst[Index].NeededItemList[i].Name, m_itemLIst[Index].NeededItemList[i].Count, HaveCount);
                 param = "";
-                ParamAdd(param, "Name", m_itemLIst[Index].NeededItemList[i].Name);
-                ParamAdd(param, "ID", string(m_itemLIst[Index].NeededItemList[i].Id));
-                ParamAdd(param, "Num", (string(m_itemLIst[Index].NeededItemList[i].Count) $ " (") $ string(HaveCount) $ ")");
-                ParamAdd(param, "HaveNum", string(HaveCount));
-                if(HaveCount >= m_itemLIst[Index].NeededItemList[i].Count)
-                {
-                    ParamAdd(param, "HaveColorR", "90");
-                    ParamAdd(param, "HaveColorG", "220");
-                    ParamAdd(param, "HaveColorB", "90");
-                }
-                else
-                {
-                    ParamAdd(param, "HaveColorR", "255");
-                    ParamAdd(param, "HaveColorG", "90");
-                    ParamAdd(param, "HaveColorB", "90");
-                }
+                ParamAdd(param, "Name", NeedName);
+                ParamAdd(param, "ID", "0");
+                ParamAdd(param, "Num", string(m_itemLIst[Index].NeededItemList[i].Count));
                 ParamAdd(param, "Icon", m_itemLIst[Index].NeededItemList[i].IconName);
                 ParamAdd(param, "Enchant", string(m_itemLIst[Index].NeededItemList[i].Enchant));
                 ParamAdd(param, "CrystalType", string(m_itemLIst[Index].NeededItemList[i].CrystalType));
                 ParamAdd(param, "ItemType", string(m_itemLIst[Index].NeededItemList[i].ItemType));
-                ParamAdd(param, "classID", string(m_itemLIst[Index].NeededItemList[i].Id));
-                ParamAdd(param, "name", m_itemLIst[Index].NeededItemList[i].Name);
-                ParamAdd(param, "iconName", m_itemLIst[Index].NeededItemList[i].IconName);
-                ParamAdd(param, "itemNum", string(m_itemLIst[Index].NeededItemList[i].Count));
-                ParamAdd(param, "enchanted", string(m_itemLIst[Index].NeededItemList[i].Enchant));
-                ParamAdd(param, "crystalType", string(m_itemLIst[Index].NeededItemList[i].CrystalType));
-                ParamAdd(param, "itemType", string(m_itemLIst[Index].NeededItemList[i].ItemType));
                 Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.AddData("MultiSellWnd.NeededItem", param);
                 ++i;
             }
@@ -190,6 +172,11 @@ function OnClickItem(string strID, int Index)
         }
     }
     return;
+}
+
+function string FormatNeededItemName(string ItemName, int NeedCount, int HaveCount)
+{
+    return (((ItemName $ " [") $ string(HaveCount)) $ "/") $ string(NeedCount) $ "]";
 }
 
 function Print()
