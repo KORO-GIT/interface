@@ -468,17 +468,17 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
                         if(DescStart >= 0)
                         {
-                            AddTooltipPlainText(Mid(item.Description, DescStart + 1), 110, 140, 160, 5, true, false);
+                            AddTooltipPlainText(Mid(item.Description, DescStart + 1), 110, 140, 160, 3, true, false);
                         }
                         else
                         {
-                            AddTooltipPlainText(item.Description, 110, 140, 160, 5, true, false);
+                            AddTooltipPlainText(item.Description, 110, 140, 160, 3, true, false);
                         }
                     }
                     else
                     {
                         AddTooltipItemBG("", "Description ", item.AdditionalName);
-                        AddTooltipPlainText(item.Description, 110, 140, 160, 5, true, false);
+                        AddTooltipPlainText(item.Description, 110, 140, 160, 3, true, false);
                     }
                 }
                 // End:0xEBE

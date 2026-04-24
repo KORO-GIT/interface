@@ -34,7 +34,6 @@ function OnLoad()
     RegisterEvent(2550);
     RegisterEvent(2560);
     RegisterEvent(1710);
-    Class'NWindow.UIAPI_WINDOW'.static.SetTooltipType("MultiSellWnd.NeededItem", "Inventory");
     pre_itemList = -1;
     return;
 }
