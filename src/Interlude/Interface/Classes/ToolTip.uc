@@ -464,12 +464,12 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     if(Left(item.Description, 5) == "<Soul")
                     {
                         AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
-                        AddTooltipPlainText(Mid(item.Description, 29), 110, 140, 160, 0, true, false);
+                        AddTooltipPlainText(Mid(item.Description, 29), 110, 140, 160, 5, true, false);
                     }
                     else
                     {
                         AddTooltipItemBG("", "Description ", item.AdditionalName);
-                        AddTooltipPlainText(item.Description, 110, 140, 160, 0, true, false);
+                        AddTooltipPlainText(item.Description, 110, 140, 160, 5, true, false);
                     }
                 }
                 // End:0xEBE

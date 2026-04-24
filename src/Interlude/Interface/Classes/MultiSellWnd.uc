@@ -230,7 +230,7 @@ function HandleItemList(string param)
     ParseInt(param, "OutputRefineryOp2", Info.RefineryOp2);
     if((Info.Enchanted > 0) && (Info.Enchanted <= 25))
     {
-        Info.ForeTexture = ("Interface.Inventory_ENCHANTNUMBER_SMALL_" $ string(Info.Enchanted));
+        Info.ForeTexture = ("Was.Inventory_ENCHANTNUMBER_SMALL_" $ string(Info.Enchanted));
     }
     // End:0x15E
     if(0 < Info.Durability)
