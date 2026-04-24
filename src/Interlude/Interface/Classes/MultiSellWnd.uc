@@ -233,7 +233,7 @@ function ShowCustomNeededItem(int RowIndex, NeededItem Item, int HaveCount)
 
     GetTextSize(CountText, CountWidth, CountHeight);
     WindowRect = Class'NWindow.UIAPI_WINDOW'.static.GetRect("MultiSellWnd");
-    Class'NWindow.UIAPI_WINDOW'.static.MoveTo(Prefix $ "Have" $ string(RowIndex), WindowRect.nX + 316 + CountWidth + 5, WindowRect.nY + RowY);
+    Class'NWindow.UIAPI_WINDOW'.static.MoveTo(Prefix $ "Have" $ string(RowIndex), WindowRect.nX + 316 + CountWidth + 10, WindowRect.nY + RowY);
 
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(IconName);
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(NameText);

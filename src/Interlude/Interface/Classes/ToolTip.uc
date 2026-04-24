@@ -229,6 +229,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
     local string strAdena, strAdenaComma;
     local Color AdenaColor;
     local bool bAddedSetHeader;
+    local bool bHadAugment;
     local int DescStart;
 
     // End:0x16BB
@@ -385,6 +386,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                 // End:0xAF8
                 if((item.RefineryOp1 != 0) || item.RefineryOp2 != 0)
                 {
+                    bHadAugment = true;
                     AddTooltipItemBlank(10);
                     AddTooltipItemBG("LifeBG", "Augment", "");
                     // End:0x8E6
@@ -456,12 +458,16 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     // End:0xAF8
                     if(Len(item.Description) > 0)
                     {
-                        AddTooltipItemBlank(10);
+                        AddTooltipItemBlank(4);
                     }
                 }
                 if(Len(item.Description) > 0)
                 {
                     bLargeWidth = true;
+                    if(!bHadAugment)
+                    {
+                        AddTooltipItemBlank(4);
+                    }
                     if(Left(item.Description, 5) == "<Soul")
                     {
                         DescStart = InStr(item.Description, ">");
