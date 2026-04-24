@@ -229,6 +229,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
     local string strAdena, strAdenaComma;
     local Color AdenaColor;
     local bool bAddedSetHeader;
+    local int DescStart;
 
     // End:0x16BB
     if(int(eSourceType) == 1)
@@ -463,8 +464,16 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     bLargeWidth = true;
                     if(Left(item.Description, 5) == "<Soul")
                     {
+                        DescStart = InStr(item.Description, ">");
                         AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
-                        AddTooltipPlainText(Mid(item.Description, 29), 110, 140, 160, 5, true, false);
+                        if(DescStart >= 0)
+                        {
+                            AddTooltipPlainText(Mid(item.Description, DescStart + 1), 110, 140, 160, 5, true, false);
+                        }
+                        else
+                        {
+                            AddTooltipPlainText(item.Description, 110, 140, 160, 5, true, false);
+                        }
                     }
                     else
                     {
@@ -1130,6 +1139,7 @@ function ReturnTooltip_NTT_ABNORMALSTATUS(string param, UIEventManager.ETooltipS
         EndItem();
         StartItem();
         m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetX = 3;
         m_Info.t_bDrawOneLine = true;
         m_Info.t_color.R = 176;
         m_Info.t_color.G = 155;
@@ -2090,14 +2100,7 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     StartItem();
     m_Info.eType = DIT_TEXT;
     m_Info.nOffSetY = -20;
-    if(Len(IconTexture) > 0)
-    {
-        m_Info.nOffSetX = 24;
-    }
-    else
-    {
-        m_Info.nOffSetX = 3;
-    }
+    m_Info.nOffSetX = 3;
     if(Len(IconTexture) < 1)
     {
         m_Info.bLineBreak = true;
@@ -2262,6 +2265,7 @@ function AddTooltipItemEnchant(ItemInfo item)
     {
         StartItem();
         m_Info.eType = DIT_TEXT;
+        m_Info.nOffSetX = 3;
         m_Info.t_bDrawOneLine = true;
         m_Info.t_color.R = 176;
         m_Info.t_color.G = 155;
