@@ -1,0 +1,14 @@
+Patch file list for client update
+Date: 2026-04-24
+
+Required:
+system\Interface.u
+system\Interface.xdat
+systextures\L2UI_CH3.utx
+
+Optional compatibility pack for Dynasty custom resources:
+system\entry.dll
+
+Notes:
+- Do not include system\entry.dll in the main patch for everyone.
+- Use system\entry.dll only for clients that cannot load Dynasty resources without it.

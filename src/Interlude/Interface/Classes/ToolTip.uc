@@ -1324,12 +1324,8 @@ function ReturnTooltip_NTT_SHORTCUT(string param, UIEventManager.ETooltipSourceT
         {
             // End:0x267
             case SCIT_ITEM:
-                AddTooltipItemEnchant(item);
-                AddTooltipItemName(ItemName, item);
-                AddTooltipItemGrade(item);
-                AddTooltipItemCount(item);
-                // End:0x5B0
-                break;
+                ReturnTooltip_NTT_ITEM(param, "ItemShortcutLS", eSourceType);
+                return;
             // End:0x565
             case SCIT_SKILL:
                 StartItem();
@@ -2238,11 +2234,7 @@ function AddTooltipItemIcon(ItemInfo item)
 {
     local string TextureName;
 
-    TextureName = Class'NWindow.UIDATA_ITEM'.static.GetItemTextureName(item.ClassID);
-    if(Len(TextureName) < 1)
-    {
-        TextureName = item.IconName;
-    }
+    TextureName = item.IconName;
     StartItem();
     m_Info.eType = DIT_TEXTURE;
     m_Info.t_bDrawOneLine = true;
