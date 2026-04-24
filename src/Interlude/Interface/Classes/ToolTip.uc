@@ -456,6 +456,10 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     AddTooltipItemOption(1491, "", true, false, false);
                     SetTooltipItemColor(ColorR, ColorG, ColorB, 0);
                     // End:0xAF8
+                    if(Len(item.Description) > 0)
+                    {
+                        AddTooltipItemBlank(4);
+                    }
                 }
                 if(Len(item.Description) > 0)
                 {
@@ -470,17 +474,17 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
                         if(DescStart >= 0)
                         {
-                            AddTooltipPlainText(CleanTooltipDescription(Mid(item.Description, DescStart + 1)), 110, 140, 160, 0, true, false);
+                            AddTooltipPlainText(CleanTooltipDescription(Mid(item.Description, DescStart + 1)), 110, 140, 160, -10, true, false);
                         }
                         else
                         {
-                            AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 0, true, false);
+                            AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, -10, true, false);
                         }
                     }
                     else
                     {
                         AddTooltipItemBG("", "Description ", item.AdditionalName);
-                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 0, true, false);
+                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, -10, true, false);
                     }
                 }
                 // End:0xEBE
