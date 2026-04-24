@@ -456,10 +456,6 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     AddTooltipItemOption(1491, "", true, false, false);
                     SetTooltipItemColor(ColorR, ColorG, ColorB, 0);
                     // End:0xAF8
-                    if(Len(item.Description) > 0)
-                    {
-                        AddTooltipItemBlank(4);
-                    }
                 }
                 if(Len(item.Description) > 0)
                 {
