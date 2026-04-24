@@ -3,6 +3,8 @@ class TradeWnd extends UICommonAPI;
 const DIALOG_ID_TRADE_REQUEST = 0;
 const DIALOG_ID_ITEM_NUMBER = 1;
 
+var array<ItemInfo> m_LocalTradeItemCache;
+
 function OnLoad()
 {
     RegisterEvent(1710);
@@ -118,6 +120,7 @@ function OnDBClickItem(string ControlName, int Index)
         // End:0xCF
         if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("TradeWnd.InventoryList", Index, Info))
         {
+            RememberLocalTradeItem(Info);
             // End:0xBE
             if(IsStackableItem(Info.ConsumeType) && Info.ItemNum != 1)
             {
@@ -140,6 +143,7 @@ function OnDropItem(string strID, ItemInfo Info, int X, int Y)
     // End:0xF3
     if((strID == "MyList") && Info.DragSrcName == "InventoryList")
     {
+        RememberLocalTradeItem(Info);
         // End:0xE2
         if(IsStackableItem(Info.ConsumeType))
         {
@@ -179,6 +183,7 @@ function MoveToMyList(int Index, int Num)
     // End:0x49
     if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("TradeWnd.InventoryList", Index, Info))
     {
+        RememberLocalTradeItem(Info);
         RequestAddTradeItem(Info.ServerID, Num);
     }
     return;
@@ -194,6 +199,7 @@ function HandleMoveButton()
     if(selected >= 0)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("TradeWnd.InventoryList", selected, Info);
+        RememberLocalTradeItem(Info);
         // End:0x88
         if(Info.ItemNum == 1)
         {
@@ -273,6 +279,7 @@ function HandleTradeAddItem(string param)
     local string strDest;
     local ItemInfo ItemInfo, tempInfo;
     local int Index;
+    local bool bMyList;
 
     ParseString(param, "destination", strDest);
     ParamToItemInfo(param, ItemInfo);
@@ -287,6 +294,7 @@ function HandleTradeAddItem(string param)
         if(strDest == "myList")
         {
             strDest = "TradeWnd.MyList";
+            bMyList = true;
             Class'NWindow.UIAPI_INVENWEIGHT'.static.ReduceWeight("TradeWnd.InvenWeight", ItemInfo.ItemNum * ItemInfo.Weight);            
         }
         else
@@ -298,6 +306,10 @@ function HandleTradeAddItem(string param)
                 Class'NWindow.UIAPI_INVENWEIGHT'.static.AddWeight("TradeWnd.InvenWeight", ItemInfo.ItemNum * ItemInfo.Weight);
             }
         }
+    }
+    if(bMyList)
+    {
+        ApplyLocalTradeItemDetails(ItemInfo);
     }
     Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithServerID(strDest, ItemInfo.ServerID);
     // End:0x1CF
@@ -338,6 +350,7 @@ function HandleTradeUpdateInventoryItem(string param)
 
     ParseString(param, "type", Type);
     ParamToItemInfo(param, Info);
+    RememberLocalTradeItem(Info);
     // End:0x64
     if(Type == "add")
     {
@@ -430,10 +443,118 @@ function HandleDialogCancel()
 
 function Clear()
 {
+    m_LocalTradeItemCache.Length = 0;
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("TradeWnd.InventoryList");
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("TradeWnd.MyList");
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("TradeWnd.OtherList");
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("TradeWnd.TargetName", "");
     Class'NWindow.UIAPI_INVENWEIGHT'.static.ZeroWeight("TradeWnd.InvenWeight");
+    return;
+}
+
+function int FindLocalTradeItemCacheIndex(int ServerID)
+{
+    local int idx;
+
+    idx = 0;
+    while(idx < m_LocalTradeItemCache.Length)
+    {
+        if(m_LocalTradeItemCache[idx].ServerID == ServerID)
+        {
+            return idx;
+        }
+        idx++;
+    }
+    return -1;
+}
+
+function RememberLocalTradeItem(ItemInfo Info)
+{
+    local int Index;
+    local ItemInfo CachedInfo;
+
+    if(Info.ServerID <= 0)
+    {
+        return;
+    }
+    Index = FindLocalTradeItemCacheIndex(Info.ServerID);
+    if(Index >= 0)
+    {
+        CachedInfo = m_LocalTradeItemCache[Index];
+        PreserveMissingLocalTradeItemDetails(Info, CachedInfo);
+        m_LocalTradeItemCache[Index] = Info;
+    }
+    else
+    {
+        m_LocalTradeItemCache.Length = m_LocalTradeItemCache.Length + 1;
+        m_LocalTradeItemCache[m_LocalTradeItemCache.Length - 1] = Info;
+    }
+    return;
+}
+
+function ApplyLocalTradeItemDetails(out ItemInfo Info)
+{
+    local int Index;
+    local ItemInfo LocalInfo;
+
+    if(Info.ServerID <= 0)
+    {
+        return;
+    }
+    Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithServerID("TradeWnd.InventoryList", Info.ServerID);
+    if(Index >= 0)
+    {
+        if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("TradeWnd.InventoryList", Index, LocalInfo))
+        {
+            RememberLocalTradeItem(LocalInfo);
+            PreserveMissingLocalTradeItemDetails(Info, LocalInfo);
+        }
+    }
+    Index = FindLocalTradeItemCacheIndex(Info.ServerID);
+    if(Index >= 0)
+    {
+        PreserveMissingLocalTradeItemDetails(Info, m_LocalTradeItemCache[Index]);
+    }
+    return;
+}
+
+function PreserveMissingLocalTradeItemDetails(out ItemInfo Info, ItemInfo SourceInfo)
+{
+    if(Info.RefineryOp1 == 0)
+    {
+        Info.RefineryOp1 = SourceInfo.RefineryOp1;
+    }
+    if(Info.RefineryOp2 == 0)
+    {
+        Info.RefineryOp2 = SourceInfo.RefineryOp2;
+    }
+    if(Info.Description == "")
+    {
+        Info.Description = SourceInfo.Description;
+    }
+    if(Info.AdditionalName == "")
+    {
+        Info.AdditionalName = SourceInfo.AdditionalName;
+    }
+    if(Info.IconName == "")
+    {
+        Info.IconName = SourceInfo.IconName;
+    }
+    if(Info.IconNameEx1 == "")
+    {
+        Info.IconNameEx1 = SourceInfo.IconNameEx1;
+    }
+    if(Info.IconNameEx2 == "")
+    {
+        Info.IconNameEx2 = SourceInfo.IconNameEx2;
+    }
+    if(Info.IconNameEx3 == "")
+    {
+        Info.IconNameEx3 = SourceInfo.IconNameEx3;
+    }
+    if(Info.IconNameEx4 == "")
+    {
+        Info.IconNameEx4 = SourceInfo.IconNameEx4;
+    }
     return;
 }
