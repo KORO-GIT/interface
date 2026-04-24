@@ -2069,13 +2069,33 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
     m_Info.u_nTextureHeight = 24;
+    m_Info.u_nTextureUWidth = 512;
+    m_Info.u_nTextureUHeight = 32;
     m_Info.u_strTexture = "Interface.Tooltip.TooltipSectionBG";
     EndItem();
+    if(Len(Icon) > 0)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXTURE;
+        m_Info.nOffSetY = -22;
+        m_Info.nOffSetX = 3;
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.u_nTextureWidth = 18;
+        m_Info.u_nTextureHeight = 18;
+        m_Info.u_nTextureUWidth = 32;
+        m_Info.u_nTextureUHeight = 32;
+        m_Info.u_strTexture = "Interface.Tooltip." $ Icon;
+        EndItem();
+    }
     StartItem();
     m_Info.eType = DIT_TEXT;
     m_Info.nOffSetY = -20;
     m_Info.nOffSetX = 3;
-    m_Info.bLineBreak = true;
+    if(Len(Icon) < 1)
+    {
+        m_Info.bLineBreak = true;
+    }
     m_Info.t_color.R = byte(255);
     m_Info.t_color.G = byte(255);
     m_Info.t_color.B = byte(255);
@@ -2166,6 +2186,8 @@ function AddTooltipItemBar(int Y)
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
     m_Info.u_nTextureHeight = 1;
+    m_Info.u_nTextureUWidth = 512;
+    m_Info.u_nTextureUHeight = 4;
     m_Info.u_strTexture = "Interface.Tooltip.TooltipLine";
     EndItem();
     return;
