@@ -49,4 +49,8 @@ if(-not (Test-Path -LiteralPath $buildPackage)) {
 }
 
 Copy-Item -LiteralPath $buildPackage -Destination $outputPackage -Force
+$tooltipBuilder = Join-Path $Root 'build_tooltiptex.ps1'
+if(Test-Path -LiteralPath $tooltipBuilder) {
+    & $tooltipBuilder -Root $Root | Out-Null
+}
 Get-Item -LiteralPath $outputPackage

@@ -2063,19 +2063,42 @@ function AddTooltipItemOptionNoLineYellow(int TitleID, string Content, bool bTit
 
 function AddTooltipItemBG(string Icon, string Name, string name2)
 {
+    local string IconTexture;
+
     StartItem();
     m_Info.eType = DIT_TEXTURE;
     m_Info.bLineBreak = true;
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
     m_Info.u_nTextureHeight = 24;
-    m_Info.u_strTexture = "Interface.Tooltip.TooltipSectionBG";
+    m_Info.u_nTextureUWidth = 512;
+    m_Info.u_nTextureUHeight = 32;
+    m_Info.u_strTexture = "L2UI_CH3.Minimap.mapshadow";
     EndItem();
+    IconTexture = GetTooltipSectionIconTexture(Icon);
+    if(Len(IconTexture) > 0)
+    {
+        StartItem();
+        m_Info.eType = DIT_TEXTURE;
+        m_Info.nOffSetY = -22;
+        m_Info.nOffSetX = 3;
+        m_Info.bLineBreak = true;
+        m_Info.t_bDrawOneLine = true;
+        m_Info.u_nTextureWidth = 18;
+        m_Info.u_nTextureHeight = 18;
+        m_Info.u_nTextureUWidth = 32;
+        m_Info.u_nTextureUHeight = 32;
+        m_Info.u_strTexture = IconTexture;
+        EndItem();
+    }
     StartItem();
     m_Info.eType = DIT_TEXT;
     m_Info.nOffSetY = -20;
     m_Info.nOffSetX = 3;
-    m_Info.bLineBreak = true;
+    if(Len(Icon) < 1)
+    {
+        m_Info.bLineBreak = true;
+    }
     m_Info.t_color.R = byte(255);
     m_Info.t_color.G = byte(255);
     m_Info.t_color.B = byte(255);
@@ -2166,9 +2189,28 @@ function AddTooltipItemBar(int Y)
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
     m_Info.u_nTextureHeight = 1;
-    m_Info.u_strTexture = "Interface.Tooltip.TooltipLine";
+    m_Info.u_nTextureUWidth = 256;
+    m_Info.u_nTextureUHeight = 8;
+    m_Info.u_strTexture = "L2UI_CH3.QuestWnd.QuestWndPanel1";
     EndItem();
     return;
+}
+
+function string GetTooltipSectionIconTexture(string Icon)
+{
+    switch(Icon)
+    {
+        case "LifeBG":
+            return "fange_ui.icons.acumen";
+        case "SaBG":
+            return "fange_ui.icons.arcane_protection";
+        case "setBG":
+            return "fange_ui.icons.empower";
+        case "ClockBG":
+            return "fange_ui.icons.guidance";
+        default:
+            return "";
+    }
 }
 
 function SetTooltipItemColor(int R, int G, int B, int offset)
