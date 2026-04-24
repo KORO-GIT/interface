@@ -109,7 +109,6 @@ function OnClickButton(string ControlName)
 function OnClickItem(string strID, int Index)
 {
     local int i, HaveCount;
-    local string NeedName;
     local string param;
 
     Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.Clear("MultiSellWnd.ItemInfo");
@@ -125,11 +124,13 @@ function OnClickItem(string strID, int Index)
             while(i < m_itemLIst[Index].NeededItemList.Length)
             {
                 HaveCount = GetInventoryItemCount(m_itemLIst[Index].NeededItemList[i].Id);
-                NeedName = FormatNeededItemName(m_itemLIst[Index].NeededItemList[i].Name, m_itemLIst[Index].NeededItemList[i].Count, HaveCount);
                 param = "";
-                ParamAdd(param, "Name", NeedName);
-                ParamAdd(param, "ID", "0");
+                ParamAdd(param, "Name", m_itemLIst[Index].NeededItemList[i].Name);
+                ParamAdd(param, "ID", "-1");
                 ParamAdd(param, "Num", string(m_itemLIst[Index].NeededItemList[i].Count));
+                ParamAdd(param, "InventoryCount", string(HaveCount));
+                ParamAdd(param, "AllItemCount", string(HaveCount));
+                ParamAdd(param, "ShowCount", "1");
                 ParamAdd(param, "Icon", m_itemLIst[Index].NeededItemList[i].IconName);
                 ParamAdd(param, "Enchant", string(m_itemLIst[Index].NeededItemList[i].Enchant));
                 ParamAdd(param, "CrystalType", string(m_itemLIst[Index].NeededItemList[i].CrystalType));
@@ -172,11 +173,6 @@ function OnClickItem(string strID, int Index)
         }
     }
     return;
-}
-
-function string FormatNeededItemName(string ItemName, int NeedCount, int HaveCount)
-{
-    return (((ItemName $ " [") $ string(HaveCount)) $ "/") $ string(NeedCount) $ "]";
 }
 
 function Print()
