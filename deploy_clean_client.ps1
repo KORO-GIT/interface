@@ -3,7 +3,8 @@ param(
     [string]$ClientRoot = 'D:\L2ANT\clean',
     [string]$InterfaceUPath,
     [string]$InterfaceXdatPath,
-    [string]$FangeUiPath
+    [string]$FangeUiPath,
+    [switch]$PatchEnglishFlag
 )
 
 $ErrorActionPreference = 'Stop'
@@ -27,6 +28,7 @@ $backupRoot = Join-Path $ClientRoot '_codex_backups'
 $baselineDir = Join-Path $backupRoot 'baseline_original'
 $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
 $deployDir = Join-Path $backupRoot ("before_deploy_" + $stamp)
+$defaultUtxPath = Join-Path $systexturesDir 'default.utx'
 
 foreach($dir in @($systemDir, $systexturesDir)) {
     if(-not (Test-Path -LiteralPath $dir)) {
@@ -90,6 +92,51 @@ foreach($file in $deployFiles) {
     Copy-Item -LiteralPath $file.Src -Destination $file.Dst -Force
 }
 
+if($PatchEnglishFlag) {
+    if(-not (Test-Path -LiteralPath $defaultUtxPath)) {
+        throw "Missing default.utx: $defaultUtxPath"
+    }
+
+    $defaultBackup = Join-Path $deployDir 'systextures\default.utx'
+    $defaultBackupParent = Split-Path -Parent $defaultBackup
+    New-Item -ItemType Directory -Force -Path $defaultBackupParent | Out-Null
+    Copy-Item -LiteralPath $defaultUtxPath -Destination $defaultBackup -Force
+
+    $groovyJar = Join-Path $Root 'tools\xdat_editor\build\dist\xdat_editor-1.3.10\groovy-2.4.7.jar'
+    $groovyScript = Join-Path $Root 'tools\generate_language_texture.groovy'
+    $javaCandidates = @(
+        'C:\Program Files\Java\jdk1.8.0_333\bin\java.exe',
+        'C:\Program Files\Java\jdk-17.0.1\bin\java.exe'
+    )
+    $java = $javaCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    if(-not $java) {
+        throw 'Java runtime not found. Expected java.exe in Program Files\Java.'
+    }
+
+    $groovyDeps = @(
+        $groovyJar,
+        (Join-Path $Root 'tools\l2decompile\lib\L2unreal-1.0-SNAPSHOT.jar'),
+        (Join-Path $Root 'tools\l2decompile\lib\l2io-2.0.jar'),
+        (Join-Path $Root 'tools\l2decompile\lib\serializer-1.1-SNAPSHOT.jar'),
+        (Join-Path $Root 'tools\l2decompile\lib\commons-io-2.4.jar'),
+        (Join-Path $Root 'tools\l2decompile\lib\commons-lang3-3.4.jar'),
+        (Join-Path $Root 'tools\l2decompile\lib\l2crypt-1.2.jar'),
+        (Join-Path $Root 'tools\xdat_editor\commons\l2resources\build\libs\l2resources.jar'),
+        (Join-Path $Root 'tools\xdat_editor\schema\commons\l2resources\libs\jsquish.jar')
+    )
+    foreach($dep in $groovyDeps + $groovyScript) {
+        if(-not (Test-Path -LiteralPath $dep)) {
+            throw "Missing English flag patch dependency: $dep"
+        }
+    }
+
+    $groovyCp = [string]::Join(';', $groovyDeps)
+    & $java -cp $groovyCp groovy.ui.GroovyMain $groovyScript $defaultUtxPath
+    if($LASTEXITCODE -ne 0) {
+        throw 'English flag patch failed.'
+    }
+}
+
 $manifest = Join-Path $deployDir 'deploy_manifest.txt'
 @(
     'ClientRoot=' + $ClientRoot,
@@ -105,6 +152,9 @@ foreach($file in $deployFiles) {
 Add-Content -LiteralPath $manifest -Encoding ASCII -Value ''
 Add-Content -LiteralPath $manifest -Encoding ASCII -Value '[PostDeployHashes]'
 $hashTargets = $deployFiles | ForEach-Object { $_.Dst }
+if($PatchEnglishFlag) {
+    $hashTargets += $defaultUtxPath
+}
 Get-FileHash -LiteralPath $hashTargets -Algorithm SHA256 |
     ForEach-Object {
         Add-Content -LiteralPath $manifest -Encoding ASCII -Value ($_.Path + ' | ' + $_.Hash)

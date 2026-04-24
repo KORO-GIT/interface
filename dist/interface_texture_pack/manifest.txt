@@ -1,0 +1,22 @@
+Interface texture pack
+Generated: Fri Apr 24 12:27:57 EEST 2026
+
+[DDS]
+tooltip_section_bg.dds | 512x32 | DXT3 | Suggested import: Interface.Tooltip.TooltipSectionBG
+tooltip_line.dds | 512x4 | DXT3 | Suggested import: Interface.Tooltip.TooltipLine
+tooltip_icon_augment.dds | 32x32 | DXT3 | Suggested import: Interface.Tooltip.LifeBG
+tooltip_icon_sa.dds | 32x32 | DXT3 | Suggested import: Interface.Tooltip.SaBG
+tooltip_icon_set.dds | 32x32 | DXT3 | Suggested import: Interface.Tooltip.setBG
+tooltip_icon_clock.dds | 32x32 | DXT3 | Suggested import: Interface.Tooltip.ClockBG
+lang_en_i00.dds | 16x16 | DXT3 | Suggested import: fange_ui.etc.lang_en_i00 or custom package equivalent
+lang_ru_i00.dds | 16x16 | DXT3 | Optional mirror asset if you want both flags in one package
+default_icon_english.dds | 64x64 | DXT3 | Suggested import: default.Icon.English
+
+[Current references]
+Menu EN button -> default.Icon.English
+Tooltip section bg -> Interface.Tooltip.TooltipSectionBG
+Tooltip separator -> Interface.Tooltip.TooltipLine
+Tooltip icons -> Interface.Tooltip.LifeBG / SaBG / setBG / ClockBG
+
+[Notes]
+If you import into a separate UTX or into L2UI_CH*, update Menu/ToolTip references to your package path.
