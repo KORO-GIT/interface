@@ -1,0 +1,113 @@
+param(
+    [string]$Root = $PSScriptRoot,
+    [string]$ClientRoot = 'D:\L2ANT\clean',
+    [string]$InterfaceUPath,
+    [string]$InterfaceXdatPath,
+    [string]$FangeUiPath
+)
+
+$ErrorActionPreference = 'Stop'
+
+if([string]::IsNullOrWhiteSpace($InterfaceUPath)) {
+    $InterfaceUPath = Join-Path $Root 'dist\Interlude\Interface.u'
+}
+if([string]::IsNullOrWhiteSpace($InterfaceXdatPath)) {
+    $InterfaceXdatPath = Join-Path $Root 'dist\Interlude\Interface.xdat'
+}
+if([string]::IsNullOrWhiteSpace($FangeUiPath)) {
+    $candidate = Join-Path $Root 'dist\Interlude\fange_ui.utx'
+    if(Test-Path -LiteralPath $candidate) {
+        $FangeUiPath = $candidate
+    }
+}
+
+$systemDir = Join-Path $ClientRoot 'system'
+$systexturesDir = Join-Path $ClientRoot 'systextures'
+$backupRoot = Join-Path $ClientRoot '_codex_backups'
+$baselineDir = Join-Path $backupRoot 'baseline_original'
+$stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+$deployDir = Join-Path $backupRoot ("before_deploy_" + $stamp)
+
+foreach($dir in @($systemDir, $systexturesDir)) {
+    if(-not (Test-Path -LiteralPath $dir)) {
+        throw "Missing client directory: $dir"
+    }
+}
+
+$baselineFiles = @(
+    @{Src=(Join-Path $systemDir 'Interface.u'); Rel='system\Interface.u'},
+    @{Src=(Join-Path $systemDir 'Interface.xdat'); Rel='system\Interface.xdat'},
+    @{Src=(Join-Path $systemDir 'Option.ini'); Rel='system\Option.ini'},
+    @{Src=(Join-Path $systemDir 'WindowsInfo.ini'); Rel='system\WindowsInfo.ini'},
+    @{Src=(Join-Path $systemDir 'Running.ini'); Rel='system\Running.ini'},
+    @{Src=(Join-Path $systemDir 'L2CompiledShader.bin'); Rel='system\L2CompiledShader.bin'},
+    @{Src=(Join-Path $systemDir 'SmartGuard.ini'); Rel='system\SmartGuard.ini'},
+    @{Src=(Join-Path $systemDir 'clmods.dll'); Rel='system\clmods.dll'},
+    @{Src=(Join-Path $systemDir 's_info.ini'); Rel='system\s_info.ini'},
+    @{Src=(Join-Path $systexturesDir 'default.utx'); Rel='systextures\default.utx'},
+    @{Src=(Join-Path $systexturesDir 'fange_ui.utx'); Rel='systextures\fange_ui.utx'},
+    @{Src=(Join-Path $systexturesDir 'Crest.utx'); Rel='systextures\Crest.utx'}
+)
+
+$deployFiles = @(
+    @{Src=$InterfaceUPath; Dst=(Join-Path $systemDir 'Interface.u'); Rel='system\Interface.u'},
+    @{Src=$InterfaceXdatPath; Dst=(Join-Path $systemDir 'Interface.xdat'); Rel='system\Interface.xdat'}
+)
+
+if(-not [string]::IsNullOrWhiteSpace($FangeUiPath)) {
+    $deployFiles += @{Src=$FangeUiPath; Dst=(Join-Path $systexturesDir 'fange_ui.utx'); Rel='systextures\fange_ui.utx'}
+}
+
+foreach($file in $deployFiles) {
+    if(-not (Test-Path -LiteralPath $file.Src)) {
+        throw "Missing deploy source: $($file.Src)"
+    }
+}
+
+New-Item -ItemType Directory -Force -Path $backupRoot, $baselineDir, $deployDir | Out-Null
+
+foreach($file in $baselineFiles) {
+    if(Test-Path -LiteralPath $file.Src) {
+        $baselineTarget = Join-Path $baselineDir $file.Rel
+        $baselineParent = Split-Path -Parent $baselineTarget
+        New-Item -ItemType Directory -Force -Path $baselineParent | Out-Null
+        if(-not (Test-Path -LiteralPath $baselineTarget)) {
+            Copy-Item -LiteralPath $file.Src -Destination $baselineTarget -Force
+        }
+    }
+}
+
+foreach($file in $deployFiles) {
+    if(Test-Path -LiteralPath $file.Dst) {
+        $backupTarget = Join-Path $deployDir $file.Rel
+        $backupParent = Split-Path -Parent $backupTarget
+        New-Item -ItemType Directory -Force -Path $backupParent | Out-Null
+        Copy-Item -LiteralPath $file.Dst -Destination $backupTarget -Force
+    }
+}
+
+foreach($file in $deployFiles) {
+    Copy-Item -LiteralPath $file.Src -Destination $file.Dst -Force
+}
+
+$manifest = Join-Path $deployDir 'deploy_manifest.txt'
+@(
+    'ClientRoot=' + $ClientRoot,
+    'DeployedAt=' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'),
+    ''
+) | Set-Content -LiteralPath $manifest -Encoding ASCII
+
+Add-Content -LiteralPath $manifest -Encoding ASCII -Value '[Sources]'
+foreach($file in $deployFiles) {
+    Add-Content -LiteralPath $manifest -Encoding ASCII -Value ($file.Rel + ' <= ' + $file.Src)
+}
+
+Add-Content -LiteralPath $manifest -Encoding ASCII -Value ''
+Add-Content -LiteralPath $manifest -Encoding ASCII -Value '[PostDeployHashes]'
+$hashTargets = $deployFiles | ForEach-Object { $_.Dst }
+Get-FileHash -LiteralPath $hashTargets -Algorithm SHA256 |
+    ForEach-Object {
+        Add-Content -LiteralPath $manifest -Encoding ASCII -Value ($_.Path + ' | ' + $_.Hash)
+    }
+
+Get-Item -LiteralPath $manifest
