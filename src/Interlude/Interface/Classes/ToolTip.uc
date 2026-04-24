@@ -2090,8 +2090,15 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     StartItem();
     m_Info.eType = DIT_TEXT;
     m_Info.nOffSetY = -20;
-    m_Info.nOffSetX = 3;
-    if(Len(Icon) < 1)
+    if(Len(IconTexture) > 0)
+    {
+        m_Info.nOffSetX = 24;
+    }
+    else
+    {
+        m_Info.nOffSetX = 3;
+    }
+    if(Len(IconTexture) < 1)
     {
         m_Info.bLineBreak = true;
     }
