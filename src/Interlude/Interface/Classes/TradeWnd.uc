@@ -228,6 +228,7 @@ function HandleStartTrade(string param)
     m_privateShopWnd = GetHandle("PrivateShopWnd");
     m_shopWnd = GetHandle("ShopWnd");
     m_multiSellWnd = GetHandle("MultiSellWnd");
+    CacheInventoryWndTradeItems();
     // End:0xA0
     if(m_inventoryWnd.IsShowWindow())
     {
@@ -501,6 +502,7 @@ function ApplyLocalTradeItemDetails(out ItemInfo Info)
     {
         return;
     }
+    RememberInventoryWndItemByServerID(Info.ServerID);
     Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithServerID("TradeWnd.InventoryList", Info.ServerID);
     if(Index >= 0)
     {
@@ -515,7 +517,146 @@ function ApplyLocalTradeItemDetails(out ItemInfo Info)
     {
         PreserveMissingLocalTradeItemDetails(Info, m_LocalTradeItemCache[Index]);
     }
+    if((Info.RefineryOp1 == 0) && (Info.RefineryOp2 == 0))
+    {
+        Index = FindLocalTradeItemCacheMatch(Info);
+        if(Index >= 0)
+        {
+            PreserveMissingLocalTradeItemDetails(Info, m_LocalTradeItemCache[Index]);
+        }
+    }
     return;
+}
+
+function CacheInventoryWndTradeItems()
+{
+    CacheInventoryWndItemWindow("InventoryWnd.InventoryItem");
+    CacheInventoryWndItemWindow("InventoryWnd.EquipmentItem");
+    CacheInventoryWndItemWindow("InventoryWnd.CraftingItem");
+    CacheInventoryWndItemWindow("InventoryWnd.SuppliesItem");
+    CacheInventoryWndItemWindow("InventoryWnd.QuestItem");
+    return;
+}
+
+function CacheInventoryWndItemWindow(string WindowName)
+{
+    local int Count, Index;
+    local ItemInfo Info;
+
+    Count = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum(WindowName);
+    Index = 0;
+    while(Index < Count)
+    {
+        if(Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(WindowName, Index, Info))
+        {
+            RememberLocalTradeItem(Info);
+        }
+        Index++;
+    }
+    return;
+}
+
+function bool RememberInventoryWndItemByServerID(int ServerID)
+{
+    local ItemInfo Info;
+
+    if(GetInventoryWndItemByServerID(ServerID, Info))
+    {
+        RememberLocalTradeItem(Info);
+        return true;
+    }
+    return false;
+}
+
+function bool GetInventoryWndItemByServerID(int ServerID, out ItemInfo Info)
+{
+    if(GetItemFromItemWindowByServerID("InventoryWnd.InventoryItem", ServerID, Info))
+    {
+        return true;
+    }
+    if(GetItemFromItemWindowByServerID("InventoryWnd.EquipmentItem", ServerID, Info))
+    {
+        return true;
+    }
+    if(GetItemFromItemWindowByServerID("InventoryWnd.CraftingItem", ServerID, Info))
+    {
+        return true;
+    }
+    if(GetItemFromItemWindowByServerID("InventoryWnd.SuppliesItem", ServerID, Info))
+    {
+        return true;
+    }
+    if(GetItemFromItemWindowByServerID("InventoryWnd.QuestItem", ServerID, Info))
+    {
+        return true;
+    }
+    return false;
+}
+
+function bool GetItemFromItemWindowByServerID(string WindowName, int ServerID, out ItemInfo Info)
+{
+    local int Index;
+
+    Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithServerID(WindowName, ServerID);
+    if(Index >= 0)
+    {
+        return Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(WindowName, Index, Info);
+    }
+    return false;
+}
+
+function int FindLocalTradeItemCacheMatch(ItemInfo Info)
+{
+    local int Index, MatchIndex, MatchCount;
+
+    MatchIndex = -1;
+    MatchCount = 0;
+    Index = 0;
+    while(Index < m_LocalTradeItemCache.Length)
+    {
+        if(IsSameLocalTradeItemForAugment(Info, m_LocalTradeItemCache[Index]))
+        {
+            MatchIndex = Index;
+            MatchCount++;
+        }
+        Index++;
+    }
+    if(MatchCount == 1)
+    {
+        return MatchIndex;
+    }
+    return -1;
+}
+
+function bool IsSameLocalTradeItemForAugment(ItemInfo Info, ItemInfo SourceInfo)
+{
+    if((SourceInfo.RefineryOp1 == 0) && (SourceInfo.RefineryOp2 == 0))
+    {
+        return false;
+    }
+    if(Info.ClassID != SourceInfo.ClassID)
+    {
+        return false;
+    }
+    if(Info.Enchanted != SourceInfo.Enchanted)
+    {
+        return false;
+    }
+    if((Info.Name != "") && (SourceInfo.Name != ""))
+    {
+        if(Info.Name != SourceInfo.Name)
+        {
+            return false;
+        }
+    }
+    if((Info.AdditionalName != "") && (SourceInfo.AdditionalName != ""))
+    {
+        if(Info.AdditionalName != SourceInfo.AdditionalName)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 function PreserveMissingLocalTradeItemDetails(out ItemInfo Info, ItemInfo SourceInfo)
