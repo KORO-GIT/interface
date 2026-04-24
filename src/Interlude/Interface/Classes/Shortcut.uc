@@ -28,17 +28,12 @@ function OnLoad()
 
 function LoadData()
 {
-    local int IntUseBind1, IntUseBind2, IntUseBind3;
-
     GetINIInt("Key", "Panel1", Panel1, "Option");
     GetINIInt("Key", "Panel2", Panel2, "Option");
     GetINIInt("Key", "Panel3", Panel3, "Option");
-    GetINIBool("Key", "UseBind1", IntUseBind1, "Option");
-    GetINIBool("Key", "UseBind2", IntUseBind2, "Option");
-    GetINIBool("Key", "UseBind3", IntUseBind3, "Option");
-    UseBind1 = bool(IntUseBind1);
-    UseBind2 = bool(IntUseBind2);
-    UseBind3 = bool(IntUseBind3);
+    UseBind1 = true;
+    UseBind2 = true;
+    UseBind3 = true;
     // End:0x102
     if(Panel1 <= 0)
     {
@@ -101,16 +96,16 @@ function OnExitState(name a_NextStateName)
 
 function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Panels1, int Panels2, int Panels3)
 {
-    UseBind1 = Bind1;
-    UseBind2 = Bind2;
-    UseBind3 = Bind3;
+    UseBind1 = true;
+    UseBind2 = true;
+    UseBind3 = true;
     Panel1 = NormalizePanel(Panels1);
     Panel2 = NormalizePanel(Panels2);
     Panel3 = NormalizePanel(Panels3);
     SetOptionBool("Game", "EnterChatting", EnterChat);
-    SetINIBool("Key", "UseBind1", Bind1, "Option");
-    SetINIBool("Key", "UseBind2", Bind2, "Option");
-    SetINIBool("Key", "UseBind3", Bind3, "Option");
+    SetINIBool("Key", "UseBind1", true, "Option");
+    SetINIBool("Key", "UseBind2", true, "Option");
+    SetINIBool("Key", "UseBind3", true, "Option");
     SetINIInt("Key", "Panel1", Panel1, "Option");
     SetINIInt("Key", "Panel2", Panel2, "Option");
     SetINIInt("Key", "Panel3", Panel3, "Option");
