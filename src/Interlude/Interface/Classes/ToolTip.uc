@@ -468,17 +468,17 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                         AddTooltipItemBG("SaBG", "Special Ability: ", item.AdditionalName);
                         if(DescStart >= 0)
                         {
-                            AddTooltipPlainText(CleanTooltipDescription(Mid(item.Description, DescStart + 1)), 110, 140, 160, 1, true, false);
+                            AddTooltipPlainText(CleanTooltipDescription(Mid(item.Description, DescStart + 1)), 110, 140, 160, 0, true, false);
                         }
                         else
                         {
-                            AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 1, true, false);
+                            AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 0, true, false);
                         }
                     }
                     else
                     {
                         AddTooltipItemBG("", "Description ", item.AdditionalName);
-                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 1, true, false);
+                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 0, true, false);
                     }
                 }
                 // End:0xEBE
@@ -2092,7 +2092,7 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     m_Info.bLineBreak = true;
     m_Info.t_bDrawOneLine = true;
     m_Info.u_nTextureWidth = 300;
-    m_Info.u_nTextureHeight = 24;
+    m_Info.u_nTextureHeight = 20;
     m_Info.u_nTextureUWidth = 512;
     m_Info.u_nTextureUHeight = 32;
     m_Info.u_strTexture = "L2UI_CH3.ToolTip.tooltip_section_bg";
@@ -2102,7 +2102,7 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     {
         StartItem();
         m_Info.eType = DIT_TEXTURE;
-        m_Info.nOffSetY = -22;
+        m_Info.nOffSetY = -20;
         m_Info.nOffSetX = 3;
         m_Info.bLineBreak = true;
         m_Info.t_bDrawOneLine = true;
@@ -2115,7 +2115,7 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     }
     StartItem();
     m_Info.eType = DIT_TEXT;
-    m_Info.nOffSetY = -20;
+    m_Info.nOffSetY = -18;
     m_Info.nOffSetX = 3;
     if(Len(IconTexture) < 1)
     {
@@ -2131,7 +2131,7 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     {
         StartItem();
         m_Info.eType = DIT_TEXT;
-        m_Info.nOffSetY = -20;
+        m_Info.nOffSetY = -18;
         m_Info.t_bDrawOneLine = true;
         m_Info.t_color.R = byte(255);
         m_Info.t_color.G = 217;

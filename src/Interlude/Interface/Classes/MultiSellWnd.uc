@@ -1,6 +1,7 @@
 class MultiSellWnd extends UICommonAPI;
 
 const MULTISELLWND_DIALOG_OK = 1122;
+const MAX_CUSTOM_NEEDED_ITEMS = 4;
 
 struct NeededItem
 {
@@ -35,6 +36,8 @@ function OnLoad()
     RegisterEvent(2560);
     RegisterEvent(1710);
     pre_itemList = -1;
+    HideCustomNeededItemList();
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     return;
 }
 
@@ -79,6 +82,8 @@ function OnEvent(int Event_ID, string param)
 function OnShow()
 {
     Class'NWindow.UIAPI_EDITBOX'.static.Clear("MultiSellWnd.ItemCountEdit");
+    HideCustomNeededItemList();
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     return;
 }
 
@@ -109,10 +114,11 @@ function OnClickButton(string ControlName)
 function OnClickItem(string strID, int Index)
 {
     local int i, HaveCount;
-    local string param;
 
     Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.Clear("MultiSellWnd.ItemInfo");
     Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.Clear("MultiSellWnd.NeededItem");
+    HideCustomNeededItemList();
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     // End:0x3BF
     if(strID == "ItemList")
     {
@@ -124,18 +130,10 @@ function OnClickItem(string strID, int Index)
             while(i < m_itemLIst[Index].NeededItemList.Length)
             {
                 HaveCount = GetInventoryItemCount(m_itemLIst[Index].NeededItemList[i].Id);
-                param = "";
-                ParamAdd(param, "Name", m_itemLIst[Index].NeededItemList[i].Name);
-                ParamAdd(param, "ID", "-1");
-                ParamAdd(param, "Num", string(m_itemLIst[Index].NeededItemList[i].Count));
-                ParamAdd(param, "InventoryCount", string(HaveCount));
-                ParamAdd(param, "AllItemCount", string(HaveCount));
-                ParamAdd(param, "ShowCount", "1");
-                ParamAdd(param, "Icon", m_itemLIst[Index].NeededItemList[i].IconName);
-                ParamAdd(param, "Enchant", string(m_itemLIst[Index].NeededItemList[i].Enchant));
-                ParamAdd(param, "CrystalType", string(m_itemLIst[Index].NeededItemList[i].CrystalType));
-                ParamAdd(param, "ItemType", string(m_itemLIst[Index].NeededItemList[i].ItemType));
-                Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.AddData("MultiSellWnd.NeededItem", param);
+                if(i < MAX_CUSTOM_NEEDED_ITEMS)
+                {
+                    ShowCustomNeededItem(i, m_itemLIst[Index].NeededItemList[i], HaveCount);
+                }
                 ++i;
             }
             i = 0;
@@ -175,6 +173,75 @@ function OnClickItem(string strID, int Index)
     return;
 }
 
+function HideCustomNeededItemList()
+{
+    local int i;
+
+    i = 0;
+
+    while(i < MAX_CUSTOM_NEEDED_ITEMS)
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomIcon" $ string(i));
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomName" $ string(i));
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomCount" $ string(i));
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomHave" $ string(i));
+        ++i;
+    }
+    return;
+}
+
+function ShowCustomNeededItem(int RowIndex, NeededItem Item, int HaveCount)
+{
+    local string Prefix, IconName, NameText, CountText, HaveText;
+    local int CountWidth, CountHeight, RowY;
+    local Rect WindowRect;
+    local Color TextColor, HaveColor;
+
+    Prefix = "MultiSellWnd.NeededCustom";
+    IconName = Prefix $ "Icon" $ string(RowIndex);
+    NameText = Prefix $ "Name" $ string(RowIndex);
+    CountText = "x " $ MakeCostString(string(Item.Count));
+    HaveText = "(" $ MakeCostString(string(HaveCount)) $ ")";
+    RowY = 240 + (RowIndex * 35);
+
+    Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture(IconName, Item.IconName);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText(NameText, Item.Name);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText(Prefix $ "Count" $ string(RowIndex), CountText);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText(Prefix $ "Have" $ string(RowIndex), HaveText);
+
+    TextColor.R = byte(220);
+    TextColor.G = byte(220);
+    TextColor.B = byte(220);
+    TextColor.A = byte(255);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(NameText, TextColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(Prefix $ "Count" $ string(RowIndex), TextColor);
+
+    if(HaveCount >= Item.Count)
+    {
+        HaveColor.R = 120;
+        HaveColor.G = 160;
+        HaveColor.B = byte(255);
+    }
+    else
+    {
+        HaveColor.R = byte(255);
+        HaveColor.G = 90;
+        HaveColor.B = 90;
+    }
+    HaveColor.A = byte(255);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(Prefix $ "Have" $ string(RowIndex), HaveColor);
+
+    GetTextSize(CountText, CountWidth, CountHeight);
+    WindowRect = Class'NWindow.UIAPI_WINDOW'.static.GetRect("MultiSellWnd");
+    Class'NWindow.UIAPI_WINDOW'.static.MoveTo(Prefix $ "Have" $ string(RowIndex), WindowRect.nX + 316 + CountWidth + 5, WindowRect.nY + RowY);
+
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(IconName);
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(NameText);
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(Prefix $ "Count" $ string(RowIndex));
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(Prefix $ "Have" $ string(RowIndex));
+    return;
+}
+
 function Print()
 {
     local int i, j;
@@ -208,6 +275,8 @@ function Clear()
     Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.Clear("MultiSellWnd.ItemInfo");
     Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.Clear("MultiSellWnd.NeededItem");
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("MultiSellWnd.ItemList");
+    HideCustomNeededItemList();
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     return;
 }
 
