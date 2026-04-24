@@ -114,6 +114,7 @@ function OnClickKeyOk()
     Panel2 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2") + 1);
     Panel3 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3") + 1);
     script.ResetParam(UseEnterChat, UseBind1, UseBind2, UseBind3, Panel1, Panel2, Panel3);
+    Me.HideWindow();
     return;
 }
 

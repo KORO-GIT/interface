@@ -759,6 +759,7 @@ function OnRotateBtn()
         Expand1();
     }
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("ShortcutWnd." $ m_ShortcutWndName);
+    ReflowExpandedShortcutWnds();
     AutoPotionsWndPosition();
     return;
 }
@@ -1135,6 +1136,7 @@ function ExpandWnd()
         {
             Expand5();
         }
+        ReflowExpandedShortcutWnds();
         m_IsShortcutExpand = ExpandLevel < 5;
         HandleExpandButton();
     }
@@ -1198,6 +1200,34 @@ function Expand5()
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ShortcutWnd.ShortcutWndVertical_5");
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("ShortcutWnd.ShortcutWndHorizontal_5");
     HandleExpandButton();
+    return;
+}
+
+function ReflowExpandedShortcutWnds()
+{
+    local Rect BaseRect;
+
+    if(m_IsJoypad)
+    {
+        return;
+    }
+    BaseRect = Class'NWindow.UIAPI_WINDOW'.static.GetRect("ShortcutWnd." $ m_ShortcutWndName);
+    if(m_IsVertical)
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndVertical_1", BaseRect.nX - 46, BaseRect.nY);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndVertical_2", BaseRect.nX - 92, BaseRect.nY);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndVertical_3", BaseRect.nX - 138, BaseRect.nY);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndVertical_4", BaseRect.nX - 184, BaseRect.nY);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndVertical_5", BaseRect.nX - 230, BaseRect.nY);
+    }
+    else
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndHorizontal_1", BaseRect.nX, BaseRect.nY - 46);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndHorizontal_2", BaseRect.nX, BaseRect.nY - 92);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndHorizontal_3", BaseRect.nX, BaseRect.nY - 138);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndHorizontal_4", BaseRect.nX, BaseRect.nY - 184);
+        Class'NWindow.UIAPI_WINDOW'.static.MoveTo("ShortcutWnd.ShortcutWndHorizontal_5", BaseRect.nX, BaseRect.nY - 230);
+    }
     return;
 }
 
@@ -1270,6 +1300,7 @@ function OnClickExpandShortcutButton()
         }
     }
     AutoPotionsWndPosition();
+    ReflowExpandedShortcutWnds();
     return;
 }
 
