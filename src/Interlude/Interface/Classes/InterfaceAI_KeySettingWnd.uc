@@ -38,15 +38,27 @@ function LoadData()
     {
         Panel1 = 1;
     }
+    if(Panel1 > 6)
+    {
+        Panel1 = 6;
+    }
     // End:0x136
     if(Panel2 <= 0)
     {
         Panel2 = 1;
     }
+    if(Panel2 > 6)
+    {
+        Panel2 = 6;
+    }
     // End:0x148
     if(Panel3 <= 0)
     {
         Panel3 = 1;
+    }
+    if(Panel3 > 6)
+    {
+        Panel3 = 6;
     }
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("InterfaceAI_KeySettingWnd.checkUseBind1", UseBind1);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("InterfaceAI_KeySettingWnd.checkUseBind2", UseBind2);
@@ -98,11 +110,24 @@ function OnClickKeyCancel()
 
 function OnClickKeyOk()
 {
-    Panel1 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel1") + 1;
-    Panel2 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2") + 1;
-    Panel3 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3") + 1;
+    Panel1 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel1") + 1);
+    Panel2 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2") + 1);
+    Panel3 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3") + 1);
     script.ResetParam(UseEnterChat, UseBind1, UseBind2, UseBind3, Panel1, Panel2, Panel3);
     return;
+}
+
+function int NormalizePanel(int PanelIndex)
+{
+    if(PanelIndex < 1)
+    {
+        return 1;
+    }
+    if(PanelIndex > 6)
+    {
+        return 6;
+    }
+    return PanelIndex;
 }
 
 function OnClickCheckBox(string strID)

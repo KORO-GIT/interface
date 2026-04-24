@@ -905,6 +905,28 @@ function SetCurPage6(int a_nCurPage)
     return;
 }
 
+function int GetPhysicalPanelPage(int a_nPanel)
+{
+    switch(a_nPanel)
+    {
+        case 1:
+            return CurrentShortcutPage + 1;
+        case 2:
+            return CurrentShortcutPage2 + 1;
+        case 3:
+            return CurrentShortcutPage3 + 1;
+        case 4:
+            return CurrentShortcutPage4 + 1;
+        case 5:
+            return CurrentShortcutPage5 + 1;
+        case 6:
+            return CurrentShortcutPage6 + 1;
+        default:
+            break;
+    }
+    return CurrentShortcutPage + 1;
+}
+
 function bool IsShortcutIDInCurPage(int PageNum, int a_nShortcutID)
 {
     // End:0x15

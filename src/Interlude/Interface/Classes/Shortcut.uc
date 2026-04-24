@@ -16,6 +16,7 @@ var int Panel1;
 var int Panel2;
 var int Panel3;
 var MenuWnd MenuWnd;
+var ShortcutWnd ShortcutWndScript;
 
 function OnLoad()
 {
@@ -43,15 +44,27 @@ function LoadData()
     {
         Panel1 = 1;
     }
+    if(Panel1 > 6)
+    {
+        Panel1 = 6;
+    }
     // End:0x114
     if(Panel2 <= 0)
     {
         Panel2 = 1;
     }
+    if(Panel2 > 6)
+    {
+        Panel2 = 6;
+    }
     // End:0x126
     if(Panel3 <= 0)
     {
         Panel3 = 1;
+    }
+    if(Panel3 > 6)
+    {
+        Panel3 = 6;
     }
     return;
 }
@@ -91,16 +104,16 @@ function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Pane
     UseBind1 = Bind1;
     UseBind2 = Bind2;
     UseBind3 = Bind3;
-    Panel1 = Panels1;
-    Panel2 = Panels2;
-    Panel3 = Panels3;
+    Panel1 = NormalizePanel(Panels1);
+    Panel2 = NormalizePanel(Panels2);
+    Panel3 = NormalizePanel(Panels3);
     SetOptionBool("Game", "EnterChatting", EnterChat);
     SetINIBool("Key", "UseBind1", Bind1, "Option");
     SetINIBool("Key", "UseBind2", Bind2, "Option");
     SetINIBool("Key", "UseBind3", Bind3, "Option");
-    SetINIInt("Key", "Panel1", Panels1, "Option");
-    SetINIInt("Key", "Panel2", Panels2, "Option");
-    SetINIInt("Key", "Panel3", Panels3, "Option");
+    SetINIInt("Key", "Panel1", Panel1, "Option");
+    SetINIInt("Key", "Panel2", Panel2, "Option");
+    SetINIInt("Key", "Panel3", Panel3, "Option");
     return;
 }
 
@@ -165,8 +178,173 @@ function OpenHideWindow(string param)
     return;
 }
 
+function int NormalizePanel(int PanelIndex)
+{
+    if(PanelIndex < 1)
+    {
+        return 1;
+    }
+    if(PanelIndex > 6)
+    {
+        return 6;
+    }
+    return PanelIndex;
+}
+
+function int GetShortcutPageForPanel(int PanelIndex)
+{
+    PanelIndex = NormalizePanel(PanelIndex);
+    if(ShortcutWndScript == None)
+    {
+        ShortcutWndScript = ShortcutWnd(GetScript("ShortcutWnd"));
+    }
+    if(ShortcutWndScript == None)
+    {
+        return PanelIndex;
+    }
+    return ShortcutWndScript.GetPhysicalPanelPage(PanelIndex);
+}
+
+function UsePanelShortcut(int PanelIndex, int SlotIndex, bool bForce)
+{
+    local int PageIndex;
+
+    PageIndex = GetShortcutPageForPanel(PanelIndex);
+    if(bForce)
+    {
+        ExecuteCommand((("/useshortcutforce " $ string(PageIndex)) $ " ") $ string(SlotIndex));        
+    }
+    else
+    {
+        ExecuteCommand((("/useshortcut " $ string(PageIndex)) $ " ") $ string(SlotIndex));
+    }
+    return;
+}
+
+function bool GetShortcutBind(string KeyName, out int BindIndex, out int SlotIndex)
+{
+    if(Left(KeyName, 1) == "F")
+    {
+        BindIndex = 3;
+        SlotIndex = int(Mid(KeyName, 1));
+    }
+    else
+    {
+        switch(KeyName)
+        {
+            case "Q":
+                BindIndex = 2;
+                SlotIndex = 1;
+                break;
+            case "W":
+                BindIndex = 2;
+                SlotIndex = 2;
+                break;
+            case "E":
+                BindIndex = 2;
+                SlotIndex = 3;
+                break;
+            case "R":
+                BindIndex = 2;
+                SlotIndex = 4;
+                break;
+            case "T":
+                BindIndex = 2;
+                SlotIndex = 5;
+                break;
+            case "Y":
+                BindIndex = 2;
+                SlotIndex = 6;
+                break;
+            case "U":
+                BindIndex = 2;
+                SlotIndex = 7;
+                break;
+            case "I":
+                BindIndex = 2;
+                SlotIndex = 8;
+                break;
+            case "O":
+                BindIndex = 2;
+                SlotIndex = 9;
+                break;
+            case "P":
+                BindIndex = 2;
+                SlotIndex = 10;
+                break;
+            case "[":
+                BindIndex = 2;
+                SlotIndex = 11;
+                break;
+            case "]":
+                BindIndex = 2;
+                SlotIndex = 12;
+                break;
+            default:
+                BindIndex = 1;
+                SlotIndex = int(KeyName);
+                break;
+        }
+    }
+    return (SlotIndex >= 1) && (SlotIndex <= 12);
+}
+
+function bool TryUsePanelShortcut(string Parametr)
+{
+    local bool bForce;
+    local string KeyName;
+    local int BindIndex, SlotIndex;
+
+    if(Left(Parametr, 20) == "UserShorcutKeyForce_")
+    {
+        bForce = true;
+        KeyName = Mid(Parametr, 20);        
+    }
+    else if(Left(Parametr, 15) == "UserShorcutKey_")
+    {
+        bForce = false;
+        KeyName = Mid(Parametr, 15);        
+    }
+    else
+    {
+        return false;
+    }
+    if(!GetShortcutBind(KeyName, BindIndex, SlotIndex))
+    {
+        return false;
+    }
+    switch(BindIndex)
+    {
+        case 1:
+            if(UseBind1)
+            {
+                UsePanelShortcut(Panel1, SlotIndex, bForce);
+            }
+            break;
+        case 2:
+            if(UseBind2)
+            {
+                UsePanelShortcut(Panel2, SlotIndex, bForce);
+            }
+            break;
+        case 3:
+            if(UseBind3)
+            {
+                UsePanelShortcut(Panel3, SlotIndex, bForce);
+            }
+            break;
+        default:
+            break;
+    }
+    return true;
+}
+
 function ShorcutKey(string Parametr)
 {
+    if(TryUsePanelShortcut(Parametr))
+    {
+        return;
+    }
     switch(Parametr)
     {
         // End:0x4C
