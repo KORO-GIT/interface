@@ -280,14 +280,15 @@ function HandleTradeAddItem(string param)
     local string strDest;
     local ItemInfo ItemInfo, tempInfo;
     local int Index;
-    local bool bMyList;
+    local bool bShouldApplyLocalDetails;
 
     ParseString(param, "destination", strDest);
     ParamToItemInfo(param, ItemInfo);
     // End:0x67
     if(strDest == "inventoryList")
     {
-        strDest = "TradeWnd.InventoryList";        
+        strDest = "TradeWnd.InventoryList";
+        bShouldApplyLocalDetails = true;
     }
     else
     {
@@ -295,7 +296,7 @@ function HandleTradeAddItem(string param)
         if(strDest == "myList")
         {
             strDest = "TradeWnd.MyList";
-            bMyList = true;
+            bShouldApplyLocalDetails = true;
             Class'NWindow.UIAPI_INVENWEIGHT'.static.ReduceWeight("TradeWnd.InvenWeight", ItemInfo.ItemNum * ItemInfo.Weight);            
         }
         else
@@ -308,7 +309,7 @@ function HandleTradeAddItem(string param)
             }
         }
     }
-    if(bMyList)
+    if(bShouldApplyLocalDetails)
     {
         ApplyLocalTradeItemDetails(ItemInfo);
     }
@@ -351,6 +352,7 @@ function HandleTradeUpdateInventoryItem(string param)
 
     ParseString(param, "type", Type);
     ParamToItemInfo(param, Info);
+    ApplyLocalTradeItemDetails(Info);
     RememberLocalTradeItem(Info);
     // End:0x64
     if(Type == "add")
