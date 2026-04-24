@@ -160,6 +160,10 @@ function HandleShortcutCommand(string a_Param)
         {
             ShorcutKey(Command);
         }
+        if(Left(Command, 15) == "ShortcutCustom_")
+        {
+            ShorcutKey(Command);
+        }
     }
     return;
 }
@@ -272,10 +276,12 @@ function bool GetShortcutBind(string KeyName, out int BindIndex, out int SlotInd
                 BindIndex = 2;
                 SlotIndex = 10;
                 break;
+            case "LB":
             case "[":
                 BindIndex = 2;
                 SlotIndex = 11;
                 break;
+            case "RB":
             case "]":
                 BindIndex = 2;
                 SlotIndex = 12;
@@ -299,6 +305,11 @@ function bool TryUsePanelShortcut(string Parametr)
     {
         bForce = true;
         KeyName = Mid(Parametr, 20);        
+    }
+    else if(Left(Parametr, 15) == "ShortcutCustom_")
+    {
+        bForce = false;
+        KeyName = Mid(Parametr, 15);        
     }
     else if(Left(Parametr, 15) == "UserShorcutKey_")
     {
