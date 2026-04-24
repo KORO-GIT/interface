@@ -2063,6 +2063,8 @@ function AddTooltipItemOptionNoLineYellow(int TitleID, string Content, bool bTit
 
 function AddTooltipItemBG(string Icon, string Name, string name2)
 {
+    local string IconTexture;
+
     StartItem();
     m_Info.eType = DIT_TEXTURE;
     m_Info.bLineBreak = true;
@@ -2071,9 +2073,10 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
     m_Info.u_nTextureHeight = 24;
     m_Info.u_nTextureUWidth = 512;
     m_Info.u_nTextureUHeight = 32;
-    m_Info.u_strTexture = "Interface.Tooltip.TooltipSectionBG";
+    m_Info.u_strTexture = "L2UI_CH3.ToolTip.tooltip_section_bg";
     EndItem();
-    if(Len(Icon) > 0)
+    IconTexture = GetTooltipSectionIconTexture(Icon);
+    if(Len(IconTexture) > 0)
     {
         StartItem();
         m_Info.eType = DIT_TEXTURE;
@@ -2085,7 +2088,7 @@ function AddTooltipItemBG(string Icon, string Name, string name2)
         m_Info.u_nTextureHeight = 18;
         m_Info.u_nTextureUWidth = 32;
         m_Info.u_nTextureUHeight = 32;
-        m_Info.u_strTexture = "Interface.Tooltip." $ Icon;
+        m_Info.u_strTexture = IconTexture;
         EndItem();
     }
     StartItem();
@@ -2188,9 +2191,26 @@ function AddTooltipItemBar(int Y)
     m_Info.u_nTextureHeight = 1;
     m_Info.u_nTextureUWidth = 512;
     m_Info.u_nTextureUHeight = 4;
-    m_Info.u_strTexture = "Interface.Tooltip.TooltipLine";
+    m_Info.u_strTexture = "L2UI_CH3.ToolTip.tooltip_line";
     EndItem();
     return;
+}
+
+function string GetTooltipSectionIconTexture(string Icon)
+{
+    switch(Icon)
+    {
+        case "LifeBG":
+            return "L2UI_CH3.ToolTip.tooltip_icon_augment";
+        case "SaBG":
+            return "L2UI_CH3.ToolTip.tooltip_icon_sa";
+        case "setBG":
+            return "L2UI_CH3.ToolTip.tooltip_icon_set";
+        case "ClockBG":
+            return "L2UI_CH3.ToolTip.tooltip_icon_clock";
+        default:
+            return "";
+    }
 }
 
 function SetTooltipItemColor(int R, int G, int B, int offset)
