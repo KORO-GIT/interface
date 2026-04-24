@@ -29,6 +29,55 @@ $baselineDir = Join-Path $backupRoot 'baseline_original'
 $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
 $deployDir = Join-Path $backupRoot ("before_deploy_" + $stamp)
 $defaultUtxPath = Join-Path $systexturesDir 'default.utx'
+$windowsInfoPath = Join-Path $systemDir 'WindowsInfo.ini'
+
+function Remove-IniSections {
+    param(
+        [string]$Path,
+        [string[]]$Sections,
+        [string]$BackupRoot
+    )
+
+    if(-not (Test-Path -LiteralPath $Path)) {
+        return $false
+    }
+
+    $sectionLookup = @{}
+    foreach($section in $Sections) {
+        $sectionLookup[$section] = $true
+    }
+
+    $lines = [System.IO.File]::ReadAllLines($Path, [System.Text.Encoding]::Default)
+    $output = New-Object 'System.Collections.Generic.List[string]'
+    $skip = $false
+    $changed = $false
+
+    foreach($line in $lines) {
+        if($line -match '^\s*\[([^\]]+)\]\s*$') {
+            $skip = $sectionLookup.ContainsKey($Matches[1])
+            if($skip) {
+                $changed = $true
+                continue
+            }
+        }
+
+        if(-not $skip) {
+            $output.Add($line)
+        }
+    }
+
+    if($changed) {
+        $backupTarget = Join-Path $BackupRoot 'system\WindowsInfo.ini'
+        $backupParent = Split-Path -Parent $backupTarget
+        New-Item -ItemType Directory -Force -Path $backupParent | Out-Null
+        if(-not (Test-Path -LiteralPath $backupTarget)) {
+            Copy-Item -LiteralPath $Path -Destination $backupTarget -Force
+        }
+        [System.IO.File]::WriteAllLines($Path, $output.ToArray(), [System.Text.Encoding]::Default)
+    }
+
+    return $changed
+}
 
 foreach($dir in @($systemDir, $systexturesDir)) {
     if(-not (Test-Path -LiteralPath $dir)) {
@@ -91,6 +140,11 @@ foreach($file in $deployFiles) {
 foreach($file in $deployFiles) {
     Copy-Item -LiteralPath $file.Src -Destination $file.Dst -Force
 }
+
+$cleanedWindowsInfo = Remove-IniSections `
+    -Path $windowsInfoPath `
+    -Sections @('ShortcutWndVertical_4', 'ShortcutWndVertical_5') `
+    -BackupRoot $deployDir
 
 if($PatchEnglishFlag) {
     if(-not (Test-Path -LiteralPath $defaultUtxPath)) {
@@ -159,5 +213,9 @@ Get-FileHash -LiteralPath $hashTargets -Algorithm SHA256 |
     ForEach-Object {
         Add-Content -LiteralPath $manifest -Encoding ASCII -Value ($_.Path + ' | ' + $_.Hash)
     }
+
+Add-Content -LiteralPath $manifest -Encoding ASCII -Value ''
+Add-Content -LiteralPath $manifest -Encoding ASCII -Value '[IniSanitizer]'
+Add-Content -LiteralPath $manifest -Encoding ASCII -Value ('WindowsInfoRemovedShortcutWndVertical4And5=' + $cleanedWindowsInfo)
 
 Get-Item -LiteralPath $manifest
