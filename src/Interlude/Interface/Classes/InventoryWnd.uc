@@ -895,7 +895,6 @@ function function24(ItemInfo info_6)
 {
     local ItemWindowHandle item;
     local ItemInfo info_5;
-    local AutoShotItemWnd AutoShotItemWnd;
     local bool bool_1;
     local ItemInfo info_9, info_10, info_3, info_4, info_7, info_8;
 
@@ -1116,12 +1115,6 @@ function function24(ItemInfo info_6)
     {
         item.Clear();
         item.AddItem(info_6);
-    }
-    // End:0x6FC
-    if(item_3[5].GetItem(0, info_5))
-    {
-        AutoShotItemWnd = AutoShotItemWnd(GetScript("AutoShotItemWnd"));
-        AutoShotItemWnd.GetShotItemInfo(info_5.CrystalType);
     }
     return;
 }

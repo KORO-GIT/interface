@@ -14,8 +14,6 @@ var int m_iPrevMusicTick;
 var int m_iPrevSystemTick;
 var int m_iPrevTutorialTick;
 var bool m_bPartyMatchRoomState;
-var AutoShotItemWnd AutoShotItemWnd;
-var CheckBoxHandle Cb_AutoSS;
 
 function ResetRefreshRate(optional int a_nWidth, optional int a_nHeight)
 {
@@ -105,10 +103,6 @@ function OnLoad()
     InitGameOption();
     InitInterfaceOption();
     bShow = false;
-    Cb_AutoSS = CheckBoxHandle(GetHandle("OptionWnd.Cb_AutoSS"));
-    AutoShotItemWnd = AutoShotItemWnd(GetScript("AutoShotItemWnd"));
-    Cb_AutoSS.SetTitle(" Show Auto SoulShot/SpiritShot");
-    Cb_AutoSS.SetTooltipCustomType(MakeTooltipSimpleText("Open Auto SoulShot/SpiritShot Window"));
     return;
 }
 
@@ -775,62 +769,6 @@ function OnClickCheckBox(string strID)
             }
             // End:0xF72
             break;
-        // End:0x492
-        case "Cb_HideSkillSpam":
-            // End:0x468
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillSpamWnd.Cb_HideSkillSpam"))
-            {
-                SetOptionBool("Custom", "AutoSkillSpamWnd", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "AutoSkillSpamWnd", false);
-            }
-            HandleHideSkillSpam();
-            // End:0xF72
-            break;
-        // End:0x532
-        case "Cb_HideSkillSpamBox":
-            // End:0x507
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillSpamWnd.Cb_HideSkillSpamBox"))
-            {
-                SetOptionBool("Custom", "HideSpamSkillsBox", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "HideSpamSkillsBox", false);
-            }
-            HandleHideSkillSpamBox();
-            // End:0xF72
-            break;
-        // End:0x5BC
-        case "Cb_HideAutoBuff":
-            // End:0x596
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillWnd.Cb_HideAutoBuff"))
-            {
-                SetOptionBool("Custom", "AutoSkillWnd", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "AutoSkillWnd", false);
-            }
-            HandleHideAutoBuff();
-            // End:0xF72
-            break;
-        // End:0x656
-        case "Cb_HideAutoBuffBox":
-            // End:0x62D
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillSpamWnd.Cb_HideAutoBuffBox"))
-            {
-                SetOptionBool("Custom", "HideAutoBuffBox", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "HideAutoBuffBox", false);
-            }
-            HandleHideAutoBuffBox();
-            // End:0xF72
-            break;
         // End:0x703
         case "Cb_HideAssist":
             // End:0x6CB
@@ -884,34 +822,6 @@ function OnClickCheckBox(string strID)
                 SetOptionBool("Custom", "ChatTransparency", false);
             }
             HandleChatTransparency();
-            // End:0xF72
-            break;
-        // End:0x942
-        case "Cb_HideAutoPotion":
-            // End:0x91A
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoPotionsWnd.Cb_HideAutoPotion"))
-            {
-                SetOptionBool("Custom", "HideAutoPotion", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "HideAutoPotion", false);
-            }
-            HandleHideAutoPotion();
-            // End:0xF72
-            break;
-        // End:0x9DD
-        case "Cb_HideAutoPotionBox":
-            // End:0x9B2
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.Cb_HideAutoPotionBox"))
-            {
-                SetOptionBool("Custom", "HideAutoPotionBox", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "HideAutoPotionBox", false);
-            }
-            HandleHideAutoPotionBox();
             // End:0xF72
             break;
         // End:0xA58
@@ -1035,22 +945,6 @@ function OnClickCheckBox(string strID)
             else
             {
                 SetOptionBool("Custom", "IgnoreAggr", false);
-            }
-            // End:0xF72
-            break;
-        // End:0xF6F
-        case "Cb_AutoSS":
-            // End:0xF34
-            if(Cb_AutoSS.IsChecked())
-            {
-                SetOptionBool("Options", "AutoSS", true);
-                Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AutoShotItemWnd");
-                AutoShotItemWnd.GetShotItemInfo();                
-            }
-            else
-            {
-                SetOptionBool("Options", "AutoSS", false);
-                Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoShotItemWnd");
             }
             // End:0xF72
             break;
@@ -1608,7 +1502,6 @@ function OnEvent(int a_EventID, string a_Param)
         // End:0xDD
         case 150:
             ExecuteEvent(11223344);
-            LoadingINI();
             // End:0xE0
             break;
         // End:0xFFFF
@@ -1698,20 +1591,6 @@ function InitInterfaceOption()
     bOption = GetOptionBool("Custom", "SkillCastingBox");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.CB_SkillCastingBox", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.CB_SkillCastingBox", " Display Skill Casting Box");
-    bOption = GetOptionBool("Custom", "AutoSkillSpamWnd");
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_HideSkillSpam", bOption);
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_HideSkillSpam", " Hide Skills Spam");
-    bOption = GetOptionBool("Custom", "AutoSkillWnd");
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_HideAutoBuff", bOption);
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_HideAutoBuff", " Hide Auto Buff");
-    bOption = GetOptionBool("Custom", "HideSpamSkillsBox");
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_HideSkillSpamBox", bOption);
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_HideSkillSpamBox", " Skills Spam: Hide Box");
-    HandleHideSkillSpamBox();
-    bOption = GetOptionBool("Custom", "HideAutoBuffBox");
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_HideAutoBuffBox", bOption);
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_HideAutoBuffBox", " Auto Buff: Hide Box");
-    HandleHideAutoBuffBox();
     bOption = GetOptionBool("Custom", "NoblesseAssist");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.assistIfNoblesse", bOption);
     bOption = GetOptionBool("Custom", "BuffPotions");
@@ -1737,13 +1616,6 @@ function InitInterfaceOption()
     bOption = GetOptionBool("Custom", "IgnoreAggr");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_IgnoreAggr", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_IgnoreAggr", " Ignore Aggression");
-    bOption = GetOptionBool("Custom", "HideAutoPotion");
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_HideAutoPotion", bOption);
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_HideAutoPotion", " Hide Auto Potion");
-    bOption = GetOptionBool("Custom", "HideAutoPotionBox");
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_HideAutoPotionBox", bOption);
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_HideAutoPotionBox", " Hide Auto Potion");
-    HandleHideAutoPotionBox();
     bOption = GetOptionBool("Custom", "ShortcutTransparency");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ShortcutTransparency", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_ShortcutTransparency", " Hide Shortcut");
@@ -1760,64 +1632,6 @@ function InitInterfaceOption()
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ChatTransparency", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_ChatTransparency", " Chat Transparency");
     HandleChatTransparency();
-    return;
-}
-
-function HandleHideSpamSkill()
-{
-    local ShortcutWnd script;
-
-    script = ShortcutWnd(GetScript("ShortcutWnd"));
-    // End:0x77
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillSpamWnd.Cb_HideSkillSpam"))
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoSkillSpamWnd");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AutoSkillSpamWnd");
-    }
-    script.AutoPotionsWndPosition();
-    return;
-}
-
-function HandleHideAutoPotion()
-{
-    local ShortcutWnd script;
-
-    script = ShortcutWnd(GetScript("ShortcutWnd"));
-    // End:0x77
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoPotionsWnd.Cb_HideAutoPotionBox"))
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoPotionsWnd");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AutoPotionsWnd");
-    }
-    script.AutoPotionsWndPosition();
-    return;
-}
-
-function HandleHideSkillSpamBox()
-{
-    // End:0x14B
-    if((GetOptionBool("Custom", "HideSpamSkillsBox") == true))
-    {
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_1", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_2", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_3", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_4", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_5", "Was.Null");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_1", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_2", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_3", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_4", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillSpamWnd.SpamBackTex_5", "Was.SkillBox");
-    }
     return;
 }
 
@@ -1850,92 +1664,6 @@ function HandleHideShowTime()
         Class'NWindow.UIAPI_TEXTBOX'.static.HideWindow("MenuWnd.Time");
         Class'NWindow.UIAPI_TEXTBOX'.static.HideWindow("MenuWnd.Current");
     }
-    return;
-}
-
-function HandleHideAutoPotionBox()
-{
-    // End:0x12A
-    if((GetOptionBool("Custom", "HideAutoPotionBox") == true))
-    {
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxMP1", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxHP1", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxCP1", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.ElixirBoxCP1", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.ElixirBoxHP1", "Was.Null");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxMP1", "Was.Potions_BoxMP");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxHP1", "Was.Potions_BoxHP");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.BoxCP1", "Was.Potions_BoxCP");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.ElixirBoxCP1", "Was.Potions_Elixir_BoxCP");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoPotionsWnd.ElixirBoxHP1", "Was.Potions_Elixir_BoxHP");
-    }
-    return;
-}
-
-function HandleHideAutoBuffBox()
-{
-    // End:0x1B4
-    if((GetOptionBool("Custom", "HideAutoBuffBox") == true))
-    {
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_1", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_2", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_3", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_4", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_5", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_6", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_7", "Was.Null");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_8", "Was.Null");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_1", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_2", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_3", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_4", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_5", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_6", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_7", "Was.SkillBox");
-        Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("AutoSkillWnd.BackTex_8", "Was.SkillBox");
-    }
-    return;
-}
-
-function HandleHideSkillSpam()
-{
-    local ShortcutWnd script;
-
-    script = ShortcutWnd(GetScript("ShortcutWnd"));
-    // End:0x77
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillSpamWnd.Cb_HideSkillSpam"))
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoSkillSpamWnd");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AutoSkillSpamWnd");
-    }
-    script.AutoPotionsWndPosition();
-    return;
-}
-
-function HandleHideAutoBuff()
-{
-    local ShortcutWnd script;
-
-    script = ShortcutWnd(GetScript("ShortcutWnd"));
-    // End:0x6E
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("AutoSkillWnd.Cb_HideAutoBuff"))
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoSkillWnd");        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AutoSkillWnd");
-    }
-    script.AutoPotionsWndPosition();
     return;
 }
 
@@ -2415,26 +2143,6 @@ function SetShortcutTransparencyNum()
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_3.F10Tex", "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_A10");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_3.F11Tex", "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_A11");
         Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("ShortcutWnd.ShortcutWndVertical_3.F12Tex", "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_A12");
-    }
-    return;
-}
-
-function LoadingINI()
-{
-    local bool Index;
-
-    Index = GetOptionBool("Options", "AutoSS");
-    // End:0x6C
-    if(Index == true)
-    {
-        Cb_AutoSS.SetCheck(true);
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("AutoShotItemWnd");
-        AutoShotItemWnd.GetShotItemInfo();        
-    }
-    else
-    {
-        Cb_AutoSS.SetCheck(false);
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("AutoShotItemWnd");
     }
     return;
 }

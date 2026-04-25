@@ -87,7 +87,6 @@ function OnEnterState(name a_PreStateName)
 {
     ArrangeWnd();
     ExpandWnd();
-    AutoPotionsWndPosition();
     // End:0x27
     if(a_PreStateName == 'LoadingState')
     {
@@ -760,7 +759,6 @@ function OnRotateBtn()
     }
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("ShortcutWnd." $ m_ShortcutWndName);
     ReflowExpandedShortcutWnds();
-    AutoPotionsWndPosition();
     return;
 }
 
@@ -1299,7 +1297,6 @@ function OnClickExpandShortcutButton()
             }
         }
     }
-    AutoPotionsWndPosition();
     ReflowExpandedShortcutWnds();
     return;
 }
@@ -1316,138 +1313,6 @@ function HandleExpandButton()
     {
         HideWindow(("ShortcutWnd." $ m_ShortcutWndName) $ ".ExpandButton");
         ShowWindow(("ShortcutWnd." $ m_ShortcutWndName) $ ".ReduceButton");
-    }
-    return;
-}
-
-function AutoPotionsWndPosition()
-{
-    // End:0x821
-    if(!m_IsVertical)
-    {
-        // End:0x13A
-        if(IsShowWindow("ShortcutWndHorizontal_5"))
-        {
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopRight", "TopRight", -1, -29);
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopLeft", "TopLeft", 101, -29);
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopLeft", "TopLeft", 16, -29);
-            if(GetOptionBool("Custom", "HideAutoBuff"))
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_5", "TopLeft", "TopLeft", 101, -29);                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-            }
-        }
-        else
-        {
-            if(IsShowWindow("ShortcutWndHorizontal_4"))
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopRight", "TopRight", -1, -29);
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopLeft", "TopLeft", 101, -29);
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopLeft", "TopLeft", 16, -29);
-                if(GetOptionBool("Custom", "HideAutoBuff"))
-                {
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_4", "TopLeft", "TopLeft", 101, -29);                    
-                }
-                else
-                {
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-                }
-            }
-            else
-            {
-        // End:0x213
-        if(IsShowWindow("ShortcutWndHorizontal_3"))
-        {
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_3", "TopRight", "TopRight", -1, -29);
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_3", "TopLeft", "TopLeft", 101, -29);
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_3", "TopLeft", "TopLeft", 16, -29);
-            // End:0x1C9
-            if(GetOptionBool("Custom", "HideAutoBuff"))
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_3", "TopLeft", "TopLeft", 101, -29);                
-            }
-            else
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-            }            
-        }
-        else
-        {
-            // End:0x41B
-            if(IsShowWindow("ShortcutWndHorizontal_2"))
-            {
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_2", "TopRight", "TopRight", -1, -29);
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_2", "TopLeft", "TopLeft", 101, -29);
-                Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_2", "TopLeft", "TopLeft", 16, -29);
-                // End:0x3D1
-                if(GetOptionBool("Custom", "HideAutoBuff"))
-                {
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_2", "TopLeft", "TopLeft", 101, -29);                    
-                }
-                else
-                {
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-                }                
-            }
-            else
-            {
-                // End:0x623
-                if(IsShowWindow("ShortcutWndHorizontal_1"))
-                {
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal_1", "TopRight", "TopRight", -1, -29);
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal_1", "TopLeft", "TopLeft", 101, -29);
-                    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal_1", "TopLeft", "TopLeft", 16, -29);
-                    // End:0x5D9
-                    if(GetOptionBool("Custom", "HideAutoBuff"))
-                    {
-                        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal_1", "TopLeft", "TopLeft", 101, -29);                        
-                    }
-                    else
-                    {
-                        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-                    }                    
-                }
-                else
-                {
-                    // End:0x81E
-                    if(IsShowWindow("ShortcutWndHorizontal"))
-                    {
-                        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "ShortcutWnd.ShortcutWndHorizontal", "TopRight", "TopRight", -1, -29);
-                        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "ShortcutWnd.ShortcutWndHorizontal", "TopLeft", "TopLeft", 101, -29);
-                        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "ShortcutWnd.ShortcutWndHorizontal", "TopLeft", "TopLeft", 16, -29);
-                        // End:0x7D7
-                        if(GetOptionBool("Custom", "HideAutoBuff"))
-                        {
-                            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "ShortcutWnd.ShortcutWndHorizontal", "TopLeft", "TopLeft", 101, -29);                            
-                        }
-                        else
-                        {
-                            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-                        }
-                    }
-                }
-            }
-        }        
-            }
-        }
-    }
-    else
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoPotionsWnd", "Menu", "TopRight", "TopRight", -180, -55);
-        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillWnd", "Menu", "TopRight", "TopRight", -230, -25);
-        Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoShotItemWnd", "Menu", "TopRight", "TopRight", -402, -86);
-        // End:0x950
-        if(GetOptionBool("Custom", "HideAutoBuff"))
-        {
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "Menu", "TopRight", "TopRight", -230, -25);            
-        }
-        else
-        {
-            Class'NWindow.UIAPI_WINDOW'.static.SetAnchor("AutoSkillSpamWnd", "AutoSkillWnd", "TopLeft", "TopLeft", 0, -30);
-        }
     }
     return;
 }
