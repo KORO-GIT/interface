@@ -62,7 +62,6 @@ function OnLoad()
     RegisterEvent(260);
     RegisterEvent(180);
     RegisterEvent(1710);
-    RegisterEvent(260);
     RegisterEvent(1900);
     function1();
     function2();

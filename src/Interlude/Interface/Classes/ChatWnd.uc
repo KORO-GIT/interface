@@ -585,7 +585,6 @@ function ShowUnionCommanderMessgage(string Msg)
         MsgTemp2 = Right(Msg, maxLength - 35);
         Msg = (MsgTemp $ "#") $ MsgTemp2;
     }
-    Debug(Msg);
     // End:0x17E
     if(Len(Msg) > 0)
     {

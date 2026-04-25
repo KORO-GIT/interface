@@ -1687,7 +1687,7 @@ function swapTargetSelect(int clanNo)
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("ClanDrawerWnd.Clan1_ChangeMemberKnightHoodTXT1", MakeFullSystemMsg(GetSystemMessage(1907), m_currentName, ""));
     i = 0;
 
-    while(i <= script.m_memberList[clanNo].m_array.Length)
+    while(i < script.m_memberList[clanNo].m_array.Length)
     {
         // End:0x1D8
         if(script.m_memberList[clanNo].m_array[i].sName != script.m_CurrentclanMasterReal)

@@ -849,7 +849,6 @@ function SetCurPage4(int a_nCurPage)
 
     while(i < 12)
     {
-        Debug((((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_3") $ ".Shortcut") $ string(i + 1)) @ string(nShortcutID));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_3") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;
@@ -873,7 +872,6 @@ function SetCurPage5(int a_nCurPage)
 
     while(i < 12)
     {
-        Debug((((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".Shortcut") $ string(i + 1)) @ string(nShortcutID));
         Class'NWindow.UIAPI_SHORTCUTITEMWINDOW'.static.UpdateShortcut(((((((("ShortcutWnd." $ m_ShortcutWndName) $ ".") $ m_ShortcutWndName) $ "_1.") $ m_ShortcutWndName) $ "_4") $ ".Shortcut") $ string(i + 1), nShortcutID);
         nShortcutID++;
         ++i;

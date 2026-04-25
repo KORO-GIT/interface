@@ -14386,7 +14386,6 @@ function SortItem(ItemWindowHandle Handle)
 
     local ItemInfo info_15;
 
-    Debug("Sorting Inven Item");
     int_5 = 0;
     int_6 = 0;
     int_7 = 0;

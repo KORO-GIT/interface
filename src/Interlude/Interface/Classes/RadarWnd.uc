@@ -81,7 +81,6 @@ function FadeOut()
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("movingtext");
         globalyloc = 0;
         global_move_val = 0;
-        Debug("thisisrunningright:" $ string(globalyloc / 2));
         globalAlphavalue1 = 0;
         onshowstat1 = false;
         onshowstat2 = false;

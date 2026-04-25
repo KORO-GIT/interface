@@ -117,7 +117,6 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
     FontColor.R = byte(ColorR);
     FontColor.G = byte(ColorG);
     FontColor.B = byte(ColorB);
-    Debug("totalval" @ TextValue);
     i = 1;
 
     while(i <= TotalLength)
@@ -149,8 +148,6 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
 
         ++i;
     }
-    Debug(TextValue1);
-    Debug(TextValue2);
     WndName = "OnScreenMessageWnd" $ string(WndNum);
     TextBoxName = (WndName $ ".TextBox") $ string(WndNum);
     ShadowBoxName = ((WndName $ ".TextBox") $ string(WndNum)) $ "-0";
