@@ -63,6 +63,7 @@ function OnLoad()
     RegisterEvent(180);
     RegisterEvent(1710);
     RegisterEvent(260);
+    RegisterEvent(1900);
     function1();
     function2();
     function3();
@@ -177,6 +178,11 @@ function OnEvent(int int_3, string string_2)
             function38(string_2);
             // End:0xEF
             break;
+        case 1900:
+            UpdateFastDeleteButton();
+            UpdateTrashButtonTooltip();
+            // End:0xEF
+            break;
         // End:0xFFFF
         default:
             // End:0xEF
@@ -267,7 +273,14 @@ function OnClickButton(string string_3)
             break;
         // End:0x14E
         case "TrashButton":
-            function13();
+            if(IsKeyDown(IK_Alt))
+            {
+                ClearAutoTrashList();
+            }
+            else
+            {
+                function13();
+            }
             // End:0x1DD
             break;
         // End:0x1DA
@@ -1184,6 +1197,7 @@ function function29()
 function function30(string string_2)
 {
     local ItemInfo info_4;
+    local bool bCanAutoTrash;
 
     ParamToItemInfo(string_2, info_4);
     // End:0x2C
@@ -1193,6 +1207,7 @@ function function30(string string_2)
     }
     else
     {
+        bCanAutoTrash = !function16(info_4);
         // End:0x51
         if(function16(info_4))
         {
@@ -1223,6 +1238,10 @@ function function30(string string_2)
                 }
             }
         }
+    }
+    if(bCanAutoTrash)
+    {
+        TryAutoTrashItem(info_4);
     }
     return;
 }
@@ -1262,6 +1281,7 @@ function function34(string string_2)
     local string string_1;
     local ItemInfo info_3;
     local int int_4;
+    local bool bCanAutoTrash;
 
     ParseString(string_2, "type", string_1);
     ParamToItemInfo(string_2, info_3);
@@ -1275,6 +1295,7 @@ function function34(string string_2)
         }
         else
         {
+            bCanAutoTrash = !function16(info_3);
             // End:0xC3
             if(function16(info_3))
             {
@@ -1404,6 +1425,7 @@ function function34(string string_2)
             }
             else
             {
+                bCanAutoTrash = !function16(info_3);
                 // End:0x488
                 if(function16(info_3))
                 {
@@ -1534,6 +1556,10 @@ function function34(string string_2)
                 }
             }
         }
+    }
+    if(bCanAutoTrash)
+    {
+        TryAutoTrashItem(info_3);
     }
     function6();
     function7();
@@ -2033,14 +2059,14 @@ function CustomTooltip MakeFastDeleteTooltip()
     info_3.eType = DIT_TEXT;
     if(m_FastDeleteEnabled)
     {
-        info_3.t_strText = "Fast delete: ON";
+        info_3.t_strText = GetLocalizedText("Fast delete: ON", "193,251,241,242,240,238,229,32,243,228,224,235,229,237,232,229,58,32,194,202,203");
         info_3.t_color.R = 120;
         info_3.t_color.G = 220;
         info_3.t_color.B = 120;
     }
     else
     {
-        info_3.t_strText = "Fast delete: OFF";
+        info_3.t_strText = GetLocalizedText("Fast delete: OFF", "193,251,241,242,240,238,229,32,243,228,224,235,229,237,232,229,58,32,194,219,202,203");
         info_3.t_color.R = 220;
         info_3.t_color.G = 120;
         info_3.t_color.B = 120;
@@ -2050,7 +2076,7 @@ function CustomTooltip MakeFastDeleteTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[0] = info_3;
 
-    info_3.t_strText = "Ctrl + Alt + Click item";
+    info_3.t_strText = GetLocalizedText("Ctrl + Alt + Click item", "67,116,114,108,32,43,32,65,108,116,32,43,32,234,235,232,234,32,239,238,32,239,240,229,228,236,229,242,243");
     info_3.t_color.R = 218;
     info_3.t_color.G = 190;
     info_3.t_color.B = 1;
@@ -2059,7 +2085,7 @@ function CustomTooltip MakeFastDeleteTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[1] = info_3;
 
-    info_3.t_strText = "Deletes the item immediately";
+    info_3.t_strText = GetLocalizedText("Deletes the item immediately", "211,228,224,235,255,229,242,32,239,240,229,228,236,229,242,32,241,240,224,231,243");
     info_3.t_color.R = 176;
     info_3.t_color.G = 153;
     info_3.t_color.B = 121;
@@ -2068,7 +2094,7 @@ function CustomTooltip MakeFastDeleteTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[2] = info_3;
 
-    info_3.t_strText = "Click icon to toggle";
+    info_3.t_strText = GetLocalizedText("Click icon to toggle", "202,235,232,234,32,239,238,32,232,234,238,237,234,229,58,32,226,234,235,47,226,251,234,235");
     info_3.t_color.R = 176;
     info_3.t_color.G = 153;
     info_3.t_color.B = 121;
@@ -2145,14 +2171,14 @@ function CustomTooltip MakeTrashButtonTooltip()
     info_3.eType = DIT_TEXT;
     if(bool_1)
     {
-        info_3.t_strText = "Auto delete: ON";
+        info_3.t_strText = GetLocalizedText("Auto delete: ON", "192,226,242,238,243,228,224,235,229,237,232,229,58,32,194,202,203");
         info_3.t_color.R = 120;
         info_3.t_color.G = 220;
         info_3.t_color.B = 120;
     }
     else
     {
-        info_3.t_strText = "Auto delete: OFF";
+        info_3.t_strText = GetLocalizedText("Auto delete: OFF", "192,226,242,238,243,228,224,235,229,237,232,229,58,32,194,219,202,203");
         info_3.t_color.R = 220;
         info_3.t_color.G = 120;
         info_3.t_color.B = 120;
@@ -2162,7 +2188,7 @@ function CustomTooltip MakeTrashButtonTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[0] = info_3;
 
-    info_3.t_strText = "Click trash to toggle auto mode";
+    info_3.t_strText = GetLocalizedText("Click trash to toggle auto mode", "202,235,232,234,32,239,238,32,234,238,240,231,232,237,229,58,32,226,234,235,47,226,251,234,235");
     info_3.t_color.R = 218;
     info_3.t_color.G = 190;
     info_3.t_color.B = 1;
@@ -2171,7 +2197,7 @@ function CustomTooltip MakeTrashButtonTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[1] = info_3;
 
-    info_3.t_strText = "Drag item here to delete it";
+    info_3.t_strText = GetLocalizedText("Alt + Click trash to clear list", "65,108,116,32,43,32,234,235,232,234,58,32,238,247,232,241,242,232,242,252,32,241,239,232,241,238,234");
     info_3.t_color.R = 176;
     info_3.t_color.G = 153;
     info_3.t_color.B = 121;
@@ -2180,7 +2206,7 @@ function CustomTooltip MakeTrashButtonTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[2] = info_3;
 
-    info_3.t_strText = "Auto ON: item type is remembered";
+    info_3.t_strText = GetLocalizedText("Drag item here to delete it", "207,229,240,229,242,224,249,232,32,239,240,229,228,236,229,242,32,241,254,228,224,32,228,235,255,32,243,228,224,235,229,237,232,255");
     info_3.t_color.R = 176;
     info_3.t_color.G = 153;
     info_3.t_color.B = 121;
@@ -2189,7 +2215,7 @@ function CustomTooltip MakeTrashButtonTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[3] = info_3;
 
-    info_3.t_strText = "Remembered items are destroyed";
+    info_3.t_strText = GetLocalizedText("Remembered item types are destroyed", "199,224,239,238,236,237,229,237,237,251,229,32,239,240,229,228,236,229,242,251,32,243,228,224,235,255,254,242,241,255");
     info_3.t_color.R = 176;
     info_3.t_color.G = 153;
     info_3.t_color.B = 121;
@@ -2210,6 +2236,7 @@ function function2()
 {
     local int int_6, string_4;
 
+    int_2 = 0;
     int_6 = 1;
 
     while(int_6 < 100)
@@ -2219,9 +2246,64 @@ function function2()
         if((string_4 == 0))
         {
             int_2 = (int_6 - 1);
-            // [Explicit Continue]
+            return;
         }
         int_6++;
+    }
+    return;
+}
+
+function ClearAutoTrashList()
+{
+    local int int_6;
+
+    int_6 = 1;
+    while(int_6 < 100)
+    {
+        SetINIInt("TrashList", ("" $ string(int_6)), 0, "TrashGrp");
+        int_6++;
+    }
+    int_2 = 0;
+    UpdateTrashButtonTooltip();
+    return;
+}
+
+function bool IsAutoTrashItemClass(int ClassID)
+{
+    local int int_6, SavedClassID;
+
+    if(!bool_1)
+    {
+        return false;
+    }
+
+    int_6 = 1;
+    while(int_6 < 100)
+    {
+        GetINIInt("TrashList", ("" $ string(int_6)), SavedClassID, "TrashGrp");
+        if(SavedClassID == 0)
+        {
+            return false;
+        }
+        if(SavedClassID == ClassID)
+        {
+            return true;
+        }
+        int_6++;
+    }
+    return false;
+}
+
+function TryAutoTrashItem(ItemInfo info_3)
+{
+    if(info_3.ServerID <= 0 || info_3.ItemNum <= 0)
+    {
+        return;
+    }
+
+    if(IsAutoTrashItemClass(info_3.ClassID))
+    {
+        RequestDestroyItem(info_3.ServerID, info_3.ItemNum);
     }
     return;
 }
