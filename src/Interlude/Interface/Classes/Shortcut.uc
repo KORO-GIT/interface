@@ -96,6 +96,8 @@ function OnExitState(name a_NextStateName)
 
 function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Panels1, int Panels2, int Panels3)
 {
+    local OptionWnd OptionWindow;
+
     UseBind1 = true;
     UseBind2 = true;
     UseBind3 = true;
@@ -109,6 +111,11 @@ function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Pane
     SetINIInt("Key", "Panel1", Panel1, "Option");
     SetINIInt("Key", "Panel2", Panel2, "Option");
     SetINIInt("Key", "Panel3", Panel3, "Option");
+    OptionWindow = OptionWnd(GetScript("OptionWnd"));
+    if(OptionWindow != None)
+    {
+        OptionWindow.SetShortcutTransparencyNum();
+    }
     return;
 }
 

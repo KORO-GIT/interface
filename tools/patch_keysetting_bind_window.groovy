@@ -44,9 +44,9 @@ args.each { String fileName ->
     collect(keyWnd, patched)
 
     setText(patched, 'Head_Sockets', 'Panel:')
-    setText(patched, 'txtCheckBind1', 'F1-F12', 21, 116)
-    setText(patched, 'txtCheckBind2', '1-12', 21, 140)
-    setText(patched, 'txtCheckBind3', 'Q-P', 21, 165)
+    setText(patched, 'txtCheckBind1', '1-12', 21, 116)
+    setText(patched, 'txtCheckBind2', 'Q-P', 21, 140)
+    setText(patched, 'txtCheckBind3', 'F1-F12', 21, 165)
     limitCombo(patched, 'ComboPanel1', 6)
     limitCombo(patched, 'ComboPanel2', 6)
     limitCombo(patched, 'ComboPanel3', 6)
