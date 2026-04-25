@@ -307,6 +307,10 @@ function HandleMacroList(string param)
         if(Index > 0)
         {
             SaveMacroIconNum(MacroID, ItemInfo.Name, Index);
+            if(Index > DelayCommandValueOffset)
+            {
+                ItemInfo.IconName = "L2UI.Macro_Icon" $ string(Index);
+            }
         }
         // End:0x1CC
         if((ItemInfo.ClassID == SelectedMacroID))

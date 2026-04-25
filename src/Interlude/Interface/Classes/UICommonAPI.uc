@@ -14388,6 +14388,10 @@ function int GetMacroIconNumFromTextureName(string TextureName)
     }
 
     Index = InStr(TextureName, "Macro_Icon");
+    if(Index < 0)
+    {
+        Index = InStr(TextureName, "macro_icon");
+    }
     if(Index > -1)
     {
         IconSuffix = Mid(TextureName, Index + 10);
