@@ -8,6 +8,7 @@ var PartyWnd PartyWnd;
 function OnLoad()
 {
     RegisterEvent(150);
+    RegisterEvent(1900);
     AbnormalDebuffsStatusWnd = AbnormalDebuffsStatusWnd(GetScript("AbnormalDebuffsStatusWnd"));
     PartyWnd = PartyWnd(GetScript("PartyWnd"));
     InitInterfaceOption();
@@ -22,11 +23,84 @@ function OnLoad()
 
 function OnEvent(int Index, string param)
 {
-    // End:0x17
-    if(Index == 150)
+    switch(Index)
     {
-        ExecuteEvent(11223344);
+        case 150:
+            ExecuteEvent(11223344);
+            break;
+        case 1900:
+            InitInterfaceOption();
+            break;
+        default:
+            break;
     }
+    return;
+}
+
+function SetLocalizedCheckTitle(string ControlName, string EnglishText, string NativeText)
+{
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd." $ ControlName, " " $ GetLocalizedText(EnglishText, NativeText));
+    return;
+}
+
+function SetLocalizedTextBox(string ControlName, string EnglishText, string NativeText)
+{
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("BuffOptionsWnd." $ ControlName, GetLocalizedText(EnglishText, NativeText));
+    return;
+}
+
+function AddLocalizedComboString(string ControlName, string EnglishText, string NativeText)
+{
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("BuffOptionsWnd." $ ControlName, GetLocalizedText(EnglishText, NativeText));
+    return;
+}
+
+function FillLocalizedSizeCombo(string ControlName)
+{
+    Class'NWindow.UIAPI_COMBOBOX'.static.Clear("BuffOptionsWnd." $ ControlName);
+    AddLocalizedComboString(ControlName, "Size 7", "208,224,231,236,229,240,32,55");
+    AddLocalizedComboString(ControlName, "Size 6", "208,224,231,236,229,240,32,54");
+    AddLocalizedComboString(ControlName, "Size 5", "208,224,231,236,229,240,32,53");
+    AddLocalizedComboString(ControlName, "Size 4", "208,224,231,236,229,240,32,52");
+    AddLocalizedComboString(ControlName, "Size 3", "208,224,231,236,229,240,32,51");
+    AddLocalizedComboString(ControlName, "Size 2", "208,224,231,236,229,240,32,50");
+    AddLocalizedComboString(ControlName, "Size 1", "208,224,231,236,229,240,32,49");
+    return;
+}
+
+function FillLocalizedColumnsCombo()
+{
+    Class'NWindow.UIAPI_COMBOBOX'.static.Clear("BuffOptionsWnd.AbnormalColsBox");
+    AddLocalizedComboString("AbnormalColsBox", "12 Cols", "49,50,32,234,238,235,46");
+    AddLocalizedComboString("AbnormalColsBox", "14 Cols", "49,52,32,234,238,235,46");
+    AddLocalizedComboString("AbnormalColsBox", "16 Cols", "49,54,32,234,238,235,46");
+    AddLocalizedComboString("AbnormalColsBox", "18 Cols", "49,56,32,234,238,235,46");
+    AddLocalizedComboString("AbnormalColsBox", "22 Cols", "50,50,32,234,238,235,46");
+    return;
+}
+
+function FillLocalizedBuffCombos()
+{
+    FillLocalizedColumnsCombo();
+    FillLocalizedSizeCombo("AbnormalSizeBox");
+    FillLocalizedSizeCombo("AbnormalDebuffSizeBox");
+    FillLocalizedSizeCombo("PTDebuffSizeBox");
+    return;
+}
+
+function ApplyLocalizedText()
+{
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("BuffOptionsWnd.Title", GetLocalizedText("Buff Options", "205,224,241,242,240,238,233,234,232,32,225,224,244,244,238,226"));
+    SetLocalizedTextBox("AbnormalSizeHead", "Buff Size", "208,224,231,236,229,240,32,225,224,244,244,238,226");
+    SetLocalizedTextBox("AbnormalColHead", "Buff Columns", "202,238,235,238,237,234,232,32,225,224,244,244,238,226");
+    SetLocalizedTextBox("AbnormalDebuffSizeHead", "Debuff Size", "208,224,231,236,229,240,32,228,229,225,224,244,244,238,226");
+    SetLocalizedTextBox("PTDebuffSizeHead", "Debuff Size", "208,224,231,236,229,240,32,228,229,225,224,244,244,238,226");
+    SetLocalizedCheckTitle("checkAbDebuff", "Show debuffs on separate row", "196,229,225,224,244,244,251,32,238,242,228,229,235,252,237,238,233,32,241,242,240,238,234,238,233");
+    SetLocalizedCheckTitle("checkAbSongDance", "Show songs/dances on separate row", "207,229,241,237,232,47,242,224,237,246,251,32,238,242,228,229,235,252,237,238,233,32,241,242,240,238,234,238,233");
+    SetLocalizedCheckTitle("checkAbPrior", "Show important buffs on separate row", "194,224,230,237,251,229,32,225,224,244,244,251,32,238,242,228,229,235,252,237,238");
+    SetLocalizedCheckTitle("checkAbPriorDebuffSameRow", "Debuff on separate window", "196,229,225,224,244,244,251,32,238,242,228,229,235,252,237,251,236,32,238,234,237,238,236");
+    SetLocalizedCheckTitle("checkPrior", "Show important buffs on separate row", "194,224,230,237,251,229,32,225,224,244,244,251,32,238,242,228,229,235,252,237,238");
+    SetLocalizedCheckTitle("checkPriorDebuffSameRow", "Show important buffs on separate row", "194,224,230,237,251,229,32,225,224,244,244,251,32,238,242,228,229,235,252,237,238");
     return;
 }
 
@@ -35,6 +109,7 @@ function InitInterfaceOption()
     local int nOption;
     local bool bOption;
 
+    FillLocalizedBuffCombos();
     nOption = GetOptionInt("Custom", "AbMaxCols");
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("BuffOptionsWnd.AbnormalColsBox", nOption);
     nOption = GetOptionInt("Custom", "AbnormalSize");
@@ -187,6 +262,7 @@ function InitInterfaceOption()
     bOption = GetOptionBool("Custom", "checkPriorDebuffSameRow");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorDebuffSameRow", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorDebuffSameRow", " Show important buffs on seperate row");
+    ApplyLocalizedText();
     return;
 }
 

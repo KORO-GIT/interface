@@ -588,13 +588,22 @@ function string GetSuperRace(string Text)
     SplitCount = Split(Text, ",", texttemp);
     i = 0;
 
-    while(i <= texttemp.Length)
+    while(i < texttemp.Length)
     {
         temp[i] = Chr(int(texttemp[i]));
         Result = Result $ temp[i];
         ++i;
     }
     return Result;
+}
+
+function string GetLocalizedText(string EnglishText, string NativeText)
+{
+    if(GetOptionBool("Game", "IsNative"))
+    {
+        return GetSuperRace(NativeText);
+    }
+    return EnglishText;
 }
 
 function RefineryParam(int Id, out string ResultParam)

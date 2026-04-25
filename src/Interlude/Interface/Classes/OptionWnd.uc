@@ -43,13 +43,10 @@ function OnLoad()
     RegisterEvent(1550);
     RegisterEvent(1560);
     RegisterEvent(150);
+    RegisterEvent(1900);
     RegisterState("OptionWnd", "GamingState");
     RegisterState("OptionWnd", "LoginState");
-    Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.MinimapCB");
-    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.MinimapCB", "None");
-    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.MinimapCB", "Retail");
-    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.MinimapCB", "Old");
-    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.MinimapCB", "New");
+    FillLocalizedMinimapCombo();
     GetShaderVersion(nPixelShaderVersion, nVertexShaderVersion);
     GetResolutionList(ResolutionList);
     SetOptionBool("Game", "HideDropItem", false);
@@ -109,9 +106,72 @@ function OnLoad()
 function InitLanguageOption()
 {
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.LanguageBox");
-    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "Russian");
-    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", "English");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", GetLocalizedText("Russian", "208,243,241,241,234,232,233"));
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.LanguageBox", GetLocalizedText("English", "192,237,227,235,232,233,241,234,232,233"));
     Class'NWindow.UIAPI_WINDOW'.static.EnableWindow("OptionWnd.LanguageBox");
+    return;
+}
+
+function RefreshLanguageSelection()
+{
+    if(GetOptionBool("Game", "IsNative"))
+    {
+        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 0);        
+    }
+    else
+    {
+        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 1);
+    }
+    return;
+}
+
+function AddLocalizedOptionComboString(string ControlName, string EnglishText, string NativeText)
+{
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd." $ ControlName, GetLocalizedText(EnglishText, NativeText));
+    return;
+}
+
+function FillLocalizedMinimapCombo()
+{
+    Class'NWindow.UIAPI_COMBOBOX'.static.Clear("OptionWnd.MinimapCB");
+    AddLocalizedOptionComboString("MinimapCB", "None", "205,229,242");
+    Class'NWindow.UIAPI_COMBOBOX'.static.AddString("OptionWnd.MinimapCB", "Retail");
+    AddLocalizedOptionComboString("MinimapCB", "Old", "209,242,224,240,224,255");
+    AddLocalizedOptionComboString("MinimapCB", "New", "205,238,226,224,255");
+    return;
+}
+
+function SetLocalizedCheckTitle(string ControlName, string EnglishText, string NativeText)
+{
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd." $ ControlName, " " $ GetLocalizedText(EnglishText, NativeText));
+    return;
+}
+
+function SetLocalizedTextBox(string ControlName, string EnglishText, string NativeText)
+{
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("OptionWnd." $ ControlName, GetLocalizedText(EnglishText, NativeText));
+    return;
+}
+
+function ApplyLocalizedText()
+{
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetText("OptionWnd.Title", GetLocalizedText("Options", "205,224,241,242,240,238,233,234,232"));
+    SetLocalizedTextBox("text_Minimap", "Minimap :", "204,232,237,232,234,224,240,242,224,32,58");
+    SetLocalizedCheckTitle("Cb_HideAssist", "Hide Assist Window", "209,234,240,251,242,252,32,238,234,237,238,32,224,241,241,232,241,242,224");
+    SetLocalizedCheckTitle("CB_SkillCastingBox", "Display Skill Casting Box", "207,238,234,224,231,251,226,224,242,252,32,234,224,241,242,32,241,234,232,235,235,238,226");
+    SetLocalizedCheckTitle("assistIfNoblesse", "Assist with Noblesse", "192,241,241,232,241,242,32,241,32,78,111,98,108,101,115,115,101");
+    SetLocalizedCheckTitle("BuffPotions", "Use Buff Potions Automatically", "192,226,242,238,232,241,239,238,235,252,231,238,226,224,237,232,229,32,225,224,237,238,234");
+    SetLocalizedCheckTitle("Cb_ShowDamage", "Show Damage On Screen", "207,238,234,224,231,251,226,224,242,252,32,243,240,238,237");
+    SetLocalizedCheckTitle("Cb_ShowEvent", "Show Resisted", "207,238,234,224,231,251,226,224,242,252,32,240,229,231,232,241,242,251");
+    SetLocalizedCheckTitle("Cb_DualCount", "Show PvP/Pk Count And Karma Quantity", "207,238,234,224,231,251,226,224,242,252,32,80,118,80,47,80,75,32,232,32,234,224,240,236,243");
+    SetLocalizedCheckTitle("Cb_Time", "Show Current Time From Your Region", "207,238,234,224,231,251,226,224,242,252,32,236,229,241,242,237,238,229,32,226,240,229,236,255");
+    SetLocalizedCheckTitle("Cb_HoldTarget", "Hold Target", "211,228,229,240,230,232,226,224,242,252,32,246,229,235,252");
+    SetLocalizedCheckTitle("Cb_IgnoreAggr", "Ignore Aggression", "200,227,237,238,240,232,240,238,226,224,242,252,32,224,227,240,229,241,241,232,254");
+    SetLocalizedCheckTitle("Cb_ShortcutTransparency", "Hide Shortcut", "209,234,240,251,242,252,32,239,224,237,229,235,252");
+    SetLocalizedCheckTitle("Cb_ShotcutTransparencyBox", "Hide Shortcut box", "209,234,240,251,242,252,32,244,238,237,32,239,224,237,229,235,232");
+    SetLocalizedCheckTitle("Cb_ShotcutTransparencyNum", "Hide Shortcut numbers", "209,234,240,251,242,252,32,237,238,236,229,240,224,32,239,224,237,229,235,232");
+    SetLocalizedCheckTitle("Cb_ChatTransparency", "Chat Transparency", "207,240,238,231,240,224,247,237,238,241,242,252,32,247,224,242,224");
+    SetLocalizedCheckTitle("Cb_AutoSetEquip", "Auto Equip Armor Set", "192,226,242,238,238,228,229,226,224,237,232,229,32,241,229,242,224");
     return;
 }
 
@@ -604,15 +664,7 @@ function InitGameOption()
     bOption = GetOptionBool("Game", "TransparencyMode");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.OpacityBox", bOption);
     bOption = GetOptionBool("Game", "IsNative");
-    // End:0xA0
-    if(bOption)
-    {
-        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 0);        
-    }
-    else
-    {
-        Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.LanguageBox", 1);
-    }
+    RefreshLanguageSelection();
     bOption = GetOptionBool("Game", "MyName");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.NameBox0", bOption);
     bOption = GetOptionBool("Game", "NPCName");
@@ -1514,6 +1566,11 @@ function OnEvent(int a_EventID, string a_Param)
             ExecuteEvent(11223344);
             // End:0xE0
             break;
+        case 1900:
+            InitLanguageOption();
+            RefreshLanguageSelection();
+            InitInterfaceOption();
+            break;
         // End:0xFFFF
         default:
             break;
@@ -1591,6 +1648,7 @@ function InitInterfaceOption()
     local int nOption;
     local bool bOption;
 
+    FillLocalizedMinimapCombo();
     nOption = GetOptionInt("Custom", "AbnormalSize");
     Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("OptionWnd.AbnormalSizeBox", nOption);
     nOption = GetOptionInt("Custom", "Minimap");
@@ -1645,6 +1703,7 @@ function InitInterfaceOption()
     bOption = !GetOptionBool("Custom", "DisableAutoEquipSet");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_AutoSetEquip", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_AutoSetEquip", " Auto Equip Armor Set");
+    ApplyLocalizedText();
     return;
 }
 
