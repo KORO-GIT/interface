@@ -1171,7 +1171,7 @@ function AddToList(int idx)
             Record.LVDataList[1].TextColor = White;
             Record.LVDataList[1].szData = string(m_memberList[0].m_array[i].Level);
             Record.LVDataList[2].szData = string(m_memberList[0].m_array[i].ClassID);
-            Record.LVDataList[2].szTexture = GetClassIconCustom(m_memberList[0].m_array[i].ClassID);
+            Record.LVDataList[2].szTexture = s_GetCustomClassIcon(m_memberList[0].m_array[i].ClassID, 1);
             Record.LVDataList[2].nTextureWidth = 16;
             Record.LVDataList[2].nTextureHeight = 16;
             Record.LVDataList[3].nTextureWidth = 31;
@@ -1235,7 +1235,7 @@ function AddToList(int idx)
         }
         Record.LVDataList[1].szData = string(m_memberList[idx].m_array[i].Level);
         Record.LVDataList[2].szData = string(m_memberList[idx].m_array[i].ClassID);
-        Record.LVDataList[2].szTexture = GetClassIconCustom(m_memberList[idx].m_array[i].ClassID);
+        Record.LVDataList[2].szTexture = s_GetCustomClassIcon(m_memberList[idx].m_array[i].ClassID, 1);
         Record.LVDataList[2].nTextureWidth = 16;
         Record.LVDataList[2].nTextureHeight = 16;
         Record.LVDataList[3].nTextureWidth = 31;
