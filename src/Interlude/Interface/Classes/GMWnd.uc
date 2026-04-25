@@ -15,6 +15,8 @@ var WindowHandle m_hGMMagicSkillWnd;
 var WindowHandle m_hGMQuestWnd;
 var WindowHandle m_hGMWarehouseWnd;
 var WindowHandle m_hGMClanWnd;
+var ButtonHandle m_hSetClassButton;
+var ButtonHandle m_hBalanceButton;
 var int m_targetID;
 
 function OnLoad()
@@ -31,6 +33,10 @@ function OnLoad()
     m_hGMQuestWnd = GetHandle("GMQuestWnd");
     m_hGMWarehouseWnd = GetHandle("GMWarehouseWnd");
     m_hGMClanWnd = GetHandle("GMClanWnd");
+    m_hSetClassButton = ButtonHandle(GetHandle("GMWnd.SetClassButton"));
+    m_hBalanceButton = ButtonHandle(GetHandle("GMWnd.BalanceButton"));
+    m_hSetClassButton.SetButtonName(1600);
+    m_hBalanceButton.SetButtonName(1601);
     m_WhiteColor.R = 220;
     m_WhiteColor.G = 220;
     m_WhiteColor.B = 220;
@@ -238,6 +244,12 @@ function OnClickButton(string a_ButtonID)
             OnClickChangeServerButton();
             // End:0x1DE
             break;
+        case "SetClassButton":
+            OnClickSetClassButton();
+            break;
+        case "BalanceButton":
+            OnClickBalanceButton();
+            break;
         // End:0xFFFF
         default:
             break;
@@ -370,6 +382,24 @@ function OnClickInfoButton()
     {
         ExecuteCommand("//debug" @ EditBoxString);
     }
+    return;
+}
+
+function OnClickSetClassButton()
+{
+    local string EditBoxString;
+
+    EditBoxString = m_hEditBox.GetString();
+    if(EditBoxString != "")
+    {
+        ExecuteCommand("//setclass" @ EditBoxString);
+    }
+    return;
+}
+
+function OnClickBalanceButton()
+{
+    ExecuteCommand("//balance");
     return;
 }
 
