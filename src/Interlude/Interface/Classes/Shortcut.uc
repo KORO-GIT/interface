@@ -38,7 +38,7 @@ function LoadData()
     // End:0x102
     if(Panel1 <= 0)
     {
-        Panel1 = 1;
+        Panel1 = 2;
     }
     if(Panel1 > 6)
     {
@@ -47,7 +47,7 @@ function LoadData()
     // End:0x114
     if(Panel2 <= 0)
     {
-        Panel2 = 1;
+        Panel2 = 3;
     }
     if(Panel2 > 6)
     {
@@ -316,17 +316,30 @@ function string GetShortcutHintTexture(int BindIndex, int SlotIndex)
     return "Was.Null";
 }
 
-function SetShortcutHintTexture(string WindowName, int SlotIndex, string TextureName)
+function SetShortcutHintTexture(string WindowName, int SlotIndex, string TextureName, int Width)
 {
-    Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture(WindowName $ ".F" $ string(SlotIndex) $ "Tex", TextureName);
+    local string TextureCtrlName;
+
+    TextureCtrlName = WindowName $ ".F" $ string(SlotIndex) $ "Tex";
+    Class'NWindow.UIAPI_WINDOW'.static.SetWindowSize(TextureCtrlName, Width, 16);
+    Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture(TextureCtrlName, TextureName);
     return;
 }
 
-function SetShortcutHintPanelSlot(int PanelIndex, int SlotIndex, string TextureName)
+function SetShortcutHintPanelSlot(int PanelIndex, int SlotIndex, string TextureName, int Width)
 {
-    SetShortcutHintTexture(GetShortcutHintPanelWindow(PanelIndex, false), SlotIndex, TextureName);
-    SetShortcutHintTexture(GetShortcutHintPanelWindow(PanelIndex, true), SlotIndex, TextureName);
+    SetShortcutHintTexture(GetShortcutHintPanelWindow(PanelIndex, false), SlotIndex, TextureName, Width);
+    SetShortcutHintTexture(GetShortcutHintPanelWindow(PanelIndex, true), SlotIndex, TextureName, Width);
     return;
+}
+
+function int GetShortcutHintTextureWidth(int BindIndex, int SlotIndex)
+{
+    if(BindIndex == 1)
+    {
+        return 8;
+    }
+    return 32;
 }
 
 function ClearShortcutHintPanel(int PanelIndex)
@@ -336,7 +349,7 @@ function ClearShortcutHintPanel(int PanelIndex)
     SlotIndex = 1;
     while(SlotIndex <= 12)
     {
-        SetShortcutHintPanelSlot(PanelIndex, SlotIndex, "Was.Null");
+        SetShortcutHintPanelSlot(PanelIndex, SlotIndex, "Was.Null", 0);
         SlotIndex++;
     }
     return;
@@ -349,7 +362,7 @@ function ApplyShortcutHintPanel(int PanelIndex, int BindIndex)
     SlotIndex = 1;
     while(SlotIndex <= 12)
     {
-        SetShortcutHintPanelSlot(PanelIndex, SlotIndex, GetShortcutHintTexture(BindIndex, SlotIndex));
+        SetShortcutHintPanelSlot(PanelIndex, SlotIndex, GetShortcutHintTexture(BindIndex, SlotIndex), GetShortcutHintTextureWidth(BindIndex, SlotIndex));
         SlotIndex++;
     }
     return;

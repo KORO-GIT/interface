@@ -2179,23 +2179,23 @@ function ClearAllShortcutHintPanels()
 
 function SetShortcutTransparencyNum()
 {
-    local int NumberPanel;
-    local int QwertyPanel;
-    local int FunctionPanel;
+    local Shortcut ShortcutScript;
 
-    ClearAllShortcutHintPanels();
     if(GetOptionBool("Custom", "ShortcutTransparencyNum") == true)
     {
         Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ShotcutTransparencyNum", true);
+    }
+    else
+    {
+        Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ShotcutTransparencyNum", false);
+    }
+    ShortcutScript = Shortcut(GetScript("Shortcut"));
+    if(ShortcutScript != None)
+    {
+        ShortcutScript.RefreshShortcutKeyHints();
         return;
     }
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ShotcutTransparencyNum", false);
-    NumberPanel = GetShortcutHintPanel("Panel1", 1);
-    QwertyPanel = GetShortcutHintPanel("Panel2", 2);
-    FunctionPanel = GetShortcutHintPanel("Panel3", 3);
-    ApplyShortcutHintPanel(NumberPanel, 1);
-    ApplyShortcutHintPanel(QwertyPanel, 2);
-    ApplyShortcutHintPanel(FunctionPanel, 3);
+    ClearAllShortcutHintPanels();
     return;
 }
 

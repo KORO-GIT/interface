@@ -26,7 +26,7 @@ function LoadData()
     // End:0x124
     if(Panel1 <= 0)
     {
-        Panel1 = 1;
+        Panel1 = 2;
     }
     if(Panel1 > 6)
     {
@@ -35,7 +35,7 @@ function LoadData()
     // End:0x136
     if(Panel2 <= 0)
     {
-        Panel2 = 1;
+        Panel2 = 3;
     }
     if(Panel2 > 6)
     {
