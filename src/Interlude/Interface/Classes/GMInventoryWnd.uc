@@ -15,7 +15,7 @@ var array<GMHennaInfo> m_HennaInfoList;
 
 function OnLoad()
 {
-    local WindowHandle hCrystallizeButton, hTrashButton, hInvenWeight;
+    local WindowHandle hCrystallizeButton, hTrashButton, hFastDeleteButton, hInvenWeight;
 
     RegisterEvent(2401);
     RegisterEvent(2402);
@@ -26,9 +26,11 @@ function OnLoad()
     m_hOwnerWnd.SetWindowTitle(" ");
     hCrystallizeButton = GetHandle("CrystallizeButton");
     hTrashButton = GetHandle("TrashButton");
+    hFastDeleteButton = GetHandle("FastDelete");
     hInvenWeight = GetHandle("InvenWeight");
     hCrystallizeButton.HideWindow();
     hTrashButton.HideWindow();
+    hFastDeleteButton.HideWindow();
     hInvenWeight.HideWindow();
     return;
 }

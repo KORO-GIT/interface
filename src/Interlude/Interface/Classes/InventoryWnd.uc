@@ -47,6 +47,7 @@ var array<ItemInfo> info_1;
 var array<ItemInfo> info_2;
 var bool bool_1;
 var int int_2;
+var bool m_FastDeleteEnabled;
 
 function OnLoad()
 {
@@ -103,10 +104,11 @@ function function1()
     button_3 = ButtonHandle(GetHandle("InventoryWnd.FastDelete"));
     button_1.SetTooltipCustomType(function4("Sorting"));
     button_2.SetTooltipCustomType(function4("Enchant Item"));
-    button_3.SetTooltipCustomType(function4("Fast Item DeletenCtrl + Alt + Click"));
     button_4 = ButtonHandle(GetHandle("InventoryWnd.RefineButton"));
     button_4.SetTooltipCustomType(function4("Augment Item"));
     button_5 = ButtonHandle(GetHandle("InventoryWnd.TrashButton"));
+    LoadFastDeleteOption();
+    UpdateFastDeleteButton();
     return;
 }
 
@@ -211,8 +213,9 @@ function OnHide()
 function OnDBClickItemWithHandle(ItemWindowHandle handle_1, int int_4)
 {
     // End:0x19
-    if((IsKeyDown(IK_Alt) && IsKeyDown(IK_Ctrl)))
+    if(IsFastDeleteShortcutDown())
     {
+        return;
     }
     function10(handle_1, int_4);
     return;
@@ -232,6 +235,9 @@ function OnClickButton(string string_3)
         case "SortButton":
             SortItem(function12());
             // End:0x1DD
+            break;
+        case "FastDelete":
+            ToggleFastDeleteOption();
             break;
         // End:0x52
         case "BtnClose":
@@ -291,10 +297,14 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
 
     string_4 = Class'NWindow.UIAPI_EDITBOX'.static.GetString("ChatWnd.ChatEditBox");
     // End:0x71
-    if((IsKeyDown(IK_Alt) && IsKeyDown(IK_Ctrl)))
+    if(IsFastDeleteShortcutDown())
     {
         item_10.GetSelectedItem(info_3);
-        RequestDestroyItem(info_3.ServerID, info_3.ItemNum);
+        if(info_3.ServerID > 0 && info_3.ItemNum > 0)
+        {
+            RequestDestroyItem(info_3.ServerID, info_3.ItemNum);
+        }
+        return;
     }
     // End:0xAF
     if((IsKeyDown(IK_LControl) && (!IsKeyDown(IK_Alt))))
@@ -2011,6 +2021,103 @@ function CustomTooltip function4(string string_1)
     return ToolTip;
 }
 
+function CustomTooltip MakeFastDeleteTooltip()
+{
+    local CustomTooltip ToolTip;
+    local DrawItemInfo info_3;
+
+    ToolTip.DrawList.Length = 3;
+
+    info_3.eType = DIT_TEXT;
+    if(m_FastDeleteEnabled)
+    {
+        info_3.t_strText = "Fast Item Delete: ON";
+        info_3.t_color.R = 120;
+        info_3.t_color.G = 220;
+        info_3.t_color.B = 120;
+    }
+    else
+    {
+        info_3.t_strText = "Fast Item Delete: OFF";
+        info_3.t_color.R = 220;
+        info_3.t_color.G = 120;
+        info_3.t_color.B = 120;
+    }
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[0] = info_3;
+
+    info_3.t_strText = "Ctrl + Alt + Click";
+    info_3.t_color.R = 218;
+    info_3.t_color.G = 190;
+    info_3.t_color.B = 1;
+    ToolTip.DrawList[1] = info_3;
+
+    info_3.t_strText = "Click icon to enable / disable";
+    info_3.t_color.R = 176;
+    info_3.t_color.G = 153;
+    info_3.t_color.B = 121;
+    ToolTip.DrawList[2] = info_3;
+
+    return ToolTip;
+}
+
+function bool IsFastDeleteShortcutDown()
+{
+    return m_FastDeleteEnabled && IsKeyDown(IK_Alt) && (IsKeyDown(IK_Ctrl) || IsKeyDown(IK_LControl));
+}
+
+function LoadFastDeleteOption()
+{
+    local int InitValue;
+    local int EnabledValue;
+
+    GetINIInt("Inventory", "FastDeleteInitialized", InitValue, "Option");
+    if(InitValue == 0)
+    {
+        SetINIInt("Inventory", "FastDeleteInitialized", 1, "Option");
+        SetINIInt("Inventory", "FastDeleteEnabled", 1, "Option");
+        m_FastDeleteEnabled = true;
+        return;
+    }
+
+    GetINIInt("Inventory", "FastDeleteEnabled", EnabledValue, "Option");
+    m_FastDeleteEnabled = EnabledValue != 0;
+}
+
+function SaveFastDeleteOption()
+{
+    if(m_FastDeleteEnabled)
+    {
+        SetINIInt("Inventory", "FastDeleteEnabled", 1, "Option");
+    }
+    else
+    {
+        SetINIInt("Inventory", "FastDeleteEnabled", 0, "Option");
+    }
+}
+
+function ToggleFastDeleteOption()
+{
+    m_FastDeleteEnabled = !m_FastDeleteEnabled;
+    SaveFastDeleteOption();
+    UpdateFastDeleteButton();
+}
+
+function UpdateFastDeleteButton()
+{
+    button_3.SetTooltipCustomType(MakeFastDeleteTooltip());
+    if(m_FastDeleteEnabled)
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("InventoryWnd.FastDelete", 255);
+    }
+    else
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("InventoryWnd.FastDelete", 110);
+    }
+}
+
 function function2()
 {
     local int int_6, string_4;
@@ -2255,6 +2362,7 @@ function SetFocus()
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.InventoryItem");
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.QuestItem");
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.InventoryTab");
+    Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.FastDelete");
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.CrystallizeButton");
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.TrashButton");
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("InventoryWnd.AdenaText");
