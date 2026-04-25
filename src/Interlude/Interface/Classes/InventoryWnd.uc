@@ -107,6 +107,7 @@ function function1()
     button_4 = ButtonHandle(GetHandle("InventoryWnd.RefineButton"));
     button_4.SetTooltipCustomType(function4("Augment Item"));
     button_5 = ButtonHandle(GetHandle("InventoryWnd.TrashButton"));
+    UpdateTrashButtonTooltip();
     LoadFastDeleteOption();
     UpdateFastDeleteButton();
     return;
@@ -200,6 +201,7 @@ function OnShow()
     function7();
     function8();
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("InventoryWnd.SortButton");
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("InventoryWnd.FastDelete");
     SetFocus();
     return;
 }
@@ -2133,6 +2135,77 @@ function UpdateFastDeleteButton()
     }
 }
 
+function CustomTooltip MakeTrashButtonTooltip()
+{
+    local CustomTooltip ToolTip;
+    local DrawItemInfo info_3;
+
+    ToolTip.DrawList.Length = 5;
+
+    info_3.eType = DIT_TEXT;
+    if(bool_1)
+    {
+        info_3.t_strText = "Auto delete: ON";
+        info_3.t_color.R = 120;
+        info_3.t_color.G = 220;
+        info_3.t_color.B = 120;
+    }
+    else
+    {
+        info_3.t_strText = "Auto delete: OFF";
+        info_3.t_color.R = 220;
+        info_3.t_color.G = 120;
+        info_3.t_color.B = 120;
+    }
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[0] = info_3;
+
+    info_3.t_strText = "Click trash to toggle auto mode";
+    info_3.t_color.R = 218;
+    info_3.t_color.G = 190;
+    info_3.t_color.B = 1;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[1] = info_3;
+
+    info_3.t_strText = "Drag item here to delete it";
+    info_3.t_color.R = 176;
+    info_3.t_color.G = 153;
+    info_3.t_color.B = 121;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[2] = info_3;
+
+    info_3.t_strText = "Auto ON: item type is remembered";
+    info_3.t_color.R = 176;
+    info_3.t_color.G = 153;
+    info_3.t_color.B = 121;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[3] = info_3;
+
+    info_3.t_strText = "Remembered items are destroyed";
+    info_3.t_color.R = 176;
+    info_3.t_color.G = 153;
+    info_3.t_color.B = 121;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[4] = info_3;
+
+    return ToolTip;
+}
+
+function UpdateTrashButtonTooltip()
+{
+    button_5.SetTooltipCustomType(MakeTrashButtonTooltip());
+}
+
 function function2()
 {
     local int int_6, string_4;
@@ -2160,12 +2233,14 @@ function function13()
     {
         bool_1 = true;
         button_5.SetTexture("Was.Inventory_Btn_Trash_Auto", "Was.Inventory_Btn_Trash_Auto_Down", "Was.Inventory_Btn_Trash_Auto_Over");
+        UpdateTrashButtonTooltip();
         function46();
     }
     else
     {
         bool_1 = false;
         button_5.SetTexture("Was.Inventory_Btn_Trash", "Was.Inventory_Btn_Trash_Down", "Was.Inventory_Btn_Trash_Drag");
+        UpdateTrashButtonTooltip();
     }
     return;
 }
@@ -2299,7 +2374,7 @@ function function3()
     function48("InventoryWnd.BtnMin", "InventoryWnd.Tex", 3, -34, 18);
     function48("InventoryWnd.BtnExpand", "InventoryWnd.Tex", 3, -50, 16);
     function48("InventoryWnd.ItemCount", "InventoryWnd", 3, -78, 5);
-    function48("InventoryWnd.b_FastDelete", "InventoryWnd", 3, -61, 6);
+    function48("InventoryWnd.FastDelete", "InventoryWnd", 3, -31, 32);
     function48("InventoryWnd.Title", "InventoryWnd.Tex", 2, 0, 19);
     return;
 }
