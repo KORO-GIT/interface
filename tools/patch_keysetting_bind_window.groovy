@@ -1,5 +1,6 @@
 import ct0.Alignment
 import ct0.ComboBox
+import ct0.ComboBox.ComboBoxElement
 import ct0.DefaultProperty
 import ct0.TextBox
 import ct0.Window
@@ -44,12 +45,9 @@ args.each { String fileName ->
     collect(keyWnd, patched)
 
     setText(patched, 'Head_Sockets', 'Panel:')
-    setText(patched, 'txtCheckBind1', '1-12', 21, 116)
-    setText(patched, 'txtCheckBind2', 'Q-P', 21, 140)
-    setText(patched, 'txtCheckBind3', 'F1-F12', 21, 165)
-    limitCombo(patched, 'ComboPanel1', 6)
-    limitCombo(patched, 'ComboPanel2', 6)
-    limitCombo(patched, 'ComboPanel3', 6)
+    setText(patched, 'txtCheckBind1', 'F1-F12', 21, 116)
+    setText(patched, 'txtCheckBind2', '1-12', 21, 140)
+    setText(patched, 'txtCheckBind3', 'QWERTY', 21, 165)
     labelComboPanels(patched, 'ComboPanel1')
     labelComboPanels(patched, 'ComboPanel2')
     labelComboPanels(patched, 'ComboPanel3')
@@ -121,7 +119,20 @@ void labelComboPanels(List<DefaultProperty> items, String name) {
     if (comboBox == null) {
         throw new IllegalStateException("${name} not found")
     }
+    while (comboBox.values.size() < 7) {
+        comboBox.values << new ComboBoxElement()
+    }
+    while (comboBox.values.size() > 7) {
+        comboBox.values.remove(comboBox.values.size() - 1)
+    }
     comboBox.values.eachWithIndex { item, int index ->
-        item.text = "P${index + 1}"
+        if (index < 6) {
+            item.text = "P${index + 1}"
+        } else {
+            item.text = 'NONE'
+        }
+        item.sysString = -9999
+        item.systemMsg = -9999
+        item.reserved = -9999
     }
 }

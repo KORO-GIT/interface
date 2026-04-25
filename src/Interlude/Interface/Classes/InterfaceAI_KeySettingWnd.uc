@@ -24,7 +24,7 @@ function LoadData()
     GetINIInt("Key", "Panel3", Panel3, "Option");
     UseEnterChat = GetOptionBool("Game", "EnterChatting");
     // End:0x124
-    if(Panel1 <= 0)
+    if(Panel1 == 0)
     {
         Panel1 = 2;
     }
@@ -33,7 +33,7 @@ function LoadData()
         Panel1 = 6;
     }
     // End:0x136
-    if(Panel2 <= 0)
+    if(Panel2 == 0)
     {
         Panel2 = 3;
     }
@@ -42,7 +42,7 @@ function LoadData()
         Panel2 = 6;
     }
     // End:0x148
-    if(Panel3 <= 0)
+    if(Panel3 == 0)
     {
         Panel3 = 1;
     }
@@ -96,9 +96,9 @@ function OnClickKeyCancel()
 
 function OnClickKeyOk()
 {
-    Panel1 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel1") + 1);
-    Panel2 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2") + 1);
-    Panel3 = NormalizePanel(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3") + 1);
+    Panel1 = GetPanelFromComboIndex(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel1"));
+    Panel2 = GetPanelFromComboIndex(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2"));
+    Panel3 = GetPanelFromComboIndex(Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3"));
     EnsureUniquePanels(0);
     UpdatePanelCombos();
     script.ResetParam(UseEnterChat, true, true, true, Panel1, Panel2, Panel3);
@@ -116,19 +116,19 @@ function OnComboBoxItemSelected(string strID, int Index)
     {
         case "ComboPanel1":
         case "comboPanel1":
-            Panel1 = NormalizePanel(Index + 1);
+            Panel1 = GetPanelFromComboIndex(Index);
             EnsureUniquePanels(1);
             UpdatePanelCombos();
             break;
         case "ComboPanel2":
         case "comboPanel2":
-            Panel2 = NormalizePanel(Index + 1);
+            Panel2 = GetPanelFromComboIndex(Index);
             EnsureUniquePanels(2);
             UpdatePanelCombos();
             break;
         case "ComboPanel3":
         case "comboPanel3":
-            Panel3 = NormalizePanel(Index + 1);
+            Panel3 = GetPanelFromComboIndex(Index);
             EnsureUniquePanels(3);
             UpdatePanelCombos();
             break;
@@ -141,11 +141,29 @@ function OnComboBoxItemSelected(string strID, int Index)
 function UpdatePanelCombos()
 {
     bUpdatingPanelCombos = true;
-    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel1", Panel1 - 1);
-    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2", Panel2 - 1);
-    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3", Panel3 - 1);
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel1", GetComboIndexFromPanel(Panel1));
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel2", GetComboIndexFromPanel(Panel2));
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("InterfaceAI_KeySettingWnd.comboPanel3", GetComboIndexFromPanel(Panel3));
     bUpdatingPanelCombos = false;
     return;
+}
+
+function int GetPanelFromComboIndex(int Index)
+{
+    if(Index >= 6)
+    {
+        return -1;
+    }
+    return NormalizePanel(Index + 1);
+}
+
+function int GetComboIndexFromPanel(int PanelIndex)
+{
+    if(PanelIndex < 1)
+    {
+        return 6;
+    }
+    return NormalizePanel(PanelIndex) - 1;
 }
 
 function int FindFreePanel(int UsedPanel1, int UsedPanel2, int UsedPanel3)
@@ -172,41 +190,41 @@ function EnsureUniquePanels(int ChangedBind)
     switch(ChangedBind)
     {
         case 1:
-            if(Panel2 == Panel1)
+            if((Panel1 > 0) && (Panel2 == Panel1))
             {
                 Panel2 = FindFreePanel(Panel1, Panel3, 0);
             }
-            if((Panel3 == Panel1) || (Panel3 == Panel2))
+            if((Panel3 > 0) && ((Panel3 == Panel1) || (Panel3 == Panel2)))
             {
                 Panel3 = FindFreePanel(Panel1, Panel2, 0);
             }
             break;
         case 2:
-            if(Panel1 == Panel2)
+            if((Panel2 > 0) && (Panel1 == Panel2))
             {
                 Panel1 = FindFreePanel(Panel2, Panel3, 0);
             }
-            if((Panel3 == Panel1) || (Panel3 == Panel2))
+            if((Panel3 > 0) && ((Panel3 == Panel1) || (Panel3 == Panel2)))
             {
                 Panel3 = FindFreePanel(Panel1, Panel2, 0);
             }
             break;
         case 3:
-            if(Panel1 == Panel3)
+            if((Panel3 > 0) && (Panel1 == Panel3))
             {
                 Panel1 = FindFreePanel(Panel2, Panel3, 0);
             }
-            if((Panel2 == Panel1) || (Panel2 == Panel3))
+            if((Panel2 > 0) && ((Panel2 == Panel1) || (Panel2 == Panel3)))
             {
                 Panel2 = FindFreePanel(Panel1, Panel3, 0);
             }
             break;
         default:
-            if(Panel2 == Panel1)
+            if((Panel1 > 0) && (Panel2 == Panel1))
             {
                 Panel2 = FindFreePanel(Panel1, Panel3, 0);
             }
-            if((Panel3 == Panel1) || (Panel3 == Panel2))
+            if((Panel3 > 0) && ((Panel3 == Panel1) || (Panel3 == Panel2)))
             {
                 Panel3 = FindFreePanel(Panel1, Panel2, 0);
             }
@@ -217,6 +235,10 @@ function EnsureUniquePanels(int ChangedBind)
 
 function int NormalizePanel(int PanelIndex)
 {
+    if(PanelIndex < 0)
+    {
+        return -1;
+    }
     if(PanelIndex < 1)
     {
         return 1;

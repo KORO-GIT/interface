@@ -36,7 +36,7 @@ function LoadData()
     UseBind2 = true;
     UseBind3 = true;
     // End:0x102
-    if(Panel1 <= 0)
+    if(Panel1 == 0)
     {
         Panel1 = 2;
     }
@@ -45,7 +45,7 @@ function LoadData()
         Panel1 = 6;
     }
     // End:0x114
-    if(Panel2 <= 0)
+    if(Panel2 == 0)
     {
         Panel2 = 3;
     }
@@ -54,7 +54,7 @@ function LoadData()
         Panel2 = 6;
     }
     // End:0x126
-    if(Panel3 <= 0)
+    if(Panel3 == 0)
     {
         Panel3 = 1;
     }
@@ -186,6 +186,10 @@ function OpenHideWindow(string param)
 
 function int NormalizePanel(int PanelIndex)
 {
+    if(PanelIndex < 0)
+    {
+        return -1;
+    }
     if(PanelIndex < 1)
     {
         return 1;
@@ -218,11 +222,11 @@ function EnsureUniquePanels()
     Panel1 = NormalizePanel(Panel1);
     Panel2 = NormalizePanel(Panel2);
     Panel3 = NormalizePanel(Panel3);
-    if(Panel2 == Panel1)
+    if((Panel1 > 0) && (Panel2 == Panel1))
     {
         Panel2 = FindFreePanel(Panel1, Panel3, 0);
     }
-    if((Panel3 == Panel1) || (Panel3 == Panel2))
+    if((Panel3 > 0) && ((Panel3 == Panel1) || (Panel3 == Panel2)))
     {
         Panel3 = FindFreePanel(Panel1, Panel2, 0);
     }
@@ -382,14 +386,27 @@ function RefreshShortcutKeyHints()
     {
         return;
     }
-    ApplyShortcutHintPanel(Panel1, 1);
-    ApplyShortcutHintPanel(Panel2, 2);
-    ApplyShortcutHintPanel(Panel3, 3);
+    if(Panel1 > 0)
+    {
+        ApplyShortcutHintPanel(Panel1, 1);
+    }
+    if(Panel2 > 0)
+    {
+        ApplyShortcutHintPanel(Panel2, 2);
+    }
+    if(Panel3 > 0)
+    {
+        ApplyShortcutHintPanel(Panel3, 3);
+    }
     return;
 }
 
 function int GetShortcutPageForPanel(int PanelIndex)
 {
+    if(PanelIndex < 1)
+    {
+        return 0;
+    }
     PanelIndex = NormalizePanel(PanelIndex);
     if(ShortcutWndScript == None)
     {
@@ -407,6 +424,10 @@ function UsePanelShortcut(int PanelIndex, int SlotIndex, bool bForce)
     local int PageIndex;
 
     PageIndex = GetShortcutPageForPanel(PanelIndex);
+    if(PageIndex < 1)
+    {
+        return;
+    }
     if(bForce)
     {
         ExecuteCommand((("/useshortcutforce " $ string(PageIndex)) $ " ") $ string(SlotIndex));        
@@ -520,19 +541,19 @@ function bool TryUsePanelShortcut(string Parametr)
     switch(BindIndex)
     {
         case 1:
-            if(UseBind1)
+            if(UseBind1 && (Panel1 > 0))
             {
                 UsePanelShortcut(Panel1, SlotIndex, bForce);
             }
             break;
         case 2:
-            if(UseBind2)
+            if(UseBind2 && (Panel2 > 0))
             {
                 UsePanelShortcut(Panel2, SlotIndex, bForce);
             }
             break;
         case 3:
-            if(UseBind3)
+            if(UseBind3 && (Panel3 > 0))
             {
                 UsePanelShortcut(Panel3, SlotIndex, bForce);
             }
