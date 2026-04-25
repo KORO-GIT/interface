@@ -1510,9 +1510,9 @@ function InitializeAcademyList()
             Record.LVDataList[1].szData = string(script.m_memberList[script.GetIndexFromType(-1)].m_array[i].Level);
             Record.nReserved1 = script.m_memberList[script.GetIndexFromType(-1)].m_array[i].clanType;
             Record.LVDataList[2].szData = string(script.m_memberList[script.GetIndexFromType(-1)].m_array[i].ClassID);
-            Record.LVDataList[2].szTexture = GetClassIconName(script.m_memberList[script.GetIndexFromType(-1)].m_array[i].ClassID);
-            Record.LVDataList[2].nTextureWidth = 11;
-            Record.LVDataList[2].nTextureHeight = 11;
+            Record.LVDataList[2].szTexture = script.GetClassIconCustom(script.m_memberList[script.GetIndexFromType(-1)].m_array[i].ClassID);
+            Record.LVDataList[2].nTextureWidth = 16;
+            Record.LVDataList[2].nTextureHeight = 16;
             Class'NWindow.UIAPI_LISTCTRL'.static.InsertRecord("ClanDrawerWnd.Clan1_AssignApprenticeList", Record);
         }
         ++i;
