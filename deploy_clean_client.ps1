@@ -4,6 +4,7 @@ param(
     [string]$InterfaceUPath,
     [string]$InterfaceXdatPath,
     [string]$FangeUiPath,
+    [string]$MusicInfoPath,
     [switch]$PatchEnglishFlag
 )
 
@@ -19,6 +20,12 @@ if([string]::IsNullOrWhiteSpace($FangeUiPath)) {
     $candidate = Join-Path $Root 'dist\Interlude\fange_ui.utx'
     if(Test-Path -LiteralPath $candidate) {
         $FangeUiPath = $candidate
+    }
+}
+if([string]::IsNullOrWhiteSpace($MusicInfoPath)) {
+    $candidate = Join-Path $Root 'dist\Interlude\musicinfo.dat'
+    if(Test-Path -LiteralPath $candidate) {
+        $MusicInfoPath = $candidate
     }
 }
 
@@ -88,6 +95,7 @@ foreach($dir in @($systemDir, $systexturesDir)) {
 $baselineFiles = @(
     @{Src=(Join-Path $systemDir 'Interface.u'); Rel='system\Interface.u'},
     @{Src=(Join-Path $systemDir 'Interface.xdat'); Rel='system\Interface.xdat'},
+    @{Src=(Join-Path $systemDir 'musicinfo.dat'); Rel='system\musicinfo.dat'},
     @{Src=(Join-Path $systemDir 'Option.ini'); Rel='system\Option.ini'},
     @{Src=(Join-Path $systemDir 'WindowsInfo.ini'); Rel='system\WindowsInfo.ini'},
     @{Src=(Join-Path $systemDir 'Running.ini'); Rel='system\Running.ini'},
@@ -107,6 +115,9 @@ $deployFiles = @(
 
 if(-not [string]::IsNullOrWhiteSpace($FangeUiPath)) {
     $deployFiles += @{Src=$FangeUiPath; Dst=(Join-Path $systexturesDir 'fange_ui.utx'); Rel='systextures\fange_ui.utx'}
+}
+if(-not [string]::IsNullOrWhiteSpace($MusicInfoPath)) {
+    $deployFiles += @{Src=$MusicInfoPath; Dst=(Join-Path $systemDir 'musicinfo.dat'); Rel='system\musicinfo.dat'}
 }
 
 foreach($file in $deployFiles) {

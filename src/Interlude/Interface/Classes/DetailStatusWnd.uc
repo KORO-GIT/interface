@@ -196,8 +196,8 @@ function string GetMovingSpeed(UserInfo a_UserInfo)
         else
         {
         }
-        return string(MovingSpeed);
     }
+    return string(MovingSpeed);
 }
 
 function float GetMyExpRate()
