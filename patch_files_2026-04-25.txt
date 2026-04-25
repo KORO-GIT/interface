@@ -5,28 +5,33 @@ Full current patch:
 system\Interface.u
 system\Interface.xdat
 system\musicinfo.dat
+system\SHEV_Dynasty_00.u
 systextures\fange_ui.utx
 systextures\L2UI_CH3.utx
+systextures\Avengers_Dynasty_wpTEX.utx
+animations\Avengers_Moirai_Shield_m00.ukx
 
 Delta over 2026-04-24 patch:
 system\Interface.u
 system\Interface.xdat
 system\musicinfo.dat
-
-Optional compatibility pack for Dynasty custom resources:
-system\entry.dll
+system\SHEV_Dynasty_00.u
+systextures\Avengers_Dynasty_wpTEX.utx
+animations\Avengers_Moirai_Shield_m00.ukx
 
 SHA256:
 system\Interface.u        5A053A593DE8CF430E6FBD064DB966EE219FAB56C5B5FB7DD3D1A13DB63620E7
 system\Interface.xdat     DFB9A8AB9DDF77AD9A3902B8AC2533D568F56E92339795BA513612D4E2EE2744
 system\musicinfo.dat      DEA7F2303A61D34BE8C92835FDEBA2CF0AD8C4742E4E5AF2FC1F15781FD4ABF7
+system\SHEV_Dynasty_00.u  1A6EB68CAEFF5CC13801D249B2B26EEE242006BF01AC22C4C41443BC9FFCB5B1
 systextures\fange_ui.utx  8A7D3701B0BFF066435492D2A4D1DA9BAADAD3C56615AB8BE907F45815F28DA8
 systextures\L2UI_CH3.utx 6769326F4A8BF203C3A93CE8715D26668B00A9FEE27D7A5110644FAF83B5DE05
-system\entry.dll          2A05510B336FB3393AC563D1B7A534C27ADFE63FE9F48BA827CB4BF1346AD9D9
+systextures\Avengers_Dynasty_wpTEX.utx 6077182281E6999E2262FC2D6BACF6F9FAAFC128913C632BB14BC97C6D02D99C
+animations\Avengers_Moirai_Shield_m00.ukx 1A44743C08633B76E1B13C88EE9EEE3FBF183D8461D063454764C8E93BCAC1AE
 
 Notes:
 - system\Interface.u contains the latest interface logic, embedded scaled clan class icons, decompile artifact cleanup, lightweight stability/log-noise fixes, and the movement speed display fix.
 - system\Interface.xdat contains the Options minimap row spacing fix.
 - system\musicinfo.dat removes references to missing OGG tracks and uses INTRO as a safe fallback for empty zones.
 - systextures\fange_ui.utx and systextures\L2UI_CH3.utx are not changed by the latest step, but are required by previous language/tooltip UI changes.
-- Do not include system\entry.dll in the main patch for everyone. Use it only where Dynasty resources require it.
+- system\SHEV_Dynasty_00.u and systextures\Avengers_Dynasty_wpTEX.utx were converted from LameCrypt 811/821 to standard Interlude-compatible 111/121, so system\entry.dll is no longer required for Dynasty display.
