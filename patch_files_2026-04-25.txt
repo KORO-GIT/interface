@@ -1,0 +1,27 @@
+Patch file list for client update
+Date: 2026-04-25
+
+Full current patch:
+system\Interface.u
+system\Interface.xdat
+systextures\fange_ui.utx
+systextures\L2UI_CH3.utx
+
+Delta over 2026-04-24 patch:
+system\Interface.u
+
+Optional compatibility pack for Dynasty custom resources:
+system\entry.dll
+
+SHA256:
+system\Interface.u        D82444E530E5C241930C2C9BDB157469BB1779ABC0969590208903470137DF9D
+system\Interface.xdat     97245D0AF40815CA0BB7BD2CBAE727183A1660FAB2C7787144912B09AF1B50CD
+systextures\fange_ui.utx  8A7D3701B0BFF066435492D2A4D1DA9BAADAD3C56615AB8BE907F45815F28DA8
+systextures\L2UI_CH3.utx 6769326F4A8BF203C3A93CE8715D26668B00A9FEE27D7A5110644FAF83B5DE05
+system\entry.dll          2A05510B336FB3393AC563D1B7A534C27ADFE63FE9F48BA827CB4BF1346AD9D9
+
+Notes:
+- system\Interface.u contains the latest interface logic and embedded scaled clan class icons.
+- system\Interface.xdat is unchanged in the latest clan-icon step, but keep it in the full patch for synchronized UI layout.
+- systextures\fange_ui.utx and systextures\L2UI_CH3.utx are not changed by the latest step, but are required by previous language/tooltip UI changes.
+- Do not include system\entry.dll in the main patch for everyone. Use it only where Dynasty resources require it.
