@@ -311,7 +311,7 @@ function HandleAddNormalStatus(string param)
     while(i < a_ArrayStatusIcon4.Length)
     {
         // End:0x399
-        if((float(BuffCnt) % float(12)) == float(0))
+        if((float(BuffCnt) % float(getMaxCols(GetOptionInt("Custom", "AbMaxCols")))) == float(0))
         {
             i_UnkInt1++;
             StatusIcon.InsertRow(i_UnkInt1);
@@ -352,7 +352,7 @@ function HandleAddNormalStatus(string param)
             i_UnkInt4 = i_UnkInt1;
         }
         // End:0x4F1
-        if((float(i_UnkIntLocal1) % float(12)) == float(0))
+        if((float(i_UnkIntLocal1) % float(getMaxCols(GetOptionInt("Custom", "AbMaxCols")))) == float(0))
         {
             i_UnkInt4++;
             StatusIcon.InsertRow(i_UnkInt4);
@@ -601,8 +601,8 @@ function UpdateWindowSize()
             Me.HideWindow();
         }
         rectWnd = StatusIcon.GetRect();
-        Me.SetWindowSize(rectWnd.nWidth + 4, rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))));
-        Me.SetFrameSize(4, rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))));        
+        Me.SetWindowSize(rectWnd.nWidth + (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))), rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))));
+        Me.SetFrameSize(getBuffSize(GetOptionInt("Custom", "AbnormalSize")), rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))));
     }
     else
     {
@@ -737,7 +737,7 @@ function ReHandleAddNormalStatus()
     while(i < a_ArrayStatusIcon4.Length)
     {
         // End:0x37A
-        if((float(BuffCnt) % float(12)) == float(0))
+        if((float(BuffCnt) % float(getMaxCols(GetOptionInt("Custom", "AbMaxCols")))) == float(0))
         {
             i_UnkInt1++;
             StatusIcon.InsertRow(i_UnkInt1);
@@ -756,7 +756,7 @@ function ReHandleAddNormalStatus()
             i_UnkInt4 = i_UnkInt1;
         }
         // End:0x40B
-        if((float(i_UnkIntLocal1) % float(12)) == float(0))
+        if((float(i_UnkIntLocal1) % float(getMaxCols(GetOptionInt("Custom", "AbMaxCols")))) == float(0))
         {
             i_UnkInt4++;
             StatusIcon.InsertRow(i_UnkInt4);
@@ -882,6 +882,45 @@ function bool f_UnkFunc1(int ClassID)
     return false;
 }
 
+function int getMaxCols(int Index)
+{
+    local int resultIndex;
+
+    switch(Index)
+    {
+        // End:0x16
+        case 0:
+            resultIndex = 12;
+            // End:0x58
+            break;
+        // End:0x25
+        case 1:
+            resultIndex = 14;
+            // End:0x58
+            break;
+        // End:0x35
+        case 2:
+            resultIndex = 16;
+            // End:0x58
+            break;
+        // End:0x45
+        case 3:
+            resultIndex = 18;
+            // End:0x58
+            break;
+        // End:0x55
+        case 4:
+            resultIndex = 22;
+            // End:0x58
+            break;
+        // End:0xFFFF
+        default:
+            resultIndex = 12;
+            break;
+    }
+    return resultIndex;
+}
+
 function int getBuffSize(int Index)
 {
     local int resultIndex;
@@ -890,21 +929,42 @@ function int getBuffSize(int Index)
     {
         // End:0x16
         case 0:
-            resultIndex = 24;
-            // End:0x38
+            resultIndex = 28;
+            // End:0x78
             break;
         // End:0x25
         case 1:
-            resultIndex = 20;
-            // End:0x38
+            resultIndex = 26;
+            // End:0x78
             break;
         // End:0x35
         case 2:
+            resultIndex = 24;
+            // End:0x78
+            break;
+        // End:0x45
+        case 3:
+            resultIndex = 22;
+            // End:0x78
+            break;
+        // End:0x55
+        case 4:
+            resultIndex = 20;
+            // End:0x78
+            break;
+        // End:0x65
+        case 5:
+            resultIndex = 18;
+            // End:0x78
+            break;
+        // End:0x75
+        case 6:
             resultIndex = 16;
-            // End:0x38
+            // End:0x78
             break;
         // End:0xFFFF
         default:
+            resultIndex = 24;
             break;
     }
     return resultIndex;

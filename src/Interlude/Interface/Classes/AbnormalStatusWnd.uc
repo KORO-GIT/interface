@@ -236,7 +236,7 @@ function HandleAddNormalStatus(string param)
     local StatusIconInfo Info;
 
     ClearStatus(false, false);
-    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalSize"));
+    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"));
     Info.BackTex = "L2UI.EtcWndBack.AbnormalBack";
     Info.bShow = true;
     Info.bEtcItem = false;
@@ -402,7 +402,7 @@ function HandleAddEtcStatus(string param)
     local StatusIconInfo Info;
 
     ClearStatus(true, false);
-    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalSize"));
+    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"));
     Info.BackTex = "L2UI.EtcWndBack.AbnormalBack";
     Info.bShow = true;
     Info.bEtcItem = true;
@@ -474,7 +474,7 @@ function HandleAddShortStatus(string param)
     local StatusIconInfo Info;
 
     ClearStatus(false, true);
-    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalSize"));
+    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"));
     Info.BackTex = "L2UI.EtcWndBack.AbnormalBack";
     Info.bShow = true;
     Info.bEtcItem = false;
@@ -558,8 +558,8 @@ function UpdateWindowSize()
             Me.HideWindow();
         }
         rectWnd = StatusIcon.GetRect();
-        Me.SetWindowSize(rectWnd.nWidth + 4, rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))));
-        Me.SetFrameSize(4, rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalSize"))));        
+        Me.SetWindowSize(rectWnd.nWidth + 4, rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"))));
+        Me.SetFrameSize(4, rectWnd.nHeight - (getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"))));
     }
     else
     {
@@ -636,7 +636,7 @@ function ReHandleAddNormalStatus()
     while(i < i_UnkIntLocal2)
     {
         Info = a_ArrayStatusIcon5[i];
-        Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalSize"));
+        Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"));
         Info.BackTex = "L2UI.EtcWndBack.AbnormalBack";
         // End:0x2C7
         if(Info.ClassID > 0)
@@ -837,21 +837,42 @@ function int getBuffSize(int Index)
     {
         // End:0x16
         case 0:
-            resultIndex = 24;
-            // End:0x38
+            resultIndex = 28;
+            // End:0x78
             break;
         // End:0x25
         case 1:
-            resultIndex = 20;
-            // End:0x38
+            resultIndex = 26;
+            // End:0x78
             break;
         // End:0x35
         case 2:
+            resultIndex = 24;
+            // End:0x78
+            break;
+        // End:0x45
+        case 3:
+            resultIndex = 22;
+            // End:0x78
+            break;
+        // End:0x55
+        case 4:
+            resultIndex = 20;
+            // End:0x78
+            break;
+        // End:0x65
+        case 5:
+            resultIndex = 18;
+            // End:0x78
+            break;
+        // End:0x75
+        case 6:
             resultIndex = 16;
-            // End:0x38
+            // End:0x78
             break;
         // End:0xFFFF
         default:
+            resultIndex = 24;
             break;
     }
     return resultIndex;
@@ -862,7 +883,7 @@ function ProbablyAddEmptyBuff()
     local StatusIconInfo Info;
     local int RowCount;
 
-    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalSize"));
+    Info.Size = getBuffSize(GetOptionInt("Custom", "AbnormalDebuffSize"));
     Info.BackTex = "L2UI.EtcWndBack.AbnormalBack";
     Info.bShow = false;
     Info.bEtcItem = false;

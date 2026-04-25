@@ -927,10 +927,12 @@ function int HandlePartySpelledList(string param)
             if(isDebuffCustom(StatusInfo.ClassID))
             {
                 StatusInfo.BackTex = "L2UI_CH3.Debuff";
+                StatusInfo.Size = getBuffSize(GetOptionInt("Custom", "PTDebuffSize"));
                 m_StatusIconDeBuff[idx].AddCol(checkPriorDebuffSameRow, StatusInfo);                
             }
             else
             {
+                StatusInfo.Size = 14;
                 // End:0x2EE
                 if((float(BuffCnt) % float(18)) == float(0))
                 {
@@ -951,6 +953,55 @@ function int HandlePartySpelledList(string param)
     }
     UpdateBuff();
     return idx;
+}
+
+function int getBuffSize(int Index)
+{
+    local int resultIndex;
+
+    switch(Index)
+    {
+        // End:0x16
+        case 0:
+            resultIndex = 26;
+            // End:0x78
+            break;
+        // End:0x25
+        case 1:
+            resultIndex = 24;
+            // End:0x78
+            break;
+        // End:0x35
+        case 2:
+            resultIndex = 22;
+            // End:0x78
+            break;
+        // End:0x45
+        case 3:
+            resultIndex = 20;
+            // End:0x78
+            break;
+        // End:0x55
+        case 4:
+            resultIndex = 18;
+            // End:0x78
+            break;
+        // End:0x65
+        case 5:
+            resultIndex = 16;
+            // End:0x78
+            break;
+        // End:0x75
+        case 6:
+            resultIndex = 14;
+            // End:0x78
+            break;
+        // End:0xFFFF
+        default:
+            resultIndex = 14;
+            break;
+    }
+    return resultIndex;
 }
 
 function bool f_UnkFunc1(int ClassID)

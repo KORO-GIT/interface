@@ -8,7 +8,6 @@ var PartyWnd PartyWnd;
 function OnLoad()
 {
     RegisterEvent(150);
-    RegisterEvent(1900);
     AbnormalDebuffsStatusWnd = AbnormalDebuffsStatusWnd(GetScript("AbnormalDebuffsStatusWnd"));
     PartyWnd = PartyWnd(GetScript("PartyWnd"));
     InitInterfaceOption();
@@ -28,176 +27,166 @@ function OnEvent(int Index, string param)
     {
         ExecuteEvent(11223344);
     }
-    if(Index == 1900)
-    {
-        InitInterfaceOption();
-    }
-    return;
-}
-
-function string GetLocalizedText(string EnglishText, string RussianText)
-{
-    if(GetOptionBool("Game", "IsNative"))
-    {
-        return RussianText;
-    }
-    return EnglishText;
-}
-
-function SetBuffOptionTitle(string ControlName, string EnglishText, string RussianText)
-{
-    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd." $ ControlName, " " $ GetLocalizedText(EnglishText, RussianText));
     return;
 }
 
 function InitInterfaceOption()
 {
+    local int nOption;
     local bool bOption;
 
+    nOption = GetOptionInt("Custom", "AbMaxCols");
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("BuffOptionsWnd.AbnormalColsBox", nOption);
+    nOption = GetOptionInt("Custom", "AbnormalSize");
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("BuffOptionsWnd.AbnormalSizeBox", nOption);
+    nOption = GetOptionInt("Custom", "AbnormalDebuffSize");
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("BuffOptionsWnd.AbnormalDebuffSizeBox", nOption);
     bOption = GetOptionBool("Custom", "checkAbDebuff");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbDebuff", bOption);
-    SetBuffOptionTitle("checkAbDebuff", "Show debuffs on separate row", "Показывать дебаффы отдельной строкой");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbDebuff", " Show debuffs on seperate row");
     bOption = GetOptionBool("Custom", "checkAbSongDance");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbSongDance", bOption);
-    SetBuffOptionTitle("checkAbSongDance", "Show songs/dances on separate row", "Показывать песни/танцы отдельной строкой");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbSongDance", " Show songs/dances on seperate row");
     bOption = GetOptionBool("Custom", "checkAbPrior");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPrior", bOption);
-    SetBuffOptionTitle("checkAbPrior", "Show important buffs on separate row", "Показывать важные баффы отдельной строкой");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPrior", " Show important buffs on seperate row");
     bOption = GetOptionBool("Custom", "checkAbPriorNobless");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorNobless", bOption);
-    SetBuffOptionTitle("checkAbPriorNobless", "Nobless/Salva/Phoenix", "Ноблесс/Салва/Феникс");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorNobless", " Nobless/Salva/Phoenix");
     bOption = GetOptionBool("Custom", "checkAbPriorAcumen");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorAcumen", bOption);
-    SetBuffOptionTitle("checkAbPriorAcumen", "Acumen", "Акумен");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorAcumen", " Acumen");
     bOption = GetOptionBool("Custom", "checkAbPriorEmpower");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorEmpower", bOption);
-    SetBuffOptionTitle("checkAbPriorEmpower", "Empower", "Эмповер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorEmpower", " Empower");
     bOption = GetOptionBool("Custom", "checkAbPriorWindWalk");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorWindWalk", bOption);
-    SetBuffOptionTitle("checkAbPriorWindWalk", "Wind Walk", "Винд Волк");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorWindWalk", " Wind Walk");
     bOption = GetOptionBool("Custom", "checkAbPriorMight");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorMight", bOption);
-    SetBuffOptionTitle("checkAbPriorMight", "Might", "Майт");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorMight", " Might");
     bOption = GetOptionBool("Custom", "checkAbPriorHaste");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorHaste", bOption);
-    SetBuffOptionTitle("checkAbPriorHaste", "Haste", "Хаст");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorHaste", " Haste");
     bOption = GetOptionBool("Custom", "checkAbPriorPrayer");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorPrayer", bOption);
-    SetBuffOptionTitle("checkAbPriorPrayer", "Prayer", "Праер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorPrayer", " Prayer");
     bOption = GetOptionBool("Custom", "checkAbPriorArcana");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorArcana", bOption);
-    SetBuffOptionTitle("checkAbPriorArcana", "Arcane Skills", "Аркана скиллы");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorArcana", " Arcane Skills");
     bOption = GetOptionBool("Custom", "checkAbPriorHotSpring");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorHotSpring", bOption);
-    SetBuffOptionTitle("checkAbPriorHotSpring", "Hot Spring's Buffs", "Баффы Hot Springs");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorHotSpring", " Hot Spring's Buffs");
     bOption = GetOptionBool("Custom", "checkAbPriorViciousStance");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorViciousStance", bOption);
-    SetBuffOptionTitle("checkAbPriorViciousStance", "Vicious Stance", "Vicious Stance");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorViciousStance", " Vicious Stance");
     bOption = GetOptionBool("Custom", "checkAbPriorHeroicValor");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorHeroicValor", bOption);
-    SetBuffOptionTitle("checkAbPriorHeroicValor", "Hero Skills", "Геройские скиллы");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorHeroicValor", " Hero Skills");
     bOption = GetOptionBool("Custom", "checkAbPriorSummoner");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorSummoner", bOption);
-    SetBuffOptionTitle("checkAbPriorSummoner", "Summoner", "Саммонер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorSummoner", " Summoner");
     bOption = GetOptionBool("Custom", "checkAbPriorForce");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorForce", bOption);
-    SetBuffOptionTitle("checkAbPriorForce", "Force", "Форс");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorForce", " Force");
     bOption = GetOptionBool("Custom", "checkAbPriorTitan");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorTitan", bOption);
-    SetBuffOptionTitle("checkAbPriorTitan", "Titan", "Титан");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorTitan", " Titan");
     bOption = GetOptionBool("Custom", "checkAbPriorHawkeye");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorHawkeye", bOption);
-    SetBuffOptionTitle("checkAbPriorHawkeye", "Hawkeye", "Хавк");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorHawkeye", " Hawkeye");
     bOption = GetOptionBool("Custom", "checkAbPriorRanger");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorRanger", bOption);
-    SetBuffOptionTitle("checkAbPriorRanger", "Ranger", "Рейнджер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorRanger", " Ranger");
     bOption = GetOptionBool("Custom", "checkAbPriorKnight");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorKnight", bOption);
-    SetBuffOptionTitle("checkAbPriorKnight", "Knight", "Рыцарь");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorKnight", " Knight");
     bOption = GetOptionBool("Custom", "checkAbPriorMystic");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorMystic", bOption);
-    SetBuffOptionTitle("checkAbPriorMystic", "Mystic", "Мистик");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorMystic", " Mystic");
     bOption = GetOptionBool("Custom", "checkAbPriorMagePoV");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorMagePoV", bOption);
-    SetBuffOptionTitle("checkAbPriorMagePoV", "Mage PoV", "Маг PoV");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorMagePoV", " MagePoV");
     bOption = GetOptionBool("Custom", "checkAbPriorFighterPoV");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorFighterPoV", bOption);
-    SetBuffOptionTitle("checkAbPriorFighterPoV", "Fighter PoV", "Воин PoV");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorFighterPoV", " FighterPoV");
     bOption = GetOptionBool("Custom", "checkAbPriorTankPoV");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorTankPoV", bOption);
-    SetBuffOptionTitle("checkAbPriorTankPoV", "Tank PoV", "Танк PoV");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorTankPoV", " TankPoV");
     bOption = GetOptionBool("Custom", "checkAbPriorDebuffSameRow");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkAbPriorDebuffSameRow", bOption);
-    SetBuffOptionTitle("checkAbPriorDebuffSameRow", "Show important buffs on debuff row", "Важные баффы в строке дебаффов");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkAbPriorDebuffSameRow", " Debuff on separate WINDOW");
+    nOption = GetOptionInt("Custom", "PTDebuffSize");
+    Class'NWindow.UIAPI_COMBOBOX'.static.SetSelectedNum("BuffOptionsWnd.PTDebuffSizeBox", nOption);
     bOption = GetOptionBool("Custom", "checkPrior");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPrior", bOption);
-    SetBuffOptionTitle("checkPrior", "Show important buffs on separate row", "Показывать важные баффы отдельной строкой");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPrior", " Show important buffs on seperate row");
     bOption = GetOptionBool("Custom", "checkPriorNobless");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorNobless", bOption);
-    SetBuffOptionTitle("checkPriorNobless", "Nobless/Salva/Phoenix", "Ноблесс/Салва/Феникс");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorNobless", " Nobless/Salva/Phoenix");
     bOption = GetOptionBool("Custom", "checkPriorAcumen");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorAcumen", bOption);
-    SetBuffOptionTitle("checkPriorAcumen", "Acumen", "Акумен");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorAcumen", " Acumen");
     bOption = GetOptionBool("Custom", "checkPriorEmpower");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorEmpower", bOption);
-    SetBuffOptionTitle("checkPriorEmpower", "Empower", "Эмповер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorEmpower", " Empower");
     bOption = GetOptionBool("Custom", "checkPriorWindWalk");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorWindWalk", bOption);
-    SetBuffOptionTitle("checkPriorWindWalk", "Wind Walk", "Винд Волк");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorWindWalk", " Wind Walk");
     bOption = GetOptionBool("Custom", "checkPriorMight");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorMight", bOption);
-    SetBuffOptionTitle("checkPriorMight", "Might", "Майт");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorMight", " Might");
     bOption = GetOptionBool("Custom", "checkPriorHaste");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorHaste", bOption);
-    SetBuffOptionTitle("checkPriorHaste", "Haste", "Хаст");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorHaste", " Haste");
     bOption = GetOptionBool("Custom", "checkPriorPrayer");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorPrayer", bOption);
-    SetBuffOptionTitle("checkPriorPrayer", "Prayer", "Праер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorPrayer", " Prayer");
     bOption = GetOptionBool("Custom", "checkPriorArcana");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorArcana", bOption);
-    SetBuffOptionTitle("checkPriorArcana", "Arcane Skills", "Аркана скиллы");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorArcana", " Arcane Skills");
     bOption = GetOptionBool("Custom", "checkPriorHotSpring");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorHotSpring", bOption);
-    SetBuffOptionTitle("checkPriorHotSpring", "Hot Spring's Buffs", "Баффы Hot Springs");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorHotSpring", " Hot Spring's Buffs");
     bOption = GetOptionBool("Custom", "checkPriorViciousStance");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorViciousStance", bOption);
-    SetBuffOptionTitle("checkPriorViciousStance", "Vicious Stance", "Vicious Stance");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorViciousStance", " Vicious Stance");
     bOption = GetOptionBool("Custom", "checkPriorHeroicValor");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorHeroicValor", bOption);
-    SetBuffOptionTitle("checkPriorHeroicValor", "Hero Skills", "Геройские скиллы");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorHeroicValor", " Hero Skills");
     bOption = GetOptionBool("Custom", "checkPriorSummoner");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorSummoner", bOption);
-    SetBuffOptionTitle("checkPriorSummoner", "Summoner", "Саммонер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorSummoner", " Summoner");
     bOption = GetOptionBool("Custom", "checkPriorForce");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorForce", bOption);
-    SetBuffOptionTitle("checkPriorForce", "Force", "Форс");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorForce", " Force");
     bOption = GetOptionBool("Custom", "checkPriorTitan");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorTitan", bOption);
-    SetBuffOptionTitle("checkPriorTitan", "Titan", "Титан");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorTitan", " Titan");
     bOption = GetOptionBool("Custom", "checkPriorHawkeye");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorHawkeye", bOption);
-    SetBuffOptionTitle("checkPriorHawkeye", "Hawkeye", "Хавк");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorHawkeye", " Hawkeye");
     bOption = GetOptionBool("Custom", "checkPriorRanger");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorRanger", bOption);
-    SetBuffOptionTitle("checkPriorRanger", "Ranger", "Рейнджер");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorRanger", " Ranger");
     bOption = GetOptionBool("Custom", "checkPriorKnight");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorKnight", bOption);
-    SetBuffOptionTitle("checkPriorKnight", "Knight", "Рыцарь");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorKnight", " Knight");
     bOption = GetOptionBool("Custom", "checkPriorMystic");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorMystic", bOption);
-    SetBuffOptionTitle("checkPriorMystic", "Mystic", "Мистик");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorMystic", " Mystic");
     bOption = GetOptionBool("Custom", "checkPriorMagePoV");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorMagePoV", bOption);
-    SetBuffOptionTitle("checkPriorMagePoV", "Mage PoV", "Маг PoV");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorMagePoV", " MagePoV");
     bOption = GetOptionBool("Custom", "checkPriorFighterPoV");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorFighterPoV", bOption);
-    SetBuffOptionTitle("checkPriorFighterPoV", "Fighter PoV", "Воин PoV");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorFighterPoV", " FighterPoV");
     bOption = GetOptionBool("Custom", "checkPriorTankPoV");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorTankPoV", bOption);
-    SetBuffOptionTitle("checkPriorTankPoV", "Tank PoV", "Танк PoV");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorTankPoV", " TankPoV");
     bOption = GetOptionBool("Custom", "checkPriorDebuffSameRow");
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("BuffOptionsWnd.checkPriorDebuffSameRow", bOption);
-    SetBuffOptionTitle("checkPriorDebuffSameRow", "Show important buffs on separate row", "Показывать важные баффы отдельной строкой");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("BuffOptionsWnd.checkPriorDebuffSameRow", " Show important buffs on seperate row");
     return;
 }
 
@@ -205,20 +194,6 @@ function OnClickCheckBox(string strID)
 {
     switch(strID)
     {
-        // End:0x83
-        case "BuffPotions":
-            // End:0x64
-            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("BuffOptionsWnd.BuffPotions"))
-            {
-                SetOptionBool("Custom", "BuffPotions", true);                
-            }
-            else
-            {
-                SetOptionBool("Custom", "BuffPotions", false);
-            }
-            // End:0x659
-            break;
-        // End:0x95
         case "checkAbDebuff":
         // End:0xAA
         case "checkAbSongDance":
@@ -312,28 +287,28 @@ function OnClickCheckBox(string strID)
         case "checkPriorViciousStance":
         // End:0x513
         case "checkPriorHeroicValor":
-        // End:0x52F
-        case "checkPriorDebuffSameRow":
-        // End:0x546
+        // End:0x52A
         case "checkPriorSummoner":
-        // End:0x55A
+        // End:0x53E
         case "checkPriorForce":
-        // End:0x56E
+        // End:0x552
         case "checkPriorTitan":
-        // End:0x584
+        // End:0x568
         case "checkPriorHawkeye":
-        // End:0x599
+        // End:0x57D
         case "checkPriorRanger":
-        // End:0x5AE
+        // End:0x592
         case "checkPriorKnight":
-        // End:0x5C3
+        // End:0x5A7
         case "checkPriorMystic":
-        // End:0x5D9
+        // End:0x5BD
         case "checkPriorMagePoV":
-        // End:0x5F2
+        // End:0x5D6
         case "checkPriorFighterPoV":
-        // End:0x656
+        // End:0x5EC
         case "checkPriorTankPoV":
+        // End:0x656
+        case "checkPriorDebuffSameRow":
             SetOptionBool("Custom", strID, Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("BuffOptionsWnd." $ strID));
             HandlePartyPriorityBuffsList();
             ExecuteEvent(4445);
@@ -357,17 +332,19 @@ function OnClickButton(string strID)
 {
     switch(strID)
     {
-        // End:0x1A
+        // End:0x23
+        case "BuffOptionsTabBuffOKBtn":
+        // End:0x63
+        case "BuffOptionsTabPTBuffOKBtn":
         case "OtherTab2OKBtn":
-        // End:0x4F
         case "OtherTab3OKBtn":
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd");
-            // End:0x81
+            // End:0x95
             break;
-        // End:0x7E
+        // End:0x92
         case "BtnClose":
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd");
-            // End:0x81
+            // End:0x95
             break;
         // End:0xFFFF
         default:
@@ -378,16 +355,37 @@ function OnClickButton(string strID)
 
 function OnComboBoxItemSelected(string sName, int Index)
 {
-    local int nSelectedNum;
+    local int nSelectedNum1, nSelectedNum2, nSelectedNum3, nSelectedNum4;
 
     switch(sName)
     {
         // End:0x7F
         case "AbnormalSizeBox":
-            nSelectedNum = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("BuffOptionsWnd.AbnormalSizeBox");
-            SetOptionInt("Custom", "AbnormalSize", nSelectedNum);
+            nSelectedNum1 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("BuffOptionsWnd.AbnormalSizeBox");
+            SetOptionInt("Custom", "AbnormalSize", nSelectedNum1);
             ExecuteEvent(4444);
-            // End:0x82
+            // End:0x1F9
+            break;
+        // End:0x109
+        case "AbnormalDebuffSizeBox":
+            nSelectedNum3 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("BuffOptionsWnd.AbnormalDebuffSizeBox");
+            SetOptionInt("Custom", "AbnormalDebuffSize", nSelectedNum3);
+            ExecuteEvent(4444);
+            // End:0x1F9
+            break;
+        // End:0x17E
+        case "AbnormalColsBox":
+            nSelectedNum2 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("BuffOptionsWnd.AbnormalColsBox");
+            SetOptionInt("Custom", "AbMaxCols", nSelectedNum2);
+            ExecuteEvent(4444);
+            // End:0x1F9
+            break;
+        // End:0x1F6
+        case "PTDebuffSizeBox":
+            nSelectedNum4 = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("BuffOptionsWnd.PTDebuffSizeBox");
+            SetOptionInt("Custom", "PTDebuffSize", nSelectedNum4);
+            ExecuteEvent(4445);
+            // End:0x1F9
             break;
         // End:0xFFFF
         default:
@@ -398,7 +396,7 @@ function OnComboBoxItemSelected(string sName, int Index)
 
 function HandleAbnormalPriorityBuffsWindows()
 {
-    // End:0x48E
+    // End:0x455
     if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPrior"))
     {
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorNobless");
@@ -410,7 +408,6 @@ function HandleAbnormalPriorityBuffsWindows()
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorArcana");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorWindWalk");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorHotSpring");
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorDebuffSameRow");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorViciousStance");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorHeroicValor");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorSummoner");
@@ -435,7 +432,6 @@ function HandleAbnormalPriorityBuffsWindows()
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorArcana");
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorWindWalk");
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorHotSpring");
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorDebuffSameRow");
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorViciousStance");
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorHeroicValor");
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("BuffOptionsWnd.checkAbPriorSummoner");
