@@ -2026,19 +2026,19 @@ function CustomTooltip MakeFastDeleteTooltip()
     local CustomTooltip ToolTip;
     local DrawItemInfo info_3;
 
-    ToolTip.DrawList.Length = 3;
+    ToolTip.DrawList.Length = 4;
 
     info_3.eType = DIT_TEXT;
     if(m_FastDeleteEnabled)
     {
-        info_3.t_strText = "Fast Item Delete: ON";
+        info_3.t_strText = "Fast delete: ON";
         info_3.t_color.R = 120;
         info_3.t_color.G = 220;
         info_3.t_color.B = 120;
     }
     else
     {
-        info_3.t_strText = "Fast Item Delete: OFF";
+        info_3.t_strText = "Fast delete: OFF";
         info_3.t_color.R = 220;
         info_3.t_color.G = 120;
         info_3.t_color.B = 120;
@@ -2048,17 +2048,32 @@ function CustomTooltip MakeFastDeleteTooltip()
     info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[0] = info_3;
 
-    info_3.t_strText = "Ctrl + Alt + Click";
+    info_3.t_strText = "Ctrl + Alt + Click item";
     info_3.t_color.R = 218;
     info_3.t_color.G = 190;
     info_3.t_color.B = 1;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[1] = info_3;
 
-    info_3.t_strText = "Click icon to enable / disable";
+    info_3.t_strText = "Deletes the item immediately";
     info_3.t_color.R = 176;
     info_3.t_color.G = 153;
     info_3.t_color.B = 121;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
     ToolTip.DrawList[2] = info_3;
+
+    info_3.t_strText = "Click icon to toggle";
+    info_3.t_color.R = 176;
+    info_3.t_color.G = 153;
+    info_3.t_color.B = 121;
+    info_3.t_color.A = byte(255);
+    info_3.bLineBreak = true;
+    info_3.t_bDrawOneLine = true;
+    ToolTip.DrawList[3] = info_3;
 
     return ToolTip;
 }
