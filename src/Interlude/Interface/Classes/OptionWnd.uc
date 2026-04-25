@@ -824,6 +824,16 @@ function OnClickCheckBox(string strID)
             HandleChatTransparency();
             // End:0xF72
             break;
+        case "Cb_AutoSetEquip":
+            if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("OptionWnd.Cb_AutoSetEquip"))
+            {
+                SetOptionBool("Custom", "DisableAutoEquipSet", false);                
+            }
+            else
+            {
+                SetOptionBool("Custom", "DisableAutoEquipSet", true);
+            }
+            break;
         // End:0xA58
         case "Cb_ShowDamage":
             // End:0xA39
@@ -1632,6 +1642,9 @@ function InitInterfaceOption()
     Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_ChatTransparency", bOption);
     Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_ChatTransparency", " Chat Transparency");
     HandleChatTransparency();
+    bOption = !GetOptionBool("Custom", "DisableAutoEquipSet");
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetCheck("OptionWnd.Cb_AutoSetEquip", bOption);
+    Class'NWindow.UIAPI_CHECKBOX'.static.SetTitle("OptionWnd.Cb_AutoSetEquip", " Auto Equip Armor Set");
     return;
 }
 

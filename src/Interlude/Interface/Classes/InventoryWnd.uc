@@ -1110,11 +1110,47 @@ function function24(ItemInfo info_6)
         default:
             break;
     }
+    TryAutoEquipSet(info_6);
     // End:0x6A0
     if(none != item)
     {
         item.Clear();
         item.AddItem(info_6);
+    }
+    return;
+}
+
+function TryAutoEquipSet(ItemInfo EquippedItem)
+{
+    local array<int> SetItemIDs;
+    local int i;
+    local int Index;
+    local ItemInfo SetItem;
+
+    if(GetOptionBool("Custom", "DisableAutoEquipSet"))
+    {
+        return;
+    }
+
+    if((EquippedItem.SlotBitType != 1024) && (EquippedItem.SlotBitType != 32768))
+    {
+        return;
+    }
+
+    Class'NWindow.UIDATA_ITEM'.static.GetSetItemIDList(EquippedItem.ClassID, 0, SetItemIDs);
+    i = 0;
+
+    while(i < SetItemIDs.Length)
+    {
+        if(SetItemIDs[i] != EquippedItem.ClassID)
+        {
+            Index = item_1.FindItemWithClassID(SetItemIDs[i]);
+            if((Index >= 0) && item_1.GetItem(Index, SetItem))
+            {
+                RequestUseItem(SetItem.ServerID);
+            }
+        }
+        ++i;
     }
     return;
 }
