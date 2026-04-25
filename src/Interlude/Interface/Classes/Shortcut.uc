@@ -61,6 +61,10 @@ function LoadData()
     {
         Panel3 = 6;
     }
+    EnsureUniquePanels();
+    SetINIInt("Key", "Panel1", Panel1, "Option");
+    SetINIInt("Key", "Panel2", Panel2, "Option");
+    SetINIInt("Key", "Panel3", Panel3, "Option");
     return;
 }
 
@@ -104,6 +108,7 @@ function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Pane
     Panel1 = NormalizePanel(Panels1);
     Panel2 = NormalizePanel(Panels2);
     Panel3 = NormalizePanel(Panels3);
+    EnsureUniquePanels();
     SetOptionBool("Game", "EnterChatting", EnterChat);
     SetINIBool("Key", "UseBind1", true, "Option");
     SetINIBool("Key", "UseBind2", true, "Option");
@@ -195,6 +200,38 @@ function int NormalizePanel(int PanelIndex)
         return 6;
     }
     return PanelIndex;
+}
+
+function int FindFreePanel(int UsedPanel1, int UsedPanel2, int UsedPanel3)
+{
+    local int PanelIndex;
+
+    PanelIndex = 1;
+    while(PanelIndex <= 6)
+    {
+        if((PanelIndex != UsedPanel1) && (PanelIndex != UsedPanel2) && (PanelIndex != UsedPanel3))
+        {
+            return PanelIndex;
+        }
+        PanelIndex++;
+    }
+    return 1;
+}
+
+function EnsureUniquePanels()
+{
+    Panel1 = NormalizePanel(Panel1);
+    Panel2 = NormalizePanel(Panel2);
+    Panel3 = NormalizePanel(Panel3);
+    if(Panel2 == Panel1)
+    {
+        Panel2 = FindFreePanel(Panel1, Panel3, 0);
+    }
+    if((Panel3 == Panel1) || (Panel3 == Panel2))
+    {
+        Panel3 = FindFreePanel(Panel1, Panel2, 0);
+    }
+    return;
 }
 
 function int GetShortcutPageForPanel(int PanelIndex)
