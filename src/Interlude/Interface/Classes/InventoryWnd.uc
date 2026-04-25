@@ -309,7 +309,7 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
         // End:0x13E
         if((info_3.ItemNum > 1))
         {
-            SetChatMessage(((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "(") $ string(info_3.ItemNum)) $ ") "));
+            SetChatMessage(((((((("" $ string_4) $ "") $ info_3.Name) $ " ") $ "(") $ MakeCostString(string(info_3.ItemNum))) $ ") "));
         }
         else
         {
