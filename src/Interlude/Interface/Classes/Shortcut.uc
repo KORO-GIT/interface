@@ -23,6 +23,7 @@ function OnLoad()
     RegisterEvent(90);
     LoadData();
     MenuWnd = MenuWnd(GetScript("MenuWnd"));
+    RefreshShortcutKeyHints();
     return;
 }
 
@@ -100,8 +101,6 @@ function OnExitState(name a_NextStateName)
 
 function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Panels1, int Panels2, int Panels3)
 {
-    local OptionWnd OptionWindow;
-
     UseBind1 = true;
     UseBind2 = true;
     UseBind3 = true;
@@ -116,11 +115,7 @@ function ResetParam(bool EnterChat, bool Bind1, bool Bind2, bool Bind3, int Pane
     SetINIInt("Key", "Panel1", Panel1, "Option");
     SetINIInt("Key", "Panel2", Panel2, "Option");
     SetINIInt("Key", "Panel3", Panel3, "Option");
-    OptionWindow = OptionWnd(GetScript("OptionWnd"));
-    if(OptionWindow != None)
-    {
-        OptionWindow.SetShortcutTransparencyNum();
-    }
+    RefreshShortcutKeyHints();
     return;
 }
 
@@ -231,6 +226,152 @@ function EnsureUniquePanels()
     {
         Panel3 = FindFreePanel(Panel1, Panel2, 0);
     }
+    return;
+}
+
+function string GetShortcutHintPanelWindow(int PanelIndex, bool bVertical)
+{
+    PanelIndex = NormalizePanel(PanelIndex);
+    if(bVertical)
+    {
+        if(PanelIndex == 1)
+        {
+            return "ShortcutWnd.ShortcutWndVertical";
+        }
+        return "ShortcutWnd.ShortcutWndVertical_" $ string(PanelIndex - 1);
+    }
+    if(PanelIndex == 1)
+    {
+        return "ShortcutWnd.ShortcutWndHorizontal";
+    }
+    return "ShortcutWnd.ShortcutWndHorizontal_" $ string(PanelIndex - 1);
+}
+
+function string GetShortcutHintTexture(int BindIndex, int SlotIndex)
+{
+    if(BindIndex == 1)
+    {
+        switch(SlotIndex)
+        {
+            case 1:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_1";
+            case 2:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_2";
+            case 3:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_3";
+            case 4:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_4";
+            case 5:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_5";
+            case 6:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_6";
+            case 7:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_7";
+            case 8:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_8";
+            case 9:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_9";
+            case 10:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_0";
+            case 11:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_Minus";
+            case 12:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_EQUALS";
+        }
+    }
+    if(BindIndex == 2)
+    {
+        switch(SlotIndex)
+        {
+            case 1:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_Q";
+            case 2:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_W";
+            case 3:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_E";
+            case 4:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_R";
+            case 5:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_t";
+            case 6:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_Y";
+            case 7:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_U";
+            case 8:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_I";
+            case 9:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_O";
+            case 10:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_P";
+            case 11:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_LeftBracket";
+            case 12:
+                return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_RightBracket";
+        }
+    }
+    if(BindIndex == 3)
+    {
+        return "L2UI_Sublimity.ShortcutWnd.ShortcutWnd_DF_Key_F" $ string(SlotIndex);
+    }
+    return "Was.Null";
+}
+
+function SetShortcutHintTexture(string WindowName, int SlotIndex, string TextureName)
+{
+    Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture(WindowName $ ".F" $ string(SlotIndex) $ "Tex", TextureName);
+    return;
+}
+
+function SetShortcutHintPanelSlot(int PanelIndex, int SlotIndex, string TextureName)
+{
+    SetShortcutHintTexture(GetShortcutHintPanelWindow(PanelIndex, false), SlotIndex, TextureName);
+    SetShortcutHintTexture(GetShortcutHintPanelWindow(PanelIndex, true), SlotIndex, TextureName);
+    return;
+}
+
+function ClearShortcutHintPanel(int PanelIndex)
+{
+    local int SlotIndex;
+
+    SlotIndex = 1;
+    while(SlotIndex <= 12)
+    {
+        SetShortcutHintPanelSlot(PanelIndex, SlotIndex, "Was.Null");
+        SlotIndex++;
+    }
+    return;
+}
+
+function ApplyShortcutHintPanel(int PanelIndex, int BindIndex)
+{
+    local int SlotIndex;
+
+    SlotIndex = 1;
+    while(SlotIndex <= 12)
+    {
+        SetShortcutHintPanelSlot(PanelIndex, SlotIndex, GetShortcutHintTexture(BindIndex, SlotIndex));
+        SlotIndex++;
+    }
+    return;
+}
+
+function RefreshShortcutKeyHints()
+{
+    local int PanelIndex;
+
+    PanelIndex = 1;
+    while(PanelIndex <= 6)
+    {
+        ClearShortcutHintPanel(PanelIndex);
+        PanelIndex++;
+    }
+    if(GetOptionBool("Custom", "ShortcutTransparencyNum") == true)
+    {
+        return;
+    }
+    ApplyShortcutHintPanel(Panel1, 1);
+    ApplyShortcutHintPanel(Panel2, 2);
+    ApplyShortcutHintPanel(Panel3, 3);
     return;
 }
 
