@@ -9332,6 +9332,17 @@ function string GetClassIconCustom(int ClassIDCustom)
     return tempString;
 }
 
+function string GetClanClassIconCustom(int ClassIDCustom)
+{
+    local string tempString;
+
+    tempString = GetClassIconCustom(ClassIDCustom);
+    if(tempString == "")
+    {
+        return "";
+    }
+    return "Interface.ClanClassIcon.clan_" $ Mid(tempString, 5);
+}
 function bool isSongDanceCustom(int Id)
 {
     local bool ResultBool;
