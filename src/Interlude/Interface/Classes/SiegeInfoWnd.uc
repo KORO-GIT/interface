@@ -203,6 +203,47 @@ function ClearInfo()
     return;
 }
 
+function string TwoDigit(int Value)
+{
+    if(Value < 10)
+    {
+        return "0" $ string(Value);
+    }
+
+    return string(Value);
+}
+
+function string FormatSiegeDateTime(int TimeID)
+{
+    local string RawTime;
+    local array<string> DateTimeParts;
+    local array<string> DateParts;
+    local array<string> TimeParts;
+
+    RawTime = ConvertTimetoStr(TimeID);
+    RawTime = Class'UICommonAPI'.static.ReplaceText(RawTime, " / ", "/");
+    RawTime = Class'UICommonAPI'.static.ReplaceText(RawTime, "/ ", "/");
+    RawTime = Class'UICommonAPI'.static.ReplaceText(RawTime, " /", "/");
+    RawTime = Class'UICommonAPI'.static.ReplaceText(RawTime, "  ", " ");
+
+    if(Split(RawTime, " ", DateTimeParts) < 2)
+    {
+        return RawTime;
+    }
+
+    if(Split(DateTimeParts[0], "/", DateParts) < 3)
+    {
+        return RawTime;
+    }
+
+    if(Split(DateTimeParts[1], ":", TimeParts) < 2)
+    {
+        return RawTime;
+    }
+
+    return (((((TwoDigit(int(DateParts[2])) $ ".") $ TwoDigit(int(DateParts[1]))) $ ".") $ DateParts[0]) $ " ") $ ((TwoDigit(int(TimeParts[0])) $ ":") $ TwoDigit(int(TimeParts[1])));
+}
+
 function OnClickButton(string strID)
 {
     switch(strID)
@@ -449,12 +490,12 @@ function HandleSiegeInfo(string param)
     // End:0x2E0
     if(NowTime > 0)
     {
-        txtCurTime.SetText(ConvertTimetoStr(NowTime));
+        txtCurTime.SetText(FormatSiegeDateTime(NowTime));
     }
     // End:0x308
     if(SiegeTime > 0)
     {
-        txtSiegeTime.SetText(ConvertTimetoStr(SiegeTime));        
+        txtSiegeTime.SetText(FormatSiegeDateTime(SiegeTime));        
     }
     else
     {
@@ -671,7 +712,7 @@ function HandleSiegeInfoSelectableTime(string param)
         // End:0x6D
         if(TimeID > 0)
         {
-            TimeString = ConvertTimetoStr(TimeID);
+            TimeString = FormatSiegeDateTime(TimeID);
             cboTime.AddString(TimeString);
             m_SelectableTimeArray.Insert(m_SelectableTimeArray.Length, 1);
             m_SelectableTimeArray[m_SelectableTimeArray.Length - 1] = TimeID;
