@@ -1,5 +1,9 @@
 class NPHRN_MiniMapWnd_OLD extends UICommonAPI;
 
+const UPDATE_ZONE_TIMER_ID = 1;
+const FOLLOW_PLAYER_TIMER_ID = 2;
+const FOLLOW_PLAYER_INTERVAL = 100;
+
 var WindowHandle MinimapWnd;
 var WindowHandle MinimapHandlerWnd;
 var int PartyMemberCount;
@@ -34,7 +38,8 @@ function OnLoad()
 function OnShow()
 {
     AdjustMapToPlayerPosition(true);
-    MinimapWnd.SetTimer(1, 1000);
+    MinimapWnd.SetTimer(UPDATE_ZONE_TIMER_ID, 1000);
+    StartFollowPlayerTimer();
     UpdateZoneName();
     UpdateTransparencyState();
     return;
@@ -43,17 +48,48 @@ function OnShow()
 function OnTimer(int Id)
 {
     MinimapWnd.KillTimer(Id);
-    UpdateZoneName();
+    if(Id == UPDATE_ZONE_TIMER_ID)
+    {
+        UpdateZoneName();
+    }
+    else
+    {
+        if(Id == FOLLOW_PLAYER_TIMER_ID)
+        {
+            if(bFollowPlayer)
+            {
+                AdjustMapToPlayerPosition(true);
+                StartFollowPlayerTimer();
+            }
+        }
+    }
     return;
 }
 
 function OnTick()
 {
-    // End:0x10
+    return;
+}
+
+function OnHide()
+{
+    StopFollowPlayerTimer();
+    return;
+}
+
+function StartFollowPlayerTimer()
+{
+    MinimapWnd.KillTimer(FOLLOW_PLAYER_TIMER_ID);
     if(bFollowPlayer)
     {
-        AdjustMapToPlayerPosition(true);
+        MinimapWnd.SetTimer(FOLLOW_PLAYER_TIMER_ID, FOLLOW_PLAYER_INTERVAL);
     }
+    return;
+}
+
+function StopFollowPlayerTimer()
+{
+    MinimapWnd.KillTimer(FOLLOW_PLAYER_TIMER_ID);
     return;
 }
 
@@ -383,6 +419,7 @@ function EnableFollowPlayer()
 {
     BtnFixLoc.SetTexture("Was.NPHRN_Radar_Fix_Enabled", "Was.NPHRN_Radar_Fix_Down", "Was.NPHRN_Radar_Fix_Over");
     bFollowPlayer = true;
+    StartFollowPlayerTimer();
     return;
 }
 
@@ -390,6 +427,7 @@ function DisableFollowPlayer()
 {
     BtnFixLoc.SetTexture("Was.NPHRN_Radar_Fix", "Was.NPHRN_Radar_Fix_Down", "Was.NPHRN_Radar_Fix_Over");
     bFollowPlayer = false;
+    StopFollowPlayerTimer();
     return;
 }
 

@@ -1,5 +1,8 @@
 class NPHRN_MinimapWnd_NEW extends UICommonAPI;
 
+const FOLLOW_PLAYER_TIMER_ID = 9001;
+const FOLLOW_PLAYER_INTERVAL = 100;
+
 var WindowHandle Me;
 var WindowHandle NPHRN_MiniMapHandler_NEW;
 var int PartyMemberCount;
@@ -43,17 +46,48 @@ function OnShow()
 {
     HandleMinimap();
     AdjustMapToPlayerPosition(true);
+    StartFollowPlayerTimer();
     HandleRadarTransparency();
     return;
 }
 
 function OnTick()
 {
-    // End:0x10
+    return;
+}
+
+function OnHide()
+{
+    StopFollowPlayerTimer();
+    return;
+}
+
+function OnTimer(int TimerID)
+{
+    if(TimerID == FOLLOW_PLAYER_TIMER_ID)
+    {
+        if(FixedLocation)
+        {
+            AdjustMapToPlayerPosition(true);
+            StartFollowPlayerTimer();
+        }
+    }
+    return;
+}
+
+function StartFollowPlayerTimer()
+{
+    Me.KillTimer(FOLLOW_PLAYER_TIMER_ID);
     if(FixedLocation)
     {
-        AdjustMapToPlayerPosition(true);
+        Me.SetTimer(FOLLOW_PLAYER_TIMER_ID, FOLLOW_PLAYER_INTERVAL);
     }
+    return;
+}
+
+function StopFollowPlayerTimer()
+{
+    Me.KillTimer(FOLLOW_PLAYER_TIMER_ID);
     return;
 }
 
@@ -443,6 +477,7 @@ function FixLocEnable()
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("NPHRN_MinimapWnd_NEW.Circle");
     BtnFixLoc.SetTexture("Was.Radar_Btn_FixLoc_Enable", "Was.Radar_Btn_FixLoc_Down", "Was.Radar_Btn_FixLoc_Enable_Over");
     FixedLocation = true;
+    StartFollowPlayerTimer();
     return;
 }
 
@@ -451,6 +486,7 @@ function FixLocDisable()
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("NPHRN_MinimapWnd_NEW.Circle");
     BtnFixLoc.SetTexture("Was.Radar_Btn_FixLoc", "Was.Radar_Btn_FixLoc_Down", "Was.Radar_Btn_FixLoc_Over");
     FixedLocation = false;
+    StopFollowPlayerTimer();
     return;
 }
 

@@ -2,6 +2,7 @@ class DamageText3Wnd extends SublimityItem;
 
 const CONTAINER_COUNT = 30;
 const TEX_COUNT = 10;
+const MAX_DAMAGE_QUEUE = 2000000000;
 const DIRECTION_UP = -1;
 const DIRECTION_DOWN = 1;
 const TYPE_DAMAGE = 1;
@@ -29,8 +30,8 @@ var int m_TextHeight[20];
 var int m_TextOffset[20];
 var int m_TextOffsetCorrection[20];
 var int m_LastUsedContainer;
-var int m_Direction[30];
-var int m_ContainerType[30];
+var int m_Direction[31];
+var int m_ContainerType[31];
 var int m_DamageQueue[30];
 var int m_DamageQueueCount[30];
 var int m_Type2Count;
@@ -156,11 +157,10 @@ function HandleSystemMessage(string a_Param)
     local string Index, Param1, Param2;
 
     ParseString(a_Param, "Index", Index);
-    ParseString(a_Param, "Param1", Param1);
-    ParseString(a_Param, "Param2", Param2);
     // End:0x6B
     if(Index == "1066")
     {
+        ParseString(a_Param, "Param1", Param1);
         ShowIndicator(4, int(Param1), 0, false);        
     }
     else
@@ -168,6 +168,7 @@ function HandleSystemMessage(string a_Param)
         // End:0x8F
         if(Index == "1067")
         {
+            ParseString(a_Param, "Param2", Param2);
             ShowIndicator(4, int(Param2), 0, false);            
         }
         else
@@ -175,6 +176,7 @@ function HandleSystemMessage(string a_Param)
             // End:0xB4
             if(Index == "1068")
             {
+                ParseString(a_Param, "Param1", Param1);
                 ShowIndicator(5, int(Param1), 250, false);                
             }
             else
@@ -182,6 +184,7 @@ function HandleSystemMessage(string a_Param)
                 // End:0xD8
                 if(Index == "1069")
                 {
+                    ParseString(a_Param, "Param2", Param2);
                     ShowIndicator(5, int(Param2), 0, false);                    
                 }
                 else
@@ -189,6 +192,7 @@ function HandleSystemMessage(string a_Param)
                     // End:0xFC
                     if(Index == "1405")
                     {
+                        ParseString(a_Param, "Param1", Param1);
                         ShowIndicator(3, int(Param1), 0, false);                        
                     }
                     else
@@ -196,6 +200,7 @@ function HandleSystemMessage(string a_Param)
                         // End:0x11D
                         if(Index == "1406")
                         {
+                            ParseString(a_Param, "Param2", Param2);
                             ShowIndicator(3, int(Param2), 0, false);
                         }
                     }
@@ -213,7 +218,14 @@ function ShowIndicator(int Type, int Value, int nGroupThreshold, bool bGrouped)
     // End:0x89
     if(nGroupThreshold > 0)
     {
-        m_DamageQueue[Type] += Value;
+        if((Value > 0) && (m_DamageQueue[Type] > (MAX_DAMAGE_QUEUE - Value)))
+        {
+            m_DamageQueue[Type] = MAX_DAMAGE_QUEUE;
+        }
+        else
+        {
+            m_DamageQueue[Type] += Value;
+        }
         m_DamageQueueCount[Type] += 1;
         Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("DamageText3Wnd", -1 * Type);
         Class'NWindow.UIAPI_WINDOW'.static.SetUITimer("DamageText3Wnd", -1 * Type, nGroupThreshold);        
@@ -565,6 +577,11 @@ function SetValue(int Type, int Container, int Value, bool bGrouped)
         }
     }
     Length = Len(wValue);
+    if(Length > TEX_COUNT)
+    {
+        wValue = Right(wValue, TEX_COUNT);
+        Length = TEX_COUNT;
+    }
     i = 1;
 
     while(i <= Length)

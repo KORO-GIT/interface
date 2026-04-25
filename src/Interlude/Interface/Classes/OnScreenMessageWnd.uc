@@ -314,7 +314,7 @@ function OnEvent(int a_EventID, string a_Param)
 	    msgcolorR, msgcolorG, msgcolorB, shadowtype, BackgroundType,
 	    LifeTime, AnimationType, SystemMsgIndex;
 
-    local string MsgText, ParamString1, ParamString2;
+    local string MsgText;
 
     // End:0x23D
     if(a_EventID == 140)
@@ -370,20 +370,18 @@ function OnEvent(int a_EventID, string a_Param)
         if(a_EventID == 580)
         {
             ParseInt(a_Param, "Index", SystemMsgIndex);
-            ParseString(a_Param, "Param1", ParamString1);
-            ParseString(a_Param, "Param2", ParamString2);
-            ValidateSystemMsg(SystemMsgIndex, ParamString1, ParamString2);
+            ValidateSystemMsg(SystemMsgIndex, a_Param);
         }
         return;
     }
 }
 
-function ValidateSystemMsg(int Index, string StringTxt1, string StringTxt2)
+function ValidateSystemMsg(int Index, string Param)
 {
     local SystemMsgData SystemMsgCurrent;
     local int WindowType, FontType, BackgroundType, LifeTime, AnimationType;
 
-    local string MsgText;
+    local string MsgText, StringTxt1, StringTxt2;
     local Color TextColor;
 
     GetSystemMsgInfo(Index, SystemMsgCurrent);
@@ -392,6 +390,8 @@ function ValidateSystemMsg(int Index, string StringTxt1, string StringTxt2)
     {
         WindowType = SystemMsgCurrent.WindowType;
         MsgText = SystemMsgCurrent.OnScrMsg;
+        ParseString(Param, "Param1", StringTxt1);
+        ParseString(Param, "Param2", StringTxt2);
         MsgText = MakeFullSystemMsg(MsgText, StringTxt1, StringTxt2);
         LifeTime = SystemMsgCurrent.LifeTime * 1000;
         AnimationType = SystemMsgCurrent.AnimationType;
