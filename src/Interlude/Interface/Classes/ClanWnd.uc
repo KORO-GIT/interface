@@ -1182,7 +1182,7 @@ function AddToList(int idx)
             {
                 Record.LVDataList[3].szData = "0";
                 Record.LVDataList[3].szTexture = "L2UI_CH3.BloodHoodWnd.BloodHood_Logon";
-                OnLineNum = OnLineNum++;                
+                OnLineNum++;                
             }
             else
             {
@@ -1246,7 +1246,7 @@ function AddToList(int idx)
         {
             Record.LVDataList[3].szData = "1";
             Record.LVDataList[3].szTexture = "L2UI_CH3.BloodHoodWnd.BloodHood_Logon";
-            OnLineNum = OnLineNum++;            
+            OnLineNum++;            
         }
         else
         {
