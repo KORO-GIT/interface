@@ -303,6 +303,11 @@ function HandleMacroList(string param)
         ItemInfo.IconName = TextureName;
         ItemInfo.Description = strDescription;
         ItemInfo.ItemSubType = 4;
+        Index = GetMacroIconNumFromTextureName(TextureName);
+        if(Index > 0)
+        {
+            SaveMacroIconNum(MacroID, ItemInfo.Name, Index);
+        }
         // End:0x1CC
         if((ItemInfo.ClassID == SelectedMacroID))
         {
@@ -315,7 +320,11 @@ function HandleMacroList(string param)
         // End:0x241
         if((TextureName == EmptyString))
         {
-            Index = GetMacroNum(ItemInfo.Name);
+            Index = GetMacroNumByID(MacroID);
+            if(Index < 1)
+            {
+                Index = GetMacroNum(ItemInfo.Name);
+            }
             // End:0x241
             if((Index > DelayCommandValueOffset))
             {

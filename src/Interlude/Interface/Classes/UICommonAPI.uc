@@ -14365,6 +14365,66 @@ function int GetMacroNum(string param)
     return idx;
 }
 
+function string GetMacroIconKey(int MacroID)
+{
+    local UserInfo Info;
+
+    if(GetPlayerInfo(Info))
+    {
+        return (Info.Name $ "_") $ string(MacroID);
+    }
+    return "MacroID_" $ string(MacroID);
+}
+
+function int GetMacroIconNumFromTextureName(string TextureName)
+{
+    local int IconNum, Index;
+    local string IconSuffix;
+
+    IconNum = int(TextureName);
+    if(IconNum > 0)
+    {
+        return IconNum;
+    }
+
+    Index = InStr(TextureName, "Macro_Icon");
+    if(Index > -1)
+    {
+        IconSuffix = Mid(TextureName, Index + 10);
+        IconNum = int(IconSuffix);
+    }
+    return IconNum;
+}
+
+function int GetMacroNumByID(int MacroID)
+{
+    local int idx;
+
+    if(MacroID > 0)
+    {
+        GetINIInt("MacroList", GetMacroIconKey(MacroID), idx, "MacroGrp");
+    }
+    return idx;
+}
+
+function SaveMacroIconNum(int MacroID, string MacroName, int IconNum)
+{
+    if(IconNum < 1)
+    {
+        return;
+    }
+
+    if(MacroID > 0)
+    {
+        SetINIInt("MacroList", GetMacroIconKey(MacroID), IconNum, "MacroGrp");
+    }
+    if(Len(MacroName) > 0)
+    {
+        SetINIInt("MacroList", MacroName, IconNum, "MacroGrp");
+    }
+    return;
+}
+
 function Leave()
 {
     RequestExit();

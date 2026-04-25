@@ -437,8 +437,11 @@ function SetMacroID(int MacroID)
     {
         Class'NWindow.UIAPI_EDITBOX'.static.SetString("MacroEditWnd.TxtName", Info.Name);
         Class'NWindow.UIAPI_EDITBOX'.static.SetString("MacroEditWnd.TxtShortName", Info.IconName);
-        unkInt3 = int(Right(Info.IconTextureName, 1));
-        // End:0xCE
+        unkInt3 = GetMacroIconNumFromTextureName(Info.IconTextureName);
+        if((unkInt3 < 1))
+        {
+            unkInt3 = GetMacroNumByID(MacroID);
+        }
         if((unkInt3 < 1))
         {
             unkInt3 = GetMacroNum(Info.Name);
@@ -477,11 +480,7 @@ function SaveMacro()
         CommandList[(CommandList.Length - 1)] = unkLocStr;
         idx++;
     }
-    // End:0x147
-    if((unkInt3 > 7))
-    {
-        SetINIInt("MacroList", Name, unkInt3, "MacroGrp");
-    }
+    SaveMacroIconNum(m_CurMacroID, Name, unkInt3);
     // End:0x19B
     if(Class'NWindow.MacroAPI'.static.RequestMakeMacro(m_CurMacroID, Name, IconName, (unkInt3 - 1), Description, CommandList))
     {
