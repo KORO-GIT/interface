@@ -71,7 +71,8 @@ function OnShow()
     {
         Class'NWindow.UIAPI_WINDOW'.static.SetWindowTitleByText("HennaInfoWnd", GetSystemString(651));
         Class'NWindow.UIAPI_WINDOW'.static.HideWindow("HennaInfoWnd.HennaInfoWndUnEquip");
-        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("HennaInfoWnd.HennaInfoWndEquip");        
+        Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("HennaInfoWnd.HennaInfoWndEquip");
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("HennaInfoWnd.HennaInfoWndEquip", 255);        
     }
     else
     {
@@ -80,7 +81,8 @@ function OnShow()
         {
             Class'NWindow.UIAPI_WINDOW'.static.SetWindowTitleByText("HennaInfoWnd", GetSystemString(652));
             Class'NWindow.UIAPI_WINDOW'.static.HideWindow("HennaInfoWnd.HennaInfoWndEquip");
-            Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("HennaInfoWnd.HennaInfoWndUnEquip");            
+            Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("HennaInfoWnd.HennaInfoWndUnEquip");
+            Class'NWindow.UIAPI_WINDOW'.static.SetAlpha("HennaInfoWnd.HennaInfoWndUnEquip", 255);            
         }
         else
         {
@@ -112,6 +114,38 @@ function OnEvent(int Event_ID, string param)
             break;
     }
     return;
+}
+
+function Color MakeHennaColor(byte R, byte G, byte B)
+{
+    local Color C;
+
+    C.R = R;
+    C.G = G;
+    C.B = B;
+    C.A = byte(255);
+    return C;
+}
+
+function ApplyHennaTextColors()
+{
+    local Color HeaderColor, TextColor;
+
+    HeaderColor = MakeHennaColor(220, 220, 220);
+    TextColor = MakeHennaColor(185, 185, 185);
+
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtDyeInfo", HeaderColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtTattooInfo", HeaderColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtDyeInfoUnEquip", HeaderColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtTattooInfoUnEquip", HeaderColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtVariation", HeaderColor);
+
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtDyeName", TextColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtTattooName", TextColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtTattooAddName", TextColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtDyeNameUnEquip", TextColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtTattooNameUnEquip", TextColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtTattooAddNameUnEquip", TextColor);
 }
 
 function ShowHennaInfoWnd(string param)
@@ -159,15 +193,18 @@ function ShowHennaInfoWnd(string param)
         col.R = 168;
         col.G = 168;
         col.B = 168;
+        col.A = byte(255);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtFee", GetSystemString(637) $ " : ");
         Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtFee", col);
         strAdenaComma = MakeCostString("" $ string(iFee));
         col = GetNumericColor(strAdenaComma);
+        col.A = byte(255);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtAdena", strAdenaComma);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtAdena", col);
         col.R = byte(255);
         col.G = byte(255);
         col.B = 0;
+        col.A = byte(255);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtAdenaString", GetSystemString(469));
         Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtAdenaString", col);
         Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtTattooInfo", GetSystemString(639));
@@ -182,7 +219,7 @@ function ShowHennaInfoWnd(string param)
         {
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtTattooInfoUnEquip", GetSystemString(639));
             Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("HennaInfoWnd.textureTattooIconNameUnEquip", strTattooIconName);
-            Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtTattooNameUnEquip", (GetSystemString(652) $ ":") $ strTattooName);
+            Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtTattooNameUnEquip", (GetSystemString(652) $ ": ") $ strTattooName);
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtTattooAddNameUnEquip", strTattooAddName);
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtDyeInfoUnEquip", GetSystemString(638));
             Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture("HennaInfoWnd.textureDyeIconNameUnEquip", strDyeIconName);
@@ -190,19 +227,23 @@ function ShowHennaInfoWnd(string param)
             col.R = 168;
             col.G = 168;
             col.B = 168;
+            col.A = byte(255);
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtFeeUnEquip", GetSystemString(637) $ " : ");
             Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtFeeUnEquip", col);
             strAdenaComma = MakeCostString("" $ string(iFee));
             col = GetNumericColor(strAdenaComma);
+            col.A = byte(255);
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtAdenaUnEquip", strAdenaComma);
             Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtAdenaUnEquip", col);
             col.R = byte(255);
             col.G = byte(255);
             col.B = 0;
+            col.A = byte(255);
             Class'NWindow.UIAPI_TEXTBOX'.static.SetText("HennaInfoWnd.txtAdenaStringUnEquip", GetSystemString(469));
             Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor("HennaInfoWnd.txtAdenaStringUnEquip", col);
         }
     }
+    ApplyHennaTextColors();
     Class'NWindow.UIAPI_TEXTBOX'.static.SetInt("HennaInfoWnd.txtSTRBefore", iSTRnow);
     Class'NWindow.UIAPI_TEXTBOX'.static.SetInt("HennaInfoWnd.txtSTRAfter", iSTRchange);
     Class'NWindow.UIAPI_TEXTBOX'.static.SetInt("HennaInfoWnd.txtDEXBefore", iDEXnow);

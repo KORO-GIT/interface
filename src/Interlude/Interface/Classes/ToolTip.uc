@@ -484,7 +484,7 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
                     else
                     {
                         AddTooltipItemBG("", "Description ", item.AdditionalName);
-                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, -10, true, false);
+                        AddTooltipPlainText(CleanTooltipDescription(item.Description), 110, 140, 160, 0, true, false);
                     }
                 }
                 // End:0xEBE
