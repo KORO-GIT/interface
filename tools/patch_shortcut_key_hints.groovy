@@ -1,4 +1,5 @@
 import ct0.Alignment
+import ct0.ComboBox
 import ct0.DefaultProperty
 import ct0.TextBox
 import ct0.Texture
@@ -138,6 +139,9 @@ void patchBindLabels(List<DefaultProperty> all) {
     setText(all, 'txtCheckBind1', '1-12', 21, 116)
     setText(all, 'txtCheckBind2', 'Q-P', 21, 140)
     setText(all, 'txtCheckBind3', 'F1-F12', 21, 165)
+    labelComboPanels(all, 'ComboPanel1')
+    labelComboPanels(all, 'ComboPanel2')
+    labelComboPanels(all, 'ComboPanel3')
 }
 
 void setText(List<DefaultProperty> items, String name, String text) {
@@ -166,5 +170,15 @@ void collect(DefaultProperty item, List<DefaultProperty> output) {
     output << item
     if (item instanceof Window) {
         ((Window) item).children.each { child -> collect((DefaultProperty) child, output) }
+    }
+}
+
+void labelComboPanels(List<DefaultProperty> items, String name) {
+    ComboBox comboBox = (ComboBox) items.find { it instanceof ComboBox && it.name.equalsIgnoreCase(name) }
+    if (comboBox == null) {
+        throw new IllegalStateException("${name} not found")
+    }
+    comboBox.values.eachWithIndex { item, int index ->
+        item.text = "P${index + 1}"
     }
 }

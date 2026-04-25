@@ -50,6 +50,9 @@ args.each { String fileName ->
     limitCombo(patched, 'ComboPanel1', 6)
     limitCombo(patched, 'ComboPanel2', 6)
     limitCombo(patched, 'ComboPanel3', 6)
+    labelComboPanels(patched, 'ComboPanel1')
+    labelComboPanels(patched, 'ComboPanel2')
+    labelComboPanels(patched, 'ComboPanel3')
 
     File backup = new File(file.parentFile, file.name + '.bak_before_keysetting_bind_window')
     if (!backup.exists()) {
@@ -110,5 +113,15 @@ void limitCombo(List<DefaultProperty> items, String name, int maxValue) {
     }
     comboBox.values.removeAll { item ->
         item.text != null && item.text.isInteger() && item.text.toInteger() > maxValue
+    }
+}
+
+void labelComboPanels(List<DefaultProperty> items, String name) {
+    ComboBox comboBox = (ComboBox) items.find { it instanceof ComboBox && it.name.equalsIgnoreCase(name) }
+    if (comboBox == null) {
+        throw new IllegalStateException("${name} not found")
+    }
+    comboBox.values.eachWithIndex { item, int index ->
+        item.text = "P${index + 1}"
     }
 }
