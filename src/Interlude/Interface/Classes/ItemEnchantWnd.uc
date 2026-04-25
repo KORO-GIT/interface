@@ -100,18 +100,11 @@ function HandleEnchantShow(string param)
 {
     local int ClassID;
 
-    // End:0x45
-    if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("EnchantAIWnd") || Class'NWindow.UIAPI_WINDOW'.static.IsMinimizedWindow("EnchantAIWnd"))
-    {        
-    }
-    else
-    {
-        Clear();
-        ParseInt(param, "ClassID", ClassID);
-        Me.SetWindowTitle(((GetSystemString(1220) $ "(") $ Class'NWindow.UIDATA_ITEM'.static.GetItemName(ClassID)) $ ")");
-        Me.ShowWindow();
-        Me.SetFocus();
-    }
+    Clear();
+    ParseInt(param, "ClassID", ClassID);
+    Me.SetWindowTitle(((GetSystemString(1220) $ "(") $ Class'NWindow.UIDATA_ITEM'.static.GetItemName(ClassID)) $ ")");
+    Me.ShowWindow();
+    Me.SetFocus();
     return;
 }
 

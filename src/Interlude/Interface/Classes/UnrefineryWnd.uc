@@ -75,15 +75,8 @@ function OnEvent(int a_EventID, string a_Param)
             // End:0x91
             if(procedureopenstat == false)
             {
-                // End:0x60
-                if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("EnchantAIWnd") || Class'NWindow.UIAPI_WINDOW'.static.IsMinimizedWindow("EnchantAIWnd"))
-                {                    
-                }
-                else
-                {
-                    PlaySound("ItemSound2.smelting.Smelting_dragin");
-                    ResetReady();
-                }
+                PlaySound("ItemSound2.smelting.Smelting_dragin");
+                ResetReady();
             }
             // End:0x11C
             break;
