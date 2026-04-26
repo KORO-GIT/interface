@@ -55,6 +55,11 @@ function AddLocalizedComboString(string ControlName, string EnglishText, string 
     return;
 }
 
+function bool IsBuffOptionChecked(string ControlName)
+{
+    return Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("BuffOptionsWnd." $ ControlName);
+}
+
 function FillLocalizedSizeCombo(string ControlName)
 {
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("BuffOptionsWnd." $ ControlName);
@@ -473,7 +478,7 @@ function OnComboBoxItemSelected(string sName, int Index)
 function HandleAbnormalPriorityBuffsWindows()
 {
     // End:0x455
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPrior"))
+    if(IsBuffOptionChecked("checkAbPrior"))
     {
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorNobless");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkAbPriorAcumen");
@@ -527,7 +532,7 @@ function HandleAbnormalPriorityBuffsWindows()
 function HandlePartyPriorityBuffsWindows()
 {
     // End:0x497
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPrior"))
+    if(IsBuffOptionChecked("checkPrior"))
     {
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkPriorNobless");
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("BuffOptionsWnd.checkPriorAcumen");
@@ -593,10 +598,10 @@ function HandleAbnormalPriorityBuffsList()
 {
     AbnormalPriorityArray.Length = 0;
     // End:0x69B
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPrior"))
+    if(IsBuffOptionChecked("checkAbPrior"))
     {
         // End:0x7B
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorNobless"))
+        if(IsBuffOptionChecked("checkAbPriorNobless"))
         {
             AddAbnormalPriorityBuffs(1323);
             AddAbnormalPriorityBuffs(1410);
@@ -604,26 +609,26 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(1418);
         }
         // End:0xAC
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorPrayer"))
+        if(IsBuffOptionChecked("checkAbPriorPrayer"))
         {
             AddAbnormalPriorityBuffs(1307);
         }
         // End:0xF5
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorWindWalk"))
+        if(IsBuffOptionChecked("checkAbPriorWindWalk"))
         {
             AddAbnormalPriorityBuffs(1204);
             AddAbnormalPriorityBuffs(2034);
             AddAbnormalPriorityBuffs(1282);
         }
         // End:0x13C
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorArcana"))
+        if(IsBuffOptionChecked("checkAbPriorArcana"))
         {
             AddAbnormalPriorityBuffs(336);
             AddAbnormalPriorityBuffs(337);
             AddAbnormalPriorityBuffs(338);
         }
         // End:0x18E
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorAcumen"))
+        if(IsBuffOptionChecked("checkAbPriorAcumen"))
         {
             AddAbnormalPriorityBuffs(1085);
             AddAbnormalPriorityBuffs(1004);
@@ -631,20 +636,20 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(2169);
         }
         // End:0x1CB
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorEmpower"))
+        if(IsBuffOptionChecked("checkAbPriorEmpower"))
         {
             AddAbnormalPriorityBuffs(1059);
             AddAbnormalPriorityBuffs(1365);
         }
         // End:0x211
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorHaste"))
+        if(IsBuffOptionChecked("checkAbPriorHaste"))
         {
             AddAbnormalPriorityBuffs(1086);
             AddAbnormalPriorityBuffs(1251);
             AddAbnormalPriorityBuffs(2035);
         }
         // End:0x2D0
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorMight"))
+        if(IsBuffOptionChecked("checkAbPriorMight"))
         {
             AddAbnormalPriorityBuffs(1388);
             AddAbnormalPriorityBuffs(3132);
@@ -662,7 +667,7 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(1251);
         }
         // End:0x325
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorHotSpring"))
+        if(IsBuffOptionChecked("checkAbPriorHotSpring"))
         {
             AddAbnormalPriorityBuffs(4554);
             AddAbnormalPriorityBuffs(4553);
@@ -670,12 +675,12 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(4551);
         }
         // End:0x35D
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorViciousStance"))
+        if(IsBuffOptionChecked("checkAbPriorViciousStance"))
         {
             AddAbnormalPriorityBuffs(312);
         }
         // End:0x3BF
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorHeroicValor"))
+        if(IsBuffOptionChecked("checkAbPriorHeroicValor"))
         {
             AddAbnormalPriorityBuffs(395);
             AddAbnormalPriorityBuffs(396);
@@ -684,7 +689,7 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(1376);
         }
         // End:0x41E
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorSummoner"))
+        if(IsBuffOptionChecked("checkAbPriorSummoner"))
         {
             AddAbnormalPriorityBuffs(1262);
             AddAbnormalPriorityBuffs(4702);
@@ -693,20 +698,20 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(4700);
         }
         // End:0x459
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorForce"))
+        if(IsBuffOptionChecked("checkAbPriorForce"))
         {
             AddAbnormalPriorityBuffs(5104);
             AddAbnormalPriorityBuffs(5105);
         }
         // End:0x499
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorTitan"))
+        if(IsBuffOptionChecked("checkAbPriorTitan"))
         {
             AddAbnormalPriorityBuffs(176);
             AddAbnormalPriorityBuffs(420);
             AddAbnormalPriorityBuffs(94);
         }
         // End:0x4E3
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorHawkeye"))
+        if(IsBuffOptionChecked("checkAbPriorHawkeye"))
         {
             AddAbnormalPriorityBuffs(131);
             AddAbnormalPriorityBuffs(313);
@@ -714,7 +719,7 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(111);
         }
         // End:0x532
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorRanger"))
+        if(IsBuffOptionChecked("checkAbPriorRanger"))
         {
             AddAbnormalPriorityBuffs(414);
             AddAbnormalPriorityBuffs(413);
@@ -722,14 +727,14 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(111);
         }
         // End:0x579
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorKnight"))
+        if(IsBuffOptionChecked("checkAbPriorKnight"))
         {
             AddAbnormalPriorityBuffs(406);
             AddAbnormalPriorityBuffs(341);
             AddAbnormalPriorityBuffs(342);
         }
         // End:0x5E1
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorMystic"))
+        if(IsBuffOptionChecked("checkAbPriorMystic"))
         {
             AddAbnormalPriorityBuffs(1189);
             AddAbnormalPriorityBuffs(1191);
@@ -739,19 +744,19 @@ function HandleAbnormalPriorityBuffsList()
             AddAbnormalPriorityBuffs(1286);
         }
         // End:0x61E
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorMagePoV"))
+        if(IsBuffOptionChecked("checkAbPriorMagePoV"))
         {
             AddAbnormalPriorityBuffs(1413);
             AddAbnormalPriorityBuffs(1355);
         }
         // End:0x65E
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorFighterPoV"))
+        if(IsBuffOptionChecked("checkAbPriorFighterPoV"))
         {
             AddAbnormalPriorityBuffs(1356);
             AddAbnormalPriorityBuffs(1357);
         }
         // End:0x69B
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkAbPriorTankPoV"))
+        if(IsBuffOptionChecked("checkAbPriorTankPoV"))
         {
             AddAbnormalPriorityBuffs(1363);
             AddAbnormalPriorityBuffs(1414);
@@ -772,10 +777,10 @@ function HandlePartyPriorityBuffsList()
 {
     PartyPriorityArray.Length = 0;
     // End:0x66F
-    if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPrior"))
+    if(IsBuffOptionChecked("checkPrior"))
     {
         // End:0x77
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorNobless"))
+        if(IsBuffOptionChecked("checkPriorNobless"))
         {
             AddPartyPriorityBuffs(1323);
             AddPartyPriorityBuffs(1410);
@@ -783,26 +788,26 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(1418);
         }
         // End:0xA6
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorPrayer"))
+        if(IsBuffOptionChecked("checkPriorPrayer"))
         {
             AddPartyPriorityBuffs(1307);
         }
         // End:0xED
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorWindWalk"))
+        if(IsBuffOptionChecked("checkPriorWindWalk"))
         {
             AddPartyPriorityBuffs(1204);
             AddPartyPriorityBuffs(2034);
             AddPartyPriorityBuffs(1282);
         }
         // End:0x132
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorArcana"))
+        if(IsBuffOptionChecked("checkPriorArcana"))
         {
             AddPartyPriorityBuffs(336);
             AddPartyPriorityBuffs(337);
             AddPartyPriorityBuffs(338);
         }
         // End:0x182
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorAcumen"))
+        if(IsBuffOptionChecked("checkPriorAcumen"))
         {
             AddPartyPriorityBuffs(1085);
             AddPartyPriorityBuffs(1004);
@@ -810,20 +815,20 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(2169);
         }
         // End:0x1BD
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorEmpower"))
+        if(IsBuffOptionChecked("checkPriorEmpower"))
         {
             AddPartyPriorityBuffs(1059);
             AddPartyPriorityBuffs(1365);
         }
         // End:0x201
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorHaste"))
+        if(IsBuffOptionChecked("checkPriorHaste"))
         {
             AddPartyPriorityBuffs(1086);
             AddPartyPriorityBuffs(1251);
             AddPartyPriorityBuffs(2035);
         }
         // End:0x2BE
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorMight"))
+        if(IsBuffOptionChecked("checkPriorMight"))
         {
             AddPartyPriorityBuffs(1388);
             AddPartyPriorityBuffs(3132);
@@ -841,7 +846,7 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(1251);
         }
         // End:0x311
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorHotSpring"))
+        if(IsBuffOptionChecked("checkPriorHotSpring"))
         {
             AddPartyPriorityBuffs(4554);
             AddPartyPriorityBuffs(4553);
@@ -849,12 +854,12 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(4551);
         }
         // End:0x347
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorViciousStance"))
+        if(IsBuffOptionChecked("checkPriorViciousStance"))
         {
             AddPartyPriorityBuffs(312);
         }
         // End:0x3A7
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorHeroicValor"))
+        if(IsBuffOptionChecked("checkPriorHeroicValor"))
         {
             AddPartyPriorityBuffs(395);
             AddPartyPriorityBuffs(396);
@@ -863,7 +868,7 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(1376);
         }
         // End:0x404
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorSummoner"))
+        if(IsBuffOptionChecked("checkPriorSummoner"))
         {
             AddPartyPriorityBuffs(1262);
             AddPartyPriorityBuffs(4702);
@@ -872,20 +877,20 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(4700);
         }
         // End:0x43D
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorForce"))
+        if(IsBuffOptionChecked("checkPriorForce"))
         {
             AddPartyPriorityBuffs(5104);
             AddPartyPriorityBuffs(5105);
         }
         // End:0x47B
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorTitan"))
+        if(IsBuffOptionChecked("checkPriorTitan"))
         {
             AddPartyPriorityBuffs(176);
             AddPartyPriorityBuffs(420);
             AddPartyPriorityBuffs(94);
         }
         // End:0x4C3
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorHawkeye"))
+        if(IsBuffOptionChecked("checkPriorHawkeye"))
         {
             AddPartyPriorityBuffs(131);
             AddPartyPriorityBuffs(313);
@@ -893,7 +898,7 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(111);
         }
         // End:0x510
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorRanger"))
+        if(IsBuffOptionChecked("checkPriorRanger"))
         {
             AddPartyPriorityBuffs(414);
             AddPartyPriorityBuffs(413);
@@ -901,14 +906,14 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(111);
         }
         // End:0x555
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorKnight"))
+        if(IsBuffOptionChecked("checkPriorKnight"))
         {
             AddPartyPriorityBuffs(406);
             AddPartyPriorityBuffs(341);
             AddPartyPriorityBuffs(342);
         }
         // End:0x5BB
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorMystic"))
+        if(IsBuffOptionChecked("checkPriorMystic"))
         {
             AddPartyPriorityBuffs(1189);
             AddPartyPriorityBuffs(1191);
@@ -918,19 +923,19 @@ function HandlePartyPriorityBuffsList()
             AddPartyPriorityBuffs(1286);
         }
         // End:0x5F6
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorMagePoV"))
+        if(IsBuffOptionChecked("checkPriorMagePoV"))
         {
             AddPartyPriorityBuffs(1413);
             AddPartyPriorityBuffs(1355);
         }
         // End:0x634
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorFighterPoV"))
+        if(IsBuffOptionChecked("checkPriorFighterPoV"))
         {
             AddPartyPriorityBuffs(1356);
             AddPartyPriorityBuffs(1357);
         }
         // End:0x66F
-        if(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("checkPriorTankPoV"))
+        if(IsBuffOptionChecked("checkPriorTankPoV"))
         {
             AddPartyPriorityBuffs(1363);
             AddPartyPriorityBuffs(1414);

@@ -48,14 +48,9 @@ function OnTimer(int TimerID)
     // End:0x55
     if(m_TimerCount > 0)
     {
-        Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("OnScreenMessageWnd1", m_TimerCount);
-        m_TimerCount--;
-        // End:0x55
-        if(m_TimerCount < 1)
-        {
-            m_TimerCount = 0;
-            onshowstat2 = true;
-        }
+        Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("OnScreenMessageWnd1", TimerID);
+        m_TimerCount = 0;
+        onshowstat2 = true;
     }
     return;
 }

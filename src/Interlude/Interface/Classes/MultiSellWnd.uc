@@ -193,8 +193,7 @@ function HideCustomNeededItemList()
 function ShowCustomNeededItem(int RowIndex, NeededItem Item, int HaveCount)
 {
     local string Prefix, IconName, NameText, CountText, HaveText;
-    local int CountWidth, CountHeight, RowY;
-    local Rect WindowRect;
+    local int RowY, CountWidth, CountHeight, HaveWidth, HaveHeight, HaveOffsetX, HaveOffsetY;
     local Color TextColor, HaveColor;
 
     Prefix = "MultiSellWnd.NeededCustom";
@@ -231,9 +230,22 @@ function ShowCustomNeededItem(int RowIndex, NeededItem Item, int HaveCount)
     HaveColor.A = byte(255);
     Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(Prefix $ "Have" $ string(RowIndex), HaveColor);
 
+    Class'NWindow.UIAPI_WINDOW'.static.SetWindowSize(Prefix $ "Count" $ string(RowIndex), 176, 14);
+    Class'NWindow.UIAPI_WINDOW'.static.SetWindowSize(Prefix $ "Have" $ string(RowIndex), 176, 14);
+
     GetTextSize(CountText, CountWidth, CountHeight);
-    WindowRect = Class'NWindow.UIAPI_WINDOW'.static.GetRect("MultiSellWnd");
-    Class'NWindow.UIAPI_WINDOW'.static.MoveTo(Prefix $ "Have" $ string(RowIndex), WindowRect.nX + 316 + CountWidth + 10, WindowRect.nY + RowY);
+    GetTextSize(HaveText, HaveWidth, HaveHeight);
+    HaveOffsetX = CountWidth + 8;
+    HaveOffsetY = 0;
+
+    if((HaveOffsetX + HaveWidth) > 176)
+    {
+        HaveOffsetX = 0;
+        HaveOffsetY = 13;
+    }
+
+    Class'NWindow.UIAPI_WINDOW'.static.ClearAnchor(Prefix $ "Have" $ string(RowIndex));
+    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor(Prefix $ "Have" $ string(RowIndex), Prefix $ "Count" $ string(RowIndex), "TopLeft", "TopLeft", HaveOffsetX, HaveOffsetY);
 
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(IconName);
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(NameText);

@@ -60,7 +60,7 @@ function OnShow()
 
 function OnHide()
 {
-    Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("GuideWnd.RaidTab", 1);
+    m_hOwnerWnd.KillTimer(1);
     bLock = false;
     return;
 }

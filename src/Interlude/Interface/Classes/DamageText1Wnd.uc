@@ -161,7 +161,7 @@ function HandleSystemMessage(string a_Param)
     if((Index == "35") || Index == "1130")
     {
         ParseString(a_Param, "Param1", Param1);
-        ShowIndicator(1, int(Param1), 20, false);
+        ShowIndicator(1, int(Param1), 80, false);
     }
     return;
 }

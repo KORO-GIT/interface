@@ -423,9 +423,23 @@ function HandlePetInfoUpdate()
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("PetWnd.txtMagicCastingSpeed", string(MagicCastingSpeed));
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("PetWnd.txtSoulShotCosume", string(SoulShotCosume));
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("PetWnd.txtSpiritShotConsume", string(SpiritShotConsume));
-    fTmp = (100.0000000 * float(Fatigue)) / float(MaxFatigue);
+    if(MaxFatigue > 0)
+    {
+        fTmp = (100.0000000 * float(Fatigue)) / float(MaxFatigue);        
+    }
+    else
+    {
+        fTmp = 0.0000000;
+    }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("PetWnd.txtFatigue", string(fTmp) $ "%");
-    fTmp = (100.0000000 * float(CarringWeight)) / float(CarryWeight);
+    if(CarryWeight > 0)
+    {
+        fTmp = (100.0000000 * float(CarringWeight)) / float(CarryWeight);        
+    }
+    else
+    {
+        fTmp = 0.0000000;
+    }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("PetWnd.txtWeight", string(fTmp) $ "%");
     UpdateHPBar(HP, MaxHP);
     UpdateMPBar(MP, maxMP);

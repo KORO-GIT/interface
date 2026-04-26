@@ -351,7 +351,14 @@ function HandleUpdateUserInfo()
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText(m_WindowName $ ".txtExp", string(fExpRate) $ "%");
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText(m_WindowName $ ".txtCP", (string(CP) $ "/") $ string(maxCP));
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText(m_WindowName $ ".txtSP", string(SP));
-    fTmp = (100.0000000 * float(CarringWeight)) / float(CarryWeight);
+    if(CarryWeight > 0)
+    {
+        fTmp = (100.0000000 * float(CarringWeight)) / float(CarryWeight);        
+    }
+    else
+    {
+        fTmp = 0.0000000;
+    }
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText(m_WindowName $ ".txtWeight", string(fTmp) $ "%");
     // End:0x7EC
     if(PledgeID > 0)

@@ -129,6 +129,11 @@ function SetMPBar(int currentMP)
 {
     local int nTmp, nMPWidth;
 
+    if(m_MaxMP <= 0)
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetWindowSize("RecipeBuyListWnd.texMPBar", 0, 12);
+        return;
+    }
     nTmp = 165 * currentMP;
     nMPWidth = nTmp / m_MaxMP;
     // End:0x3A
