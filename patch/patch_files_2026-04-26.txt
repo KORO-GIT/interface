@@ -1,0 +1,37 @@
+Patch file list for client update
+Date: 2026-04-26
+
+Full current patch:
+system\Interface.u
+system\Interface.xdat
+system\musicinfo.dat
+system\nwindow.dll
+system\SHEV_Dynasty_00.u
+systextures\L2UI_CH3.utx
+systextures\InventoryCountTex.utx
+systextures\Avengers_Dynasty_wpTEX.utx
+animations\Avengers_Moirai_Shield_m00.ukx
+
+Delta over previous stable:
+system\Interface.u
+systextures\InventoryCountTex.utx
+
+SHA256:
+system\Interface.u 96F3A5C2B098883C8F9F5813B2C6BC2BF26F2010074D72F7A1C9DD13007FA234
+system\Interface.xdat DFB9A8AB9DDF77AD9A3902B8AC2533D568F56E92339795BA513612D4E2EE2744
+system\musicinfo.dat DEA7F2303A61D34BE8C92835FDEBA2CF0AD8C4742E4E5AF2FC1F15781FD4ABF7
+system\nwindow.dll E7A50E47419A213E2B137E6E1CB8DA0C628A86D07B4116263893E576828A3E0E
+system\SHEV_Dynasty_00.u 1A6EB68CAEFF5CC13801D249B2B26EEE242006BF01AC22C4C41443BC9FFCB5B1
+systextures\L2UI_CH3.utx 6769326F4A8BF203C3A93CE8715D26668B00A9FEE27D7A5110644FAF83B5DE05
+systextures\InventoryCountTex.utx 8E0E935CF20BBF13727F563961AE8B92FEB65D24AF958A9E5252794FEDE64A19
+systextures\Avengers_Dynasty_wpTEX.utx 6077182281E6999E2262FC2D6BACF6F9FAAFC128913C632BB14BC97C6D02D99C
+animations\Avengers_Moirai_Shield_m00.ukx 1A44743C08633B76E1B13C88EE9EEE3FBF183D8461D063454764C8E93BCAC1AE
+
+Notes:
+- system\Interface.u is the smoke-tested stable build from 2026-04-26 after reverting the refinery button tooltip experiment.
+- Inventory stack count icons use systextures\InventoryCountTex.utx and show 2..99, then 99+.
+- Enchant window keeps selected target locked, dims other items, filters by scroll type/grade, and does not reorder items by enchant level after reset.
+- Custom all-grade scroll IDs 6575/6576 are handled as weapon/armor all-grade scrolls.
+- system\Interface.xdat remains the stable patch xdat; radar changes are fully reverted.
+- system\nwindow.dll is included for the client chat-ban removal fix.
+- systextures\fange_ui.utx is not part of the patch; current interface assets use L2UI_CH3 and InventoryCountTex.

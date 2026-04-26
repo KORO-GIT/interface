@@ -1208,6 +1208,7 @@ function function30(string string_2)
     local bool bCanAutoTrash;
 
     ParamToItemInfo(string_2, info_4);
+    ApplySilentInventoryItemCount(info_4);
     // End:0x2C
     if(function15(info_4))
     {
@@ -1293,6 +1294,7 @@ function function34(string string_2)
 
     ParseString(string_2, "type", string_1);
     ParamToItemInfo(string_2, info_3);
+    ApplySilentInventoryItemCount(info_3);
     // End:0x26A
     if((string_1 == "add"))
     {
@@ -1586,6 +1588,29 @@ function function34(string string_2)
     }
     function6();
     function7();
+    return;
+}
+
+function ApplySilentInventoryItemCount(out ItemInfo Info)
+{
+    if(Info.ClassID == 57)
+    {
+        return;
+    }
+    if(!IsStackableItem(Info.ConsumeType))
+    {
+        return;
+    }
+    if((Info.ItemNum > 1) && (Info.ItemNum <= 99))
+    {
+        Info.bShowCount = false;
+        Info.ForeTexture = "InventoryCountTex.ItemNumbers.texCount" $ string(Info.ItemNum);
+    }
+    else if(Info.ItemNum > 99)
+    {
+        Info.bShowCount = false;
+        Info.ForeTexture = "InventoryCountTex.ItemNumbers.texCount99+";
+    }
     return;
 }
 

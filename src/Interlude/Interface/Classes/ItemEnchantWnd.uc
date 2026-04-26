@@ -4,6 +4,8 @@ var WindowHandle Me;
 var ItemWindowHandle ItemWnd;
 var int EnchantScrollClassID;
 var int SelectedEnchantServerID;
+var int SelectedEnchantClassID;
+var int PendingSelectedEnchantIndex;
 var array<ItemInfo> EnchantItemList;
 
 function OnLoad()
@@ -17,6 +19,8 @@ function OnLoad()
     ItemWnd = ItemWindowHandle(GetHandle("ItemEnchantWnd.ItemWnd"));
     EnchantScrollClassID = 0;
     SelectedEnchantServerID = 0;
+    SelectedEnchantClassID = 0;
+    PendingSelectedEnchantIndex = -1;
     return;
 }
 
@@ -70,6 +74,8 @@ function OnClickItem(string strID, int Index)
         if(ItemWnd.GetItem(Index, infItem))
         {
             SelectedEnchantServerID = infItem.ServerID;
+            SelectedEnchantClassID = infItem.ClassID;
+            PendingSelectedEnchantIndex = -1;
             UpdateEnchantItemDimming();
         }
     }
@@ -88,6 +94,8 @@ function OnOKClick()
         {
             TargetServerID = infItem.ServerID;
             SelectedEnchantServerID = TargetServerID;
+            SelectedEnchantClassID = infItem.ClassID;
+            PendingSelectedEnchantIndex = -1;
             UpdateEnchantItemDimming();
         }
     }
@@ -111,6 +119,8 @@ function Clear()
     ItemWnd.Clear();
     EnchantItemList.Length = 0;
     SelectedEnchantServerID = 0;
+    SelectedEnchantClassID = 0;
+    PendingSelectedEnchantIndex = -1;
     return;
 }
 
@@ -461,14 +471,18 @@ function HandleInventoryUpdateItem(string param)
     CacheIndex = FindEnchantItemIndex(infItem.ServerID);
     if(CacheIndex < 0)
     {
-        return;
+        if(WorkType == "delete")
+        {
+            return;
+        }
     }
-
-    if(WorkType == "delete")
+    else if(WorkType == "delete")
     {
         if(SelectedEnchantServerID == infItem.ServerID)
         {
             SelectedEnchantServerID = 0;
+            SelectedEnchantClassID = infItem.ClassID;
+            PendingSelectedEnchantIndex = CacheIndex;
         }
         EnchantItemList.Remove(CacheIndex, 1);
         WindowIndex = ItemWnd.FindItemWithServerID(infItem.ServerID);
@@ -482,14 +496,39 @@ function HandleInventoryUpdateItem(string param)
     PrepareEnchantItemInfo(infItem);
     if(IsItemAllowedForEnchantScroll(infItem))
     {
-        EnchantItemList[CacheIndex] = infItem;
-        SortEnchantItemCache();
+        if(CacheIndex >= 0)
+        {
+            EnchantItemList[CacheIndex] = infItem;
+            if(SelectedEnchantServerID == infItem.ServerID)
+            {
+                SelectedEnchantClassID = infItem.ClassID;
+            }
+        }
+        else if((PendingSelectedEnchantIndex >= 0) && (SelectedEnchantClassID == infItem.ClassID))
+        {
+            if(PendingSelectedEnchantIndex > EnchantItemList.Length)
+            {
+                PendingSelectedEnchantIndex = EnchantItemList.Length;
+            }
+            EnchantItemList.Insert(PendingSelectedEnchantIndex, 1);
+            EnchantItemList[PendingSelectedEnchantIndex] = infItem;
+            SelectedEnchantServerID = infItem.ServerID;
+            SelectedEnchantClassID = infItem.ClassID;
+            PendingSelectedEnchantIndex = -1;
+        }
+        else
+        {
+            return;
+        }
         RedrawEnchantItems();
     }
     else
     {
-        EnchantItemList.Remove(CacheIndex, 1);
-        RedrawEnchantItems();
+        if(CacheIndex >= 0)
+        {
+            EnchantItemList.Remove(CacheIndex, 1);
+            RedrawEnchantItems();
+        }
     }
     return;
 }
