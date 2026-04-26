@@ -15,7 +15,7 @@ Delta over previous stable:
 system\Interface.u
 
 SHA256:
-system\Interface.u 3894BE0D3CA051777D16625DDF0418F478167D1C1A053FAE8E433E0F16785A6F
+system\Interface.u CA6B6182D96B12DD679070CFCF39551001A099C030E8481DBB06D11A61C60B47
 system\Interface.xdat DFB9A8AB9DDF77AD9A3902B8AC2533D568F56E92339795BA513612D4E2EE2744
 system\musicinfo.dat DEA7F2303A61D34BE8C92835FDEBA2CF0AD8C4742E4E5AF2FC1F15781FD4ABF7
 system\nwindow.dll E7A50E47419A213E2B137E6E1CB8DA0C628A86D07B4116263893E576828A3E0E
@@ -25,8 +25,9 @@ systextures\Avengers_Dynasty_wpTEX.utx 6077182281E6999E2262FC2D6BACF6F9FAAFC1289
 animations\Avengers_Moirai_Shield_m00.ukx 1A44743C08633B76E1B13C88EE9EEE3FBF183D8461D063454764C8E93BCAC1AE
 
 Notes:
-- system\Interface.u is the smoke-tested stable build from 2026-04-26 00:07, restored after radar experiments.
-- Includes reliability fixes for MacroListWnd, InventoryWnd, NPHRN_OnScreenEffectWnd, WarehouseWnd, ShopWnd, and DeliverWnd.
-- system\Interface.xdat remains the stable patch xdat; radar changes were fully reverted.
+- system\Interface.u is the smoke-tested stable build from 2026-04-26 with enchant list filtering and stable item order.
+- Enchant window keeps selected target locked, dims other items, filters by scroll type/grade, and does not reorder items by enchant level after reset.
+- Custom all-grade scroll IDs 6575/6576 are handled as weapon/armor all-grade scrolls.
+- system\Interface.xdat remains the stable patch xdat; radar changes are fully reverted.
 - system\nwindow.dll is included for the client chat-ban removal fix.
 - systextures\fange_ui.utx is not part of the patch; current interface assets use L2UI_CH3.
