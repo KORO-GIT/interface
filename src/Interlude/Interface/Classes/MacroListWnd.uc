@@ -166,42 +166,53 @@ function OnRClickItem(string strID, int Index)
     local MacroInfo MacroInfo;
     local int idx;
 
-    // End:0x182
-    if(((strID == "MacroItem") && (Index > -1)))
+    if((strID != "MacroItem") || Index < 0)
     {
-        ResetMacroPlayback();
-        // End:0x182
-        if(ItemWindowHandle.GetItem(Index, ItemInfo))
-        {
-            // End:0x7C
-            if((ItemInfo.ClassID == SelectedMacroID))
-            {
-                SelectedMacroID = MacroTimerBaseID;
-                RefreshMacroList();
-                return;
-            }
-            SelectedMacroID = ItemInfo.ClassID;
-            // End:0x182
-            if(Class'NWindow.UIDATA_MACRO'.static.GetMacroInfo(ItemInfo.ClassID, MacroInfo))
-            {
-                idx = MacroTimerBaseID;
+        return;
+    }
+    ResetMacroPlayback();
+    if(!ItemWindowHandle.GetItem(Index, ItemInfo))
+    {
+        RefreshMacroList();
+        return;
+    }
+    if(ItemInfo.ClassID == SelectedMacroID)
+    {
+        SelectedMacroID = MacroTimerBaseID;
+        RefreshMacroList();
+        return;
+    }
+    SelectedMacroID = ItemInfo.ClassID;
+    if(!Class'NWindow.UIDATA_MACRO'.static.GetMacroInfo(ItemInfo.ClassID, MacroInfo))
+    {
+        SelectedMacroID = MacroTimerBaseID;
+        RefreshMacroList();
+        return;
+    }
+    MacroDelayFlags.Length = MacroCommandCount;
+    MacroDelaySeconds.Length = MacroCommandCount;
+    MacroCommands.Length = MacroCommandCount;
+    idx = MacroTimerBaseID;
 
-                while((idx < MacroCommandCount))
-                {
-                    // End:0x158
-                    if((Left(MacroInfo.CommandList[idx], (DelayCommandValueOffset - NextCommandOffset)) ~= DelayCommand))
-                    {
-                        MacroDelayFlags[idx] = idx;
-                        MacroDelaySeconds[idx] = int(Right(MacroInfo.CommandList[idx], (Len(MacroInfo.CommandList[idx]) - DelayCommandValueOffset)));
-                    }
-                    else
-                    {
-                        MacroCommands[idx] = MacroInfo.CommandList[idx];
-                    }
-                    idx++;
-                }
+    while(idx < MacroCommandCount)
+    {
+        MacroDelayFlags[idx] = MacroTimerBaseID;
+        MacroDelaySeconds[idx] = 0;
+        MacroCommands[idx] = EmptyString;
+        if(Left(MacroInfo.CommandList[idx], DelayCommandValueOffset - NextCommandOffset) ~= DelayCommand)
+        {
+            MacroDelayFlags[idx] = 1;
+            MacroDelaySeconds[idx] = int(Right(MacroInfo.CommandList[idx], Len(MacroInfo.CommandList[idx]) - DelayCommandValueOffset));
+            if(MacroDelaySeconds[idx] < 1)
+            {
+                MacroDelaySeconds[idx] = 1;
             }
         }
+        else
+        {
+            MacroCommands[idx] = MacroInfo.CommandList[idx];
+        }
+        idx++;
     }
     WndHandle.SetTimer(MacroTimerBaseID, (MacroTimerDelayMs / 4));
     RefreshMacroList();
@@ -372,15 +383,31 @@ function OnDropItem(string strID, ItemInfo ItemInfo, int X, int Y)
 
 function OnTimer(int Index)
 {
+    local int NextIndex;
+
     WndHandle.KillTimer(Index);
+    if((Index < MacroTimerBaseID) || Index >= MacroCommandCount)
+    {
+        WndHandle.SetTimer(MacroTimerBaseID, MacroTimerDelayMs);
+        return;
+    }
+    if((MacroDelayFlags.Length < MacroCommandCount) || (MacroDelaySeconds.Length < MacroCommandCount) || (MacroCommands.Length < MacroCommandCount))
+    {
+        ResetMacroPlayback();
+        return;
+    }
+    NextIndex = Index + NextCommandOffset;
     // End:0xCC
     if((MacroDelayFlags[Index] == MacroTimerBaseID))
     {
-        ExecuteCommand(MacroCommands[Index]);
-        // End:0xB0
-        if(((MacroCommands[(Index + NextCommandOffset)] != EmptyString) || (MacroDelayFlags[(Index + NextCommandOffset)] != MacroTimerBaseID)))
+        if(MacroCommands[Index] != EmptyString)
         {
-            WndHandle.SetTimer((Index + NextCommandOffset), MacroTimerDelayMs);
+            ExecuteCommand(MacroCommands[Index]);
+        }
+        // End:0xB0
+        if((NextIndex < MacroCommandCount) && ((MacroCommands[NextIndex] != EmptyString) || (MacroDelayFlags[NextIndex] != MacroTimerBaseID)))
+        {
+            WndHandle.SetTimer(NextIndex, MacroTimerDelayMs);
         }
         else
         {
@@ -389,7 +416,14 @@ function OnTimer(int Index)
     }
     else
     {
-        WndHandle.SetTimer((Index + NextCommandOffset), (MacroDelaySeconds[Index] * MacroTimerDelayMs));
+        if(NextIndex < MacroCommandCount)
+        {
+            WndHandle.SetTimer(NextIndex, (MacroDelaySeconds[Index] * MacroTimerDelayMs));
+        }
+        else
+        {
+            WndHandle.SetTimer(MacroTimerBaseID, MacroTimerDelayMs);
+        }
     }
     return;
 }

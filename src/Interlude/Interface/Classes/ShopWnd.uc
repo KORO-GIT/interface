@@ -302,7 +302,7 @@ function HandleDialogOK()
             {
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".TopList", topIndex, topInfo);
                 // End:0xCF
-                if(m_shopType == ShopSell)
+                if((m_shopType == ShopSell) || topInfo.ItemNum > 0)
                 {
                     Num = Min(Num, topInfo.ItemNum);
                 }
@@ -357,6 +357,7 @@ function HandleDialogOK()
                 if(Index >= 0)
                 {
                     Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem(m_WindowName $ ".BottomList", Index, Info);
+                    Num = Min(Num, Info.ItemNum);
                     Info.ItemNum -= Num;
                     // End:0x39A
                     if(Info.ItemNum > 0)

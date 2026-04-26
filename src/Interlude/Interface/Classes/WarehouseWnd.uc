@@ -304,6 +304,7 @@ function HandleDialogOK()
             if(topIndex >= 0)
             {
                 m_topList.GetItem(topIndex, topInfo);
+                Num = Min(Num, topInfo.ItemNum);
                 Index = m_bottomList.FindItemWithClassID(ClassID);
                 // End:0xF1
                 if(Index >= 0)
@@ -322,7 +323,7 @@ function HandleDialogOK()
                 // End:0x17C
                 if(m_Type == WT_Withdraw)
                 {
-                    Class'NWindow.UIAPI_INVENWEIGHT'.static.AddWeight("WarehouseWnd.InvenWeight", Info.ItemNum * Info.Weight);
+                    Class'NWindow.UIAPI_INVENWEIGHT'.static.AddWeight("WarehouseWnd.InvenWeight", Num * topInfo.Weight);
                 }
                 topInfo.ItemNum -= Num;
                 // End:0x1B4
@@ -346,6 +347,7 @@ function HandleDialogOK()
                 if(Index >= 0)
                 {
                     m_bottomList.GetItem(Index, Info);
+                    Num = Min(Num, Info.ItemNum);
                     Info.ItemNum -= Num;
                     // End:0x264
                     if(Info.ItemNum > 0)
@@ -372,7 +374,7 @@ function HandleDialogOK()
                     // End:0x36B
                     if(m_Type == WT_Withdraw)
                     {
-                        Class'NWindow.UIAPI_INVENWEIGHT'.static.ReduceWeight("WarehouseWnd.InvenWeight", Info.ItemNum * Info.Weight);
+                        Class'NWindow.UIAPI_INVENWEIGHT'.static.ReduceWeight("WarehouseWnd.InvenWeight", Num * Info.Weight);
                     }
                 }
             }

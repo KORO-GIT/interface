@@ -32,7 +32,10 @@ function ShowRedOverlay()
     local int hpPercent, Width, Height;
     local TextureHandle Tex;
 
-    GetPlayerInfo(Player);
+    if(!GetPlayerInfo(Player) || Player.nMaxHP <= 0)
+    {
+        return;
+    }
     Tex = TextureHandle(GetHandle("NPHRN_OnScreenEffectWnd.Tex"));
     fPercent = ((float(Player.nCurHP) / float(Player.nMaxHP)) * 100.0000000);
     hpPercent = int(fPercent);

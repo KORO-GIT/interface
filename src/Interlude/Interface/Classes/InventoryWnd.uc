@@ -424,6 +424,7 @@ function OnSelectItemWithHandle(ItemWindowHandle item_10, int int_5)
 function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
 {
     local int int_7, int_8, int_6, string_4;
+    local bool bTrashClassExists;
 
     // End:0xDD
     if(!((((((info_3.DragSrcName == "EquipmentItem") || info_3.DragSrcName == "CraftingItem") || info_3.DragSrcName == "SuppliesItem") || info_3.DragSrcName == "InventoryItem") || info_3.DragSrcName == "QuestItem") || -1 != InStr(info_3.DragSrcName, "EquipItem")) || info_3.DragSrcName == "PetInvenWnd")
@@ -460,12 +461,13 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
             }
             else
             {
-                int_8 = function12().GetItemNum();
+                int_8 = function12().FindItemWithServerID(info_3.ServerID);
+                int_7 = function12().GetItemNum() - 1;
 
-                while(int_7 < (int_8 - 1))
+                while((int_8 >= 0) && int_8 < int_7)
                 {
-                    function12().SwapItems(int_7, int_7 + 1);
-                    ++int_7;
+                    function12().SwapItems(int_8, int_8 + 1);
+                    ++int_8;
                 }
             }
         }
@@ -541,12 +543,13 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                 }
                 else
                 {
-                    int_8 = item_1.GetItemNum();
+                    int_8 = item_2.FindItemWithServerID(info_3.ServerID);
+                    int_7 = item_2.GetItemNum() - 1;
 
-                    while(int_7 < (int_8 - 1))
+                    while((int_8 >= 0) && int_8 < int_7)
                     {
-                        item_1.SwapItems(int_7, int_7 + 1);
-                        ++int_7;
+                        item_2.SwapItems(int_8, int_8 + 1);
+                        ++int_8;
                     }
                 }
             }
@@ -585,6 +588,7 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                     // End:0x70D
                     if(bool_1)
                     {
+                        bTrashClassExists = false;
                         int_6 = 1;
 
                         while(int_6 < 100)
@@ -593,13 +597,18 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                             // End:0x69A
                             if((string_4 == info_3.ClassID))
                             {
-                                return;
+                                bTrashClassExists = true;
+                                break;
                             }
                             int_6++;
                         }
-                        SetINIInt("TrashList", string((int_2 + 1)), info_3.ClassID, "TrashGrp");
-                        SetINIInt("TrashList", string((int_2 + 2)), 0, "TrashGrp");
-                        int_2++;
+                        if(!bTrashClassExists && int_2 < 99)
+                        {
+                            SetINIInt("TrashList", string((int_2 + 1)), info_3.ClassID, "TrashGrp");
+                            SetINIInt("TrashList", string((int_2 + 2)), 0, "TrashGrp");
+                            int_2++;
+                            UpdateTrashButtonTooltip();
+                        }
                     }
                     // End:0x7E4
                     if(IsStackableItem(info_3.ConsumeType) && info_3.ItemNum > 1)
@@ -1527,29 +1536,44 @@ function function34(string string_2)
                     if(function16(info_3))
                     {
                         int_4 = item_2.FindItemWithServerID(info_3.ServerID);
-                        item_2.DeleteItem(int_4);
+                        if(int_4 != -1)
+                        {
+                            item_2.DeleteItem(int_4);
+                        }
                     }
                     else
                     {
                         int_4 = item_1.FindItemWithServerID(info_3.ServerID);
-                        item_1.DeleteItem(int_4);
+                        if(int_4 != -1)
+                        {
+                            item_1.DeleteItem(int_4);
+                        }
                         // End:0x7B1
                         if(function31(info_3))
                         {
                             int_4 = item_5.FindItemWithServerID(info_3.ServerID);
-                            item_5.DeleteItem(int_4);
+                            if(int_4 != -1)
+                            {
+                                item_5.DeleteItem(int_4);
+                            }
                         }
                         // End:0x7F2
                         if(function32(info_3))
                         {
                             int_4 = item_6.FindItemWithServerID(info_3.ServerID);
-                            item_6.DeleteItem(int_4);
+                            if(int_4 != -1)
+                            {
+                                item_6.DeleteItem(int_4);
+                            }
                         }
                         // End:0x833
                         if(function33(info_3))
                         {
                             int_4 = item_7.FindItemWithServerID(info_3.ServerID);
-                            item_7.DeleteItem(int_4);
+                            if(int_4 != -1)
+                            {
+                                item_7.DeleteItem(int_4);
+                            }
                         }
                     }
                 }

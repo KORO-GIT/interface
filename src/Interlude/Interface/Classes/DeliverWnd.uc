@@ -265,6 +265,7 @@ function ItemTopToBottom(int ClassID, int Num)
     if(topIndex >= 0)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("DeliverWnd.TopList", topIndex, topInfo);
+        Num = Min(Num, topInfo.ItemNum);
         Index = Class'NWindow.UIAPI_ITEMWINDOW'.static.FindItemWithClassID("DeliverWnd.BottomList", ClassID);
         // End:0x116
         if(Index >= 0)
@@ -304,6 +305,7 @@ function ItemBottomToTop(int ClassID, int Num)
     if(Index >= 0)
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("DeliverWnd.BottomList", Index, Info);
+        Num = Min(Num, Info.ItemNum);
         Info.ItemNum -= Num;
         // End:0xC0
         if(Info.ItemNum > 0)
