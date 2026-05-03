@@ -75,6 +75,16 @@ function OnTimer(int TimerID)
     return;
 }
 
+function bool IsValidComboIndex(int Index)
+{
+    return Index >= 0;
+}
+
+function bool HasListCtrlRecordData(LVDataRecord Record)
+{
+    return Record.LVDataList.Length > 0;
+}
+
 function OnClickButton(string Id)
 {
     local int QuestComboCurrentData, QuestComboCurrentReservedData, HuntingZoneComboboxCurrentData, HuntingZoneComboboxCurrentReservedData, RaidCurrentComboboxCurrentReservedData, AreaInfoComboBoxCurrentData,
@@ -118,6 +128,10 @@ function OnClickButton(string Id)
     if(Id == "btn_search1")
     {
         QuestComboCurrentData = m_hQuestComboBox.GetSelectedNum();
+        if(!IsValidComboIndex(QuestComboCurrentData))
+        {
+            return;
+        }
         QuestComboCurrentReservedData = m_hQuestComboBox.GetReserved(QuestComboCurrentData);
         LoadQuestSearchResult(QuestComboCurrentReservedData);
     }
@@ -125,6 +139,10 @@ function OnClickButton(string Id)
     if(Id == "btn_search2")
     {
         HuntingZoneComboboxCurrentData = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("GuideWnd.HuntingZoneComboBox");
+        if(!IsValidComboIndex(HuntingZoneComboboxCurrentData))
+        {
+            return;
+        }
         HuntingZoneComboboxCurrentReservedData = Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("GuideWnd.HuntingZoneComboBox", HuntingZoneComboboxCurrentData);
         LoadHuntingZoneListSearchResult(HuntingZoneComboboxCurrentReservedData);
     }
@@ -137,6 +155,10 @@ function OnClickButton(string Id)
     if(Id == "btn_search4")
     {
         AreaInfoComboBoxCurrentData = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("GuideWnd.AreaInfoComboBox");
+        if(!IsValidComboIndex(AreaInfoComboBoxCurrentData))
+        {
+            return;
+        }
         AreaInfoComboBoxCurrentReservedData = Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("GuideWnd.AreaInfoComboBox", AreaInfoComboBoxCurrentData);
         LoadAreaInfoListSearchResult(AreaInfoComboBoxCurrentReservedData);
     }
@@ -144,6 +166,10 @@ function OnClickButton(string Id)
     if(Id == "QuestComboBox")
     {
         QuestComboCurrentData = m_hQuestComboBox.GetSelectedNum();
+        if(!IsValidComboIndex(QuestComboCurrentData))
+        {
+            return;
+        }
         QuestComboCurrentReservedData = m_hQuestComboBox.GetReserved(QuestComboCurrentData);
         LoadQuestSearchResult(QuestComboCurrentReservedData);
     }
@@ -151,6 +177,10 @@ function OnClickButton(string Id)
     if(Id == "HuntingZoneComboBox")
     {
         HuntingZoneComboboxCurrentData = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("GuideWnd.HuntingZoneComboBox");
+        if(!IsValidComboIndex(HuntingZoneComboboxCurrentData))
+        {
+            return;
+        }
         HuntingZoneComboboxCurrentReservedData = Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("GuideWnd.HuntingZoneComboBox", HuntingZoneComboboxCurrentData);
         LoadHuntingZoneListSearchResult(HuntingZoneComboboxCurrentReservedData);
     }
@@ -166,6 +196,10 @@ function OnComboBoxItemSelected(string sName, int Index)
 {
     local int QuestComboCurrentReservedData, HuntingZoneComboboxCurrentReservedData, AreaInfoComboBoxCurrentReservedData;
 
+    if(!IsValidComboIndex(Index))
+    {
+        return;
+    }
     // End:0x3E
     if(sName == "QuestComboBox")
     {
@@ -196,6 +230,10 @@ function OnClickListCtrlRecord(string Id)
     if(Id == "QuestListCtrl")
     {
         Record = m_hQuestListCtrl.GetSelectedRecord();
+        if(!HasListCtrlRecordData(Record))
+        {
+            return;
+        }
         Loc = Class'NWindow.UIDATA_QUEST'.static.GetStartNPCLoc(Record.LVDataList[0].nReserved1, 1);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("MinimapWnd.Minimap", Loc, false);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteAllTarget("MinimapWnd.Minimap");
@@ -205,6 +243,10 @@ function OnClickListCtrlRecord(string Id)
     if(Id == "HuntingZoneListCtrl")
     {
         Record = m_hHuntingZoneListCtrl.GetSelectedRecord();
+        if(!HasListCtrlRecordData(Record))
+        {
+            return;
+        }
         Loc = Class'NWindow.UIDATA_HUNTINGZONE'.static.GetHuntingZoneLoc(Record.LVDataList[0].nReserved1);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("MinimapWnd.Minimap", Loc, false);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteAllTarget("MinimapWnd.Minimap");
@@ -214,6 +256,10 @@ function OnClickListCtrlRecord(string Id)
     if(Id == "RaidListCtrl")
     {
         Record = m_hRaidListCtrl.GetSelectedRecord();
+        if(!HasListCtrlRecordData(Record))
+        {
+            return;
+        }
         Loc = Class'NWindow.UIDATA_RAID'.static.GetRaidLoc(Record.LVDataList[0].nReserved1);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("MinimapWnd.Minimap", Loc, false);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteAllTarget("MinimapWnd.Minimap");
@@ -223,6 +269,10 @@ function OnClickListCtrlRecord(string Id)
     if(Id == "AreaInfoListCtrl")
     {
         Record = m_hAreaInfoListCtrl.GetSelectedRecord();
+        if(!HasListCtrlRecordData(Record))
+        {
+            return;
+        }
         Loc = Class'NWindow.UIDATA_HUNTINGZONE'.static.GetHuntingZoneLoc(Record.LVDataList[0].nReserved1);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.AdjustMapView("MinimapWnd.Minimap", Loc, false);
         Class'NWindow.UIAPI_MINIMAPCTRL'.static.DeleteAllTarget("MinimapWnd.Minimap");
@@ -429,6 +479,14 @@ function LoadRaidList(string a_Param)
     SeasonTotalString = ("" $ string(RaidSeasonPoint)) @ GetSystemString(1442);
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("GuideWnd.SeasonTotalPoint", SeasonTotalString);
     ParseInt(a_Param, "Count", RaidNum);
+    if(RaidNum < 0)
+    {
+        RaidNum = 0;
+    }
+    if(RaidNum > MAX_RAID_NUM)
+    {
+        RaidNum = MAX_RAID_NUM;
+    }
     RaidRecordList.Remove(0, RaidRecordList.Length);
     RaidRecordList.Insert(0, RaidNum);
     i = 0;
@@ -560,6 +618,8 @@ function LoadRaidList2()
     local int RaidNum, RaidCount;
 
     m_hRaidListCtrl.DeleteAllItem();
+    RaidNum = RaidRecordList.Length;
+    RaidCount = 0;
     i = 0;
 
     while(i < 2000)

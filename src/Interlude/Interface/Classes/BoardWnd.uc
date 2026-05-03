@@ -74,6 +74,11 @@ function Clear()
     return;
 }
 
+function bool IsValidBBSTabIndex(int Index)
+{
+    return (Index >= 0) && (Index <= 6);
+}
+
 function HandleShowBBS(string param)
 {
     local int Index, Init;
@@ -104,6 +109,10 @@ function HandleShowBBS(string param)
     }
     else
     {
+        if(!IsValidBBSTabIndex(Index))
+        {
+            Index = 0;
+        }
         Class'NWindow.UIAPI_TABCTRL'.static.SetTopOrder("BoardWnd.TabCtrl", Index, false);
         Class'NWindow.UIAPI_HTMLCTRL'.static.Clear("BoardWnd.HtmlViewer");
         ShowBBSTab(Index);
@@ -156,6 +165,10 @@ function ShowBBSTab(int Index)
     local string strBypass;
     local UIEventManager.EControlReturnType Ret;
 
+    if(!IsValidBBSTabIndex(Index))
+    {
+        return;
+    }
     switch(Index)
     {
         // End:0x25

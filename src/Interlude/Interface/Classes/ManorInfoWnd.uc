@@ -399,11 +399,20 @@ function OnClickInfoTab(string TabName)
             break;
         // End:0xFFFF
         default:
+            return;
             break;
     }
     Index = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum(ManorComboBoxName);
+    if(Index < 0)
+    {
+        return;
+    }
     SelectedManorID = Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved(ManorComboBoxName, Index);
     SelectedTime = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum(TimeComboBoxName);
+    if(SelectedTime < 0)
+    {
+        SelectedTime = 0;
+    }
     Debug("ID:" $ string(SelectedManorID));
     // End:0x1DF
     if((TabName == "CropInfo") && SelectedManorID == -1)
@@ -427,6 +436,10 @@ function OnClickInfoTab(string TabName)
 function OnComboBoxItemSelected(string sName, int Index)
 {
     Debug((sName $ ", index:") $ string(Index));
+    if(Index < 0)
+    {
+        return;
+    }
     switch(sName)
     {
         // End:0x63
@@ -488,8 +501,16 @@ function RequestSelectedData(string WindowName, int Index)
     }
     else
     {
+        if(Index < 0)
+        {
+            return;
+        }
         ManorID = Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved(ManorComboBoxName, Index);
         Time = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum(TimeComboBoxName);
+    }
+    if(Time < 0)
+    {
+        Time = 0;
     }
     // End:0x1EB
     if(ManorID > 0)
@@ -500,6 +521,7 @@ function RequestSelectedData(string WindowName, int Index)
     else
     {
         Debug("???ID???? : " $ string(ManorID));
+        return;
     }
     RequestBypassToServer(RequestString);
     return;

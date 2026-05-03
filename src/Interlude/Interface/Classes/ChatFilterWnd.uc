@@ -25,7 +25,15 @@ function OnClickCheckBox(string strID)
     local int chatType;
 
     script = ChatWnd(GetScript("ChatWnd"));
+    if(script == none)
+    {
+        return;
+    }
     chatType = script.m_chatType;
+    if(!IsValidChatFilterType(script, chatType))
+    {
+        return;
+    }
     // End:0x134
     if(strID == "CheckBoxSystem")
     {
@@ -99,6 +107,23 @@ function OnClickCheckBox(string strID)
     return;
 }
 
+function bool IsValidChatFilterType(ChatWnd script, int chatType)
+{
+    if(script == none)
+    {
+        return false;
+    }
+    if((chatType < 0) || (chatType >= script.m_filterInfo.Length))
+    {
+        return false;
+    }
+    if(chatType >= script.m_sectionName.Length)
+    {
+        return false;
+    }
+    return true;
+}
+
 function SaveChatFilterOption()
 {
     local ChatWnd script;
@@ -106,7 +131,15 @@ function SaveChatFilterOption()
     local bool bChecked;
 
     script = ChatWnd(GetScript("ChatWnd"));
+    if(script == none)
+    {
+        return;
+    }
     chatType = script.m_chatType;
+    if(!IsValidChatFilterType(script, chatType))
+    {
+        return;
+    }
     script.m_filterInfo[chatType].bSystem = int(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("ChatFilterWnd.CheckBoxSystem"));
     script.m_filterInfo[chatType].bUseitem = int(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("ChatFilterWnd.CheckBoxItem"));
     script.m_filterInfo[chatType].bDamage = int(Class'NWindow.UIAPI_CHECKBOX'.static.IsChecked("ChatFilterWnd.CheckBoxDamage"));

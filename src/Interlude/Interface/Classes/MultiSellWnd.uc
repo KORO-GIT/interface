@@ -1,7 +1,6 @@
 class MultiSellWnd extends UICommonAPI;
 
 const MULTISELLWND_DIALOG_OK = 1122;
-const MAX_CUSTOM_NEEDED_ITEMS = 4;
 
 struct NeededItem
 {
@@ -36,7 +35,6 @@ function OnLoad()
     RegisterEvent(2560);
     RegisterEvent(1710);
     pre_itemList = -1;
-    HideCustomNeededItemList();
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     return;
 }
@@ -82,7 +80,6 @@ function OnEvent(int Event_ID, string param)
 function OnShow()
 {
     Class'NWindow.UIAPI_EDITBOX'.static.Clear("MultiSellWnd.ItemCountEdit");
-    HideCustomNeededItemList();
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     return;
 }
@@ -117,7 +114,6 @@ function OnClickItem(string strID, int Index)
 
     Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.Clear("MultiSellWnd.ItemInfo");
     Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.Clear("MultiSellWnd.NeededItem");
-    HideCustomNeededItemList();
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     // End:0x3BF
     if(strID == "ItemList")
@@ -130,15 +126,16 @@ function OnClickItem(string strID, int Index)
             while(i < m_itemLIst[Index].NeededItemList.Length)
             {
                 HaveCount = GetInventoryItemCount(m_itemLIst[Index].NeededItemList[i].Id);
-                if(i < MAX_CUSTOM_NEEDED_ITEMS)
-                {
-                    ShowCustomNeededItem(i, m_itemLIst[Index].NeededItemList[i], HaveCount);
-                }
+                AddNeededItemData(m_itemLIst[Index].NeededItemList[i], HaveCount);
                 ++i;
+            }
+            if(m_itemLIst[Index].NeededItemList.Length > 0)
+            {
+                Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("MultiSellWnd.NeededItem");
             }
             i = 0;
 
-            while(i < m_itemLIst[Index].NeededItemNum)
+            while((i < m_itemLIst[Index].NeededItemNum) && i < m_itemLIst[Index].ItemInfoList.Length)
             {
                 Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.SetItemInfo("MultiSellWnd.ItemInfo", i, m_itemLIst[Index].ItemInfoList[i]);
                 ++i;
@@ -173,85 +170,34 @@ function OnClickItem(string strID, int Index)
     return;
 }
 
-function HideCustomNeededItemList()
+function AddNeededItemData(NeededItem Item, int HaveCount)
 {
-    local int i;
+    local string param;
 
-    i = 0;
-
-    while(i < MAX_CUSTOM_NEEDED_ITEMS)
-    {
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomIcon" $ string(i));
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomName" $ string(i));
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomCount" $ string(i));
-        Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededCustomHave" $ string(i));
-        ++i;
-    }
+    param = "";
+    ParamAdd(param, "Name", FormatNeededItemName(Item.Name, HaveCount));
+    ParamAdd(param, "ID", string(Item.Id));
+    ParamAdd(param, "Num", string(Item.Count));
+    ParamAdd(param, "Icon", Item.IconName);
+    ParamAdd(param, "Enchant", string(Item.Enchant));
+    ParamAdd(param, "CrystalType", string(Item.CrystalType));
+    ParamAdd(param, "ItemType", string(Item.ItemType));
+    ParamAdd(param, "NoTooltip", "1");
+    ParamAdd(param, "noTooltip", "1");
+    ParamAdd(param, "classID", string(Item.Id));
+    ParamAdd(param, "name", Item.Name);
+    ParamAdd(param, "iconName", Item.IconName);
+    ParamAdd(param, "itemNum", string(Item.Count));
+    ParamAdd(param, "enchanted", string(Item.Enchant));
+    ParamAdd(param, "crystalType", string(Item.CrystalType));
+    ParamAdd(param, "itemType", string(Item.ItemType));
+    Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.AddData("MultiSellWnd.NeededItem", param);
     return;
 }
 
-function ShowCustomNeededItem(int RowIndex, NeededItem Item, int HaveCount)
+function string FormatNeededItemName(string ItemName, int HaveCount)
 {
-    local string Prefix, IconName, NameText, CountText, HaveText;
-    local int RowY, CountWidth, CountHeight, HaveWidth, HaveHeight, HaveOffsetX, HaveOffsetY;
-    local Color TextColor, HaveColor;
-
-    Prefix = "MultiSellWnd.NeededCustom";
-    IconName = Prefix $ "Icon" $ string(RowIndex);
-    NameText = Prefix $ "Name" $ string(RowIndex);
-    CountText = "x " $ MakeCostString(string(Item.Count));
-    HaveText = "(" $ MakeCostString(string(HaveCount)) $ ")";
-    RowY = 240 + (RowIndex * 35);
-
-    Class'NWindow.UIAPI_TEXTURECTRL'.static.SetTexture(IconName, Item.IconName);
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText(NameText, Item.Name);
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText(Prefix $ "Count" $ string(RowIndex), CountText);
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetText(Prefix $ "Have" $ string(RowIndex), HaveText);
-
-    TextColor.R = byte(220);
-    TextColor.G = byte(220);
-    TextColor.B = byte(220);
-    TextColor.A = byte(255);
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(NameText, TextColor);
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(Prefix $ "Count" $ string(RowIndex), TextColor);
-
-    if(HaveCount >= Item.Count)
-    {
-        HaveColor.R = 120;
-        HaveColor.G = 160;
-        HaveColor.B = byte(255);
-    }
-    else
-    {
-        HaveColor.R = byte(255);
-        HaveColor.G = 90;
-        HaveColor.B = 90;
-    }
-    HaveColor.A = byte(255);
-    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(Prefix $ "Have" $ string(RowIndex), HaveColor);
-
-    Class'NWindow.UIAPI_WINDOW'.static.SetWindowSize(Prefix $ "Count" $ string(RowIndex), 176, 14);
-    Class'NWindow.UIAPI_WINDOW'.static.SetWindowSize(Prefix $ "Have" $ string(RowIndex), 176, 14);
-
-    GetTextSize(CountText, CountWidth, CountHeight);
-    GetTextSize(HaveText, HaveWidth, HaveHeight);
-    HaveOffsetX = CountWidth + 8;
-    HaveOffsetY = 0;
-
-    if((HaveOffsetX + HaveWidth) > 176)
-    {
-        HaveOffsetX = 0;
-        HaveOffsetY = 13;
-    }
-
-    Class'NWindow.UIAPI_WINDOW'.static.ClearAnchor(Prefix $ "Have" $ string(RowIndex));
-    Class'NWindow.UIAPI_WINDOW'.static.SetAnchor(Prefix $ "Have" $ string(RowIndex), Prefix $ "Count" $ string(RowIndex), "TopLeft", "TopLeft", HaveOffsetX, HaveOffsetY);
-
-    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(IconName);
-    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(NameText);
-    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(Prefix $ "Count" $ string(RowIndex));
-    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(Prefix $ "Have" $ string(RowIndex));
-    return;
+    return ((ItemName $ " [") $ MakeCostString(string(HaveCount))) $ "]";
 }
 
 function Print()
@@ -283,11 +229,15 @@ function HandleShopID(string param)
 
 function Clear()
 {
+    if(DialogIsMine())
+    {
+        DialogHide();
+    }
+    pre_itemList = -1;
     m_itemLIst.Length = 0;
     Class'NWindow.UIAPI_MULTISELLITEMINFO'.static.Clear("MultiSellWnd.ItemInfo");
     Class'NWindow.UIAPI_MULTISELLNEEDEDITEM'.static.Clear("MultiSellWnd.NeededItem");
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("MultiSellWnd.ItemList");
-    HideCustomNeededItemList();
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("MultiSellWnd.NeededItem");
     return;
 }
@@ -343,7 +293,7 @@ function HandleItemList(string param)
             while(i >= 0)
             {
                 // End:0x293
-                if(((m_itemLIst[i].ItemInfoList[0].Reserved == Info.Reserved) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == Info.RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == Info.RefineryOp2)
+                if((m_itemLIst[i].ItemInfoList.Length > 0) && ((m_itemLIst[i].ItemInfoList[0].Reserved == Info.Reserved) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == Info.RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == Info.RefineryOp2)
                 {
                     bMatchFound = true;
                     break;
@@ -416,7 +366,7 @@ function HandleNeededItemList(string param)
     while(i >= 0)
     {
         // End:0x35C
-        if(((m_itemLIst[i].ItemInfoList[0].Reserved == Id) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == RefineryOp2)
+        if((m_itemLIst[i].ItemInfoList.Length > 0) && ((m_itemLIst[i].ItemInfoList[0].Reserved == Id) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == RefineryOp2)
         {
             Index = m_itemLIst[i].NeededItemList.Length;
             m_itemLIst[i].NeededItemList.Length = Index + 1;
@@ -456,8 +406,11 @@ function ShowItemList()
 
     while(i < m_itemLIst.Length)
     {
-        Info = m_itemLIst[i].ItemInfoList[0];
-        Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MultiSellWnd.ItemList", Info);
+        if(m_itemLIst[i].ItemInfoList.Length > 0)
+        {
+            Info = m_itemLIst[i].ItemInfoList[0];
+            Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("MultiSellWnd.ItemList", Info);
+        }
         ++i;
     }
     return;
@@ -469,8 +422,12 @@ function HandleOKButton()
 
     SelectedIndex = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetSelectedNum("MultiSellWnd.ItemList");
     ItemNum = int(Class'NWindow.UIAPI_EDITBOX'.static.GetString("MultiSellWnd.ItemCountEdit"));
+    if(ItemNum < 1)
+    {
+        ItemNum = 1;
+    }
     // End:0xA9
-    if(SelectedIndex >= 0)
+    if(((SelectedIndex >= 0) && SelectedIndex < m_itemLIst.Length) && m_itemLIst[SelectedIndex].ItemInfoList.Length > 0)
     {
         DialogSetReservedInt(SelectedIndex);
         DialogSetReservedInt2(ItemNum);
@@ -490,6 +447,16 @@ function HandleDialogOK()
     if(DialogIsMine())
     {
         SelectedIndex = DialogGetReservedInt();
+        if((SelectedIndex < 0) || SelectedIndex >= m_itemLIst.Length)
+        {
+            pre_itemList = -1;
+            return;
+        }
+        if(m_itemLIst[SelectedIndex].ItemInfoList.Length <= 0)
+        {
+            pre_itemList = -1;
+            return;
+        }
         ParamAdd(param, "ShopID", string(m_ShopID));
         ParamAdd(param, "ItemID", string(m_itemLIst[SelectedIndex].ItemInfoList[0].Reserved));
         ParamAdd(param, "RefineryOp1", string(m_itemLIst[SelectedIndex].ItemInfoList[0].RefineryOp1));

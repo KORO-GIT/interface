@@ -37,7 +37,7 @@ function OnEvent(int Event_ID, string param)
 function HandleRequestTooltipInfo(string param)
 {
     local string TooltipType;
-    local int SourceType;
+    local int SourceType, NoTooltip;
     local UIEventManager.ETooltipSourceType eSourceType;
 
     ClearTooltip();
@@ -48,6 +48,10 @@ function HandleRequestTooltipInfo(string param)
     }
     // End:0x4D
     if(!ParseInt(param, "SourceType", SourceType))
+    {
+        return;
+    }
+    if((ParseInt(param, "NoTooltip", NoTooltip) && NoTooltip != 0) || (ParseInt(param, "noTooltip", NoTooltip) && NoTooltip != 0))
     {
         return;
     }
@@ -236,6 +240,10 @@ function ReturnTooltip_NTT_ITEM(string param, string TooltipType, UIEventManager
     if(int(eSourceType) == 1)
     {
         ParamToItemInfo(param, item);
+        if(item.ClassID <= 0)
+        {
+            return;
+        }
         EItemType = byte(item.ItemType);
         EEtcItemType = EEtcItemType(item.ItemSubType);
         ItemName = Class'NWindow.UIDATA_ITEM'.static.GetRefineryItemName(item.Name, item.RefineryOp1, item.RefineryOp2);
