@@ -452,6 +452,7 @@ function HandleChatWndMacroCommand(string param)
     {
         return;
     }
+    NotifyAutoEquipSetMacroBlock(Command);
     HandleLanguageCommand(Command);
     ProcessChatMessage(Command, m_chatType);
     return;

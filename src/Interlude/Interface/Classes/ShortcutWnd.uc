@@ -1596,6 +1596,7 @@ function HandleShortcutCommand(string a_Param)
 
 function UseShortcutItem(int page, int Num)
 {
+    NotifyAutoEquipSetShortcutUse(page, Num);
     ExecuteCommand((("/useshortcut " $ string(page)) $ " ") $ string(Num));
     return;
 }

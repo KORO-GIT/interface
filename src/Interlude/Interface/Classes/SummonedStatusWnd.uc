@@ -1,11 +1,38 @@
 class SummonedStatusWnd extends UIScript;
 
 const NSTATUSICON_MAXCOL = 10;
+const STATUS_MAX_SPELL_COUNT = 64;
 
 var bool m_bBuff;
 var bool m_bShow;
 var int m_PetID;
 var bool m_bSummonedStarted;
+
+function int ClampStatusSpellCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > STATUS_MAX_SPELL_COUNT)
+    {
+        return STATUS_MAX_SPELL_COUNT;
+    }
+    return Count;
+}
+
+function int ClampGaugeValue(int Value, int MaxValue)
+{
+    if(Value < 0)
+    {
+        return 0;
+    }
+    if(Value > MaxValue)
+    {
+        return MaxValue;
+    }
+    return Value;
+}
 
 function OnLoad()
 {
@@ -192,6 +219,7 @@ function HandleSummonedStatusSpelledList(string param)
     Info.Size = 16;
     Info.bShow = true;
     ParseInt(param, "Max", Max);
+    Max = ClampStatusSpellCount(Max);
     i = 0;
 
     while(i < Max)
@@ -290,12 +318,22 @@ function UpdateBuff(bool bShow)
 
 function UpdateHPBar(int Value, int MaxValue)
 {
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     Class'NWindow.UIAPI_BARCTRL'.static.SetValue("SummonedStatusWnd.barHP", MaxValue, Value);
     return;
 }
 
 function UpdateMPBar(int Value, int MaxValue)
 {
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     Class'NWindow.UIAPI_BARCTRL'.static.SetValue("SummonedStatusWnd.barMP", MaxValue, Value);
     return;
 }

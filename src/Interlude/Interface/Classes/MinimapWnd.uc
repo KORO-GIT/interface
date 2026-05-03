@@ -432,6 +432,14 @@ function HandleCursedWeaponList(string param)
     local string cursedName;
 
     ParseInt(param, "NUM", Num);
+    if(Num < 0)
+    {
+        Num = 0;
+    }
+    if(Num > 2)
+    {
+        Num = 2;
+    }
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("MinimapWnd.CursedComboBox");
     i = 0;
 
@@ -468,6 +476,14 @@ function HandleCursedWeaponLoctaion(string param)
     local bool combined;
 
     ParseInt(param, "NUM", Num);
+    if(Num < 0)
+    {
+        Num = 0;
+    }
+    if(Num > 2)
+    {
+        Num = 2;
+    }
     // End:0x7A
     if(Num == 0)
     {

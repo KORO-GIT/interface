@@ -14,6 +14,20 @@ var int m_PartyNum;
 var int m_PartyMemberNum;
 var int m_SearchedMasterID;
 
+function bool HasPartyRecordData(LVDataRecord Record, int MinLength)
+{
+    return Record.LVDataList.Length >= MinLength;
+}
+
+function int ClampNonNegativeCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    return Count;
+}
+
 function OnLoad()
 {
     RegisterEvent(1360);
@@ -190,6 +204,10 @@ function OnBanClick()
     if(idx > -1)
     {
         Record = lstParty.GetRecord(idx);
+        if(!HasPartyRecordData(Record, 1))
+        {
+            return;
+        }
         PartyMasterName = Record.LVDataList[0].szData;
         // End:0x76
         if(Len(PartyMasterName) > 0)
@@ -228,8 +246,16 @@ function RequestPartyMember(bool bShowWindow)
     local UnionDetailWnd script;
 
     script = UnionDetailWnd(GetScript("UnionDetailWnd"));
+    if(script == none)
+    {
+        return;
+    }
     m_SearchedMasterID = 0;
     Record = lstParty.GetSelectedRecord();
+    if(!HasPartyRecordData(Record, 1))
+    {
+        return;
+    }
     PartyMasterName = Record.LVDataList[0].szData;
     MasterID = Record.nReserved1;
     // End:0xE2
@@ -280,8 +306,8 @@ function HandleCommandChannelInfo(string param)
     ParseInt(param, "RoutingType", RoutingType);
     ParseInt(param, "PartyNum", PartyNum);
     ParseInt(param, "PartyMemberNum", PartyMemberNum);
-    m_PartyNum = PartyNum;
-    m_PartyMemberNum = PartyMemberNum;
+    m_PartyNum = ClampNonNegativeCount(PartyNum);
+    m_PartyMemberNum = ClampNonNegativeCount(PartyMemberNum);
     txtOwner.SetText(OwnerName);
     UpdateRoutingType(RoutingType);
     UpdateCountInfo();
@@ -302,6 +328,11 @@ function HandleCommandChannelPartyList(string param)
     ParseString(param, "MasterName", MasterName);
     ParseInt(param, "MasterID", MasterID);
     ParseInt(param, "PartyNum", PartyNum);
+    if((MasterID < 1) || Len(MasterName) < 1)
+    {
+        return;
+    }
+    PartyNum = ClampNonNegativeCount(PartyNum);
     Record.LVDataList.Length = 2;
     Record.nReserved1 = MasterID;
     Record.LVDataList[0].szData = MasterName;
@@ -342,6 +373,7 @@ function HandleCommandChannelPartyUpdate(string param)
     ParseInt(param, "MasterID", MasterID);
     ParseInt(param, "MemberCount", MemberCount);
     ParseInt(param, "Type", Type);
+    MemberCount = ClampNonNegativeCount(MemberCount);
     // End:0x76
     if(MasterID < 1)
     {
@@ -356,16 +388,21 @@ function HandleCommandChannelPartyUpdate(string param)
             if(SearchIdx > -1)
             {
                 Record = lstParty.GetRecord(SearchIdx);
-                MemberCount = int(Record.LVDataList[1].szData);
+                if(!HasPartyRecordData(Record, 2))
+                {
+                    return;
+                }
+                MemberCount = ClampNonNegativeCount(int(Record.LVDataList[1].szData));
                 lstParty.DeleteRecord(SearchIdx);
-                m_PartyNum--;
+                m_PartyNum = ClampNonNegativeCount(m_PartyNum - 1);
                 m_PartyMemberNum = m_PartyMemberNum - MemberCount;
+                m_PartyMemberNum = ClampNonNegativeCount(m_PartyMemberNum);
                 // End:0x16B
                 if(PartyMemberWnd.IsShowWindow())
                 {
                     script = UnionDetailWnd(GetScript("UnionDetailWnd"));
                     // End:0x16B
-                    if(MasterID == script.GetMasterID())
+                    if((script != none) && MasterID == script.GetMasterID())
                     {
                         script.Clear();
                         PartyMemberWnd.HideWindow();
@@ -465,8 +502,13 @@ function UpdatePartyMemberCount(int MasterID, int MemberCount)
     if(idx > -1)
     {
         Record = lstParty.GetRecord(idx);
-        m_PartyMemberNum = m_PartyMemberNum - int(Record.LVDataList[1].szData);
-        m_PartyMemberNum = m_PartyMemberNum + MemberCount;
+        if(!HasPartyRecordData(Record, 2))
+        {
+            return;
+        }
+        MemberCount = ClampNonNegativeCount(MemberCount);
+        m_PartyMemberNum = m_PartyMemberNum - ClampNonNegativeCount(int(Record.LVDataList[1].szData));
+        m_PartyMemberNum = ClampNonNegativeCount(m_PartyMemberNum + MemberCount);
         Record.LVDataList[1].szData = string(MemberCount);
         lstParty.ModifyRecord(idx, Record);
     }

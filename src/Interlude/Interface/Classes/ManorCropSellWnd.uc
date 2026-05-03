@@ -167,6 +167,10 @@ function OnChangeBtn()
         return;
     }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("ManorCropSellWnd.ManorCropSellListCtrl");
+    if(Record.LVDataList.Length <= 9)
+    {
+        return;
+    }
     CropID = Record.nReserved2;
     ManorCropSellChangeWndString = ("manor_menu_select?ask=9&state=" $ string(CropID)) $ "&time=0";
     RequestBypassToServer(ManorCropSellChangeWndString);
@@ -230,14 +234,22 @@ function HandleSetCropSell(string a_Param)
     ParseString(a_Param, "CropRemainCntString", CropRemainCntString);
     ParseString(a_Param, "CropPriceString", CropPriceString);
     ParseString(a_Param, "ProcureTypeString", ProcureTypeString);
+    SelectedIndex = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedIndex("ManorCropSellWnd.ManorCropSellListCtrl");
+    if(SelectedIndex < 0)
+    {
+        return;
+    }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("ManorCropSellWnd.ManorCropSellListCtrl");
+    if(Record.LVDataList.Length <= 6)
+    {
+        return;
+    }
     Record.LVDataList[1].szData = ManorName;
     Record.LVDataList[2].szData = CropRemainCntString;
     Record.LVDataList[3].szData = CropPriceString;
     Record.LVDataList[4].szData = ProcureTypeString;
     Record.LVDataList[6].szData = SellCntString;
     Record.nReserved1 = ManorID;
-    SelectedIndex = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedIndex("ManorCropSellWnd.ManorCropSellListCtrl");
     Class'NWindow.UIAPI_LISTCTRL'.static.ModifyRecord("ManorCropSellWnd.ManorCropSellListCtrl", SelectedIndex, Record);
     return;
 }

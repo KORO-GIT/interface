@@ -54,12 +54,21 @@ function OnClickButton(string a_strButtonName)
 
 function OnOKButtonClick()
 {
-    local int MaxPartyMemberCount, MinLevel, MaxLevel;
+    local int MaxPartyMemberCount, MinLevel, MaxLevel, SelectedIndex;
     local string RoomTitle;
 
-    MaxPartyMemberCount = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("PartyMatchMakeRoomWnd.MaxPartyMemberCountComboBox") + 2;
+    SelectedIndex = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("PartyMatchMakeRoomWnd.MaxPartyMemberCountComboBox");
+    if(SelectedIndex < 0)
+    {
+        SelectedIndex = 0;
+    }
+    MaxPartyMemberCount = Clamp(SelectedIndex + 2, 2, 12);
     MinLevel = Clamp(int(Class'NWindow.UIAPI_EDITBOX'.static.GetString("PartyMatchMakeRoomWnd.MinLevelEditBox")), 1, 80);
     MaxLevel = Clamp(int(Class'NWindow.UIAPI_EDITBOX'.static.GetString("PartyMatchMakeRoomWnd.MaxLevelEditBox")), 1, 80);
+    if(MinLevel > MaxLevel)
+    {
+        MaxLevel = MinLevel;
+    }
     RoomTitle = Class'NWindow.UIAPI_EDITBOX'.static.GetString("PartyMatchMakeRoomWnd.TitleEditBox");
     Class'NWindow.PartyMatchAPI'.static.RequestManagePartyRoom(RoomNumber, MaxPartyMemberCount, MinLevel, MaxLevel, RoomTitle);
     Class'NWindow.UIAPI_WINDOW'.static.HideWindow("PartyMatchMakeRoomWnd");

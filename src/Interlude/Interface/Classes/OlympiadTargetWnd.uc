@@ -9,6 +9,19 @@ var int m_CurHP;
 var int m_MaxCP;
 var int m_CurCP;
 
+function int ClampGaugeValue(int Value, int MaxValue)
+{
+    if(Value < 0)
+    {
+        return 0;
+    }
+    if((MaxValue > 0) && Value > MaxValue)
+    {
+        return MaxValue;
+    }
+    return Value;
+}
+
 function OnLoad()
 {
     RegisterEvent(900);
@@ -89,6 +102,10 @@ function HandleUserInfo(string param)
     ParseInt(param, "CurHP", m_CurHP);
     ParseInt(param, "MaxCP", m_MaxCP);
     ParseInt(param, "CurCP", m_CurCP);
+    m_MaxHP = ClampGaugeValue(m_MaxHP, 0);
+    m_MaxCP = ClampGaugeValue(m_MaxCP, 0);
+    m_CurHP = ClampGaugeValue(m_CurHP, m_MaxHP);
+    m_CurCP = ClampGaugeValue(m_CurCP, m_MaxCP);
     return;
 }
 

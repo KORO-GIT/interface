@@ -1,5 +1,20 @@
 class HeroTowerWnd extends UIScript;
 
+const HERO_TOWER_MAX_RECORDS = 128;
+
+function int ClampHeroTowerRecordCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > HERO_TOWER_MAX_RECORDS)
+    {
+        return HERO_TOWER_MAX_RECORDS;
+    }
+    return Count;
+}
+
 function OnLoad()
 {
     RegisterEvent(880);
@@ -113,6 +128,7 @@ function HandleHeroShowList(string param)
     local LVDataRecord Record, recordClear;
 
     ParseInt(param, "Max", nMax);
+    nMax = ClampHeroTowerRecordCount(nMax);
     i = 0;
 
     while(i < nMax)

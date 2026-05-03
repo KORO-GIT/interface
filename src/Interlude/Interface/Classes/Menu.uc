@@ -370,6 +370,10 @@ function HandleClanOnlineUpdate(string a_Param)
     local int m_Count;
 
     ParseInt(a_Param, "Count", m_Count);
+    if(m_Count < 1)
+    {
+        m_Count = 1;
+    }
     m_hClanText.SetText(string(m_Count - 1));
     return;
 }

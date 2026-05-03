@@ -3,6 +3,7 @@ class PartyWndCompact extends UICommonAPI;
 const NSTATUSICON_MAXCOL = 12;
 const NPARTYSTATUS_HEIGHT = 26;
 const NPARTYSTATUS_MAXCOUNT = 8;
+const PARTY_STATUS_MAX_SPELL_COUNT = 64;
 
 var bool m_bCompact;
 var bool m_bBuff;
@@ -21,6 +22,32 @@ var BarHandle m_BarCP[8];
 var BarHandle m_BarHP[8];
 var BarHandle m_BarMP[8];
 var ButtonHandle btnBuff;
+
+function int ClampPartyStatusSpellCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > PARTY_STATUS_MAX_SPELL_COUNT)
+    {
+        return PARTY_STATUS_MAX_SPELL_COUNT;
+    }
+    return Count;
+}
+
+function int ClampGaugeValue(int Value, int MaxValue)
+{
+    if(Value < 0)
+    {
+        return 0;
+    }
+    if(Value > MaxValue)
+    {
+        return MaxValue;
+    }
+    return Value;
+}
 
 function OnLoad()
 {
@@ -453,6 +480,7 @@ function HandlePartySpelledList(string param)
     Info.Size = 10;
     Info.bShow = true;
     ParseInt(param, "Max", Max);
+    Max = ClampPartyStatusSpellCount(Max);
     i = 0;
 
     while(i < Max)
@@ -622,18 +650,45 @@ function UpdateBuff()
 
 function UpdateCPBar(int idx, int Value, int MaxValue)
 {
+    if((idx < 0) || idx >= 8)
+    {
+        return;
+    }
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     m_BarCP[idx].SetValue(MaxValue, Value);
     return;
 }
 
 function UpdateHPBar(int idx, int Value, int MaxValue)
 {
+    if((idx < 0) || idx >= 8)
+    {
+        return;
+    }
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     m_BarHP[idx].SetValue(MaxValue, Value);
     return;
 }
 
 function UpdateMPBar(int idx, int Value, int MaxValue)
 {
+    if((idx < 0) || idx >= 8)
+    {
+        return;
+    }
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     m_BarMP[idx].SetValue(MaxValue, Value);
     return;
 }

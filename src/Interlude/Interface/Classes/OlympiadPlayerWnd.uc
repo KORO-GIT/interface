@@ -16,6 +16,19 @@ var int m_CurCP;
 var string m_Msg[5];
 var int m_MsgStartLine;
 
+function int ClampGaugeValue(int Value, int MaxValue)
+{
+    if(Value < 0)
+    {
+        return 0;
+    }
+    if((MaxValue > 0) && Value > MaxValue)
+    {
+        return MaxValue;
+    }
+    return Value;
+}
+
 function SetPlayerNum(int PlayerNum)
 {
     m_PlayerNum = PlayerNum;
@@ -123,6 +136,10 @@ function HandleUserInfo(string param)
     ParseInt(param, "CurHP", m_CurHP);
     ParseInt(param, "MaxCP", m_MaxCP);
     ParseInt(param, "CurCP", m_CurCP);
+    m_MaxHP = ClampGaugeValue(m_MaxHP, 0);
+    m_MaxCP = ClampGaugeValue(m_MaxCP, 0);
+    m_CurHP = ClampGaugeValue(m_CurHP, m_MaxHP);
+    m_CurCP = ClampGaugeValue(m_CurCP, m_MaxCP);
     // End:0x162
     if(m_ID != PlayerID)
     {

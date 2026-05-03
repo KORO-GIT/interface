@@ -13,6 +13,10 @@ const SSQS_NONE = 0;
 const SSQS_GREED = 1;
 const SSQS_REVEAL = 2;
 const SSQS_STRIFE = 3;
+const MAX_SSQ_EVENT_COUNT = 16;
+const MAX_SSQ_ROOM_COUNT = 32;
+const MAX_SSQ_MEMBER_COUNT = 9;
+const MAX_SSQ_SEAL_COUNT = 3;
 
 struct SSQStatusInfo
 {
@@ -93,6 +97,19 @@ function OnHide()
     return;
 }
 
+function int ClampSSQCount(int Count, int MaxCount)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MaxCount)
+    {
+        return MaxCount;
+    }
+    return Count;
+}
+
 function OnEvent(int Event_ID, string param)
 {
     local int i, j, k, L;
@@ -135,6 +152,7 @@ function OnEvent(int Event_ID, string param)
             ClearSSQPreInfo();
             ParseInt(param, "Winner", g_sinfopre.m_nWinner);
             ParseInt(param, "RoomNum", g_sinfopre.m_nRoomNum);
+            g_sinfopre.m_nRoomNum = ClampSSQCount(g_sinfopre.m_nRoomNum, MAX_SSQ_ROOM_COUNT);
             i = 0;
 
             while(i < g_sinfopre.m_nRoomNum)
@@ -157,6 +175,7 @@ function OnEvent(int Event_ID, string param)
                 ParseInt(param, "SSQStatus", m_nSSQStatus);
                 Info.m_nSSQStatus = m_nSSQStatus;
                 ParseInt(param, "EventNum", eventnum);
+                eventnum = ClampSSQCount(eventnum, MAX_SSQ_EVENT_COUNT);
                 i = 0;
 
                 while(i < eventnum)
@@ -164,6 +183,7 @@ function OnEvent(int Event_ID, string param)
                     ParseInt(param, "EventType_" $ string(i), nEventType);
                     Info.m_nEventType = nEventType;
                     ParseInt(param, "RoomNum_" $ string(i), roomnum);
+                    roomnum = ClampSSQCount(roomnum, MAX_SSQ_ROOM_COUNT);
                     j = 0;
 
                     while(j < roomnum)
@@ -172,6 +192,7 @@ function OnEvent(int Event_ID, string param)
                         ParseInt(param, (("WinPoint_" $ string(i)) $ "_") $ string(j), Info.m_nWinPoint);
                         ParseInt(param, (("Team2Score_" $ string(i)) $ "_") $ string(j), Info.m_nTeam2Score);
                         ParseInt(param, (("Team2Num_" $ string(i)) $ "_") $ string(j), team2num);
+                        team2num = ClampSSQCount(team2num, MAX_SSQ_MEMBER_COUNT);
                         k = 0;
 
                         while(k < team2num)
@@ -186,6 +207,7 @@ function OnEvent(int Event_ID, string param)
                         }
                         ParseInt(param, (("Team1Score_" $ string(i)) $ "_") $ string(j), Info.m_nTeam1Score);
                         ParseInt(param, (("Team1Num_" $ string(i)) $ "_") $ string(j), team1num);
+                        team1num = ClampSSQCount(team1num, MAX_SSQ_MEMBER_COUNT);
                         L = 0;
 
                         while(L < team1num)
@@ -216,6 +238,7 @@ function OnEvent(int Event_ID, string param)
                     ParseInt(param, "NeedPoint1", m_nNeedPoint1);
                     ParseInt(param, "NeedPoint2", m_nNeedPoint2);
                     ParseInt(param, "SealNum", sealnum);
+                    sealnum = ClampSSQCount(sealnum, MAX_SSQ_SEAL_COUNT);
                     i = 0;
 
                     while(i < sealnum)

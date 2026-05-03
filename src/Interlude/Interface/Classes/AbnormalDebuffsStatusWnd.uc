@@ -4,6 +4,7 @@ const NSTATUSICON_FRAMESIZE = 4;
 const NSTATUSICON_MAXCOL = 12;
 const ProbablyPotionsTimerDelay = 1250;
 const ProbablyPotionsTimerID = 4443;
+const MAX_ABNORMAL_STATUS_COUNT = 256;
 
 var int i_UnkInt1;
 var int i_UnkInt2;
@@ -46,6 +47,19 @@ function Init()
     Me = GetHandle("AbnormalDebuffsStatusWnd");
     StatusIcon = StatusIconHandle(GetHandle("AbnormalDebuffsStatusWnd.StatusIcon"));
     return;
+}
+
+function int ClampStatusCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MAX_ABNORMAL_STATUS_COUNT)
+    {
+        return MAX_ABNORMAL_STATUS_COUNT;
+    }
+    return Count;
 }
 
 function OnEnterState(name a_PreStateName)
@@ -246,6 +260,7 @@ function HandleAddNormalStatus(string param)
     BuffCnt = 0;
     i_UnkIntLocal1 = 0;
     ParseInt(param, "Max", Max);
+    Max = ClampStatusCount(Max);
     i = 0;
 
     while(i < Max)
@@ -478,6 +493,7 @@ function HandleAddEtcStatus(string param)
     }
     BuffCnt = 0;
     ParseInt(param, "Max", Max);
+    Max = ClampStatusCount(Max);
     ProbablyRemoveEmptyBuff();
     i = 0;
 
@@ -550,6 +566,7 @@ function HandleAddShortStatus(string param)
     }
     BuffCnt = 0;
     ParseInt(param, "Max", Max);
+    Max = ClampStatusCount(Max);
     ProbablyRemoveEmptyBuff();
     i = 0;
 

@@ -1,5 +1,7 @@
 class PartyMatchRoomWnd extends PartyMatchWndCommon;
 
+const MAX_PARTY_ROOM_MEMBERS = 12;
+
 var int RoomNumber;
 var int CurPartyMemberCount;
 var int MaxPartyMemberCount;
@@ -11,6 +13,24 @@ var int MyMembershipType;
 var string RoomTitle;
 var bool m_bPartyMatchRoomStart;
 var bool m_bRequestExitPartyRoom;
+
+function int ClampPartyRoomMemberCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MAX_PARTY_ROOM_MEMBERS)
+    {
+        return MAX_PARTY_ROOM_MEMBERS;
+    }
+    return Count;
+}
+
+function bool HasPartyMemberRecordData(LVDataRecord Record)
+{
+    return Record.LVDataList.Length > 0;
+}
 
 function OnLoad()
 {
@@ -140,6 +160,11 @@ function HandlePartyMatchRoomStart(string param)
 
     ParseInt(param, "RoomNum", RoomNumber);
     ParseInt(param, "MaxMember", MaxPartyMemberCount);
+    MaxPartyMemberCount = ClampPartyRoomMemberCount(MaxPartyMemberCount);
+    if(MaxPartyMemberCount < 1)
+    {
+        MaxPartyMemberCount = 1;
+    }
     ParseInt(param, "MinLevel", MinLevel);
     ParseInt(param, "MaxLevel", MaxLevel);
     ParseInt(param, "LootingMethodID", LootingMethodID);
@@ -255,6 +280,7 @@ function HandlePartyMatchRoomMember(string param)
     UpdateMyMembershipType();
     Class'NWindow.UIAPI_LISTCTRL'.static.DeleteAllItem("PartyMatchRoomWnd.PartyMemberListCtrl");
     ParseInt(param, "MemberCount", CurPartyMemberCount);
+    CurPartyMemberCount = ClampPartyRoomMemberCount(CurPartyMemberCount);
     i = 0;
 
     while(i < CurPartyMemberCount)
@@ -277,7 +303,10 @@ function HandlePartyMatchRoomMember(string param)
     // End:0x25C
     if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("PartyMatchRoomWnd.PartyMatchWaitListWnd") == true)
     {
-        script.OnRefreshButtonClick();
+        if(script != none)
+        {
+            script.OnRefreshButtonClick();
+        }
     }
     return;
 }
@@ -332,7 +361,7 @@ function RemoveMember(int a_MemberID)
     {
         Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("PartyMatchRoomWnd.PartyMemberListCtrl", i);
         // End:0xEC
-        if(Record.LVDataList[0].nReserved1 == a_MemberID)
+        if(HasPartyMemberRecordData(Record) && Record.LVDataList[0].nReserved1 == a_MemberID)
         {
             Class'NWindow.UIAPI_LISTCTRL'.static.DeleteRecord("PartyMatchRoomWnd.PartyMemberListCtrl", i);
             break;
@@ -363,8 +392,11 @@ function HandlePartyMatchRoomMemberUpdate(string param)
             ParseInt(param, "Level", Level);
             ParseInt(param, "ZoneID", ZoneID);
             ParseInt(param, "MembershipType", MembershipType);
-            AddMember(MemberID, memberName, ClassID, Level, ZoneID, MembershipType);
-            CurPartyMemberCount = CurPartyMemberCount + 1;
+            if(CurPartyMemberCount < MAX_PARTY_ROOM_MEMBERS)
+            {
+                AddMember(MemberID, memberName, ClassID, Level, ZoneID, MembershipType);
+                CurPartyMemberCount = CurPartyMemberCount + 1;
+            }
             // End:0x21C
             break;
         // End:0x1F8
@@ -390,6 +422,7 @@ function HandlePartyMatchRoomMemberUpdate(string param)
         default:
             break;
     }
+    CurPartyMemberCount = ClampPartyRoomMemberCount(CurPartyMemberCount);
     // End:0x24F
     if(GetPlayerInfo(PlayerInfo))
     {
@@ -409,7 +442,10 @@ function HandlePartyMatchRoomMemberUpdate(string param)
     // End:0x2EA
     if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow("PartyMatchRoomWnd.PartyMatchWaitListWnd") == true)
     {
-        script.OnRefreshButtonClick();
+        if(script != none)
+        {
+            script.OnRefreshButtonClick();
+        }
     }
     return;
 }
@@ -509,15 +545,16 @@ function OnRoomSettingButtonClick()
 
     script = PartyMatchMakeRoomWnd(GetScript("PartyMatchMakeRoomWnd"));
     // End:0xA8
-    if(script != none)
+    if(script == none)
     {
-        script.InviteState = 2;
-        script.SetRoomNumber(RoomNumber);
-        script.SetTitle(RoomTitle);
-        script.SetMaxPartyMemberCount(MaxPartyMemberCount);
-        script.SetMinLevel(MinLevel);
-        script.SetMaxLevel(MaxLevel);
+        return;
     }
+    script.InviteState = 2;
+    script.SetRoomNumber(RoomNumber);
+    script.SetTitle(RoomTitle);
+    script.SetMaxPartyMemberCount(MaxPartyMemberCount);
+    script.SetMinLevel(MinLevel);
+    script.SetMaxLevel(MaxLevel);
     Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("PartyMatchMakeRoomWnd");
     Class'NWindow.UIAPI_WINDOW'.static.SetFocus("PartyMatchMakeRoomWnd");
     return;
@@ -528,6 +565,10 @@ function OnBanButtonClick()
     local LVDataRecord Record;
 
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("PartyMatchRoomWnd.PartyMemberListCtrl");
+    if(!HasPartyMemberRecordData(Record))
+    {
+        return;
+    }
     Class'NWindow.PartyMatchAPI'.static.RequestBanFromPartyRoom(Record.LVDataList[0].nReserved1);
     return;
 }
@@ -537,6 +578,10 @@ function OnInviteButtonClick()
     local LVDataRecord Record;
 
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("PartyMatchRoomWnd.PartyMemberListCtrl");
+    if(!HasPartyMemberRecordData(Record))
+    {
+        return;
+    }
     RequestInviteParty(Record.LVDataList[0].szData);
     return;
 }

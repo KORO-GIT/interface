@@ -5,6 +5,24 @@ var WindowHandle Me;
 var TextBoxHandle txtMasterName;
 var ListCtrlHandle lstPartyMember;
 
+function bool HasPartyMemberRecordData(LVDataRecord Record)
+{
+    return Record.nReserved1 > 0;
+}
+
+function int ClampPartyMemberCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > 50)
+    {
+        return 50;
+    }
+    return Count;
+}
+
 function OnLoad()
 {
     RegisterEvent(1420);
@@ -75,6 +93,10 @@ function OnDBClickListCtrlRecord(string strID)
     if(strID == "lstPartyMember")
     {
         Record = lstPartyMember.GetSelectedRecord();
+        if(!HasPartyMemberRecordData(Record))
+        {
+            return;
+        }
         ServerID = Record.nReserved1;
         // End:0x8E
         if(ServerID > 0)
@@ -107,6 +129,7 @@ function HandleCommandChannelPartyMember(string param)
 
     lstPartyMember.DeleteAllItem();
     ParseInt(param, "MemberCount", MemberCount);
+    MemberCount = ClampPartyMemberCount(MemberCount);
     idx = 0;
 
     while(idx < MemberCount)
@@ -129,6 +152,9 @@ function HandleCommandChannelPartyMember(string param)
         idx++;
     }
     script = UnionWnd(GetScript("UnionWnd"));
-    script.UpdatePartyMemberCount(m_MasterID, MemberCount);
+    if(script != none)
+    {
+        script.UpdatePartyMemberCount(m_MasterID, MemberCount);
+    }
     return;
 }

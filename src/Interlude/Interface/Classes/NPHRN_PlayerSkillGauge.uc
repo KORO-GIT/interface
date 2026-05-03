@@ -145,7 +145,10 @@ function OnTimer(int TimerID)
         // End:0x51
         case 1:
             Me.KillTimer(1);
-            m_UserID = dlgBox.m_UserID;
+            if(dlgBox != None)
+            {
+                m_UserID = dlgBox.m_UserID;
+            }
             // End:0x54
             break;
         // End:0xFFFF

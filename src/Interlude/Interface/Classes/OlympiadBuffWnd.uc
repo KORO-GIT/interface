@@ -2,6 +2,7 @@ class OlympiadBuffWnd extends UIScript;
 
 const NSTATUSICON_FRAMESIZE = 12;
 const NSTATUSICON_MAXCOL = 12;
+const MAX_OLYMPIAD_BUFF_COUNT = 48;
 
 var int m_PlayerNum;
 var int m_PlayerID;
@@ -27,6 +28,19 @@ function OnEnterState(name a_PreStateName)
     Clear();
     m_PlayerID = 0;
     return;
+}
+
+function int ClampBuffCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MAX_OLYMPIAD_BUFF_COUNT)
+    {
+        return MAX_OLYMPIAD_BUFF_COUNT;
+    }
+    return Count;
 }
 
 function OnEvent(int Event_ID, string param)
@@ -92,6 +106,7 @@ function HandleBuffInfo(string param)
     Clear();
     CurRow = -1;
     ParseInt(param, "Max", Max);
+    Max = ClampBuffCount(Max);
     i = 0;
     while(i < Max)
     {

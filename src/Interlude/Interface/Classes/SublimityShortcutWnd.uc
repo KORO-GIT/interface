@@ -861,6 +861,7 @@ function OnShortcutCommand(string a_Command)
 
 function UseShortcutItem(int page, int Num)
 {
+    NotifyAutoEquipSetShortcutUse(page, Num);
     ExecuteCommand((("/useshortcut " $ string(page)) $ " ") $ string(Num));
     return;
 }

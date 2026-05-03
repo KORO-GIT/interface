@@ -3,6 +3,7 @@ class PartyWnd extends UICommonAPI;
 const NSTATUSICON_MAXCOL = 18;
 const NPARTYSTATUS_HEIGHT = 46;
 const NPARTYSTATUS_MAXCOUNT = 8;
+const PARTY_STATUS_MAX_SPELL_COUNT = 64;
 
 var bool m_bCompact;
 var bool m_bBuff;
@@ -42,6 +43,32 @@ var int checkPriorDebuffSameRow;
 var bool checkPrior;
 var array<int> a_UnkArrayInt1;
 var int i_UnkInt_1;
+
+function int ClampPartyStatusSpellCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > PARTY_STATUS_MAX_SPELL_COUNT)
+    {
+        return PARTY_STATUS_MAX_SPELL_COUNT;
+    }
+    return Count;
+}
+
+function int ClampGaugeValue(int Value, int MaxValue)
+{
+    if(Value < 0)
+    {
+        return 0;
+    }
+    if(Value > MaxValue)
+    {
+        return MaxValue;
+    }
+    return Value;
+}
 
 function OnLoad()
 {
@@ -249,6 +276,7 @@ function HandleAddNormalStatus(string param)
 
     is_Nobless = false;
     ParseInt(param, "Max", Max);
+    Max = ClampPartyStatusSpellCount(Max);
     i = 0;
 
     while(i < Max)
@@ -906,6 +934,7 @@ function int HandlePartySpelledList(string param)
     StatusInfo.Size = 14;
     StatusInfo.bShow = true;
     ParseInt(param, "Max", Max);
+    Max = ClampPartyStatusSpellCount(Max);
     m_ClassIconCustom[idx].SetAnchor("PartyWnd.PartyStatusWnd" $ string(idx), "TopRight", "TopRight", -11, 1);
     A = 0;
 
@@ -1175,18 +1204,45 @@ function UpdateBuff()
 
 function UpdateCPBar(int idx, int Value, int MaxValue)
 {
+    if((idx < 0) || idx >= 9)
+    {
+        return;
+    }
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     m_BarCP[idx].SetValue(MaxValue, Value);
     return;
 }
 
 function UpdateHPBar(int idx, int Value, int MaxValue)
 {
+    if((idx < 0) || idx >= 9)
+    {
+        return;
+    }
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     m_BarHP[idx].SetValue(MaxValue, Value);
     return;
 }
 
 function UpdateMPBar(int idx, int Value, int MaxValue)
 {
+    if((idx < 0) || idx >= 9)
+    {
+        return;
+    }
+    if(MaxValue < 0)
+    {
+        MaxValue = 0;
+    }
+    Value = ClampGaugeValue(Value, MaxValue);
     m_BarMP[idx].SetValue(MaxValue, Value);
     return;
 }

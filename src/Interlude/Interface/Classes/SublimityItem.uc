@@ -2,11 +2,25 @@ class SublimityItem extends UISublimityCommonAPI;
 
 const MULTI_SELL_LIST = 0;
 const BUFF_LIST = 1;
+const SUBLIMITY_MAX_ABNORMAL_STATUS_COUNT = 256;
 
 var bool bDebug;
 var bool m_Capture;
 var int a_Capture;
 var int a_LastKey;
+
+function int ClampSublimityCount(int Count, int MaxCount)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MaxCount)
+    {
+        return MaxCount;
+    }
+    return Count;
+}
 
 function OnDialogOK()
 {
@@ -180,6 +194,7 @@ function ProcessAbnormalStatusList(out array<StatusIconInfo> a_Items, string a_P
     local StatusIconInfo Info;
 
     ParseInt(a_Param, "Max", Max);
+    Max = ClampSublimityCount(Max, SUBLIMITY_MAX_ABNORMAL_STATUS_COUNT);
     i = 0;
 
     while(i < Max)

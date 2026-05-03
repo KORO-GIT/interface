@@ -1,5 +1,7 @@
 class ClanWnd extends UISublimityCommonAPI;
 
+const MAX_CLAN_MEMBER_COUNT = 256;
+
 var int m_clanID;
 var string m_clanName;
 var int m_clanRank;
@@ -38,6 +40,19 @@ var string m_CurrentclanMasterName;
 var string m_CurrentclanMasterReal;
 var int m_CurrentNHType;
 var array<ClanInfo> m_memberList;
+
+function bool CanAddClanMemberToIndex(int Index)
+{
+    if((Index < 0) || Index >= m_memberList.Length)
+    {
+        return false;
+    }
+    if(m_memberList[Index].m_array.Length >= MAX_CLAN_MEMBER_COUNT)
+    {
+        return false;
+    }
+    return true;
+}
 
 function getmyClanInfo()
 {
@@ -1073,6 +1088,10 @@ function HandleAddClanMemberMultiple(string a_Param)
     ParseInt(a_Param, "Race", Info.Race);
     ParseInt(a_Param, "ID", Info.Id);
     ParseInt(a_Param, "HaveMaster", Info.bHaveMaster);
+    if(!CanAddClanMemberToIndex(Index))
+    {
+        return;
+    }
     Count = m_memberList[Index].m_array.Length;
     m_memberList[Index].m_array.Length = Count + 1;
     m_memberList[Index].m_array[Count] = Info;
@@ -1324,9 +1343,13 @@ function HandleMemberInfoUpdate(string a_Param)
                 {
                     bMemberChanged = true;
                     Debug("멤버이동 처리");
-                    m_memberList[i].m_array.Remove(j, 1);
                     process_clanindex = GetIndexFromType(Info.clanType);
                     process_length = m_memberList[process_clanindex].m_array.Length;
+                    if(!CanAddClanMemberToIndex(process_clanindex))
+                    {
+                        return;
+                    }
+                    m_memberList[i].m_array.Remove(j, 1);
                     m_memberList[process_clanindex].m_array.Insert(process_length, 1);
                     m_memberList[process_clanindex].m_array[process_length].sName = Info.sName;
                     m_memberList[process_clanindex].m_array[process_length].clanType = Info.clanType;
@@ -1405,7 +1428,7 @@ function RefreshCombobox1(int ClanT)
 
 function HandleAddClanMember(string a_Param)
 {
-    local int Count;
+    local int Count, Index;
     local ClanMemberInfo Info;
 
     ParseString(a_Param, "Name", Info.sName);
@@ -1416,11 +1439,16 @@ function HandleAddClanMember(string a_Param)
     ParseInt(a_Param, "ID", Info.Id);
     ParseInt(a_Param, "ClanType", Info.clanType);
     Info.bHaveMaster = 0;
-    Count = m_memberList[GetIndexFromType(Info.clanType)].m_array.Length;
-    m_memberList[GetIndexFromType(Info.clanType)].m_array.Length = Count + 1;
-    m_memberList[GetIndexFromType(Info.clanType)].m_array[Count] = Info;
+    Index = GetIndexFromType(Info.clanType);
+    if(!CanAddClanMemberToIndex(Index))
+    {
+        return;
+    }
+    Count = m_memberList[Index].m_array.Length;
+    m_memberList[Index].m_array.Length = Count + 1;
+    m_memberList[Index].m_array[Count] = Info;
     // End:0x167
-    if((GetIndexFromType(Info.clanType)) == m_currentShowIndex)
+    if(Index == m_currentShowIndex)
     {
         ShowList(Info.clanType);
     }
@@ -1493,6 +1521,10 @@ function int GetIndexFromType(int Type)
                 }
             }
         }
+    }
+    if(i < 0)
+    {
+        i = 7;
     }
     return i;
 }

@@ -1,5 +1,20 @@
 class RecipeTreeWnd extends UICommonAPI;
 
+const RECIPE_TREE_MAX_MATERIAL_COUNT = 64;
+
+function int ClampRecipeMaterialCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > RECIPE_TREE_MAX_MATERIAL_COUNT)
+    {
+        return RECIPE_TREE_MAX_MATERIAL_COUNT;
+    }
+    return Count;
+}
+
 function OnLoad()
 {
     RegisterEvent(810);
@@ -220,6 +235,7 @@ function AddRecipeItem(int ProductID, int SuccessRate, int NeedCount, string Nod
         Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem("RecipeTreeWnd.MainTree", strRetName, infNodeItem);
         param = Class'NWindow.UIDATA_RECIPE'.static.GetRecipeMaterialItemBy2Condition(ProductID, SuccessRate);
         nMax = param.GetInt();
+        nMax = ClampRecipeMaterialCount(nMax);
         arrMatID.Length = nMax;
         arrMatRate.Length = nMax;
         arrMatNeedCount.Length = nMax;

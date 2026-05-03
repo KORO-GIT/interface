@@ -1,6 +1,7 @@
 class MacroListWnd extends UICommonAPI;
 
 const MACRO_MAX_COUNT = 24;
+const MACRO_MAX_DELAY_SECONDS = 3600;
 
 var WindowHandle WndHandle;
 var bool m_bShow;
@@ -207,6 +208,10 @@ function OnRClickItem(string strID, int Index)
             {
                 MacroDelaySeconds[idx] = 1;
             }
+            if(MacroDelaySeconds[idx] > MACRO_MAX_DELAY_SECONDS)
+            {
+                MacroDelaySeconds[idx] = MACRO_MAX_DELAY_SECONDS;
+            }
         }
         else
         {
@@ -283,6 +288,19 @@ function ResetMacroPlayback()
     return;
 }
 
+function int ClampMacroCount(int MacroCount)
+{
+    if(MacroCount < 0)
+    {
+        return 0;
+    }
+    if(MacroCount > MACRO_MAX_COUNT)
+    {
+        return MACRO_MAX_COUNT;
+    }
+    return MacroCount;
+}
+
 function HandleMacroList(string param)
 {
     local int idx, MacroCount, MacroID;
@@ -293,6 +311,7 @@ function HandleMacroList(string param)
 
     Clear();
     ParseInt(param, "Max", MacroCount);
+    MacroCount = ClampMacroCount(MacroCount);
     m_Max = MacroCount;
     idx = MacroTimerBaseID;
 
@@ -402,6 +421,7 @@ function OnTimer(int Index)
     {
         if(MacroCommands[Index] != EmptyString)
         {
+            NotifyAutoEquipSetMacroBlock(MacroCommands[Index]);
             ExecuteCommand(MacroCommands[Index]);
         }
         // End:0xB0

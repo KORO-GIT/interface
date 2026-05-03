@@ -205,9 +205,19 @@ function int GetMyCropCnt(int ManorID)
 {
     local int MyCropCnt;
     local LVDataRecord Record;
+    local int SelectedIndex;
 
     MyCropCnt = -1;
+    SelectedIndex = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedIndex("ManorCropSellWnd.ManorCropSellListCtrl");
+    if(SelectedIndex < 0)
+    {
+        return MyCropCnt;
+    }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("ManorCropSellWnd.ManorCropSellListCtrl");
+    if(Record.LVDataList.Length <= 5)
+    {
+        return MyCropCnt;
+    }
     MyCropCnt = int(Record.LVDataList[5].szData);
     return MyCropCnt;
 }

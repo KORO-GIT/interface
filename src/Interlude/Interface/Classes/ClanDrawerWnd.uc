@@ -2,6 +2,7 @@ class ClanDrawerWnd extends UIScript;
 
 const c_maxranklimit = 100;
 const changelineval1 = 23;
+const MAX_CLAN_DRAWER_SKILL_COUNT = 64;
 
 var string m_State;
 var int m_clanType;
@@ -12,6 +13,19 @@ var string m_myName;
 var int m_currentMaster;
 var string currentMasterName;
 var WindowHandle Clan3_OrgIcon[8];
+
+function int ClampClanDrawerCount(int Count, int MaxCount)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MaxCount)
+    {
+        return MaxCount;
+    }
+    return Count;
+}
 
 function OnLoad()
 {
@@ -1078,6 +1092,7 @@ function HandleSkillList(string a_Param)
     local int Count, i, Id, Level;
 
     ParseInt(a_Param, "Count", Count);
+    Count = ClampClanDrawerCount(Count, MAX_CLAN_DRAWER_SKILL_COUNT);
     Class'NWindow.UIAPI_ITEMWINDOW'.static.Clear("ClanDrawerWnd.ClanSkillWnd");
     i = 0;
 
@@ -1099,6 +1114,7 @@ function HandleSkillListAdd(string a_Param)
     ParseInt(a_Param, "SkillID", Id);
     ParseInt(a_Param, "SkillLevel", Level);
     Count = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("ClanDrawerWnd.ClanSkillWnd");
+    Count = ClampClanDrawerCount(Count, MAX_CLAN_DRAWER_SKILL_COUNT);
     i = 0;
 
     while(i < Count)

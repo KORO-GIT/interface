@@ -104,6 +104,18 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
     local Color FontColor;
     local int i, j, LengthTotal, TotalLength, TextOffsetTotal1;
 
+    if((WndNum < 1) || WndNum > 8)
+    {
+        return;
+    }
+    if(Duration < 0)
+    {
+        Duration = 0;
+    }
+    if(Len(TextValue) > 512)
+    {
+        TextValue = Left(TextValue, 512);
+    }
     j = 1;
     TotalLength = Len(TextValue);
     TextValue1 = "";
@@ -230,6 +242,7 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
     onshowstat1 = true;
     onshowstat2 = false;
     globalDuration = Duration;
+    droprate = 255;
     switch(Animation)
     {
         // End:0x528
@@ -259,6 +272,7 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
             break;
         // End:0xFFFF
         default:
+            droprate = 255;
             break;
     }
     return;

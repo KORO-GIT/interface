@@ -315,8 +315,18 @@ function OnChangeBtn()
 {
     local LVDataRecord Record;
     local string param;
+    local int SelectedIndex;
 
+    SelectedIndex = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedIndex("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
+    if(SelectedIndex < 0)
+    {
+        return;
+    }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
+    if(Record.LVDataList.Length <= 8)
+    {
+        return;
+    }
     ParamAdd(param, "CropName", Record.LVDataList[0].szData);
     ParamAdd(param, "TomorrowVolumeOfBuy", Record.LVDataList[4].szData);
     ParamAdd(param, "TomorrowLimit", string(Record.nReserved2));
@@ -338,7 +348,15 @@ function HandleChangeValue(string a_Param)
     ParseInt(a_Param, "TomorrowPurchasePrice", TomorrowPurchasePrice);
     ParseInt(a_Param, "TomorrowProcure", TomorrowProcure);
     SelectedIndex = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedIndex("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
+    if(SelectedIndex < 0)
+    {
+        return;
+    }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("ManorCropInfoSettingWnd.ManorCropInfoSettingListCtrl");
+    if(Record.LVDataList.Length <= 6)
+    {
+        return;
+    }
     Record.LVDataList[4].szData = string(TomorrowAmountOfPurchase);
     Record.LVDataList[5].szData = string(TomorrowPurchasePrice);
     Record.LVDataList[6].szData = string(TomorrowProcure);

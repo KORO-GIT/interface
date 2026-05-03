@@ -1,6 +1,9 @@
 class MultiSellWnd extends UICommonAPI;
 
 const MULTISELLWND_DIALOG_OK = 1122;
+const MULTISELL_MAX_ENTRIES = 2048;
+const MULTISELL_MAX_OUTPUT_ITEMS = 32;
+const MULTISELL_MAX_NEEDED_ITEMS = 64;
 
 struct NeededItem
 {
@@ -26,6 +29,11 @@ struct ItemList
 var array<ItemList> m_itemLIst;
 var int m_ShopID;
 var int pre_itemList;
+
+function bool IsValidMultiSellOutputIndex(int Index)
+{
+    return (Index >= 0) && (Index < MULTISELL_MAX_OUTPUT_ITEMS);
+}
 
 function OnLoad()
 {
@@ -257,6 +265,14 @@ function HandleItemList(string param)
     ParseInt(param, "slotBitType", Info.SlotBitType);
     ParseInt(param, "itemType", Info.ItemType);
     ParseInt(param, "itemCount", Info.ItemNum);
+    if(!IsValidMultiSellOutputIndex(Index))
+    {
+        return;
+    }
+    if(Info.ItemNum < 0)
+    {
+        Info.ItemNum = 0;
+    }
     if(!ParseInt(param, "Enchant", Info.Enchanted))
     {
         ParseInt(param, "enchant", Info.Enchanted);
@@ -275,6 +291,10 @@ function HandleItemList(string param)
     // End:0x1E5
     if(Index == 0)
     {
+        if(m_itemLIst.Length >= MULTISELL_MAX_ENTRIES)
+        {
+            return;
+        }
         i = m_itemLIst.Length;
         m_itemLIst.Length = i + 1;
         m_itemLIst[i].MultiSellType = Type;
@@ -332,6 +352,10 @@ function HandleNeededItemList(string param)
     ParseInt(param, "refineryOp2", RefineryOp2);
     ParseInt(param, "ClassID", item.Id);
     ParseInt(param, "count", item.Count);
+    if(item.Count < 0)
+    {
+        item.Count = 0;
+    }
     ParseInt(param, "enchant", item.Enchant);
     ParseInt(param, "inputRefineryOp1", item.RefineryOp1);
     ParseInt(param, "inputRefineryOp2", item.RefineryOp2);
@@ -368,6 +392,10 @@ function HandleNeededItemList(string param)
         // End:0x35C
         if((m_itemLIst[i].ItemInfoList.Length > 0) && ((m_itemLIst[i].ItemInfoList[0].Reserved == Id) && m_itemLIst[i].ItemInfoList[0].RefineryOp1 == RefineryOp1) && m_itemLIst[i].ItemInfoList[0].RefineryOp2 == RefineryOp2)
         {
+            if(m_itemLIst[i].NeededItemList.Length >= MULTISELL_MAX_NEEDED_ITEMS)
+            {
+                return;
+            }
             Index = m_itemLIst[i].NeededItemList.Length;
             m_itemLIst[i].NeededItemList.Length = Index + 1;
             item.ItemType = Class'NWindow.UIDATA_ITEM'.static.GetItemDataType(item.Id);

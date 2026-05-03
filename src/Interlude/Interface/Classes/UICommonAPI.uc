@@ -4,9 +4,12 @@ const EV_QuestNotification = 10002;
 const EV_TargetShotdown = 2960;
 const EV_UpdateLang = 19000;
 const EV_UpdateAssist = 19500;
+const EV_AutoEquipSetMacroBlock = 19501;
+const EV_AutoEquipSetShortcutUse = 19502;
 const EV_BeginTimerAlarnWnd = 19002;
 const EV_HandleRadar_ShowHide = 11223344;
 const EV_InventoryUpdateItemCount = 9999;
+const MAX_LVDATA_RECORD_COLUMNS = 32;
 
 enum EDialogType
 {
@@ -454,6 +457,14 @@ function ParamToRecord(string param, out LVDataRecord Record)
     ParseInt(param, "nReserved2", Record.nReserved2);
     ParseInt(param, "nReserved3", Record.nReserved3);
     ParseInt(param, "MaxColumn", MaxColumn);
+    if(MaxColumn < 0)
+    {
+        MaxColumn = 0;
+    }
+    if(MaxColumn > MAX_LVDATA_RECORD_COLUMNS)
+    {
+        MaxColumn = MAX_LVDATA_RECORD_COLUMNS;
+    }
     Record.LVDataList.Length = MaxColumn;
     idx = 0;
 
@@ -14363,6 +14374,32 @@ function int GetMacroNum(string param)
 
     GetINIInt("MacroList", param, idx, "MacroGrp");
     return idx;
+}
+
+function bool IsMacroShortcutUseCommand(string Command)
+{
+    return Left(Command, 12) ~= "/useshortcut";
+}
+
+function NotifyAutoEquipSetMacroBlock(string Command)
+{
+    local string param;
+
+    if(IsMacroShortcutUseCommand(Command))
+    {
+        ExecuteEvent(EV_AutoEquipSetMacroBlock, param);
+    }
+    return;
+}
+
+function NotifyAutoEquipSetShortcutUse(int Page, int Slot)
+{
+    local string param;
+
+    ParamAdd(param, "Page", string(Page));
+    ParamAdd(param, "Slot", string(Slot));
+    ExecuteEvent(EV_AutoEquipSetShortcutUse, param);
+    return;
 }
 
 function string GetMacroIconKey(int MacroID)

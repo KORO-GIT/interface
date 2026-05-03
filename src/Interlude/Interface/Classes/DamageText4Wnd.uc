@@ -36,6 +36,16 @@ var int m_DamageQueue[30];
 var int m_DamageQueueCount[30];
 var int m_Type2Count;
 
+function bool IsValidIndicatorType(int Type)
+{
+    return (Type >= TYPE_DAMAGE) && (Type <= TYPE_OVERHIT);
+}
+
+function bool IsValidContainer(int Container)
+{
+    return (Container >= 1) && (Container <= CONTAINER_COUNT);
+}
+
 function OnLoad()
 {
     local int i, ii, C;
@@ -234,6 +244,14 @@ function ShowIndicator(int Type, int Value, int nGroupThreshold, bool bGrouped)
 {
     local int Container;
 
+    if(!IsValidIndicatorType(Type))
+    {
+        return;
+    }
+    if(Value < 0)
+    {
+        Value = 0;
+    }
     // End:0x89
     if(nGroupThreshold > 0)
     {
@@ -268,6 +286,14 @@ function ShowAndAnimate(int Type, int Container, int Value, bool bGrouped)
     local string WindowName;
     local int offsetX, offsetY;
 
+    if(!IsValidIndicatorType(Type) || !IsValidContainer(Container))
+    {
+        return;
+    }
+    if(Value < 0)
+    {
+        Value = 0;
+    }
     WindowName = ("DamageText4Wnd.DamageText4" $ string(Container)) $ "Wnd";
     Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("DamageText4Wnd", Container);
     Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("DamageText4Wnd", -100 * Container);
@@ -433,12 +459,20 @@ function ShowAndAnimate(int Type, int Container, int Value, bool bGrouped)
 
 function SetDirection(int Container, int Direction)
 {
+    if(!IsValidContainer(Container))
+    {
+        return;
+    }
     m_Direction[Container] = Direction;
     return;
 }
 
 function int GetDirection(int Container)
 {
+    if(!IsValidContainer(Container))
+    {
+        return DIRECTION_UP;
+    }
     return m_Direction[Container];
 }
 
@@ -453,6 +487,10 @@ function OnTimer(int Container)
     // End:0x107
     if(Container > 0)
     {
+        if(!IsValidContainer(Container))
+        {
+            return;
+        }
         WindowName = ("DamageText4Wnd.DamageText4" $ string(Container)) $ "Wnd";
         Class'NWindow.UIAPI_WINDOW'.static.Move(WindowName, 0, (GetDirection(Container)) * 100, 1.7000000);
         // End:0xD7
@@ -471,6 +509,10 @@ function OnTimer(int Container)
         if((Container < 0) && Container > -100)
         {
             Container = Container * -1;
+            if(!IsValidIndicatorType(Container))
+            {
+                return;
+            }
             bGrouped = false;
             // End:0x156
             if(m_DamageQueueCount[Container] > 1)
@@ -493,6 +535,10 @@ function OnTimer(int Container)
             {
                 Container = int(Left(string(Container), 2));
             }
+            if(!IsValidContainer(Container))
+            {
+                return;
+            }
             WindowName = ("DamageText4Wnd.DamageText4" $ string(Container)) $ "Wnd";
             HideWindow(WindowName);
         }
@@ -504,6 +550,10 @@ function TimerFadeOut(int Container, int Duration, int Steps)
 {
     local int i, C, D;
 
+    if(!IsValidContainer(Container) || Steps <= 0)
+    {
+        return;
+    }
     i = 1;
     C = 100 / Steps;
     D = Duration / Steps;
@@ -522,6 +572,14 @@ function SetValue(int Type, int Container, int Value, bool bGrouped)
     local string S, WindowName, wValue;
     local int C, nDigit, Length, PreviousDigit;
 
+    if(!IsValidIndicatorType(Type) || !IsValidContainer(Container))
+    {
+        return;
+    }
+    if(Value < 0)
+    {
+        Value = 0;
+    }
     m_ContainerType[Container] = Type;
     WindowName = ("DamageText4Wnd.DamageText4" $ string(Container)) $ "Wnd";
     C = Container * 10;

@@ -429,6 +429,14 @@ function HandleCursedWeaponList(string param)
     local string cursedName;
 
     ParseInt(param, "NUM", Num);
+    if(Num < 0)
+    {
+        Num = 0;
+    }
+    if(Num > 2)
+    {
+        Num = 2;
+    }
     Class'NWindow.UIAPI_COMBOBOX'.static.Clear("MinimapWnd_Expand.CursedComboBox");
     i = 0;
 
@@ -438,6 +446,9 @@ function HandleCursedWeaponList(string param)
         if(i == 0)
         {
             Class'NWindow.UIAPI_COMBOBOX'.static.AddStringWithReserved("MinimapWnd_Expand.CursedComboBox", GetSystemString(1463), 0);
+
+            ++i;
+            continue;
         }
         ParseInt(param, "ID" $ string(i - 1), ItemID);
         ParseString(param, "NAME" $ string(i - 1), cursedName);
@@ -461,6 +472,14 @@ function HandleCursedWeaponLoctaion(string param)
     local bool combined;
 
     ParseInt(param, "NUM", Num);
+    if(Num < 0)
+    {
+        Num = 0;
+    }
+    if(Num > 2)
+    {
+        Num = 2;
+    }
     // End:0x88
     if(Num == 0)
     {

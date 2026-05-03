@@ -1,6 +1,7 @@
 class QuestTreeWnd extends UICommonAPI;
 
 const QUESTTREEWND_MAX_COUNT = 25;
+const QUESTTREEWND_MAX_REWARD_ITEM_COUNT = 64;
 
 var string m_WindowName;
 var int m_QuestNum;
@@ -145,6 +146,19 @@ function HandleQuestListEnd()
     return;
 }
 
+function int ClampRewardItemCount(int ItemCount)
+{
+    if(ItemCount < 0)
+    {
+        return 0;
+    }
+    if(ItemCount > QUESTTREEWND_MAX_REWARD_ITEM_COUNT)
+    {
+        return QUESTTREEWND_MAX_REWARD_ITEM_COUNT;
+    }
+    return ItemCount;
+}
+
 function OnEvent(int Event_ID, string param)
 {
     local int ClassID;
@@ -231,6 +245,10 @@ function HandleQuestSetCurrentID(string param)
         if(Len(strChildList) > 0)
         {
             SplitCount = Split(strChildList, "|", arrSplit);
+            if(SplitCount < 1)
+            {
+                return;
+            }
             Class'NWindow.UIAPI_TREECTRL'.static.SetExpandedNode(m_WindowName $ ".MainTree", arrSplit[SplitCount - 1], true);
         }
         UpdateTargetInfo();
@@ -315,6 +333,11 @@ function UpdateTargetInfo()
     if(Len(strChildList) > 0)
     {
         SplitCount = Split(strChildList, "|", arrSplit);
+        if(SplitCount < 1)
+        {
+            SetQuestOff();
+            return;
+        }
         strTargetNode = arrSplit[SplitCount - 1];        
     }
     else
@@ -674,6 +697,7 @@ function AddQuestInfo(string strParentName, int QuestID, int Level, int Complete
     Class'NWindow.UIAPI_TREECTRL'.static.InsertNodeItem(m_WindowName $ ".MainTree", strRetName, infNodeItem);
     strTmp = Class'NWindow.UIDATA_QUEST'.static.GetQuestItem(QuestID, Level);
     ParseInt(strTmp, "Max", ItemCount);
+    ItemCount = ClampRewardItemCount(ItemCount);
     arrItemIDList.Length = ItemCount;
     arrItemNumList.Length = ItemCount;
     i = 0;

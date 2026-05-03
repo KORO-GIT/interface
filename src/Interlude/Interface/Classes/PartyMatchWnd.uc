@@ -1,5 +1,7 @@
 class PartyMatchWnd extends UIScript;
 
+const MAX_PARTY_MATCH_ROOMS = 64;
+
 var int m_CurrentPageNum;
 var int CompletelyQuitPartyMatching;
 var bool bOpenStateLobby;
@@ -51,7 +53,10 @@ function OnEvent(int a_EventID, string param)
             {
                 Class'NWindow.PartyMatchAPI'.static.RequestExitPartyMatchingWaitingRoom();
                 Class'NWindow.UIAPI_WINDOW'.static.HideWindow("PartyMatchWnd");
-                script.OnCancelButtonClick();
+                if(script != none)
+                {
+                    script.OnCancelButtonClick();
+                }
                 CompletelyQuitPartyMatching = 0;
                 SetWaitListWnd(false);                
             }
@@ -105,6 +110,24 @@ function OnButtonTimer(bool bExpired)
     return;
 }
 
+function int ClampPartyMatchRoomCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MAX_PARTY_MATCH_ROOMS)
+    {
+        return MAX_PARTY_MATCH_ROOMS;
+    }
+    return Count;
+}
+
+function bool HasPartyMatchRecordData(LVDataRecord Record)
+{
+    return Record.LVDataList.Length > 0;
+}
+
 function HandlePartyMatchList(string param)
 {
     local int Count, i;
@@ -117,6 +140,7 @@ function HandlePartyMatchList(string param)
     Record.LVDataList.Length = 6;
     ParseInt(param, "PageNum", m_CurrentPageNum);
     ParseInt(param, "RoomCount", Count);
+    Count = ClampPartyMatchRoomCount(Count);
     i = 0;
 
     while(i < Count)
@@ -231,32 +255,33 @@ function OnMakeRoomBtnClick()
 
     script = PartyMatchMakeRoomWnd(GetScript("PartyMatchMakeRoomWnd"));
     // End:0x106
-    if(script != none)
+    if(script == none)
     {
-        script.SetRoomNumber(0);
-        script.SetTitle(GetSystemMessage(1398));
-        script.SetMaxPartyMemberCount(12);
-        // End:0x106
-        if(GetPlayerInfo(PlayerInfo))
+        return;
+    }
+    script.SetRoomNumber(0);
+    script.SetTitle(GetSystemMessage(1398));
+    script.SetMaxPartyMemberCount(12);
+    // End:0x106
+    if(GetPlayerInfo(PlayerInfo))
+    {
+        // End:0xB0
+        if((PlayerInfo.nLevel - 5) > 0)
         {
-            // End:0xB0
-            if((PlayerInfo.nLevel - 5) > 0)
-            {
-                script.SetMinLevel(PlayerInfo.nLevel - 5);                
-            }
-            else
-            {
-                script.SetMinLevel(1);
-            }
-            // End:0xF5
-            if((PlayerInfo.nLevel + 5) <= 80)
-            {
-                script.SetMaxLevel(PlayerInfo.nLevel + 5);                
-            }
-            else
-            {
-                script.SetMaxLevel(80);
-            }
+            script.SetMinLevel(PlayerInfo.nLevel - 5);                
+        }
+        else
+        {
+            script.SetMinLevel(1);
+        }
+        // End:0xF5
+        if((PlayerInfo.nLevel + 5) <= 80)
+        {
+            script.SetMaxLevel(PlayerInfo.nLevel + 5);                
+        }
+        else
+        {
+            script.SetMaxLevel(80);
         }
     }
     script.InviteState = 0;
@@ -276,7 +301,15 @@ function OnDBClickListCtrlRecord(string a_ListCtrlName)
         return;
     }
     SelectedRecordIndex = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedIndex("PartyMatchWnd.PartyMatchListCtrl");
+    if(SelectedRecordIndex < 0)
+    {
+        return;
+    }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetRecord("PartyMatchWnd.PartyMatchListCtrl", SelectedRecordIndex);
+    if(!HasPartyMatchRecordData(Record))
+    {
+        return;
+    }
     Class'NWindow.PartyMatchAPI'.static.RequestJoinPartyRoom(int(Record.LVDataList[0].szData));
     return;
 }
@@ -289,12 +322,26 @@ function OnAutoJoinBtnClick()
 
 function int GetLocationFilter()
 {
-    return Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("PartyMatchWnd.LocationFilterComboBox", Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("PartyMatchWnd.LocationFilterComboBox"));
+    local int SelectedIndex;
+
+    SelectedIndex = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("PartyMatchWnd.LocationFilterComboBox");
+    if(SelectedIndex < 0)
+    {
+        return 0;
+    }
+    return Class'NWindow.UIAPI_COMBOBOX'.static.GetReserved("PartyMatchWnd.LocationFilterComboBox", SelectedIndex);
 }
 
 function int GetLevelFilter()
 {
-    return Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("PartyMatchWnd.LevelFilterComboBox");
+    local int SelectedIndex;
+
+    SelectedIndex = Class'NWindow.UIAPI_COMBOBOX'.static.GetSelectedNum("PartyMatchWnd.LevelFilterComboBox");
+    if(SelectedIndex < 0)
+    {
+        return 0;
+    }
+    return SelectedIndex;
 }
 
 function SetWaitListWnd(bool bShow)

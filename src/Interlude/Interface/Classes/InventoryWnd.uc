@@ -26,6 +26,16 @@ const CONST_23 = 12;
 const CONST_24 = 13;
 const CONST_25 = 14;
 const CONST_26 = 15;
+const AUTO_EQUIP_SET_DELAY_TIMER_ID = 7301;
+const AUTO_EQUIP_SET_MARKER_TIMER_ID = 7302;
+const AUTO_EQUIP_SET_MACRO_BLOCK_TIMER_ID = 7303;
+const AUTO_EQUIP_SET_EXTERNAL_TIMER_ID = 7304;
+const AUTO_EQUIP_SET_BURST_TIMER_ID = 7305;
+const AUTO_EQUIP_SET_DELAY_MS = 125;
+const AUTO_EQUIP_SET_EXTERNAL_DELAY_MS = 300;
+const AUTO_EQUIP_SET_BURST_MS = 500;
+const AUTO_EQUIP_SET_MARKER_MS = 2500;
+const AUTO_EQUIP_SET_MACRO_BLOCK_MS = 2500;
 
 var string string_1;
 var ItemWindowHandle item_1;
@@ -48,6 +58,15 @@ var array<ItemInfo> info_2;
 var bool bool_1;
 var int int_2;
 var bool m_FastDeleteEnabled;
+var int m_LastManualAutoEquipServerID;
+var int m_PendingAutoEquipServerID;
+var int m_PendingAutoEquipClassID;
+var int m_PendingAutoEquipSlotBitType;
+var bool m_AutoEquipSetMacroBlocked;
+var bool m_AutoEquipSetShortcutPending;
+var bool m_AutoEquipSetExternalPending;
+var bool m_AutoEquipSetExternalCanceled;
+var int m_AutoEquipSetBurstCount;
 
 function OnLoad()
 {
@@ -63,6 +82,8 @@ function OnLoad()
     RegisterEvent(180);
     RegisterEvent(1710);
     RegisterEvent(1900);
+    RegisterEvent(EV_AutoEquipSetMacroBlock);
+    RegisterEvent(EV_AutoEquipSetShortcutUse);
     function1();
     function2();
     function3();
@@ -182,6 +203,14 @@ function OnEvent(int int_3, string string_2)
             UpdateTrashButtonTooltip();
             // End:0xEF
             break;
+        case EV_AutoEquipSetMacroBlock:
+            HandleAutoEquipSetMacroBlock();
+            // End:0xEF
+            break;
+        case EV_AutoEquipSetShortcutUse:
+            HandleAutoEquipSetShortcutUse();
+            // End:0xEF
+            break;
         // End:0xFFFF
         default:
             // End:0xEF
@@ -214,6 +243,37 @@ function OnShow()
 function OnHide()
 {
     function9();
+    return;
+}
+
+function OnTimer(int TimerID)
+{
+    switch(TimerID)
+    {
+        case AUTO_EQUIP_SET_DELAY_TIMER_ID:
+            m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_DELAY_TIMER_ID);
+            RunPendingAutoEquipSet();
+            break;
+        case AUTO_EQUIP_SET_EXTERNAL_TIMER_ID:
+            m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_EXTERNAL_TIMER_ID);
+            RunExternalAutoEquipSet();
+            break;
+        case AUTO_EQUIP_SET_BURST_TIMER_ID:
+            m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_BURST_TIMER_ID);
+            m_AutoEquipSetBurstCount = 0;
+            break;
+        case AUTO_EQUIP_SET_MARKER_TIMER_ID:
+            m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID);
+            m_LastManualAutoEquipServerID = 0;
+            m_AutoEquipSetShortcutPending = false;
+            break;
+        case AUTO_EQUIP_SET_MACRO_BLOCK_TIMER_ID:
+            m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MACRO_BLOCK_TIMER_ID);
+            m_AutoEquipSetMacroBlocked = false;
+            break;
+        default:
+            break;
+    }
     return;
 }
 
@@ -575,7 +635,7 @@ function OnDropItem(string string_5, ItemInfo info_3, int X, int Y)
                         // End:0x61B
                         if((info_3.ItemType != 5))
                         {
-                            RequestUseItem(info_3.ServerID);
+                            RequestManualUseItem(info_3.ServerID);
                         }
                     }
                 }
@@ -731,6 +791,7 @@ function bool function16(out ItemInfo info_3)
 
 function function17()
 {
+    ResetAutoEquipSetState();
     function18();
     item_1.Clear();
     item_2.Clear();
@@ -1143,6 +1204,7 @@ function function24(ItemInfo info_6)
         default:
             break;
     }
+    TrackExternalAutoEquipSetUpdate(info_6);
     TryAutoEquipSet(info_6);
     // End:0x6A0
     if(none != item)
@@ -1155,11 +1217,6 @@ function function24(ItemInfo info_6)
 
 function TryAutoEquipSet(ItemInfo EquippedItem)
 {
-    local array<int> SetItemIDs;
-    local int i;
-    local int Index;
-    local ItemInfo SetItem;
-
     if(GetOptionBool("Custom", "DisableAutoEquipSet"))
     {
         return;
@@ -1170,7 +1227,200 @@ function TryAutoEquipSet(ItemInfo EquippedItem)
         return;
     }
 
+    if(m_AutoEquipSetMacroBlocked)
+    {
+        return;
+    }
+
+    if((m_LastManualAutoEquipServerID != EquippedItem.ServerID) && (!m_AutoEquipSetShortcutPending))
+    {
+        TryStartExternalAutoEquipSet(EquippedItem);
+        return;
+    }
+
+    m_LastManualAutoEquipServerID = 0;
+    m_AutoEquipSetShortcutPending = false;
+    m_AutoEquipSetExternalPending = false;
+    m_AutoEquipSetExternalCanceled = false;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID);
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_EXTERNAL_TIMER_ID);
+    m_PendingAutoEquipServerID = EquippedItem.ServerID;
+    m_PendingAutoEquipClassID = EquippedItem.ClassID;
+    m_PendingAutoEquipSlotBitType = EquippedItem.SlotBitType;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_DELAY_TIMER_ID);
+    m_hOwnerWnd.SetTimer(AUTO_EQUIP_SET_DELAY_TIMER_ID, AUTO_EQUIP_SET_DELAY_MS);
+    return;
+}
+
+function TryStartExternalAutoEquipSet(ItemInfo EquippedItem)
+{
+    if(m_AutoEquipSetBurstCount > 1)
+    {
+        return;
+    }
+
+    if(m_AutoEquipSetExternalPending)
+    {
+        if(m_PendingAutoEquipServerID != EquippedItem.ServerID)
+        {
+            m_AutoEquipSetExternalCanceled = true;
+        }
+        return;
+    }
+
+    m_AutoEquipSetExternalPending = true;
+    m_AutoEquipSetExternalCanceled = false;
+    m_PendingAutoEquipServerID = EquippedItem.ServerID;
+    m_PendingAutoEquipClassID = EquippedItem.ClassID;
+    m_PendingAutoEquipSlotBitType = EquippedItem.SlotBitType;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_EXTERNAL_TIMER_ID);
+    m_hOwnerWnd.SetTimer(AUTO_EQUIP_SET_EXTERNAL_TIMER_ID, AUTO_EQUIP_SET_EXTERNAL_DELAY_MS);
+    return;
+}
+
+function TrackExternalAutoEquipSetUpdate(ItemInfo EquippedItem)
+{
+    m_AutoEquipSetBurstCount++;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_BURST_TIMER_ID);
+    m_hOwnerWnd.SetTimer(AUTO_EQUIP_SET_BURST_TIMER_ID, AUTO_EQUIP_SET_BURST_MS);
+
+    if(!m_AutoEquipSetExternalPending)
+    {
+        return;
+    }
+
+    if(EquippedItem.ServerID == m_PendingAutoEquipServerID)
+    {
+        return;
+    }
+
+    m_AutoEquipSetExternalCanceled = true;
+    return;
+}
+
+function RunExternalAutoEquipSet()
+{
+    if(m_AutoEquipSetExternalCanceled || m_AutoEquipSetMacroBlocked)
+    {
+        ClearPendingAutoEquipSet();
+        return;
+    }
+
+    m_AutoEquipSetExternalPending = false;
+    RunPendingAutoEquipSet();
+    return;
+}
+
+function RunPendingAutoEquipSet()
+{
+    local ItemInfo EquippedItem;
+
+    if(GetOptionBool("Custom", "DisableAutoEquipSet"))
+    {
+        ClearPendingAutoEquipSet();
+        return;
+    }
+
+    if((m_PendingAutoEquipServerID <= 0) || (m_PendingAutoEquipClassID <= 0))
+    {
+        ClearPendingAutoEquipSet();
+        return;
+    }
+
+    if(!IsPendingAutoEquipSetBaseEquipped(EquippedItem))
+    {
+        ClearPendingAutoEquipSet();
+        return;
+    }
+
+    EquipAutoSetPieces(EquippedItem);
+    ClearPendingAutoEquipSet();
+    return;
+}
+
+function ClearPendingAutoEquipSet()
+{
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_DELAY_TIMER_ID);
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_EXTERNAL_TIMER_ID);
+    m_PendingAutoEquipServerID = 0;
+    m_PendingAutoEquipClassID = 0;
+    m_PendingAutoEquipSlotBitType = 0;
+    m_AutoEquipSetExternalPending = false;
+    m_AutoEquipSetExternalCanceled = false;
+    return;
+}
+
+function ResetAutoEquipSetState()
+{
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID);
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_BURST_TIMER_ID);
+    m_LastManualAutoEquipServerID = 0;
+    m_AutoEquipSetShortcutPending = false;
+    m_AutoEquipSetBurstCount = 0;
+    ClearPendingAutoEquipSet();
+    return;
+}
+
+function HandleAutoEquipSetMacroBlock()
+{
+    ResetAutoEquipSetState();
+    m_AutoEquipSetMacroBlocked = true;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MACRO_BLOCK_TIMER_ID);
+    m_hOwnerWnd.SetTimer(AUTO_EQUIP_SET_MACRO_BLOCK_TIMER_ID, AUTO_EQUIP_SET_MACRO_BLOCK_MS);
+    return;
+}
+
+function HandleAutoEquipSetShortcutUse()
+{
+    if(m_AutoEquipSetMacroBlocked)
+    {
+        return;
+    }
+
+    m_LastManualAutoEquipServerID = 0;
+    m_AutoEquipSetShortcutPending = true;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID);
+    m_hOwnerWnd.SetTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID, AUTO_EQUIP_SET_MARKER_MS);
+    return;
+}
+
+function bool IsPendingAutoEquipSetBaseEquipped(out ItemInfo EquippedItem)
+{
+    if(!item_3[6].GetItem(0, EquippedItem))
+    {
+        return false;
+    }
+
+    if(EquippedItem.ServerID != m_PendingAutoEquipServerID)
+    {
+        return false;
+    }
+
+    if(EquippedItem.ClassID != m_PendingAutoEquipClassID)
+    {
+        return false;
+    }
+
+    if(EquippedItem.SlotBitType != m_PendingAutoEquipSlotBitType)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+function EquipAutoSetPieces(ItemInfo EquippedItem)
+{
+    local array<int> SetItemIDs;
+    local int i;
+    local int Index;
+    local ItemInfo SetItem;
+
     Class'NWindow.UIDATA_ITEM'.static.GetSetItemIDList(EquippedItem.ClassID, 0, SetItemIDs);
+    if(SetItemIDs.Length > 12)
+    {
+        SetItemIDs.Length = 12;
+    }
     i = 0;
 
     while(i < SetItemIDs.Length)
@@ -1614,6 +1864,72 @@ function ApplySilentInventoryItemCount(out ItemInfo Info)
     return;
 }
 
+function RequestManualUseItem(int ServerID)
+{
+    RememberManualAutoEquipRequest(ServerID);
+    RequestUseItem(ServerID);
+    return;
+}
+
+function RememberManualAutoEquipRequest(int ServerID)
+{
+    local ItemInfo Info;
+
+    m_LastManualAutoEquipServerID = 0;
+    m_AutoEquipSetShortcutPending = false;
+    m_hOwnerWnd.KillTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID);
+
+    if(FindManualAutoEquipItem(ServerID, Info))
+    {
+        if(IsAutoEquipSetBaseItem(Info))
+        {
+            m_LastManualAutoEquipServerID = ServerID;
+            m_hOwnerWnd.SetTimer(AUTO_EQUIP_SET_MARKER_TIMER_ID, AUTO_EQUIP_SET_MARKER_MS);
+        }
+    }
+    return;
+}
+
+function bool FindManualAutoEquipItem(int ServerID, out ItemInfo Info)
+{
+    local int Index;
+
+    Index = item_1.FindItemWithServerID(ServerID);
+    if((Index >= 0) && item_1.GetItem(Index, Info))
+    {
+        return true;
+    }
+
+    Index = item_5.FindItemWithServerID(ServerID);
+    if((Index >= 0) && item_5.GetItem(Index, Info))
+    {
+        return true;
+    }
+
+    Index = item_6.FindItemWithServerID(ServerID);
+    if((Index >= 0) && item_6.GetItem(Index, Info))
+    {
+        return true;
+    }
+
+    Index = item_7.FindItemWithServerID(ServerID);
+    if((Index >= 0) && item_7.GetItem(Index, Info))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+function bool IsAutoEquipSetBaseItem(ItemInfo Info)
+{
+    if((Info.SlotBitType == 1024) || (Info.SlotBitType == 32768))
+    {
+        return true;
+    }
+    return false;
+}
+
 function function35()
 {
     function6();
@@ -1745,7 +2061,7 @@ function function10(ItemWindowHandle Handle, int int_4)
             }
             else
             {
-                RequestUseItem(info_3.ServerID);
+                RequestManualUseItem(info_3.ServerID);
             }
         }
     }
@@ -1864,7 +2180,7 @@ function function40()
         // End:0x69
         if((Id == 1111) || Id == 2222)
         {
-            RequestUseItem(Reserved);
+            RequestManualUseItem(Reserved);
         }
         else
         {

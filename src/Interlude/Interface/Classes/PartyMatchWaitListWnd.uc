@@ -9,6 +9,24 @@ var int MaxLevel;
 var int LootingMethodID;
 var int RoomZoneID;
 
+function bool HasWaitListRecordData(LVDataRecord Record)
+{
+    return Record.LVDataList.Length > 0;
+}
+
+function int ClampWaitListPage(int Page)
+{
+    if(Page < 1)
+    {
+        return 1;
+    }
+    if(Page > entire_page)
+    {
+        return entire_page;
+    }
+    return Page;
+}
+
 function OnLoad()
 {
     RegisterEvent(1550);
@@ -69,8 +87,17 @@ function HandlePartyMatchWaitListStart(string param)
 
     ParseInt(param, "AllCount", AllCount);
     ParseInt(param, "Count", Count);
-    totalPages = string((AllCount / 64) + 1);
-    entire_page = (AllCount / 64) + 1;
+    if(AllCount < 0)
+    {
+        AllCount = 0;
+    }
+    entire_page = (AllCount + 63) / 64;
+    if(entire_page < 1)
+    {
+        entire_page = 1;
+    }
+    current_page = ClampWaitListPage(current_page);
+    totalPages = string(entire_page);
     currentPage = string(current_page);
     page_info = (currentPage $ "/") $ totalPages;
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("PartyMatchWaitListWnd.MemberCount", page_info);
@@ -142,20 +169,21 @@ function OnClickButton(string a_strButtonName)
 
 function OnRefreshButtonClick()
 {
+    current_page = ClampWaitListPage(current_page);
     Class'NWindow.PartyMatchAPI'.static.RequestPartyMatchWaitList(current_page, MinLevel, MaxLevel, 0);
     return;
 }
 
 function OnNextbuttonClick()
 {
-    current_page = current_page + 1;
+    current_page = ClampWaitListPage(current_page + 1);
     Class'NWindow.PartyMatchAPI'.static.RequestPartyMatchWaitList(current_page, MinLevel, MaxLevel, 0);
     return;
 }
 
 function OnPrevbuttonClick()
 {
-    current_page = current_page - 1;
+    current_page = ClampWaitListPage(current_page - 1);
     Class'NWindow.PartyMatchAPI'.static.RequestPartyMatchWaitList(current_page, MinLevel, MaxLevel, 0);
     return;
 }
@@ -166,6 +194,10 @@ function OnWhisperButtonClick()
     local string szData1;
 
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("PartyMatchWaitListWnd.WaitListCtrl");
+    if(!HasWaitListRecordData(Record))
+    {
+        return;
+    }
     szData1 = Record.LVDataList[0].szData;
     // End:0x71
     if(szData1 != "")
@@ -180,6 +212,10 @@ function OnInviteButtonClick()
     local LVDataRecord Record;
 
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("PartyMatchWaitListWnd.WaitListCtrl");
+    if(!HasWaitListRecordData(Record))
+    {
+        return;
+    }
     Class'NWindow.PartyMatchAPI'.static.RequestAskJoinPartyRoom(Record.LVDataList[0].szData);
     return;
 }
@@ -208,6 +244,10 @@ function OnDBClickListCtrlRecord(string a_ListCtrlName)
         return;
     }
     Record = Class'NWindow.UIAPI_LISTCTRL'.static.GetSelectedRecord("PartyMatchWaitListWnd.WaitListCtrl");
+    if(!HasWaitListRecordData(Record))
+    {
+        return;
+    }
     SetChatMessage(("\"" $ Record.LVDataList[0].szData) $ " ");
     return;
 }

@@ -9,6 +9,19 @@ var array<int> m_arrShopItem;
 var int m_BookType;
 var ItemInfo m_HandleItem;
 
+function int ClampRecipeShopItemCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > RECIPESHOP_MAX_ITEM_SELL)
+    {
+        return RECIPESHOP_MAX_ITEM_SELL;
+    }
+    return Count;
+}
+
 function OnLoad()
 {
     RegisterEvent(850);
@@ -70,7 +83,10 @@ function OnEvent(int Event_ID, string param)
     if(Event_ID == 850)
     {
         Clear();
-        InventoryWnd.function28();
+        if(InventoryWnd != None)
+        {
+            InventoryWnd.function28();
+        }
         Class'NWindow.UIAPI_WINDOW'.static.ShowWindow("RecipeShopWnd");
         Class'NWindow.UIAPI_WINDOW'.static.SetFocus("RecipeShopWnd");
         ParseInt(param, "Type", m_BookType);
@@ -170,7 +186,7 @@ function OnDBClickItem(string strID, int Index)
 
     ClearHandleItem();
     // End:0x151
-    if((strID == "BookItemWnd") && m_BookItemCount > Index)
+    if((strID == "BookItemWnd") && (Index >= 0) && (m_BookItemCount > Index))
     {
         Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.BookItemWnd", Index, infItem);
         Max = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("RecipeShopWnd.ShopItemWnd");
@@ -196,7 +212,7 @@ function OnDBClickItem(string strID, int Index)
     else
     {
         // End:0x1B8
-        if((strID == "ShopItemWnd") && m_ShopItemCount > Index)
+        if((strID == "ShopItemWnd") && (Index >= 0) && (m_ShopItemCount > Index))
         {
             Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItem("RecipeShopWnd.ShopItemWnd", Index, infItem);
             DeleteShopItem(infItem);
@@ -279,6 +295,10 @@ function AddRecipeShopItem(int RecipeID, int CanbeMade, int MakingFee)
     local ItemInfo infItem;
     local int ProductID, Index;
 
+    if(m_ShopItemCount >= RECIPESHOP_MAX_ITEM_SELL)
+    {
+        return;
+    }
     ProductID = Class'NWindow.UIDATA_RECIPE'.static.GetRecipeProductID(RecipeID);
     Index = Class'NWindow.UIDATA_RECIPE'.static.GetRecipeIndex(RecipeID);
     infItem.ClassID = Class'NWindow.UIDATA_RECIPE'.static.GetRecipeClassID(RecipeID);
@@ -301,6 +321,10 @@ function AddRecipeShopItem(int RecipeID, int CanbeMade, int MakingFee)
 
 function ShowShopItemAddDialog(ItemInfo AddItem)
 {
+    if(m_ShopItemCount >= RECIPESHOP_MAX_ITEM_SELL)
+    {
+        return;
+    }
     m_HandleItem = AddItem;
     DialogSetID(1);
     DialogSetParamInt(-1);
@@ -337,6 +361,10 @@ function UpdateShopItem(ItemInfo AddItem)
     // End:0xFF
     if(!bDuplicated)
     {
+        if(m_ShopItemCount >= RECIPESHOP_MAX_ITEM_SELL)
+        {
+            return;
+        }
         Class'NWindow.UIAPI_ITEMWINDOW'.static.AddItem("RecipeShopWnd.ShopItemWnd", AddItem);
         m_ShopItemCount++;
         UpdateShopItemCount(m_ShopItemCount);
@@ -361,7 +389,14 @@ function DeleteShopItem(ItemInfo DeleteItem)
             if(DeleteItem.ClassID == infItem.ClassID)
             {
                 Class'NWindow.UIAPI_ITEMWINDOW'.static.DeleteItem("RecipeShopWnd.ShopItemWnd", i);
-                m_ShopItemCount--;
+                if(m_ShopItemCount > 0)
+                {
+                    m_ShopItemCount--;
+                }
+                else
+                {
+                    m_ShopItemCount = 0;
+                }
                 UpdateShopItemCount(m_ShopItemCount);
                 break;
             }
@@ -374,6 +409,7 @@ function DeleteShopItem(ItemInfo DeleteItem)
 
 function UpdateShopItemCount(int Count)
 {
+    Count = ClampRecipeShopItemCount(Count);
     Class'NWindow.UIAPI_TEXTBOX'.static.SetText("RecipeShopWnd.txtCount", ((("(" $ string(Count)) $ "/") $ string(20)) $ ")");
     return;
 }
@@ -386,6 +422,7 @@ function StartRecipeShop()
     local int ServerID, Price;
 
     Max = Class'NWindow.UIAPI_ITEMWINDOW'.static.GetItemNum("RecipeShopWnd.ShopItemWnd");
+    Max = ClampRecipeShopItemCount(Max);
     ParamAdd(param, "Max", string(Max));
     i = 0;
 
