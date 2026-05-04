@@ -1,5 +1,8 @@
 class OnScreenMessageWnd extends UIScript;
 
+const ONSCREEN_MESSAGE_MAX_WND = 8;
+const ONSCREEN_MESSAGE_TIMER_BASE = 8100;
+
 var string currentwnd1;
 var bool onshowstat1;
 var bool onshowstat2;
@@ -13,6 +16,12 @@ var int moveval2;
 var string MovedWndName;
 var int m_TimerCount;
 var bool linedivided;
+var int m_FadeInByWindow[9];
+var int m_FadeOutByWindow[9];
+var int m_AlphaInByWindow[9];
+var int m_AlphaOutByWindow[9];
+var int m_DropRateByWindow[9];
+var int m_DurationByWindow[9];
 
 function OnLoad()
 {
@@ -30,27 +39,34 @@ function OnLoad()
 
 function OnTick()
 {
-    // End:0x17
-    if(onshowstat1 == true)
+    local int i;
+
+    i = 1;
+
+    while(i <= ONSCREEN_MESSAGE_MAX_WND)
     {
-        FadeIn(currentwnd1);
-    }
-    // End:0x2E
-    if(onshowstat2 == true)
-    {
-        FadeOut(currentwnd1);
+        if(m_FadeInByWindow[i] != 0)
+        {
+            FadeInWindow(i);
+        }
+        if(m_FadeOutByWindow[i] != 0)
+        {
+            FadeOutWindow(i);
+        }
+        ++i;
     }
     return;
 }
 
 function OnTimer(int TimerID)
 {
-    // End:0x55
-    if(m_TimerCount > 0)
+    local int WndNum;
+
+    if((TimerID > ONSCREEN_MESSAGE_TIMER_BASE) && (TimerID <= (ONSCREEN_MESSAGE_TIMER_BASE + ONSCREEN_MESSAGE_MAX_WND)))
     {
         Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("OnScreenMessageWnd1", TimerID);
-        m_TimerCount = 0;
-        onshowstat2 = true;
+        WndNum = TimerID - ONSCREEN_MESSAGE_TIMER_BASE;
+        m_FadeOutByWindow[WndNum] = 1;
     }
     return;
 }
@@ -63,37 +79,115 @@ function OnHide()
 function ResetAllMessage()
 {
     local int i;
-    local Color DefaultColor;
-    local string WndName;
 
-    DefaultColor.R = byte(255);
-    DefaultColor.G = byte(255);
-    DefaultColor.B = byte(255);
     globalAlphavalue1 = 0;
     globalAlphavalue2 = 255;
     currentwnd1 = "";
     onshowstat1 = false;
     onshowstat2 = false;
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd1");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd2");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd3");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd4");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd5");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd6");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd7");
-    Class'NWindow.UIAPI_WINDOW'.static.HideWindow("OnScreenMessageWnd8");
     i = 1;
 
-    while(i <= 8)
+    while(i <= ONSCREEN_MESSAGE_MAX_WND)
     {
-        WndName = "OnScreenMessageWnd" $ string(i);
-        Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor((WndName $ ".TextBox") $ string(i), DefaultColor);
-        Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(((WndName $ ".TextBox") $ string(i)) $ "-1", DefaultColor);
-        Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor((WndName $ ".TextBoxsm") $ string(i), DefaultColor);
-        Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(((WndName $ ".TextBoxsm") $ string(i)) $ "-1", DefaultColor);
+        ResetMessage(i);
         ++i;
     }
     return;
+}
+
+function ResetMessage(int WndNum)
+{
+    local Color DefaultColor;
+    local string WndName;
+
+    if((WndNum < 1) || (WndNum > ONSCREEN_MESSAGE_MAX_WND))
+    {
+        return;
+    }
+
+    DefaultColor.R = byte(255);
+    DefaultColor.G = byte(255);
+    DefaultColor.B = byte(255);
+    WndName = "OnScreenMessageWnd" $ string(WndNum);
+    Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("OnScreenMessageWnd1", ONSCREEN_MESSAGE_TIMER_BASE + WndNum);
+    m_FadeInByWindow[WndNum] = 0;
+    m_FadeOutByWindow[WndNum] = 0;
+    m_AlphaInByWindow[WndNum] = 0;
+    m_AlphaOutByWindow[WndNum] = 255;
+    m_DropRateByWindow[WndNum] = 255;
+    m_DurationByWindow[WndNum] = 0;
+    Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, 0);
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow(WndName);
+    Class'NWindow.UIAPI_WINDOW'.static.HideWindow(WndName $ ".texturetype1");
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor((WndName $ ".TextBox") $ string(WndNum), DefaultColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(((WndName $ ".TextBox") $ string(WndNum)) $ "-1", DefaultColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor((WndName $ ".TextBoxsm") $ string(WndNum), DefaultColor);
+    Class'NWindow.UIAPI_TEXTBOX'.static.SetTextColor(((WndName $ ".TextBoxsm") $ string(WndNum)) $ "-1", DefaultColor);
+    return;
+}
+
+function bool IsMessageWindowActive(int WndNum)
+{
+    local string WndName;
+
+    if((WndNum < 1) || (WndNum > ONSCREEN_MESSAGE_MAX_WND))
+    {
+        return false;
+    }
+
+    WndName = "OnScreenMessageWnd" $ string(WndNum);
+    if(Class'NWindow.UIAPI_WINDOW'.static.IsShowWindow(WndName))
+    {
+        return true;
+    }
+
+    if((m_FadeInByWindow[WndNum] != 0) || (m_FadeOutByWindow[WndNum] != 0))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+function PrepareMessageWindow(int WndNum, bool bRefresh)
+{
+    local string WndName;
+
+    if((WndNum < 1) || (WndNum > ONSCREEN_MESSAGE_MAX_WND))
+    {
+        return;
+    }
+
+    if(!bRefresh)
+    {
+        ResetMessage(WndNum);
+        return;
+    }
+
+    WndName = "OnScreenMessageWnd" $ string(WndNum);
+    Class'NWindow.UIAPI_WINDOW'.static.KillUITimer("OnScreenMessageWnd1", ONSCREEN_MESSAGE_TIMER_BASE + WndNum);
+    m_FadeInByWindow[WndNum] = 0;
+    m_FadeOutByWindow[WndNum] = 0;
+    m_AlphaInByWindow[WndNum] = 0;
+    m_AlphaOutByWindow[WndNum] = 255;
+    Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, 255);
+    Class'NWindow.UIAPI_WINDOW'.static.ShowWindow(WndName);
+    return;
+}
+
+function int NormalizeMessageWndNum(int WndNum)
+{
+    if(WndNum < 1)
+    {
+        return 1;
+    }
+
+    if(WndNum > ONSCREEN_MESSAGE_MAX_WND)
+    {
+        return ONSCREEN_MESSAGE_MAX_WND;
+    }
+
+    return WndNum;
 }
 
 function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int FontType, int BackgroundType, int ColorR, int ColorG, int ColorB)
@@ -103,14 +197,19 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
 
     local Color FontColor;
     local int i, j, LengthTotal, TotalLength, TextOffsetTotal1;
+    local bool bRefresh;
 
-    if((WndNum < 1) || WndNum > 8)
-    {
-        return;
-    }
+    WndNum = NormalizeMessageWndNum(WndNum);
+    bRefresh = IsMessageWindowActive(WndNum);
+    PrepareMessageWindow(WndNum, bRefresh);
+
     if(Duration < 0)
     {
         Duration = 0;
+    }
+    if((Duration > 0) && (Duration < 1500))
+    {
+        Duration = 1500;
     }
     if(Len(TextValue) > 512)
     {
@@ -242,6 +341,7 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
     onshowstat1 = true;
     onshowstat2 = false;
     globalDuration = Duration;
+    m_DurationByWindow[WndNum] = Duration;
     droprate = 255;
     switch(Animation)
     {
@@ -274,6 +374,82 @@ function ShowMsg(int WndNum, string TextValue, int Duration, int Animation, int 
         default:
             droprate = 255;
             break;
+    }
+    m_DropRateByWindow[WndNum] = droprate;
+    m_AlphaInByWindow[WndNum] = 0;
+    m_AlphaOutByWindow[WndNum] = 255;
+    m_FadeOutByWindow[WndNum] = 0;
+    if(bRefresh)
+    {
+        m_FadeInByWindow[WndNum] = 0;
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, 255);
+        if(m_DurationByWindow[WndNum] > 0)
+        {
+            Class'NWindow.UIAPI_WINDOW'.static.SetUITimer("OnScreenMessageWnd1", ONSCREEN_MESSAGE_TIMER_BASE + WndNum, m_DurationByWindow[WndNum]);
+        }
+    }
+    else
+    {
+        m_FadeInByWindow[WndNum] = 1;
+    }
+    return;
+}
+
+function FadeInWindow(int WndNum)
+{
+    local string WndName;
+
+    if((WndNum < 1) || (WndNum > ONSCREEN_MESSAGE_MAX_WND))
+    {
+        return;
+    }
+
+    WndName = "OnScreenMessageWnd" $ string(WndNum);
+    m_AlphaInByWindow[WndNum] = m_AlphaInByWindow[WndNum] + m_DropRateByWindow[WndNum];
+    if(m_AlphaInByWindow[WndNum] < 255)
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, m_AlphaInByWindow[WndNum]);
+    }
+    else
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, 255);
+        m_AlphaInByWindow[WndNum] = 0;
+        m_FadeInByWindow[WndNum] = 0;
+        if(m_DurationByWindow[WndNum] > 0)
+        {
+            Class'NWindow.UIAPI_WINDOW'.static.SetUITimer("OnScreenMessageWnd1", ONSCREEN_MESSAGE_TIMER_BASE + WndNum, m_DurationByWindow[WndNum]);
+        }
+    }
+    return;
+}
+
+function FadeOutWindow(int WndNum)
+{
+    local string WndName;
+
+    if((WndNum < 1) || (WndNum > ONSCREEN_MESSAGE_MAX_WND))
+    {
+        return;
+    }
+
+    WndName = "OnScreenMessageWnd" $ string(WndNum);
+    m_AlphaOutByWindow[WndNum] = m_AlphaOutByWindow[WndNum] - m_DropRateByWindow[WndNum];
+    if(m_AlphaOutByWindow[WndNum] > 1)
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, m_AlphaOutByWindow[WndNum]);
+    }
+    else
+    {
+        Class'NWindow.UIAPI_WINDOW'.static.SetAlpha(WndName, 0);
+        Class'NWindow.UIAPI_WINDOW'.static.HideWindow(WndName);
+        m_AlphaOutByWindow[WndNum] = 255;
+        m_FadeOutByWindow[WndNum] = 0;
+        m_DurationByWindow[WndNum] = 0;
+        if((WndNum == 2) || (WndNum == 5) || (WndNum == 7))
+        {
+            moveval2 = 0;
+            moveval = 0;
+        }
     }
     return;
 }
