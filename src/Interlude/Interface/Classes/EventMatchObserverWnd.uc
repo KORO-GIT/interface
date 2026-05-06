@@ -2,6 +2,9 @@ class EventMatchObserverWnd extends UICommonAPI;
 
 const TIMERID_Show = 1;
 const TIMERID_Msg = 2;
+const EVENT_MATCH_OBSERVER_MAX_PARTY_MEMBERS = 9;
+const EVENT_MATCH_OBSERVER_MAX_BUFF_ICONS = 48;
+const EVENT_MATCH_OBSERVER_MAX_SCORE_TEXTURE = 9;
 
 enum EMessageMode
 {
@@ -147,6 +150,45 @@ function OnLoad()
     RegisterEvent(290);
     RegisterEvent(90);
     return;
+}
+
+function int ClampObserverPartyMemberCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > EVENT_MATCH_OBSERVER_MAX_PARTY_MEMBERS)
+    {
+        return EVENT_MATCH_OBSERVER_MAX_PARTY_MEMBERS;
+    }
+    return Count;
+}
+
+function int ClampObserverBuffCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > EVENT_MATCH_OBSERVER_MAX_BUFF_ICONS)
+    {
+        return EVENT_MATCH_OBSERVER_MAX_BUFF_ICONS;
+    }
+    return Count;
+}
+
+function int ClampObserverScoreTextureIndex(int Score)
+{
+    if(Score < 0)
+    {
+        return 0;
+    }
+    if(Score > EVENT_MATCH_OBSERVER_MAX_SCORE_TEXTURE)
+    {
+        return EVENT_MATCH_OBSERVER_MAX_SCORE_TEXTURE;
+    }
+    return Score;
 }
 
 function OnEnterState(name a_PreStateName)
@@ -512,7 +554,7 @@ function UpdateTeamInfo(int a_TeamID)
     {
         return;
     }
-    PartyMemberCount = Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(a_TeamID);
+    PartyMemberCount = ClampObserverPartyMemberCount(Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(a_TeamID));
     switch(a_TeamID)
     {
         // End:0xD1
@@ -574,8 +616,8 @@ function UpdateScore()
 {
     m_Score1 = Class'NWindow.EventMatchAPI'.static.GetScore(0);
     m_Score2 = Class'NWindow.EventMatchAPI'.static.GetScore(1);
-    m_hScore1Tex.SetTexture("L2UI_CH3.BroadcastObs.br_score" $ string(m_Score1));
-    m_hScore2Tex.SetTexture("L2UI_CH3.BroadcastObs.br_score" $ string(m_Score2));
+    m_hScore1Tex.SetTexture("L2UI_CH3.BroadcastObs.br_score" $ string(ClampObserverScoreTextureIndex(m_Score1)));
+    m_hScore2Tex.SetTexture("L2UI_CH3.BroadcastObs.br_score" $ string(ClampObserverScoreTextureIndex(m_Score2)));
     m_hTopWnd.ShowWindow();
     m_hOwnerWnd.SetTimer(1, 7000);
     return;
@@ -583,12 +625,16 @@ function UpdateScore()
 
 function UpdateUserInfo(int a_TeamID, int a_UserID)
 {
-    local int i, CurRow;
+    local int i, CurRow, BuffCount, RemainTime;
     local EventMatchUserData UserData;
     local StatusIconInfo Info;
     local SkillInfo TheSkillInfo;
     local int Width, Height;
 
+    if(((a_TeamID < 0) || (a_TeamID > 1)) || ((a_UserID < 0) || (a_UserID >= EVENT_MATCH_OBSERVER_MAX_PARTY_MEMBERS)))
+    {
+        return;
+    }
     // End:0x48C
     if(Class'NWindow.EventMatchAPI'.static.GetUserData(a_TeamID, a_UserID, UserData))
     {
@@ -629,9 +675,10 @@ function UpdateUserInfo(int a_TeamID, int a_UserID)
             m_hPlayerBuffWnd[a_TeamID].Clear();
             CurRow = -1;
             Debug("Length=" $ string(UserData.BuffIDList.Length));
+            BuffCount = ClampObserverBuffCount(UserData.BuffIDList.Length);
             i = 0;
 
-            while(i < UserData.BuffIDList.Length)
+            while(i < BuffCount)
             {
                 // End:0x35E
                 if(float(0) == (float(i) % float(12)))
@@ -645,7 +692,12 @@ function UpdateUserInfo(int a_TeamID, int a_UserID)
                     Info.Size = 10;
                     Info.ClassID = UserData.BuffIDList[i];
                     Info.Level = 1;
-                    Info.RemainTime = UserData.BuffRemainList[i];
+                    RemainTime = 0;
+                    if(i < UserData.BuffRemainList.Length)
+                    {
+                        RemainTime = UserData.BuffRemainList[i];
+                    }
+                    Info.RemainTime = RemainTime;
                     Info.IconName = TheSkillInfo.TexName;
                     Info.Name = TheSkillInfo.SkillName;
                     Info.Description = TheSkillInfo.SkillDesc;

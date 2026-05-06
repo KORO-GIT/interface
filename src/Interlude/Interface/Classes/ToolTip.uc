@@ -1333,9 +1333,133 @@ function ReturnTooltip_NTT_RECIPE(string param, UIEventManager.ETooltipSourceTyp
     return;
 }
 
+function MergeShortcutItemInfo(ItemInfo ShortcutItem, out ItemInfo TooltipItem)
+{
+    Class'NWindow.UIDATA_ITEM'.static.GetItemInfo(ShortcutItem.ClassID, TooltipItem);
+    TooltipItem.ClassID = ShortcutItem.ClassID;
+    if(Len(ShortcutItem.Name) > 0)
+    {
+        TooltipItem.Name = ShortcutItem.Name;
+    }
+    if(Len(ShortcutItem.AdditionalName) > 0)
+    {
+        TooltipItem.AdditionalName = ShortcutItem.AdditionalName;
+    }
+    if(Len(TooltipItem.Name) == 0)
+    {
+        TooltipItem.Name = Class'NWindow.UIDATA_ITEM'.static.GetItemName(ShortcutItem.ClassID);
+    }
+    if(Len(TooltipItem.AdditionalName) == 0)
+    {
+        TooltipItem.AdditionalName = Class'NWindow.UIDATA_ITEM'.static.GetItemAdditionalName(ShortcutItem.ClassID);
+    }
+    if(Len(TooltipItem.IconName) == 0)
+    {
+        TooltipItem.IconName = Class'NWindow.UIDATA_ITEM'.static.GetItemTextureName(ShortcutItem.ClassID);
+    }
+    if(Len(TooltipItem.Description) == 0)
+    {
+        TooltipItem.Description = Class'NWindow.UIDATA_ITEM'.static.GetItemDescription(ShortcutItem.ClassID);
+    }
+    if(TooltipItem.Weight == 0)
+    {
+        TooltipItem.Weight = Class'NWindow.UIDATA_ITEM'.static.GetItemWeight(ShortcutItem.ClassID);
+    }
+    if(ShortcutItem.Level > 0)
+    {
+        TooltipItem.Level = ShortcutItem.Level;
+    }
+    if(ShortcutItem.ServerID > 0)
+    {
+        TooltipItem.ServerID = ShortcutItem.ServerID;
+    }
+    if(ShortcutItem.ItemNum > 0)
+    {
+        TooltipItem.ItemNum = ShortcutItem.ItemNum;
+    }
+    if(ShortcutItem.Enchanted > 0)
+    {
+        TooltipItem.Enchanted = ShortcutItem.Enchanted;
+    }
+    if(ShortcutItem.CrystalType > 0)
+    {
+        TooltipItem.CrystalType = ShortcutItem.CrystalType;
+    }
+    if(ShortcutItem.RefineryOp1 > 0)
+    {
+        TooltipItem.RefineryOp1 = ShortcutItem.RefineryOp1;
+    }
+    if(ShortcutItem.RefineryOp2 > 0)
+    {
+        TooltipItem.RefineryOp2 = ShortcutItem.RefineryOp2;
+    }
+    if(ShortcutItem.Reserved > 0)
+    {
+        TooltipItem.Reserved = ShortcutItem.Reserved;
+    }
+    return;
+}
+
+function string MakeItemTooltipParam(ItemInfo item)
+{
+    local string TooltipParam;
+
+    ParamAdd(TooltipParam, "classID", string(item.ClassID));
+    ParamAdd(TooltipParam, "level", string(item.Level));
+    ParamAdd(TooltipParam, "name", item.Name);
+    ParamAdd(TooltipParam, "additionalName", item.AdditionalName);
+    ParamAdd(TooltipParam, "iconName", item.IconName);
+    ParamAdd(TooltipParam, "description", item.Description);
+    ParamAdd(TooltipParam, "itemType", string(item.ItemType));
+    ParamAdd(TooltipParam, "serverID", string(item.ServerID));
+    ParamAdd(TooltipParam, "itemNum", string(item.ItemNum));
+    ParamAdd(TooltipParam, "slotBitType", string(item.SlotBitType));
+    ParamAdd(TooltipParam, "enchanted", string(item.Enchanted));
+    ParamAdd(TooltipParam, "blessed", string(item.Blessed));
+    ParamAdd(TooltipParam, "damaged", string(item.Damaged));
+    ParamAdd(TooltipParam, "equipped", string(int(item.bEquipped)));
+    ParamAdd(TooltipParam, "price", string(item.Price));
+    ParamAdd(TooltipParam, "reserved", string(item.Reserved));
+    ParamAdd(TooltipParam, "defaultPrice", string(item.DefaultPrice));
+    ParamAdd(TooltipParam, "refineryOp1", string(item.RefineryOp1));
+    ParamAdd(TooltipParam, "refineryOp2", string(item.RefineryOp2));
+    ParamAdd(TooltipParam, "currentDurability", string(item.CurrentDurability));
+    ParamAdd(TooltipParam, "weight", string(item.Weight));
+    ParamAdd(TooltipParam, "materialType", string(item.MaterialType));
+    ParamAdd(TooltipParam, "weaponType", string(item.WeaponType));
+    ParamAdd(TooltipParam, "physicalDamage", string(item.PhysicalDamage));
+    ParamAdd(TooltipParam, "magicalDamage", string(item.MagicalDamage));
+    ParamAdd(TooltipParam, "shieldDefense", string(item.ShieldDefense));
+    ParamAdd(TooltipParam, "shieldDefenseRate", string(item.ShieldDefenseRate));
+    ParamAdd(TooltipParam, "durability", string(item.Durability));
+    ParamAdd(TooltipParam, "crystalType", string(item.CrystalType));
+    ParamAdd(TooltipParam, "randomDamage", string(item.RandomDamage));
+    ParamAdd(TooltipParam, "critical", string(item.Critical));
+    ParamAdd(TooltipParam, "hitModify", string(item.HitModify));
+    ParamAdd(TooltipParam, "attackSpeed", string(item.AttackSpeed));
+    ParamAdd(TooltipParam, "mpConsume", string(item.MpConsume));
+    ParamAdd(TooltipParam, "avoidModify", string(item.AvoidModify));
+    ParamAdd(TooltipParam, "soulshotCount", string(item.SoulshotCount));
+    ParamAdd(TooltipParam, "spiritshotCount", string(item.SpiritshotCount));
+    ParamAdd(TooltipParam, "armorType", string(item.ArmorType));
+    ParamAdd(TooltipParam, "physicalDefense", string(item.PhysicalDefense));
+    ParamAdd(TooltipParam, "magicalDefense", string(item.MagicalDefense));
+    ParamAdd(TooltipParam, "mpBonus", string(item.MpBonus));
+    ParamAdd(TooltipParam, "consumeType", string(item.ConsumeType));
+    ParamAdd(TooltipParam, "ItemSubType", string(item.ItemSubType));
+    ParamAdd(TooltipParam, "iconNameEx1", item.IconNameEx1);
+    ParamAdd(TooltipParam, "iconNameEx2", item.IconNameEx2);
+    ParamAdd(TooltipParam, "iconNameEx3", item.IconNameEx3);
+    ParamAdd(TooltipParam, "iconNameEx4", item.IconNameEx4);
+    ParamAdd(TooltipParam, "arrow", string(int(item.bArrow)));
+    ParamAdd(TooltipParam, "recipe", string(int(item.bRecipe)));
+    return TooltipParam;
+}
+
 function ReturnTooltip_NTT_SHORTCUT(string param, UIEventManager.ETooltipSourceType eSourceType)
 {
     local ItemInfo item;
+    local ItemInfo ShortcutTooltipItem;
     local UIEventManager.EItemParamType EItemParamType;
     local UIEventManager.EShortCutItemType eShortCutType;
     local string ItemName;
@@ -1355,6 +1479,7 @@ function ReturnTooltip_NTT_SHORTCUT(string param, UIEventManager.ETooltipSourceT
         ParseInt(param, "ConsumeType", item.ConsumeType);
         ParseInt(param, "RefineryOp1", item.RefineryOp1);
         ParseInt(param, "RefineryOp2", item.RefineryOp2);
+        ParseInt(param, "ServerID", item.ServerID);
         ParseInt(param, "ItemNum", item.ItemNum);
         ParseInt(param, "MpConsume", item.MpConsume);
         eShortCutType = EShortCutItemType(item.ItemSubType);
@@ -1364,7 +1489,8 @@ function ReturnTooltip_NTT_SHORTCUT(string param, UIEventManager.ETooltipSourceT
         {
             // End:0x267
             case SCIT_ITEM:
-                ReturnTooltip_NTT_ITEM(param, "ItemShortcutLS", eSourceType);
+                MergeShortcutItemInfo(item, ShortcutTooltipItem);
+                ReturnTooltip_NTT_ITEM(MakeItemTooltipParam(ShortcutTooltipItem), "ItemShortcutLS", eSourceType);
                 return;
             // End:0x565
             case SCIT_SKILL:

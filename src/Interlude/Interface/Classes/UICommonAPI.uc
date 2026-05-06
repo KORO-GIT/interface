@@ -313,6 +313,12 @@ function int Split(string strInput, string delim, out array<string> arrToken)
 {
     local int arrSize;
 
+    if(delim == "")
+    {
+        arrToken.Insert(arrToken.Length, 1);
+        arrToken[arrToken.Length - 1] = strInput;
+        return 1;
+    }
     while(InStr(strInput, delim) > 0)
     {
         arrToken.Insert(arrToken.Length, 1);
@@ -11403,6 +11409,10 @@ static final function string ReplaceText(coerce string Text, coerce string Repla
     local int i;
     local string output;
 
+    if(Replace == "")
+    {
+        return Text;
+    }
     i = InStr(Text, Replace);
 
     while(i != -1)

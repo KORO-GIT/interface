@@ -1,6 +1,8 @@
 class EventMatchGMWnd extends UICommonAPI;
 
 const TIMERID_CountDown = 1;
+const EVENT_MATCH_MAX_PARTY_MEMBERS = 9;
+const EVENT_MATCH_MAX_RULE_ENTRIES = 256;
 
 var HtmlHandle m_hCommandHtml;
 var WindowHandle m_hEventMatchGMCommandWnd;
@@ -157,6 +159,32 @@ function OnClickButtonWithHandle(ButtonHandle a_ButtonHandle)
             break;
     }
     return;
+}
+
+function int ClampEventMatchPartyMemberCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > EVENT_MATCH_MAX_PARTY_MEMBERS)
+    {
+        return EVENT_MATCH_MAX_PARTY_MEMBERS;
+    }
+    return Count;
+}
+
+function int ClampEventMatchRuleCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > EVENT_MATCH_MAX_RULE_ENTRIES)
+    {
+        return EVENT_MATCH_MAX_RULE_ENTRIES;
+    }
+    return Count;
 }
 
 function OnEvent(int a_EventID, string a_Param)
@@ -326,7 +354,7 @@ function HandleEventMatchUpdateTeamInfo(string a_Param)
     // End:0x1A7
     if(ParseInt(a_Param, "TeamID", TeamID))
     {
-        PartyMemberCount = Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(TeamID);
+        PartyMemberCount = ClampEventMatchPartyMemberCount(Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(TeamID));
         switch(TeamID)
         {
             // End:0x84
@@ -417,6 +445,7 @@ function bool ApplySkillRule(string a_OptionFile)
     {
         Count = 0;
     }
+    Count = ClampEventMatchRuleCount(Count);
     i = 0;
 
     while(i < Count)
@@ -470,6 +499,7 @@ function bool ApplyItemRule(string a_OptionFile)
     {
         Count = 0;
     }
+    Count = ClampEventMatchRuleCount(Count);
     i = 0;
 
     while(i < Count)
@@ -508,6 +538,7 @@ function bool ApplyBuffRule()
         DialogShow(DIALOG_Notice, GetSystemMessage(1422));
         return false;
     }
+    Count = ClampEventMatchRuleCount(Count);
     // End:0x5B
     if(0 >= Count)
     {
@@ -547,6 +578,7 @@ function bool CheckBuffRule(string a_OptionFile)
         DialogShow(DIALOG_Notice, GetSystemMessage(1422));
         return false;
     }
+    Count = ClampEventMatchRuleCount(Count);
     i = 0;
 
     while(i < Count)
@@ -621,7 +653,7 @@ function Firecracker(int a_TeamID)
     local int PartyMemberCount, i;
     local EventMatchUserData UserData;
 
-    PartyMemberCount = Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(a_TeamID);
+    PartyMemberCount = ClampEventMatchPartyMemberCount(Class'NWindow.EventMatchAPI'.static.GetPartyMemberCount(a_TeamID));
     i = 0;
 
     while(i < PartyMemberCount)

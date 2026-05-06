@@ -1,5 +1,7 @@
 class GametipWnd extends UIScript;
 
+const MAX_GAMETIP_RECORDS = 512;
+
 var array<GameTipData> TipData;
 var int CountRecord;
 var UserInfo userinfofortip;
@@ -29,19 +31,41 @@ function OnEventWithStr(int a_EventID, string a_Param)
     return;
 }
 
+function int ClampGameTipCount(int Count)
+{
+    if(Count < 0)
+    {
+        return 0;
+    }
+    if(Count > MAX_GAMETIP_RECORDS)
+    {
+        return MAX_GAMETIP_RECORDS;
+    }
+    return Count;
+}
+
 function LoadGameTipData()
 {
     local int i;
     local bool gamedataloaded;
     local GameTipData TipData1;
 
-    CountRecord = Class'NWindow.UIDATA_GAMETIP'.static.GetDataCount();
+    CountRecord = ClampGameTipCount(Class'NWindow.UIDATA_GAMETIP'.static.GetDataCount());
+    TipData.Length = CountRecord;
     i = 0;
 
     while(i < CountRecord)
     {
         gamedataloaded = Class'NWindow.UIDATA_GAMETIP'.static.GetDataByIndex(i, TipData1);
-        TipData[i] = TipData1;
+        if(gamedataloaded)
+        {
+            TipData[i] = TipData1;
+        }
+        else
+        {
+            TipData[i].TipMsg = "";
+            TipData[i].Validity = false;
+        }
         ++i;
     }
     return;
@@ -56,11 +80,18 @@ function OnShow()
 
     j = 0;
     userinfoloaded = GetPlayerInfo(userinfofortip);
-    // End:0x28
-    if(userinfoloaded == false)
-    {        
+    if((userinfoloaded == false) || (userinfofortip.nLevel < 1))
+    {
+        UserLevelData = 1;
     }
-    UserLevelData = userinfofortip.nLevel;
+    else
+    {
+        UserLevelData = userinfofortip.nLevel;
+    }
+    if(UserLevelData > 80)
+    {
+        UserLevelData = 80;
+    }
     // End:0x5B
     if((UserLevelData >= 1) && UserLevelData <= 20)
     {
@@ -157,7 +188,6 @@ function OnShow()
         }
         ++i;
     }
-    NumberSelect = Rand(SelectedCondition.Length);
     // End:0x2A8
     if(SelectedCondition.Length == 0)
     {
@@ -165,6 +195,7 @@ function OnShow()
     }
     else
     {
+        NumberSelect = Rand(SelectedCondition.Length);
         CurrentTip = SelectedCondition[NumberSelect];
     }
     // End:0x403
